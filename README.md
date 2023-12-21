@@ -1,5 +1,5 @@
 ## Shinkeiseikan Collection (yor42 fork)
-
+[![Java CI with Gradle](https://github.com/yor42/ShinColle/actions/workflows/gradle.yml/badge.svg)](https://github.com/yor42/ShinColle/actions/workflows/gradle.yml)
 ```
 yor42 -fork-> misaka10843 -fork-> Cappycot -fork-> PinkaLulan
                    ∧
