@@ -14,6 +14,9 @@ Goal of this fork is:<br>
 - Migrate workspace to RFG using [Cleanroom Template Dev Env](https://github.com/CleanroomMC/TemplateDevEnv), allowing build of this mod on later gradle.<br>
 - Completely fix Cascading Worldgens<br>
 - Add compatibility with Mekanism
+
+as always, you can grab build jar on [Github Actions](https://github.com/yor42/ShinColle/actions)
+
 # Shin Colle(Mikasa10843)
 
 此仓库是复刻自 Cappycot/ShinColle后使用GitHub actions自动编译程序编译jar，顺便将其他仓库中的优化与修复添加于此 
