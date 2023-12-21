@@ -29,12 +29,12 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
+      uses: gradle/gradle-build-action@snapshot
       with:
         arguments: build
     - name : upload jar
       uses: actions/upload-artifact@master
       if: always()
       with:
-        name: ShinColle
+        name: ShinColle-unofficial
         path: ${{ github.workspace }}/build/libs
