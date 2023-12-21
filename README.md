@@ -11,11 +11,9 @@ Thank all the above personnel for their outstanding contributions!
 ```
 This is yor42's unofficial fork of unofficial fork of unofficial fork for shinkeiseikan collection.
 Goal of this fork is:<br>
-[x]Migrate workspace to RFG using [Cleanroom Template Dev Env](https://github.com/CleanroomMC/TemplateDevEnv), allowing build of this mod on later gradle.<br>
-[x]Completely fix Cascading Worldgens<br>
-[x]Add compatibility with Mekanism<br>
-[ ]change some oredict to prevent conflict with other mods (well, polymetal nodules are not really a manganese ingot, isn't it?)<br>
-
+- Migrate workspace to RFG using [Cleanroom Template Dev Env](https://github.com/CleanroomMC/TemplateDevEnv), allowing build of this mod on later gradle.<br>
+- Completely fix Cascading Worldgens<br>
+- Add compatibility with Mekanism
 # Shin Colle(Mikasa10843)
 
 此仓库是复刻自 Cappycot/ShinColle后使用GitHub actions自动编译程序编译jar，顺便将其他仓库中的优化与修复添加于此 
