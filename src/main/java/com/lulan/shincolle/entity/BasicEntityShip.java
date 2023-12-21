@@ -16,7 +16,7 @@ import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.init.ModBlocks;
 import com.lulan.shincolle.init.ModItems;
 import com.lulan.shincolle.init.ModSounds;
-import com.lulan.shincolle.intermod.MetamorphHelper;
+import com.lulan.shincolle.intermod.metamorph.MetamorphHelper;
 import com.lulan.shincolle.item.BasicEntityItem;
 import com.lulan.shincolle.network.*;
 import com.lulan.shincolle.proxy.ClientProxy;

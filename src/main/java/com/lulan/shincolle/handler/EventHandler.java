@@ -4,7 +4,7 @@ import com.lulan.shincolle.capability.CapaShipSavedValues;
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.entity.*;
 import com.lulan.shincolle.init.ModItems;
-import com.lulan.shincolle.intermod.MetamorphHelper;
+import com.lulan.shincolle.intermod.metamorph.MetamorphHelper;
 import com.lulan.shincolle.item.BasicEquip;
 import com.lulan.shincolle.network.S2CEntitySync;
 import com.lulan.shincolle.network.S2CGUIPackets;

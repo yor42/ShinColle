@@ -5,7 +5,7 @@ import com.lulan.shincolle.entity.BasicEntityMount;
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.BasicEntityShipCV;
 import com.lulan.shincolle.handler.ConfigHandler;
-import com.lulan.shincolle.intermod.MetamorphHelper;
+import com.lulan.shincolle.intermod.metamorph.MetamorphHelper;
 import com.lulan.shincolle.network.C2SInputPackets;
 import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.proxy.CommonProxy;

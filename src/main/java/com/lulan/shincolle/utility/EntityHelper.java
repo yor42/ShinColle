@@ -130,7 +130,7 @@ public class EntityHelper
 		int pz = MathHelper.floor(host2.posZ);
 		BlockPos pos = new BlockPos(px, py, pz);
 		IBlockState state = w.getBlockState(pos);
-		double depth = 0;
+		double depth;
 		
 		if (BlockHelper.checkBlockIsLiquid(state))
 		{
@@ -138,6 +138,10 @@ public class EntityHelper
 
 			for (int i = 1; py + i < 255D; i++)
 			{
+				if(py + i>= 256){
+					break;
+				}
+
 				pos = new BlockPos(px, py + i, pz);
 				state = w.getBlockState(pos);
 				

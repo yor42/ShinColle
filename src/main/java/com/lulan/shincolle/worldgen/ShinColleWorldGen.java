@@ -18,7 +18,7 @@ public class ShinColleWorldGen implements IWorldGenerator
 {
 	
 	private WorldGenerator genPolymetal, genPolyGravel;
-	
+	public BlockPos chunkPos;
 	
 	//維度判定
 	@Override
@@ -28,17 +28,15 @@ public class ShinColleWorldGen implements IWorldGenerator
 		//依照維度id呼叫不同生成方法
 		switch (world.provider.getDimension())
 		{
-		case 0:		//一般世界
-			generateSurface(world, random, chunkX*16, chunkZ*16);	//將chunk位置x16 轉成block位置
-			generateSea(world, random, chunkX*16, chunkZ*16);
-			break;
-		case -1:	//地獄
+            //將chunk位置x16 轉成block位置
+            case -1:	//地獄
 		//	generateNether(world, random, chunkX*16, chunkZ*16);
 			break;
 		case 1:		//終界
 		//	generateEnd(world, random, chunkX*16, chunkZ*16);
 			break;
-		default:	//其他維度
+            case 0:		//一般世界
+            default:	//其他維度
 			generateSurface(world, random, chunkX*16, chunkZ*16);
 			generateSea(world, random, chunkX*16, chunkZ*16);
 			break;		
@@ -49,7 +47,7 @@ public class ShinColleWorldGen implements IWorldGenerator
 	//參數: 礦石,生成世界,隨機數,x起點,z起點,生成次數,最低高度,最高高度
 	//生成次數:鐵/紅石~10 鑽石/金~2
 	private void oreGenerator(WorldGenerator genOres, World world, Random rand, int blockX, int blockZ, int spawnNum, int minY, int maxY)
-	{	
+	{
 		//NYI: 依照生態系id生成不同數量的礦
 		//以起點blockX,blockZ隨機加上0~15(即一個chunk範圍內)  生成高度則為minY~maxY之間
 		//每個chunk執行spawnChance次生成動作
@@ -89,13 +87,14 @@ public class ShinColleWorldGen implements IWorldGenerator
 		if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN))
 		{
 			genPolyGravel = new WorldGenPolyGravel(2 + rand.nextInt(2));
-			int posX, posY, posZ = 0;
+			int i2 = rand.nextInt(16) + 8;
+			int j6 = rand.nextInt(16) + 8;
 			BlockPos pos;
 			
 			for (int i = 0; i < ConfigHandler.polyGravelBaseRate; i++)
 			{
 				//取得高度最高的實體方塊+1格(即水底+1)
-				pos = world.getTopSolidOrLiquidBlock(new BlockPos(x + rand.nextInt(16), 1, z + rand.nextInt(16)));
+				pos = world.getTopSolidOrLiquidBlock(new BlockPos(x + rand.nextInt(16)+8, 1, z + rand.nextInt(16)+8));
 				genPolyGravel.generate(world, rand, pos);
 			}
 		}

@@ -5,15 +5,21 @@ import com.lulan.shincolle.handler.CommandHandler;
 import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.handler.GuiHandler;
 import com.lulan.shincolle.init.*;
+import com.lulan.shincolle.intermod.mekanism.MekanismHelper;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.proxy.IProxy;
 import com.lulan.shincolle.proxy.ServerProxy;
 import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.utility.LogHelper;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 
@@ -22,6 +28,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 	 version = Reference.MOD_VERSION,
 	 dependencies="required-after:forge@[14.23.5.2768,)",
 	 guiFactory = "com.lulan.shincolle.config.ConfigGuiFactory")
+@Mod.EventBusSubscriber
 public class ShinColle
 {
 	
@@ -126,6 +133,13 @@ public class ShinColle
 	    ServerProxy.saveServerFile = false;
 	    CommonProxy.isMultiplayer = event.getSide().isServer();
 	}
+
+	@SubscribeEvent(priority = EventPriority.LOW)
+	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+		if(Loader.isModLoaded("mekanism")){
+			MekanismHelper.registerCompat(event);
+		}
+	}
 	
 	/** server starting
 	 *  command必須在此註冊 (每個地圖檔會依照權限設定, 註冊不同command)
@@ -138,11 +152,11 @@ public class ShinColle
 		//register command
 		CommandHandler.init(event);
 	}
-	
-	/** server stopping
-	 *  before world unload
-	 *  標記server即將關閉, server world data需要標記存回disk
-	 */
+
+		/** server stopping
+         *  before world unload
+         *  標記server即將關閉, server world data需要標記存回disk
+         */
 	@Mod.EventHandler
 	public void onServerStopping(FMLServerStoppingEvent event)
 	{

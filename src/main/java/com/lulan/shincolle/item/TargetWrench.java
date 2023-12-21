@@ -1,7 +1,7 @@
 package com.lulan.shincolle.item;
 
 import com.lulan.shincolle.capability.CapaTeitoku;
-import com.lulan.shincolle.intermod.MetamorphHelper;
+import com.lulan.shincolle.intermod.metamorph.MetamorphHelper;
 import com.lulan.shincolle.network.C2SInputPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.tileentity.ITileWaypoint;

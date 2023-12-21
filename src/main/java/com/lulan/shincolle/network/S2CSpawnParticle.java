@@ -1,7 +1,7 @@
 package com.lulan.shincolle.network;
 
 import com.lulan.shincolle.entity.IShipMorph;
-import com.lulan.shincolle.intermod.MetamorphHelper;
+import com.lulan.shincolle.intermod.metamorph.MetamorphHelper;
 import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.PacketHelper;
 import com.lulan.shincolle.utility.ParticleHelper;

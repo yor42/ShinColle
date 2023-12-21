@@ -1,10 +1,18 @@
 package com.lulan.shincolle.block;
 
+import com.lulan.shincolle.init.ModBlocks;
 import com.lulan.shincolle.init.ModItems;
+import net.minecraft.block.BlockOre;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
@@ -43,14 +51,19 @@ public class BlockPolymetalOre extends BasicBlock
 	{
         return ModItems.AbyssMetal;
     }
-	
+
 	//掉落物的meta=1 (polymetal)
 	@Override
 	public int damageDropped(IBlockState state)
 	{
         return 1;
     }
-	
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(ModBlocks.BlockPolymetalOre, 1, 0);
+	}
+
 	//掉落數量設定: 根據機率跟附魔等級決定掉落數量
 	//若附魔等級>0  依照等級隨機增加數量  最少2顆  最多為(1+附魔等級)個
 	@Override
