@@ -53,6 +53,7 @@ public class GuiSmallShipyard extends GuiContainer
 		xMouse = mouseX;
 		yMouse = mouseY;
 		tickGUI += 0.125F;
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	//draw tooltip

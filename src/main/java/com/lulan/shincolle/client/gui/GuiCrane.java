@@ -25,16 +25,43 @@ public class GuiCrane extends GuiContainer
 
 	private static final ResourceLocation guiTexture = new ResourceLocation(Reference.TEXTURES_GUI+"GuiCrane.png");
 	private TileEntityCrane tile;
-	private int xClick, yClick, xMouse, yMouse;
+    private int xMouse;
+    private int yMouse;
 	private int btnMode, btnRedMode, btnLiquidMode, btnEnergyMode;
-	private boolean btnPower, btnMeta, btnDict, btnNbt, btnLoad, btnUnload, slotMode;
-	private float tickGUI;
-	private static String strLoad, strUnload, strMeta, strDict, strNbt, strNowait, strNowait1,
-						strFull, strFull1, strFull2, strEmpty, strEmpty1, strEmpty2, strExcess,
-						strExcess1, strExcess2, strRemain, strRemain1, strRemain2, strRed0,
-						strRed1, strRed2, strLiq0, strLiq1, strLiq2, strEne0, strEne1, strEne2;
-	
-	public GuiCrane(InventoryPlayer par1, TileEntityCrane par2)
+	private boolean btnPower;
+    private boolean btnMeta;
+    private boolean btnDict;
+    private boolean btnNbt;
+    private boolean btnLoad;
+    private boolean btnUnload;
+    private float tickGUI;
+	private static String strLoad;
+    private static String strUnload;
+    private static String strMeta;
+    private static String strDict;
+    private static String strNbt;
+    private static String strNowait;
+    private static String strNowait1;
+    private static String strFull;
+    private static String strFull1;
+    private static String strFull2;
+    private static String strEmpty;
+    private static String strEmpty1;
+    private static String strEmpty2;
+    private static String strExcess;
+    private static String strExcess1;
+    private static String strExcess2;
+    private static String strRemain;
+    private static String strRemain1;
+    private static String strRemain2;
+    private static String strRed0;
+    private static String strRed1;
+    private static String strRed2;
+    private static String strLiq0;
+    private static String strLiq1;
+    private static String strLiq2;
+
+    public GuiCrane(InventoryPlayer par1, TileEntityCrane par2)
 	{
 		super(new ContainerCrane(par1, par2));
 		
@@ -68,9 +95,9 @@ public class GuiCrane extends GuiContainer
 		strLiq0 = I18n.format("gui.shincolle:crane.liquid0");
 		strLiq1 = I18n.format("gui.shincolle:crane.liquid1");
 		strLiq2 = I18n.format("gui.shincolle:crane.liquid2");
-		strEne0 = I18n.format("gui.shincolle:crane.energy0");
-		strEne1 = I18n.format("gui.shincolle:crane.energy1");
-		strEne2 = I18n.format("gui.shincolle:crane.energy2");
+        String strEne0 = I18n.format("gui.shincolle:crane.energy0");
+        String strEne1 = I18n.format("gui.shincolle:crane.energy1");
+        String strEne2 = I18n.format("gui.shincolle:crane.energy2");
 		
 		//init value
 		updateButton();
@@ -84,6 +111,7 @@ public class GuiCrane extends GuiContainer
 		
 		xMouse = mouseX;
 		yMouse = mouseY;
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	//draw tooltip
@@ -92,7 +120,7 @@ public class GuiCrane extends GuiContainer
 		int mx = xMouse - guiLeft;
 		int my = yMouse - guiTop;
 		int len = 0;
-		List list = new ArrayList();
+		List<String> list = new ArrayList<>();
 		
 		//(22,21,35,34) meta (36,21,49,34) dict
 		if (my > 21 && my < 34)
@@ -134,13 +162,13 @@ public class GuiCrane extends GuiContainer
 				switch (this.btnLiquidMode)
 				{
 				case 1:
-					list.add(this.strLiq1);
+					list.add(strLiq1);
 					break;
 				case 2:
-					list.add(this.strLiq2);
+					list.add(strLiq2);
 					break;
 				default:
-					list.add(this.strLiq0);
+					list.add(strLiq0);
 					break;
 				}
 			}
@@ -224,17 +252,17 @@ public class GuiCrane extends GuiContainer
 		default:
 			if (this.btnMode < 10)
 			{
-				strnum = String.format("%.1f", (float)tile.getWaitTime(btnMode) * 0.05F);
+				strnum = String.format("%.1f", (float) TileEntityCrane.getWaitTime(btnMode) * 0.05F);
 				str = I18n.format("gui.shincolle:crane.waitsec", strnum);
 			}
 			else if (this.btnMode < 15)
 			{
-				strnum = String.valueOf((int)((float)tile.getWaitTime(btnMode) * 0.05F));
+				strnum = String.valueOf((int)((float) TileEntityCrane.getWaitTime(btnMode) * 0.05F));
 				str = I18n.format("gui.shincolle:crane.waitsec", strnum);
 			}
 			else
 			{
-				strnum = String.valueOf(tile.getWaitTime(btnMode) / 1200);
+				strnum = String.valueOf(TileEntityCrane.getWaitTime(btnMode) / 1200);
 				str = I18n.format("gui.shincolle:crane.waitmin", strnum);
 			}
 		break;
@@ -254,9 +282,8 @@ public class GuiCrane extends GuiContainer
 			str = String.valueOf(CalcHelper.getTimeFormated((int) (tile.getShip().getStateTimer(ID.T.CraneTime) * 0.05F)));
 			len = (int) (fontRenderer.getStringWidth(str) * 0.5F);
 			fontRenderer.drawString(str, 133 - len, 10, Enums.EnumColors.GRAY_DARK.getValue());
-			
-			//draw ship name
-			if (tile.getShip().getCustomNameTag() != null && tile.getShip().getCustomNameTag().length() > 0)
+
+            if (!tile.getShip().getCustomNameTag().isEmpty())
 			{
 				str = tile.getShip().getCustomNameTag();
 			}
@@ -356,7 +383,7 @@ public class GuiCrane extends GuiContainer
         //check loading slot mode
         for (int i = 0; i < 18; i++)
         {
-        	slotMode = this.tile.getItemMode(i);
+            boolean slotMode = this.tile.getItemMode(i);
         	
         	if (slotMode)
         	{
@@ -381,8 +408,8 @@ public class GuiCrane extends GuiContainer
         super.mouseClicked(posX, posY, key);
             
         //get click position
-        xClick = posX - guiLeft;
-        yClick = posY - guiTop;
+        int xClick = posX - guiLeft;
+        int yClick = posY - guiTop;
         
         updateButton();
         
@@ -433,13 +460,13 @@ public class GuiCrane extends GuiContainer
 	
 	private void updateButton()
 	{
-		btnPower = tile.getField(2) > 0 ? true : false;
-		btnMeta = tile.getField(3) > 0 ? true : false;
-		btnDict = tile.getField(4) > 0 ? true : false;
+		btnPower = tile.getField(2) > 0;
+		btnMeta = tile.getField(3) > 0;
+		btnDict = tile.getField(4) > 0;
 		btnMode = tile.getField(5);
-		btnLoad = tile.getField(6) > 0 ? true : false;
-		btnUnload = tile.getField(7) > 0 ? true : false;
-		btnNbt = tile.getField(8) > 0 ? true : false;
+		btnLoad = tile.getField(6) > 0;
+		btnUnload = tile.getField(7) > 0;
+		btnNbt = tile.getField(8) > 0;
 		btnRedMode = tile.getField(10);
 		btnLiquidMode = tile.getField(12);
 		btnEnergyMode = tile.getField(13);

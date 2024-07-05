@@ -59,6 +59,7 @@ public class GuiLargeShipyard extends GuiContainer
 		xMouse = mouseX;
 		yMouse = mouseY;
 		tickGUI += 0.125F;
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 	
 	//GUI前景: 文字 

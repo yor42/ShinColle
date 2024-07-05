@@ -1449,7 +1449,6 @@ public class GuiDesk extends GuiContainer {
             colorRT = Enums.EnumColors.GRAY_LIGHT.getValue();
           } else {
             strRT = StrRename;
-            colorRT = Enums.EnumColors.WHITE.getValue();
           }
 
           if (this.capa.getPlayerTeamCooldown() > 0) {
