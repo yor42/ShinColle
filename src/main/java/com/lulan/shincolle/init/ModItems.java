@@ -17,148 +17,76 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
-public class ModItems
-{
+public class ModItems {
 
-	//spawn egg
-	public static final Item ShipSpawnEgg = null;
-	//materials
-	public static final Item AbyssMetal = null;
-	public static final Item AbyssNugget = null;
-	public static final Item Ammo = null;
-	public static final Item Grudge = null;
-	//equip
-	public static final Item EquipAirplane = null;
-	public static final Item EquipAmmo = null;
-	public static final Item EquipArmor = null;
-	public static final Item EquipCannon = null;
-	public static final Item EquipCatapult = null;
-	public static final Item EquipCompass = null;
-	public static final Item EquipDrum = null;
-	public static final Item EquipFlare = null;
-	public static final Item EquipMachinegun = null;
-	public static final Item EquipRadar = null;
-	public static final Item EquipSearchlight = null;
-	public static final Item EquipTorpedo = null;
-	public static final Item EquipTurbine = null;
-	//misc
-	public static final Item BucketRepair = null;
-	public static final Item CombatRation = null;
-	public static final Item DeskItemBook = null;
-	public static final Item DeskItemRadar = null;
-	public static final Item InstantConMat = null;
-	public static final Item KaitaiHammer = null;
-	public static final Item MarriageRing = null;
-	public static final Item ModernKit = null;
-	public static final Item OwnerPaper = null;
-	public static final Item OPTool = null;
-	public static final Item PointerItem = null;
-	public static final Item RecipePaper = null;
-	public static final Item RepairGoddess = null;
-	public static final Item ShipTank = null;
-	public static final Item TargetWrench = null;
-	public static final Item TrainingBook = null;
-	//toy
-	public static final Item ToyAirplane = null;
 
-	//list for items
-	private static List<BasicItem> ListItems;
+    //list for item
+    private static final List<BasicItem> ListItems=new ArrayList<>();
 
-	private static Item[] ITEMS;
+    private static final ArrayList<Item> ITEMS = new ArrayList<>();
 
-	static
-	{
-		ListItems = new ArrayList();
+    //spawn egg
+    public static final Item ShipSpawnEgg = initItems(new ShipSpawnEgg());
+    //materials
+    public static final Item AbyssMetal = initItems(new AbyssMetal());
+    public static final Item AbyssNugget = initItems(new AbyssNugget());
+    public static final Item Ammo = initItems(new Ammo());
+    public static final Item Grudge = initItems(new Grudge());
+    //equip
+    public static final Item EquipAirplane = initItems(new EquipAirplane());
+    public static final Item EquipAmmo = initItems(new EquipAmmo());
+    public static final Item EquipArmor = initItems(new EquipArmor());
+    public static final Item EquipCannon = initItems(new EquipCannon());
+    public static final Item EquipCatapult = initItems(new EquipCatapult());
+    public static final Item EquipCompass = initItems(new EquipCompass());
+    public static final Item EquipDrum = initItems(new EquipDrum());
+    public static final Item EquipFlare = initItems(new EquipFlare());
+    public static final Item EquipMachinegun = initItems(new EquipMachinegun());
+    public static final Item EquipRadar = initItems(new EquipRadar());
+    public static final Item EquipSearchlight = initItems(new EquipSearchlight());
+    public static final Item EquipTorpedo = initItems(new EquipTorpedo());
+    public static final Item EquipTurbine = initItems(new EquipTurbine());
+    //misc
+    public static final Item BucketRepair = initItems(new BucketRepair());
+    public static final Item CombatRation = initItems(new CombatRation());
+    public static final Item DeskItemBook = initItems(new DeskItemBook());
+    public static final Item DeskItemRadar = initItems(new DeskItemRadar());
+    public static final Item InstantConMat = initItems(new InstantConMat());
+    public static final Item KaitaiHammer = initItems(new KaitaiHammer());
+    public static final Item MarriageRing = initItems(new MarriageRing());
+    public static final Item ModernKit = initItems(new ModernKit());
+    public static final Item OwnerPaper = initItems(new OwnerPaper());
+    public static final Item OPTool = initItems(new OPTool());
+    public static final Item PointerItem = initItems(new PointerItem());
+    public static final Item RecipePaper = initItems(new RecipePaper());
+    public static final Item RepairGoddess = initItems(new RepairGoddess());
+    public static final Item ShipTank = initItems(new ShipTank());
+    public static final Item TargetWrench = initItems(new TargetWrench());
+    public static final Item TrainingBook = initItems(new TrainingBook());
+    //toy
+    public static final Item ToyAirplane = initItems(new ToyAirplane());
 
-		try
-		{
-			ITEMS = new Item[]
-					{
-							//spawn egg
-							initItems(ShipSpawnEgg.class),
 
-							//materials
-							initItems(AbyssMetal.class),
-							initItems(AbyssNugget.class),
-							initItems(Ammo.class),
-							initItems(Grudge.class),
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+        for (Item item : ITEMS) {
+            event.getRegistry().register(item);
+        }
+    }
 
-							//equip
-							initItems(EquipAirplane.class),
-							initItems(EquipAmmo.class),
-							initItems(EquipArmor.class),
-							initItems(EquipCannon.class),
-							initItems(EquipCatapult.class),
-							initItems(EquipCompass.class),
-							initItems(EquipDrum.class),
-							initItems(EquipFlare.class),
-							initItems(EquipMachinegun.class),
-							initItems(EquipRadar.class),
-							initItems(EquipSearchlight.class),
-							initItems(EquipTorpedo.class),
-							initItems(EquipTurbine.class),
+    private static Item initItems(Item item) {
+        if(item instanceof BasicItem) {
+            ListItems.add((BasicItem) item);
+        }
+        ITEMS.add(item);
+        return item;
+    }
 
-							//misc
-							initItems(BucketRepair.class),
-							initItems(CombatRation.class),
-							initItems(DeskItemBook.class),
-							initItems(DeskItemRadar.class),
-							initItems(InstantConMat.class),
-							initItems(KaitaiHammer.class),
-							initItems(MarriageRing.class),
-							initItems(ModernKit.class),
-							initItems(OwnerPaper.class),
-							initItems(OPTool.class),
-							initItems(PointerItem.class),
-							initItems(RecipePaper.class),
-							initItems(RepairGoddess.class),
-							initItems(ShipTank.class),
-							initItems(TargetWrench.class),
-							initItems(TrainingBook.class),
-
-							//toy
-							initItems(ToyAirplane.class)
-					};
-		} catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event)
-	{
-		for(Item item : ITEMS)
-		{
-			event.getRegistry().register(item);
-		}
-	}
-	
-	//create instance and add instance to list
-	private static BasicItem initItems(Class<? extends BasicItem> itemClass) throws Exception
-	{
-		try
-		{
-			BasicItem i = itemClass.newInstance();
-			ListItems.add(i);
-			return i;
-		}
-		catch (Exception e)
-		{
-			//item建立instance失敗, 此例外必須丟出以強制中止遊戲
-			LogHelper.info("EXCEPTION: instancing fail: "+itemClass);
-			e.printStackTrace();
-			throw e;
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public static void loadItemModels(ModelRegistryEvent event)
-	{
-		for (BasicItem i : ListItems)
-		{
-			i.initModel();
-		}
-	}
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void loadItemModels(ModelRegistryEvent event) {
+        for (BasicItem i : ListItems) {
+            i.initModel();
+        }
+    }
 }

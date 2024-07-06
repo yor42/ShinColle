@@ -4,7 +4,6 @@ import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.IShipEmotion;
 import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.utility.EmotionHelper;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,9 +15,8 @@ import net.minecraft.util.math.MathHelper;
  * ModelDestroyerRo - PinkaLulan 2015/3/9
  * Created using Tabula 4.1.1
  */
-public class ModelDestroyerRo extends ModelBase implements IModelEmotion
-{
-	public ModelRenderer Back;
+public class ModelDestroyerRo extends ModelBase implements IModelEmotion {
+    public ModelRenderer Back;
     public ModelRenderer NeckBack;
     public ModelRenderer Body;
     public ModelRenderer TailBack;
@@ -56,12 +54,11 @@ public class ModelDestroyerRo extends ModelBase implements IModelEmotion
     public ModelRenderer GlowNeckBack;
     public ModelRenderer GlowHead;
 
-    
-    public ModelDestroyerRo()
-    {
+
+    public ModelDestroyerRo() {
         this.textureWidth = 128;
         this.textureHeight = 128;
-        
+
         this.LowerTooth = new ModelRenderer(this, 0, 0);
         this.LowerTooth.setRotationPoint(0.0F, 9.5F, -5.5F);
         this.LowerTooth.addBox(-12.0F, 0.0F, 0.0F, 24, 10, 20, 0.0F);
@@ -216,7 +213,7 @@ public class ModelDestroyerRo extends ModelBase implements IModelEmotion
         this.tube01.addChild(this.tube02);
         this.Back.addChild(this.BodyTurbine);
         this.HeadU01.addChild(this.UpperTooth);
-        
+
         //以下為發光模型支架, 此部份模型整個亮度設為240
         this.GlowBack = new ModelRenderer(this, 0, 0);
         this.GlowBack.setRotationPoint(0.0F, -16.0F, 0.0F);
@@ -227,7 +224,7 @@ public class ModelDestroyerRo extends ModelBase implements IModelEmotion
         this.GlowHead = new ModelRenderer(this, 0, 0);
         this.GlowHead.setRotationPoint(0.0F, 0.0F, -17.5F);
         this.setRotateAngle(GlowHead, 0.2618F, 0.0F, 0.0F);
-        
+
         this.GlowBack.addChild(this.GlowNeckBack);
         this.GlowNeckBack.addChild(this.GlowHead);
         this.GlowHead.addChild(this.FaceL00);
@@ -240,355 +237,316 @@ public class ModelDestroyerRo extends ModelBase implements IModelEmotion
         this.k00.addChild(this.k01);
         this.k00.addChild(this.k02);
         this.k00.addChild(this.k03);
-        
+
     }
-    
+
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {  
-    	GlStateManager.pushMatrix();
-    	GlStateManager.scale(0.45F, 0.45F, 0.45F);
-    	GlStateManager.translate(0F, 2.1F, 0F);
-        
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	this.Back.render(f5);
-    	
-    	GlStateManager.disableLighting();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.GlowBack.render(f5);
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(0.45F, 0.45F, 0.45F);
+        GlStateManager.translate(0F, 2.1F, 0F);
+
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.Back.render(f5);
+
+        GlStateManager.disableLighting();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.GlowBack.render(f5);
+        GlStateManager.enableLighting();
+
+        GlStateManager.popMatrix();
     }
-    
+
     //model animation
     @Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-    {
-    	//FIX: head rotation bug while riding
-    	if (f3 <= -180F) { f3 += 360F; }
-    	else if (f3 >= 180F) { f3 -= 360F; }
-    	
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		
-		float angleX = MathHelper.cos(f2*0.125F);
-		     
-		BasicEntityShip ent = (BasicEntityShip) entity;
-		
-  		//水上漂浮
-  		if (ent.getShipDepth(0) > 0D)
-  		{
-  			GlStateManager.translate(0F, angleX * 0.05F + 0.025F, 0F);
-    	}
-		  
-		if (ent.getStateFlag(ID.F.NoFuel))
-		{
-			motionStopPos(f, f1, f2, f3, f4, ent);
-		}
-		else
-		{
-			//org pose
-			Back.rotateAngleX = -0.2618F;
-			Back.rotateAngleY = 0F;
-			Back.rotateAngleZ = 0F;
-			NeckBack.rotateAngleX = 0.0873F;
-			Head.rotateAngleX = 0.3F;
-			LegRightFront.rotateAngleY = 0F;
-			LegLeftFront.rotateAngleY = 0F;
-			
-			isKisaragi(ent);   
-			rollEmotion(ent);    
-			motionWatch(f3, f4, angleX);	//include watch head & normal head
-			  
-			if (ent.isSitting())
-			{
-				motionSit(ent, angleX);
-			}
-			else
-			{
-			  	motionLeg(ent, f, f1, angleX);
-			  	motionTail(angleX);
-			}
-		}
-		
-		setGlowRotation();
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+        //FIX: head rotation bug while riding
+        if (f3 <= -180F) {
+            f3 += 360F;
+        } else if (f3 >= 180F) {
+            f3 -= 360F;
+        }
+
+        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+
+        float angleX = MathHelper.cos(f2 * 0.125F);
+
+        BasicEntityShip ent = (BasicEntityShip) entity;
+
+        //水上漂浮
+        if (ent.getShipDepth(0) > 0D) {
+            GlStateManager.translate(0F, angleX * 0.05F + 0.025F, 0F);
+        }
+
+        if (ent.getStateFlag(ID.F.NoFuel)) {
+            motionStopPos(f, f1, f2, f3, f4, ent);
+        } else {
+            //org pose
+            Back.rotateAngleX = -0.2618F;
+            Back.rotateAngleY = 0F;
+            Back.rotateAngleZ = 0F;
+            NeckBack.rotateAngleX = 0.0873F;
+            Head.rotateAngleX = 0.3F;
+            LegRightFront.rotateAngleY = 0F;
+            LegLeftFront.rotateAngleY = 0F;
+
+            isKisaragi(ent);
+            rollEmotion(ent);
+            motionWatch(f3, f4, angleX);    //include watch head & normal head
+
+            if (ent.isSitting()) {
+                motionSit(ent, angleX);
+            } else {
+                motionLeg(ent, f, f1, angleX);
+                motionTail(angleX);
+            }
+        }
+
+        setGlowRotation();
     }
-    
+
     //設定模型發光部份的rotation
-    private void setGlowRotation()
-    {
-		this.GlowBack.rotateAngleX = this.Back.rotateAngleX;
-		this.GlowBack.rotateAngleY = this.Back.rotateAngleY;
-		this.GlowBack.rotateAngleZ = this.Back.rotateAngleZ;
-		this.GlowNeckBack.rotateAngleX = this.NeckBack.rotateAngleX;
-		this.GlowNeckBack.rotateAngleY = this.NeckBack.rotateAngleY;
-		this.GlowNeckBack.rotateAngleZ = this.NeckBack.rotateAngleZ;
-		this.GlowHead.rotateAngleX = this.Head.rotateAngleX;
-		this.GlowHead.rotateAngleY = this.Head.rotateAngleY;
-		this.GlowHead.rotateAngleZ = this.Head.rotateAngleZ;
-	}
-    
-    private void motionStopPos(float f, float f1, float f2, float f3, float f4, BasicEntityShip ent)
-    {
-    	GlStateManager.translate(0F, 0.45F, 0F);
-    	isKisaragi(ent);
-    	setFace(1);
-    	
-    	//head
-  		HeadD01.rotateAngleX = 0.7F;
-    	NeckBack.rotateAngleX = 0F;
-    	NeckBack.rotateAngleY = 0.1F;
-    	Head.rotateAngleX = 0.1F;
-    	Head.rotateAngleY = 0.1F;
-    	//body
-    	Back.rotateAngleX = 0F;
-		Back.rotateAngleY = 3.1415F;
-		Back.rotateAngleZ = 3.1415F;
-		//leg
-    	LegRightFront.rotateAngleX = 1.57F;
-    	LegRightFront.rotateAngleY = -0.52F;
-	    LegLeftFront.rotateAngleX = 1.57F;
-	    LegLeftFront.rotateAngleY = 0.52F;
-	    LegRightEnd.rotateAngleX = 1F;
-	    LegLeftEnd.rotateAngleX = 1F;
-	    //tail
-	    TailBack.rotateAngleX = 0.1F;
-	    TailBack.rotateAngleY = -0.15F;
-  	    TailEnd.rotateAngleX = 0.1F;
-  	    TailEnd.rotateAngleY = -0.15F;
-  	    tube01.rotateAngleX = -0.8F;
-  	    tube01.rotateAngleY = -0.12F;
+    private void setGlowRotation() {
+        this.GlowBack.rotateAngleX = this.Back.rotateAngleX;
+        this.GlowBack.rotateAngleY = this.Back.rotateAngleY;
+        this.GlowBack.rotateAngleZ = this.Back.rotateAngleZ;
+        this.GlowNeckBack.rotateAngleX = this.NeckBack.rotateAngleX;
+        this.GlowNeckBack.rotateAngleY = this.NeckBack.rotateAngleY;
+        this.GlowNeckBack.rotateAngleZ = this.NeckBack.rotateAngleZ;
+        this.GlowHead.rotateAngleX = this.Head.rotateAngleX;
+        this.GlowHead.rotateAngleY = this.Head.rotateAngleY;
+        this.GlowHead.rotateAngleZ = this.Head.rotateAngleZ;
     }
-    
+
+    private void motionStopPos(float f, float f1, float f2, float f3, float f4, BasicEntityShip ent) {
+        GlStateManager.translate(0F, 0.45F, 0F);
+        isKisaragi(ent);
+        setFace(1);
+
+        //head
+        HeadD01.rotateAngleX = 0.7F;
+        NeckBack.rotateAngleX = 0F;
+        NeckBack.rotateAngleY = 0.1F;
+        Head.rotateAngleX = 0.1F;
+        Head.rotateAngleY = 0.1F;
+        //body
+        Back.rotateAngleX = 0F;
+        Back.rotateAngleY = 3.1415F;
+        Back.rotateAngleZ = 3.1415F;
+        //leg
+        LegRightFront.rotateAngleX = 1.57F;
+        LegRightFront.rotateAngleY = -0.52F;
+        LegLeftFront.rotateAngleX = 1.57F;
+        LegLeftFront.rotateAngleY = 0.52F;
+        LegRightEnd.rotateAngleX = 1F;
+        LegLeftEnd.rotateAngleX = 1F;
+        //tail
+        TailBack.rotateAngleX = 0.1F;
+        TailBack.rotateAngleY = -0.15F;
+        TailEnd.rotateAngleX = 0.1F;
+        TailEnd.rotateAngleY = -0.15F;
+        tube01.rotateAngleX = -0.8F;
+        tube01.rotateAngleY = -0.12F;
+    }
+
     //坐下動作
-  	private void motionSit(BasicEntityShip ent, float angleX)
-  	{
-  		GlStateManager.translate(0F, 0.45F, 0F);
-  		
-  		if  (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED)
-  		{
-			setFace(2);
-			Back.rotateAngleX = 0F;
-			Back.rotateAngleY = 3.1415F;
-			Back.rotateAngleZ = 3.1415F;
-			Head.rotateAngleX = angleX * 0.08F + 0.35F;
-	    	LegRightFront.rotateAngleX = angleX * 0.3F + 0.5F;
-		    LegLeftFront.rotateAngleX = -angleX * 0.3F + 0.5F;
-		    LegRightEnd.rotateAngleX = angleX * 0.3F + 0.5F;
-		    LegLeftEnd.rotateAngleX = -angleX * 0.3F + 0.5F;
-		    TailBack.rotateAngleX = -0.3F;
-		    TailBack.rotateAngleY = angleX * 0.3F;
-	  	    TailEnd.rotateAngleX = -0.3F;
-	  	    TailEnd.rotateAngleY = angleX * 0.5F;
-	  	    tube01.rotateAngleX = -0.8F;
-  		}
-  		else
-  		{
-  			Back.rotateAngleX = -0.7F;
-  			Head.rotateAngleX = angleX * 0.08F + 0.35F;
-  	    	LegRightFront.rotateAngleX = -0.6981F;
-  		    LegLeftFront.rotateAngleX = -0.6981F;
-  		    LegRightEnd.rotateAngleX = 0.1745F;
-  		    LegLeftEnd.rotateAngleX = 0.1745F;
-  		    TailBack.rotateAngleX = 0.5F;
-  		    TailBack.rotateAngleY = angleX * 0.3F;
-  	  	    TailEnd.rotateAngleX = 0.6F;
-  	  	    TailEnd.rotateAngleY = angleX * 0.5F;
-  	  	    tube01.rotateAngleX = -0.6F;
-  		}
-  	}
-    
-    //常時擺動尾巴
-  	private void motionTail(float angleX)
-  	{
-  		TailBack.rotateAngleX = angleX * 0.1F - 0.1F;
-	    TailEnd.rotateAngleX = angleX * 0.25F - 0.1F;
-  	}
-    
-    //雙腳移動計算
-  	private void motionLeg(BasicEntityShip ent, float f, float f1, float angleX)
-  	{
-		if (ent.isSprinting() || f1 > 0.9F)
-		{
-			LegRightFront.rotateAngleX = MathHelper.cos(f * 0.6662F) * 0.4F * f1 + 1F;
-		    LegLeftFront.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.1415927F) * 0.4F * f1 + 1F;
-		    LegRightEnd.rotateAngleX = MathHelper.sin(f * 0.6662F) * f1 + 0.5F;
-		    LegLeftEnd.rotateAngleX = MathHelper.sin(f * 0.6662F + 3.1415927F) * f1 + 0.5F;
-		}
-		else
-		{
-			LegRightFront.rotateAngleX = angleX * 0.3F + 0.8F;
-		    LegLeftFront.rotateAngleX = -angleX * 0.3F + 0.8F;
-		    LegRightEnd.rotateAngleX = angleX * 0.3F + 0.5F;
-		    LegLeftEnd.rotateAngleX = -angleX * 0.3F + 0.5F;
-		}  
-	}
-    
-    //頭部看人轉動計算
-  	private void motionWatch(float f3, float f4, float angleX)
-  	{
-  		//移動頭部 使其看人, 不看人時持續擺動頭部
-  	    if (f4 != 0)
-  	    {
-  	    	NeckBack.rotateAngleX = f4 * 0.005F; 	//上下角度
-  		    NeckBack.rotateAngleY = f3 * 0.005F;	//左右角度 角度轉成rad 即除以57.29578
-  		    Head.rotateAngleX = f4 * 0.005F;
-  		    Head.rotateAngleY = f3 * 0.005F;
-  		    TailBack.rotateAngleX = 0.1F;
-  		    TailBack.rotateAngleY = f3 * -0.005F;	//尾巴以反方向擺動
-  		    TailEnd.rotateAngleX = 0.1F;
-		    TailEnd.rotateAngleY = f3 * -0.005F;
-		    tube01.rotateAngleX = f4 * -0.005F - 0.8727F;
-		    tube01.rotateAngleY = f3 * -0.005F;
-  	    }
-  	    else
-  	    {
-  	    	Head.rotateAngleX = angleX * 0.08F + 0.3F;
-  	  		HeadD01.rotateAngleX = angleX * 0.05F + 0.7F;
-  	    	NeckBack.rotateAngleX = 0.0873F; 	//上下角度
-  	    	NeckBack.rotateAngleY = 0;			//左右角度 角度轉成rad 即除以57.29578
-  	    	Head.rotateAngleY = 0;
-  	    	TailBack.rotateAngleY = 0;
-  	    	TailEnd.rotateAngleY = 0;
-  	    	tube01.rotateAngleX = -0.8727F;
-  	    	tube01.rotateAngleY = 0;
-  	    }	
-  	}
-    
-    private void isKisaragi(BasicEntityShip ent)
-    {
-    	this.k00.isHidden = !EmotionHelper.checkModelState(0, ent.getStateEmotion(ID.S.State));
-  	}
-    
-  //隨機抽取顯示的表情 
-    private void rollEmotion(BasicEntityShip ent)
-    {   	
-    	switch (ent.getStateEmotion(ID.S.Emotion))
-    	{
-    	case ID.Emotion.BLINK:	//blink
-    		EmotionHelper.applyEmotionBlink(this, ent);
-    	break;
-    	case ID.Emotion.T_T:	//cry
-    	case ID.Emotion.O_O:
-    	case ID.Emotion.HUNGRY:
-    		if (ent.getFaceTick() <= 0) setFace(2);
-    	break;
-    	case ID.Emotion.BORED:	//cry
-    		if (ent.getFaceTick() <= 0) setFace(1);
-    	break;
-    	default:						//normal face
-    		//reset face to 0 or blink if emotion time > 0
-    		if (ent.getFaceTick() <= 0)
-    		{
-    			setFace(0);
-    		}
-    		else
-    		{
-    			EmotionHelper.applyEmotionBlink(this, ent);
-    		}
-    		//roll emotion (3 times) every 6 sec
-    		//1 tick in entity = 3 tick in model class (20 vs 60 fps)
-    		if (ent.ticksExisted % 120 == 0)
-    		{  			
-        		int emotionRand = ent.getRNG().nextInt(10);   		
-        		if (emotionRand > 7)
-        		{
-        			EmotionHelper.applyEmotionBlink(this, ent);
-        		} 		
-        	}
-    		break;
-    	}	
+    private void motionSit(BasicEntityShip ent, float angleX) {
+        GlStateManager.translate(0F, 0.45F, 0F);
+
+        if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
+            setFace(2);
+            Back.rotateAngleX = 0F;
+            Back.rotateAngleY = 3.1415F;
+            Back.rotateAngleZ = 3.1415F;
+            Head.rotateAngleX = angleX * 0.08F + 0.35F;
+            LegRightFront.rotateAngleX = angleX * 0.3F + 0.5F;
+            LegLeftFront.rotateAngleX = -angleX * 0.3F + 0.5F;
+            LegRightEnd.rotateAngleX = angleX * 0.3F + 0.5F;
+            LegLeftEnd.rotateAngleX = -angleX * 0.3F + 0.5F;
+            TailBack.rotateAngleX = -0.3F;
+            TailBack.rotateAngleY = angleX * 0.3F;
+            TailEnd.rotateAngleX = -0.3F;
+            TailEnd.rotateAngleY = angleX * 0.5F;
+            tube01.rotateAngleX = -0.8F;
+        } else {
+            Back.rotateAngleX = -0.7F;
+            Head.rotateAngleX = angleX * 0.08F + 0.35F;
+            LegRightFront.rotateAngleX = -0.6981F;
+            LegLeftFront.rotateAngleX = -0.6981F;
+            LegRightEnd.rotateAngleX = 0.1745F;
+            LegLeftEnd.rotateAngleX = 0.1745F;
+            TailBack.rotateAngleX = 0.5F;
+            TailBack.rotateAngleY = angleX * 0.3F;
+            TailEnd.rotateAngleX = 0.6F;
+            TailEnd.rotateAngleY = angleX * 0.5F;
+            tube01.rotateAngleX = -0.6F;
+        }
     }
-	
-	//設定顯示的臉型
+
+    //常時擺動尾巴
+    private void motionTail(float angleX) {
+        TailBack.rotateAngleX = angleX * 0.1F - 0.1F;
+        TailEnd.rotateAngleX = angleX * 0.25F - 0.1F;
+    }
+
+    //雙腳移動計算
+    private void motionLeg(BasicEntityShip ent, float f, float f1, float angleX) {
+        if (ent.isSprinting() || f1 > 0.9F) {
+            LegRightFront.rotateAngleX = MathHelper.cos(f * 0.6662F) * 0.4F * f1 + 1F;
+            LegLeftFront.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.1415927F) * 0.4F * f1 + 1F;
+            LegRightEnd.rotateAngleX = MathHelper.sin(f * 0.6662F) * f1 + 0.5F;
+            LegLeftEnd.rotateAngleX = MathHelper.sin(f * 0.6662F + 3.1415927F) * f1 + 0.5F;
+        } else {
+            LegRightFront.rotateAngleX = angleX * 0.3F + 0.8F;
+            LegLeftFront.rotateAngleX = -angleX * 0.3F + 0.8F;
+            LegRightEnd.rotateAngleX = angleX * 0.3F + 0.5F;
+            LegLeftEnd.rotateAngleX = -angleX * 0.3F + 0.5F;
+        }
+    }
+
+    //頭部看人轉動計算
+    private void motionWatch(float f3, float f4, float angleX) {
+        //移動頭部 使其看人, 不看人時持續擺動頭部
+        if (f4 != 0) {
+            NeckBack.rotateAngleX = f4 * 0.005F;    //上下角度
+            NeckBack.rotateAngleY = f3 * 0.005F;    //左右角度 角度轉成rad 即除以57.29578
+            Head.rotateAngleX = f4 * 0.005F;
+            Head.rotateAngleY = f3 * 0.005F;
+            TailBack.rotateAngleX = 0.1F;
+            TailBack.rotateAngleY = f3 * -0.005F;    //尾巴以反方向擺動
+            TailEnd.rotateAngleX = 0.1F;
+            TailEnd.rotateAngleY = f3 * -0.005F;
+            tube01.rotateAngleX = f4 * -0.005F - 0.8727F;
+            tube01.rotateAngleY = f3 * -0.005F;
+        } else {
+            Head.rotateAngleX = angleX * 0.08F + 0.3F;
+            HeadD01.rotateAngleX = angleX * 0.05F + 0.7F;
+            NeckBack.rotateAngleX = 0.0873F;    //上下角度
+            NeckBack.rotateAngleY = 0;            //左右角度 角度轉成rad 即除以57.29578
+            Head.rotateAngleY = 0;
+            TailBack.rotateAngleY = 0;
+            TailEnd.rotateAngleY = 0;
+            tube01.rotateAngleX = -0.8727F;
+            tube01.rotateAngleY = 0;
+        }
+    }
+
+    private void isKisaragi(BasicEntityShip ent) {
+        this.k00.isHidden = !EmotionHelper.checkModelState(0, ent.getStateEmotion(ID.S.State));
+    }
+
+    //隨機抽取顯示的表情
+    private void rollEmotion(BasicEntityShip ent) {
+        switch (ent.getStateEmotion(ID.S.Emotion)) {
+            case ID.Emotion.BLINK:    //blink
+                EmotionHelper.applyEmotionBlink(this, ent);
+                break;
+            case ID.Emotion.T_T:    //cry
+            case ID.Emotion.O_O:
+            case ID.Emotion.HUNGRY:
+                if (ent.getFaceTick() <= 0) setFace(2);
+                break;
+            case ID.Emotion.BORED:    //cry
+                if (ent.getFaceTick() <= 0) setFace(1);
+                break;
+            default:                        //normal face
+                //reset face to 0 or blink if emotion time > 0
+                if (ent.getFaceTick() <= 0) {
+                    setFace(0);
+                } else {
+                    EmotionHelper.applyEmotionBlink(this, ent);
+                }
+                //roll emotion (3 times) every 6 sec
+                //1 tick in entity = 3 tick in model class (20 vs 60 fps)
+                if (ent.ticksExisted % 120 == 0) {
+                    int emotionRand = ent.getRNG().nextInt(10);
+                    if (emotionRand > 7) {
+                        EmotionHelper.applyEmotionBlink(this, ent);
+                    }
+                }
+                break;
+        }
+    }
+
+    //設定顯示的臉型
     @Override
-  	public void setFace(int emo)
-    {
-		switch (emo)
-		{
-		case 0:
-			FaceL00.isHidden = false;
-			FaceR00.isHidden = false;
-			FaceL01.isHidden = true;
-			FaceR01.isHidden = true;
-			FaceL02.isHidden = true;
-			FaceR02.isHidden = true;
-		break;
-		case 1:
-			FaceL00.isHidden = true;
-			FaceR00.isHidden = true;
-			FaceL01.isHidden = false;
-			FaceR01.isHidden = false;
-			FaceL02.isHidden = true;
-			FaceR02.isHidden = true;
-		break;
-		case 2:
-			FaceL00.isHidden = true;
-			FaceR00.isHidden = true;
-			FaceL01.isHidden = true;
-			FaceR01.isHidden = true;
-			FaceL02.isHidden = false;
-			FaceR02.isHidden = false;
-		break;
-		default:
-		break;
-		}
-	}
-    
-	@Override
-	public int getFieldCount()
-	{
-		return 0;
-	}
+    public void setFace(int emo) {
+        switch (emo) {
+            case 0:
+                FaceL00.isHidden = false;
+                FaceR00.isHidden = false;
+                FaceL01.isHidden = true;
+                FaceR01.isHidden = true;
+                FaceL02.isHidden = true;
+                FaceR02.isHidden = true;
+                break;
+            case 1:
+                FaceL00.isHidden = true;
+                FaceR00.isHidden = true;
+                FaceL01.isHidden = false;
+                FaceR01.isHidden = false;
+                FaceL02.isHidden = true;
+                FaceR02.isHidden = true;
+                break;
+            case 2:
+                FaceL00.isHidden = true;
+                FaceR00.isHidden = true;
+                FaceL01.isHidden = true;
+                FaceR01.isHidden = true;
+                FaceL02.isHidden = false;
+                FaceR02.isHidden = false;
+                break;
+            default:
+                break;
+        }
+    }
 
-	@Override
-	public void setField(int id, float value)
-	{
-	}
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
 
-	@Override
-	public float getField(int id)
-	{
-		return 0;
-	}
+    @Override
+    public void setField(int id, float value) {
+    }
 
-	@Override
-	public void showEquip(IShipEmotion ent)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public float getField(int id) {
+        return 0;
+    }
 
-	@Override
-	public void syncRotationGlowPart()
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void showEquip(IShipEmotion ent) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-    
-    
+    @Override
+    public void syncRotationGlowPart() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        // TODO Auto-generated method stub
+
+    }
+
+
 }

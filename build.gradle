@@ -125,7 +125,10 @@ dependencies {
     compileOnly rfg.deobf(files("debugMod/mclib-2.4-1.12.2.jar"))
     compileOnly rfg.deobf(files("debugMod/metamorph-1.3-1.12.2.jar"))
     compileOnly rfg.deobf(files("debugMod/Baubles-1.12-1.5.2-api.jar"))
-
+    runtimeOnly rfg.deobf("curse.maven:tabula-minecraft-modeler-229092:2801270")
+    runtimeOnly rfg.deobf("curse.maven:ichunutil-229060:2801262")
+    implementation rfg.deobf("curse.maven:tinkers-construct-74072:2902483")
+    implementation rfg.deobf("curse.maven:mantle-74924:2713386")
 }
 
 // Adds Access Transformer files to tasks

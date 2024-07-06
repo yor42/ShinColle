@@ -7,26 +7,37 @@ import com.lulan.shincolle.ai.path.ShipPathNavigate;
 /**
  * Path navigator for ships
  */
-public interface IShipNavigator
-{
+public interface IShipNavigator {
 
-	/** ship navigator */
-	public ShipPathNavigate getShipNavigate();
-	
-	/** ship move helper */
-	public ShipMoveHelper getShipMoveHelper();
-	
-	/** can entity fly flag */
-	public boolean canFly();
-	
-	/** entity is jumping */
-	public boolean isJumping();
-	
-	/** move speed */
-	public float getMoveSpeed();
-	
-	/** jump strength */
-	public float getJumpSpeed();
-	
-	
+    /**
+     * ship navigator
+     */
+    ShipPathNavigate getShipNavigate();
+
+    /**
+     * ship move helper
+     */
+    ShipMoveHelper getShipMoveHelper();
+
+    /**
+     * can entity fly flag
+     */
+    boolean canFly();
+
+    /**
+     * entity is jumping
+     */
+    boolean isJumping();
+
+    /**
+     * move speed
+     */
+    float getMoveSpeed();
+
+    /**
+     * jump strength
+     */
+    float getJumpSpeed();
+
+
 }

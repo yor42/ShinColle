@@ -1,12 +1,11 @@
 package com.lulan.shincolle.item;
 
-/** combat ration item
- *
+/**
+ * combat ration item
  */
-public interface IShipCombatRation extends IShipFoodItem
-{
+public interface IShipCombatRation extends IShipFoodItem {
 
-	public int getMoraleValue(int meta);
-	
-	
+    int getMoraleValue(int meta);
+
+
 }

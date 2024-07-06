@@ -22,213 +22,191 @@ import java.util.List;
 /**
  * static effect entity
  * apply effect over time at a fixed position
- * 
+ * <p>
  * type:
- *   0: black hole, pull nearby entities to center, setDead after X ticks
- *      
+ * 0: black hole, pull nearby entities to center, setDead after X ticks
  */
-public class EntityProjectileStatic extends Entity implements IShipOwner, IShipAttrs, IShipCustomTexture, IShipProjectile
-{
-	
-	private IShipAttackBase host;
+public class EntityProjectileStatic extends Entity implements IShipOwner, IShipAttrs, IShipCustomTexture, IShipProjectile {
+
+    public int type, lifeLength;
+    public double pullForce, range;
+    private IShipAttackBase host;
     private Entity host2;
     private int playerUID;
-	public int type, lifeLength;
-	public double pullForce, range;
-	private double[] data;
-	
+    private double[] data;
 
-	public EntityProjectileStatic(World world)
-	{
-		super(world);
-		this.setSize(0.5F, 0.5F);
-		this.ignoreFrustumCheck = true;  //always render
-		this.noClip = true;				 //can't block
-		this.stepHeight = 0F;
-		this.type = 0;
-		this.lifeLength = 0;
-		this.pullForce = 0D;
-		this.range = 0D;
-	}
-	
-	/**
-	 * init attrs
-	 * 
-	 * data:
-	 *   black hole: data: 0:posX, 1:posY, 2:posZ, 3:life, 4:pullForce, 5:range
-	 */
-	public void initAttrs(IShipAttackBase host, int type, double[] data)
-	{
-		//host
-		this.host = host;
-		this.host2 = (Entity) host;
-		this.playerUID = host.getPlayerUID();
-		this.type = type;
-		this.data = data;
-		
-		switch (type)
-		{
-		default:	//black hole
-			this.setPosition(data[0], data[1], data[2]);
-			this.lifeLength = (int) data[3];
-			this.pullForce = data[4];
-			this.range = data[5];
-		break;
-		}
-		
-		this.prevPosX = this.posX;
-    	this.prevPosY = this.posY;
-    	this.prevPosZ = this.posZ;
-	}
 
-	@Override
-	public int getPlayerUID()
-	{
-		return this.playerUID;
-	}
+    public EntityProjectileStatic(World world) {
+        super(world);
+        this.setSize(0.5F, 0.5F);
+        this.ignoreFrustumCheck = true;  //always render
+        this.noClip = true;                 //can't block
+        this.stepHeight = 0F;
+        this.type = 0;
+        this.lifeLength = 0;
+        this.pullForce = 0D;
+        this.range = 0D;
+    }
 
-	@Override
-	public void setPlayerUID(int uid) {}
+    /**
+     * init attrs
+     * <p>
+     * data:
+     * black hole: data: 0:posX, 1:posY, 2:posZ, 3:life, 4:pullForce, 5:range
+     */
+    public void initAttrs(IShipAttackBase host, int type, double[] data) {
+        //host
+        this.host = host;
+        this.host2 = (Entity) host;
+        this.playerUID = host.getPlayerUID();
+        this.type = type;
+        this.data = data;
 
-	@Override
-	public Entity getHostEntity()
-	{
-		return host2;
-	}
+        switch (type) {
+            default:    //black hole
+                this.setPosition(data[0], data[1], data[2]);
+                this.lifeLength = (int) data[3];
+                this.pullForce = data[4];
+                this.range = data[5];
+                break;
+        }
 
-	@Override
-	protected void entityInit() {}
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+    }
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {}
+    @Override
+    public int getPlayerUID() {
+        return this.playerUID;
+    }
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {}
-	
-	@Override
-	public boolean isEntityInvulnerable(DamageSource attacker)
-	{
+    @Override
+    public void setPlayerUID(int uid) {
+    }
+
+    @Override
+    public Entity getHostEntity() {
+        return host2;
+    }
+
+    @Override
+    protected void entityInit() {
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound nbt) {
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound nbt) {
+    }
+
+    @Override
+    public boolean isEntityInvulnerable(DamageSource attacker) {
         return true;
     }
-	
-	@Override
-    public boolean canBeCollidedWith()
-	{
+
+    @Override
+    public boolean canBeCollidedWith() {
         return false;
     }
 
     @Override
-    public boolean canBePushed()
-    {
+    public boolean canBePushed() {
         return false;
     }
 
     @Override
-	public void onUpdate()
-    {
-    	/**************** BOTH SIDE ******************/
+    public void onUpdate() {
+        /**************** BOTH SIDE ******************/
         super.onUpdate();
-        
+
         /*************** SERVER SIDE *****************/
-        if (!this.world.isRemote)
-        {
-        	//check life
-        	if (this.ticksExisted > this.lifeLength || this.host == null)
-        	{
-        		this.setDead();
-        		return;
-        	}
-        	
-        	//sync projectile type at start
-        	TargetPoint point = new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 64D);
-        	
-    		if (this.ticksExisted == 1)
-    		{
-    			float[] data = new float[] {1F, (float)this.type, (float)this.data[3], (float)this.data[4], (float)this.data[5]};
-    	  		CommonProxy.channelE.sendToAllAround(new S2CEntitySync(this, S2CEntitySync.PID.SyncEntity_CustomData, data), point);
-    		}
-    		
-    		switch (this.type)
-    		{
-    		default:  //0: black hole
-    		{
-    			//every 4 ticks
-    			if ((this.ticksExisted & 3) == 0)
-    			{
-    				//判定bounding box內是否有可以觸發爆炸的entity
-                    List<Entity> hitList = this.world.getEntitiesWithinAABB(Entity.class,
-                    								this.getEntityBoundingBox().grow(this.range, this.range, this.range));
-                    
-                    //pull entity whose distance > 1D
-                    for (Entity ent : hitList)
-                    {
-                    	if (ent.canBeCollidedWith() && EntityHelper.isNotHost(this, ent) &&
-                    		ent.canBePushed() && !TeamHelper.checkSameOwner(this.host2, ent) &&
-                    		!TargetHelper.isEntityInvulnerable(ent))
-                    	{
-                    		Dist4d dist = CalcHelper.getDistanceFromA2B(this, ent);
-                    		
-                    		if (dist.d > 1D)
-                    		{
-                    			ent.addVelocity(dist.x * -this.pullForce, dist.y * -this.pullForce, dist.z * -this.pullForce);
-                    			CommonProxy.channelE.sendToAllAround(new S2CEntitySync(ent, 0, S2CEntitySync.PID.SyncEntity_Motion), point);
-        					}
-                    	}
-                    }
-    			}//end every 4 ticks
-    		}
-			break;
-    		}
+        if (!this.world.isRemote) {
+            //check life
+            if (this.ticksExisted > this.lifeLength || this.host == null) {
+                this.setDead();
+                return;
+            }
+
+            //sync projectile type at start
+            TargetPoint point = new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 64D);
+
+            if (this.ticksExisted == 1) {
+                float[] data = new float[]{1F, (float) this.type, (float) this.data[3], (float) this.data[4], (float) this.data[5]};
+                CommonProxy.channelE.sendToAllAround(new S2CEntitySync(this, S2CEntitySync.PID.SyncEntity_CustomData, data), point);
+            }
+
+            switch (this.type) {
+                default:  //0: black hole
+                {
+                    //every 4 ticks
+                    if ((this.ticksExisted & 3) == 0) {
+                        //判定bounding box內是否有可以觸發爆炸的entity
+                        List<Entity> hitList = this.world.getEntitiesWithinAABB(Entity.class,
+                                this.getEntityBoundingBox().grow(this.range, this.range, this.range));
+
+                        //pull entity whose distance > 1D
+                        for (Entity ent : hitList) {
+                            if (ent.canBeCollidedWith() && EntityHelper.isNotHost(this, ent) &&
+                                    ent.canBePushed() && !TeamHelper.checkSameOwner(this.host2, ent) &&
+                                    !TargetHelper.isEntityInvulnerable(ent)) {
+                                Dist4d dist = CalcHelper.getDistanceFromA2B(this, ent);
+
+                                if (dist.d > 1D) {
+                                    ent.addVelocity(dist.x * -this.pullForce, dist.y * -this.pullForce, dist.z * -this.pullForce);
+                                    CommonProxy.channelE.sendToAllAround(new S2CEntitySync(ent, 0, S2CEntitySync.PID.SyncEntity_Motion), point);
+                                }
+                            }
+                        }
+                    }//end every 4 ticks
+                }
+                break;
+            }
         }
         /*************** CLIENT SIDE *****************/
-        else
-        {
-        	if (this.ticksExisted == 1)
-        	{
-        		//spawn beam head particle
-            	ParticleHelper.spawnAttackParticleAtEntity(this, 5D, this.lifeLength, this.range * 2D, (byte)24);
-        	}
+        else {
+            if (this.ticksExisted == 1) {
+                //spawn beam head particle
+                ParticleHelper.spawnAttackParticleAtEntity(this, 5D, this.lifeLength, this.range * 2D, (byte) 24);
+            }
         }
     }
-    
+
     @Override
-	public boolean attackEntityFrom(DamageSource attacker, float atk)
-    {
-    	return false;
-    }
-    
-	//撞擊判定時呼叫此方法
-    protected void onImpact(Entity target)
-    {
-    	//NYI
+    public boolean attackEntityFrom(DamageSource attacker, float atk) {
+        return false;
     }
 
-	@Override
-	public int getTextureID()
-	{
-		return ID.ShipMisc.Invisible;
-	}
+    //撞擊判定時呼叫此方法
+    protected void onImpact(Entity target) {
+        //NYI
+    }
 
-	@Override
-	public Attrs getAttrs()
-	{
-		return this.host.getAttrs();
-	}
+    @Override
+    public int getTextureID() {
+        return ID.ShipMisc.Invisible;
+    }
 
-	@Override
-	public void setAttrs(Attrs data) {}
-	
-	@Override
-	public int getProjectileType()
-	{
-		return this.type;
-	}
+    @Override
+    public Attrs getAttrs() {
+        return this.host.getAttrs();
+    }
 
-	@Override
-	public void setProjectileType(int type)
-	{
-		this.type = type;
-	}
-	
-	
+    @Override
+    public void setAttrs(Attrs data) {
+    }
+
+    @Override
+    public int getProjectileType() {
+        return this.type;
+    }
+
+    @Override
+    public void setProjectileType(int type) {
+        this.type = type;
+    }
+
+
 }

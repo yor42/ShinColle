@@ -13,65 +13,57 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDesk extends BasicBlockFacingContainer
-{
-	
-	public static final String NAME = "BlockDesk";
-	public static final String TILENAME = "TileEntityDesk";
-	
-	
-	public BlockDesk()
-	{
-	    super();
-		this.setTranslationKey(NAME);
-		this.setHardness(1F);
-		this.setResistance(60F);
-	    this.setHarvestLevel("pickaxe", 0);
-	}
-	
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
-		return new TileEntityDesk();
-	}
-	
-	//can drop items in inventory
-	@Override
-	public boolean canDropInventory(IBlockState state)
-	{
-		return false;
-	}
-	
-	@SideOnly(Side.CLIENT)
-    public void initModel()
-	{
-		super.initModel();
-		
-		//prevent property mapping to blockstate
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(new IProperty[] {FACING}).build());
-				
-        //register tile entity render
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDesk.class, new RenderDesk());
-    
-	}
-	
-	@Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+public class BlockDesk extends BasicBlockFacingContainer {
+
+    public static final String NAME = "BlockDesk";
+    public static final String TILENAME = "TileEntityDesk";
+
+
+    public BlockDesk() {
+        super();
+        this.setTranslationKey(NAME);
+        this.setHardness(1F);
+        this.setResistance(60F);
+        this.setHarvestLevel("pickaxe", 0);
     }
-	
-	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return new TileEntityDesk();
+    }
+
+    //can drop items in inventory
+    @Override
+    public boolean canDropInventory(IBlockState state) {
         return false;
     }
-	
+
+    @SideOnly(Side.CLIENT)
+    public void initModel() {
+        super.initModel();
+
+        //prevent property mapping to blockstate
+        ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(FACING).build());
+
+        //register tile entity render
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDesk.class, new RenderDesk());
+
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
 
 }

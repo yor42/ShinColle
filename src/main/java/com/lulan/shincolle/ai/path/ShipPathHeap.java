@@ -1,42 +1,39 @@
 package com.lulan.shincolle.ai.path;
 
-/**SHIP PATH HEAP
+/**
+ * SHIP PATH HEAP
  * 以heap結構儲存path, 依照終點距離做排序
  * point在path heap中的順序跟point在實際路徑上的順序(index)無關, 單純是距離大小排序
  */
-public class ShipPathHeap
-{
-    /** Contains the points in this path, 起始大小為128點 */
+public class ShipPathHeap {
+    /**
+     * Contains the points in this path, 起始大小為128點
+     */
     private ShipPathPoint[] pathPoints = new ShipPathPoint[128];
-    /** The number of points in this path */
+    /**
+     * The number of points in this path
+     */
     private int count;
 
 
-    public ShipPathPoint[] getPathPoints()
-    {
-    	return pathPoints;
+    public ShipPathPoint[] getPathPoints() {
+        return pathPoints;
     }
-    
-    public int getCount()
-    {
-    	return count;
+
+    public int getCount() {
+        return count;
     }
-    
+
     /**
      * Adds a point to the path
      */
-    public ShipPathPoint addPoint(ShipPathPoint point)
-    {
-        if (point.index >= 0)
-        {
+    public ShipPathPoint addPoint(ShipPathPoint point) {
+        if (point.index >= 0) {
             throw new IllegalStateException("OW KNOWS!");
-        }
-        else
-        {
-        	//若path heap已滿, 則再擴張一倍大小
-            if (this.count == this.pathPoints.length)
-            {
-            	ShipPathPoint[] apathpoint = new ShipPathPoint[this.count << 1];
+        } else {
+            //若path heap已滿, 則再擴張一倍大小
+            if (this.count == this.pathPoints.length) {
+                ShipPathPoint[] apathpoint = new ShipPathPoint[this.count << 1];
                 System.arraycopy(this.pathPoints, 0, apathpoint, 0, this.count);
                 this.pathPoints = apathpoint;
             }
@@ -46,7 +43,7 @@ public class ShipPathHeap
             point.index = this.count;
             //從leaf重新排序回root
             this.sortToRoot(this.count++);
-            
+
             return point;
         }
     }
@@ -54,32 +51,29 @@ public class ShipPathHeap
     /**
      * Clears the path
      */
-    public void clearPath()
-    {
+    public void clearPath() {
         this.count = 0;
     }
 
     /**
      * Returns and removes the first point in the path
      * 取出heap第一個點, 即離目標最近的點
-     * 
+     * <p>
      * heap取出點方法: 1.移除root, 2.最後一個leaf搬移到root, 3.從root開始重新排序
      */
-    public ShipPathPoint dequeue()
-    {
-    	//將最後一個leaf搬移到root
-    	ShipPathPoint pathpoint = this.pathPoints[0];
+    public ShipPathPoint dequeue() {
+        //將最後一個leaf搬移到root
+        ShipPathPoint pathpoint = this.pathPoints[0];
         this.pathPoints[0] = this.pathPoints[--this.count];
         this.pathPoints[this.count] = null;
-        
+
         //從root開始重新排序
-        if (this.count > 0)
-        {
+        if (this.count > 0) {
             this.sortToLeaf(0);
         }
 
-        pathpoint.index = -1;	//取出的點id設為-1
-        
+        pathpoint.index = -1;    //取出的點id設為-1
+
         return pathpoint;
     }
 
@@ -87,19 +81,16 @@ public class ShipPathHeap
      * Changes the provided point's distance to target
      * 改變某個node的距離值, 要再重新排序一次, 使離目標距離最近的點排序到root
      */
-    public void changeDistance(ShipPathPoint point, float dist)
-    {
+    public void changeDistance(ShipPathPoint point, float dist) {
         float f1 = point.distanceToTarget;
         point.distanceToTarget = dist;
 
         //若新距離比舊距離小, 則往回排序到root
-        if (dist < f1)
-        {
+        if (dist < f1) {
             this.sortToRoot(point.index);
         }
         //若新距離比舊距離大, 則往後排序到leaf
-        else
-        {
+        else {
             this.sortToLeaf(point.index);
         }
     }
@@ -107,19 +98,16 @@ public class ShipPathHeap
     /**
      * 由目前點往回排序到root, 使root為離目標距離最短的點
      */
-    private void sortToRoot(int id)
-    {
+    private void sortToRoot(int id) {
         ShipPathPoint fromNode = this.pathPoints[id];
         int j;
 
-        for (float f = fromNode.distanceToTarget; id > 0; id = j)
-        {
+        for (float f = fromNode.distanceToTarget; id > 0; id = j) {
             j = id - 1 >> 1;
-            
+
             ShipPathPoint parentNode = this.pathPoints[j];
 
-            if (f >= parentNode.distanceToTarget)
-            {
+            if (f >= parentNode.distanceToTarget) {
                 break;
             }
 
@@ -134,19 +122,16 @@ public class ShipPathHeap
     /**
      * 由目前點往後排序到最末端leaf, 使leaf為離目標距離最遠的點
      */
-    private void sortToLeaf(int id)
-    {
-    	ShipPathPoint fromNode = this.pathPoints[id];
+    private void sortToLeaf(int id) {
+        ShipPathPoint fromNode = this.pathPoints[id];
         float fromDist = fromNode.distanceToTarget;
 
-        while (true)
-        {
-            int left = 1 + (id << 1);	//left child
-            int right = left + 1;		//right child
-            
+        while (true) {
+            int left = 1 + (id << 1);    //left child
+            int right = left + 1;        //right child
+
             //若child已超過heap大小, 則中止
-            if (left >= this.count)
-            {
+            if (left >= this.count) {
                 break;
             }
 
@@ -157,24 +142,19 @@ public class ShipPathHeap
             float rightDist;
 
             //取得right node
-            if (right >= this.count)
-            {
-            	rightNode = null;
-            	rightDist = Float.POSITIVE_INFINITY;
-            }
-            else
-            {
-            	rightNode = this.pathPoints[right];
-            	rightDist = rightNode.distanceToTarget;
+            if (right >= this.count) {
+                rightNode = null;
+                rightDist = Float.POSITIVE_INFINITY;
+            } else {
+                rightNode = this.pathPoints[right];
+                rightDist = rightNode.distanceToTarget;
             }
 
             //比較from, left, right三者的大小, 並將最小的調整到parent位置
             //left比right小
-            if (leftDist < rightDist)
-            {
-            	//left比from大, 表示from為最小, sort完成
-                if (leftDist >= fromDist)
-                {
+            if (leftDist < rightDist) {
+                //left比from大, 表示from為最小, sort完成
+                if (leftDist >= fromDist) {
                     break;
                 }
 
@@ -184,11 +164,9 @@ public class ShipPathHeap
                 id = left;
             }
             //left比right大
-            else
-            {
-            	//right比from大, 表示from為最小, sort完成
-                if (rightDist >= fromDist)
-                {
+            else {
+                //right比from大, 表示from為最小, sort完成
+                if (rightDist >= fromDist) {
                     break;
                 }
 
@@ -206,10 +184,9 @@ public class ShipPathHeap
     /**
      * Returns true if this path contains no points
      */
-    public boolean isPathEmpty()
-    {
+    public boolean isPathEmpty() {
         return this.count == 0;
     }
-    
-    
+
+
 }

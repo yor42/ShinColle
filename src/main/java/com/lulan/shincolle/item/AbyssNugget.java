@@ -1,26 +1,23 @@
 package com.lulan.shincolle.item;
 
-/** metal nugget
- * 
+/**
+ * metal nugget
  */
-public class AbyssNugget extends BasicItem
-{
-	
-	private static final String NAME = "AbyssNugget";
-	
-	
-	public AbyssNugget()
-	{
-		super();
-		this.setTranslationKey(NAME);
+public class AbyssNugget extends BasicItem {
+
+    private static final String NAME = "AbyssNugget";
+
+
+    public AbyssNugget() {
+        super();
+        this.setTranslationKey(NAME);
         this.setHasSubtypes(true);
-	}
-	
-	@Override
-	public int getTypes()
-	{
-		return 2;
-	}
-	
-	
+    }
+
+    @Override
+    public int getTypes() {
+        return 2;
+    }
+
+
 }

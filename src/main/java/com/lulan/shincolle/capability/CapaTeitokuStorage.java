@@ -9,26 +9,27 @@ import net.minecraftforge.common.capabilities.Capability.IStorage;
 /**
  * teitoku data capability storage
  * tut: http://www.planetminecraft.com/blog/forge-tutorial-capability-system/
- *
+ * <p>
  * 負責將capability data存到nbt使其保存到硬碟
  */
-public class CapaTeitokuStorage implements IStorage<ICapaTeitoku>
-{
+public class CapaTeitokuStorage implements IStorage<ICapaTeitoku> {
 
-	
-	/** save data to nbt */
-	@Override
-	public NBTBase writeNBT(Capability<ICapaTeitoku> capability, ICapaTeitoku instance, EnumFacing side)
-	{
-		return instance.saveNBTData(new NBTTagCompound());
-	}
 
-	/** load data from nbt */
-	@Override
-	public void readNBT(Capability<ICapaTeitoku> capability, ICapaTeitoku instance, EnumFacing side, NBTBase nbt)
-	{
-		instance.loadNBTData((NBTTagCompound) nbt);
-	}
-	
-	
+    /**
+     * save data to nbt
+     */
+    @Override
+    public NBTBase writeNBT(Capability<ICapaTeitoku> capability, ICapaTeitoku instance, EnumFacing side) {
+        return instance.saveNBTData(new NBTTagCompound());
+    }
+
+    /**
+     * load data from nbt
+     */
+    @Override
+    public void readNBT(Capability<ICapaTeitoku> capability, ICapaTeitoku instance, EnumFacing side, NBTBase nbt) {
+        instance.loadNBTData((NBTTagCompound) nbt);
+    }
+
+
 }

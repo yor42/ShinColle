@@ -1,10 +1,7 @@
 package com.lulan.shincolle.client.model;
 
 import com.lulan.shincolle.entity.IShipEmotion;
-import com.lulan.shincolle.handler.EventHandler;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.utility.LogHelper;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,9 +15,8 @@ import net.minecraft.util.math.MathHelper;
  * ModelMountIsH - PinkaLulan
  * Created using Tabula 5.1.0
  */
-public class ModelMountIsH extends ModelBase
-{
-	
+public class ModelMountIsH extends ModelBase {
+
     public ModelRenderer BodyMain;
     public ModelRenderer Neck;
     public ModelRenderer Cannon01a;
@@ -70,13 +66,12 @@ public class ModelMountIsH extends ModelBase
     public ModelRenderer GlowHead;
     public ModelRenderer GlowJaw;
     public ModelRenderer GlowTopCannonBase;
-    
 
-    public ModelMountIsH()
-    {
+
+    public ModelMountIsH() {
         this.textureWidth = 128;
         this.textureHeight = 64;
-        
+
         this.LegBR01 = new ModelRenderer(this, 0, 0);
         this.LegBR01.setRotationPoint(-6.0F, 4.0F, 5.0F);
         this.LegBR01.addBox(0.0F, -4.5F, -9.0F, 3, 9, 12, 0.0F);
@@ -275,7 +270,7 @@ public class ModelMountIsH extends ModelBase
         this.BodyMain.addChild(this.Neck);
         this.Body01.addChild(this.Body02);
         this.LegBR02.addChild(this.LegBR03);
-        
+
         //glow part
         this.GlowBodyMain = new ModelRenderer(this, 0, 0);
         this.GlowBodyMain.setRotationPoint(0.0F, -8F, 5F);
@@ -291,7 +286,7 @@ public class ModelMountIsH extends ModelBase
         this.GlowTopCannonBase = new ModelRenderer(this, 0, 0);
         this.GlowTopCannonBase.setRotationPoint(0.0F, -6.0F, -5.0F);
         this.setRotateAngle(GlowTopCannonBase, -0.08726646259971647F, 0.0F, 0.0F);
-        
+
         this.GlowBodyMain.addChild(this.GlowNeck);
         this.GlowNeck.addChild(this.GlowHead);
         this.GlowNeck.addChild(this.GlowJaw);
@@ -318,103 +313,100 @@ public class ModelMountIsH extends ModelBase
         this.TopCannon01b.addChild(this.TopCannon03b);
         this.TopCannon03b.addChild(this.TopCannon04b);
     }
-    
+
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
-    
+
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	//FIX: head rotation bug while riding
-    	if (f3 <= -180F) { f3 += 360F; }
-    	else if (f3 >= 180F) { f3 -= 360F; }
-    	
-    	GlStateManager.pushMatrix();
-    	GlStateManager.enableBlend();
-    	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    	GlStateManager.scale(0.7F, 0.7F, 0.7F);
-    	GlStateManager.translate(0F, 0.7F, 0F);
-    	
-    	//main body
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	this.BodyMain.render(f5);
-    	GlStateManager.disableBlend();
-    	
-    	//light part
-    	GlStateManager.disableLighting();
-    	GlStateManager.enableCull();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.GlowBodyMain.render(f5);
-    	GlStateManager.disableCull();
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        //FIX: head rotation bug while riding
+        if (f3 <= -180F) {
+            f3 += 360F;
+        } else if (f3 >= 180F) {
+            f3 -= 360F;
+        }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.scale(0.7F, 0.7F, 0.7F);
+        GlStateManager.translate(0F, 0.7F, 0F);
+
+        //main body
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.BodyMain.render(f5);
+        GlStateManager.disableBlend();
+
+        //light part
+        GlStateManager.disableLighting();
+        GlStateManager.enableCull();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.GlowBodyMain.render(f5);
+        GlStateManager.disableCull();
+        GlStateManager.enableLighting();
+
+        GlStateManager.popMatrix();
     }
-    
+
     //for idle/run animation
     @Override
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-    {
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		
-		IShipEmotion ent = (IShipEmotion)entity;
-		  
-		motionHumanPos(f, f1, f2, f3, f4, ent);
-    }
-    
-    //雙腳移動計算
-  	private void motionHumanPos(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-  	{   
-  		float angleX = MathHelper.cos(f2 * 0.08F);
-  		float angleX2 = MathHelper.cos(f2 * 0.5F + 0.3F);
-  		float angleX3 = MathHelper.cos(f2 * 0.5F + 0.6F);
-  		float angleX4 = MathHelper.cos(f2 * 0.5F + 0.9F);
-  		float angleAdd1 = MathHelper.cos(f * 0.7F) * f1 * 0.7F;
-  		float angleAdd2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1 * 0.7F;
-  		float addk1 = angleAdd1 * 0.5F;
-  		float addk2 = angleAdd2 * 0.5F;
-  		
-  		//水上漂浮
-  		if (ent.getShipDepth(0) > 0D)
-  		{
-  			GlStateManager.translate(0F, angleX * 0.025F + 0.025F, 0F);
-    	}
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 
-  		//leg
-  		this.LegFL01.rotateAngleX = addk1 + 1.04F;
-  		this.LegFR01.rotateAngleX = addk2 + 1.04F;
-  		this.LegBL01.rotateAngleX = addk1 + 1.04F;
-  		this.LegBR01.rotateAngleX = addk2 + 1.04F;
-	    //idle
-	  	this.Jaw.rotateAngleX = angleX * 0.075F + 0.26F;
-	  	this.Tongue01.rotateAngleX = angleX2 * 0.05F - 0.38F;
-	  	this.Tongue02.rotateAngleX = -angleX3 * 0.08F + 0.52F;
-	  	this.Tongue03.rotateAngleX = -angleX4 * 0.05F + 0.69F;
-	    //cannon
-	    this.HeadCannon.rotateAngleX = f4 * 0.01F - 1.68F;
-	    this.Cannon03a.rotateAngleX = f4 * 0.01F - 1.74F;
-	    this.Cannon03b.rotateAngleX = f4 * 0.01F - 1.7F;
-	    this.TopCannon01a.rotateAngleX = f4 * 0.01F - 0.2F;
-	    this.TopCannon01b.rotateAngleX = f4 * 0.01F - 0.2F;
-	    this.TopCannonBase.rotateAngleY = f3 * 0.01F;
-	    
-	    //rider 2 on
-	    if (ent.getStateEmotion(ID.S.Emotion) > 0)
-	    {
-	    	this.Jaw.rotateAngleX = 0.7F;
-	    }
-	    
-	    //sync rotate
-	    this.GlowJaw.rotateAngleX = this.Jaw.rotateAngleX;
-	    this.GlowTopCannonBase.rotateAngleY = this.TopCannonBase.rotateAngleY;
-  	}
-  	
-  	
+        IShipEmotion ent = (IShipEmotion) entity;
+
+        motionHumanPos(f, f1, f2, f3, f4, ent);
+    }
+
+    //雙腳移動計算
+    private void motionHumanPos(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        float angleX = MathHelper.cos(f2 * 0.08F);
+        float angleX2 = MathHelper.cos(f2 * 0.5F + 0.3F);
+        float angleX3 = MathHelper.cos(f2 * 0.5F + 0.6F);
+        float angleX4 = MathHelper.cos(f2 * 0.5F + 0.9F);
+        float angleAdd1 = MathHelper.cos(f * 0.7F) * f1 * 0.7F;
+        float angleAdd2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1 * 0.7F;
+        float addk1 = angleAdd1 * 0.5F;
+        float addk2 = angleAdd2 * 0.5F;
+
+        //水上漂浮
+        if (ent.getShipDepth(0) > 0D) {
+            GlStateManager.translate(0F, angleX * 0.025F + 0.025F, 0F);
+        }
+
+        //leg
+        this.LegFL01.rotateAngleX = addk1 + 1.04F;
+        this.LegFR01.rotateAngleX = addk2 + 1.04F;
+        this.LegBL01.rotateAngleX = addk1 + 1.04F;
+        this.LegBR01.rotateAngleX = addk2 + 1.04F;
+        //idle
+        this.Jaw.rotateAngleX = angleX * 0.075F + 0.26F;
+        this.Tongue01.rotateAngleX = angleX2 * 0.05F - 0.38F;
+        this.Tongue02.rotateAngleX = -angleX3 * 0.08F + 0.52F;
+        this.Tongue03.rotateAngleX = -angleX4 * 0.05F + 0.69F;
+        //cannon
+        this.HeadCannon.rotateAngleX = f4 * 0.01F - 1.68F;
+        this.Cannon03a.rotateAngleX = f4 * 0.01F - 1.74F;
+        this.Cannon03b.rotateAngleX = f4 * 0.01F - 1.7F;
+        this.TopCannon01a.rotateAngleX = f4 * 0.01F - 0.2F;
+        this.TopCannon01b.rotateAngleX = f4 * 0.01F - 0.2F;
+        this.TopCannonBase.rotateAngleY = f3 * 0.01F;
+
+        //rider 2 on
+        if (ent.getStateEmotion(ID.S.Emotion) > 0) {
+            this.Jaw.rotateAngleX = 0.7F;
+        }
+
+        //sync rotate
+        this.GlowJaw.rotateAngleX = this.Jaw.rotateAngleX;
+        this.GlowTopCannonBase.rotateAngleY = this.TopCannonBase.rotateAngleY;
+    }
+
+
 }

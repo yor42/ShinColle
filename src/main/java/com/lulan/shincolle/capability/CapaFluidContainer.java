@@ -16,16 +16,15 @@ import javax.annotation.Nullable;
 
 /**
  * fluid capability for itemstack
- * 
+ * <p>
  * FIX:
  * 1.10.2 itemstack fluid capability bug:
  * setItem() is called before set meta value, so capacity (determined by meta) is unknown
  * while instancing ItemStack.
- * 
+ * <p>
  * so this class will determine the capacity on the first time of filling or draining
  */
-public class CapaFluidContainer implements IFluidHandler, ICapabilityProvider
-{
+public class CapaFluidContainer implements IFluidHandler, ICapabilityProvider {
 
     public static final String FLUID_NBT_KEY = "Fluid";
 
@@ -33,46 +32,38 @@ public class CapaFluidContainer implements IFluidHandler, ICapabilityProvider
     protected int capacity;
     protected boolean needInit = true;
 
-    
-    public CapaFluidContainer(ItemStack stack)
-    {
+
+    public CapaFluidContainer(ItemStack stack) {
         this.stack = stack;
-        this.capacity = 1000;	//default 1000 mb, changed while filling and draining
+        this.capacity = 1000;    //default 1000 mb, changed while filling and draining
     }
-    
+
     //init capacity by stack meta value
-    protected void initCapacity()
-    {
-    	//set capacity by stack meta value
-    	if (this.needInit && !this.stack.isEmpty())
-    	{
-    		if (this.stack.getItem() instanceof ShipTank)
-    		{
-    			this.capacity = ShipTank.getCapacity(stack.getItemDamage());
-    		}
-    		
-    		this.needInit = false;
-    	}
+    protected void initCapacity() {
+        //set capacity by stack meta value
+        if (this.needInit && !this.stack.isEmpty()) {
+            if (this.stack.getItem() instanceof ShipTank) {
+                this.capacity = ShipTank.getCapacity(stack.getItemDamage());
+            }
+
+            this.needInit = false;
+        }
     }
 
     @Nullable
-    public FluidStack getFluid()
-    {
+    public FluidStack getFluid() {
         NBTTagCompound tagCompound = stack.getTagCompound();
-        
-        if (tagCompound == null || !tagCompound.hasKey(FLUID_NBT_KEY))
-        {
+
+        if (tagCompound == null || !tagCompound.hasKey(FLUID_NBT_KEY)) {
             return null;
         }
-        
+
         return FluidStack.loadFluidStackFromNBT(tagCompound.getCompoundTag(FLUID_NBT_KEY));
     }
 
-    protected void setFluid(FluidStack fluid)
-    {
-        if (!stack.hasTagCompound())
-        {
-        	stack.setTagCompound(new NBTTagCompound());
+    protected void setFluid(FluidStack fluid) {
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
         }
 
         NBTTagCompound fluidTag = new NBTTagCompound();
@@ -81,40 +72,32 @@ public class CapaFluidContainer implements IFluidHandler, ICapabilityProvider
     }
 
     @Override
-    public IFluidTankProperties[] getTankProperties()
-    {
-        return new FluidTankProperties[] { new FluidTankProperties(getFluid(), capacity) };
+    public IFluidTankProperties[] getTankProperties() {
+        return new FluidTankProperties[]{new FluidTankProperties(getFluid(), capacity)};
     }
 
     @Override
-    public int fill(FluidStack resource, boolean doFill)
-    {
-    	this.initCapacity();
-    	
-        if (stack.getCount() != 1 || resource == null || resource.amount <= 0 || !canFillFluidType(resource))
-        {
+    public int fill(FluidStack resource, boolean doFill) {
+        this.initCapacity();
+
+        if (stack.getCount() != 1 || resource == null || resource.amount <= 0 || !canFillFluidType(resource)) {
             return 0;
         }
 
         FluidStack contained = getFluid();
-        
-        if (contained == null)
-        {
+
+        if (contained == null) {
             int fillAmount = Math.min(capacity, resource.amount);
 
-            if (doFill)
-            {
+            if (doFill) {
                 FluidStack filled = resource.copy();
                 filled.amount = fillAmount;
                 setFluid(filled);
             }
 
             return fillAmount;
-        }
-        else
-        {
-            if (contained.isFluidEqual(resource))
-            {
+        } else {
+            if (contained.isFluidEqual(resource)) {
                 int fillAmount = Math.min(capacity - contained.amount, resource.amount);
 
                 if (doFill && fillAmount > 0) {
@@ -130,32 +113,27 @@ public class CapaFluidContainer implements IFluidHandler, ICapabilityProvider
     }
 
     @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain)
-    {
-    	this.initCapacity();
-    	
-        if (stack.getCount() != 1 || resource == null || resource.amount <= 0 || !resource.isFluidEqual(getFluid()))
-        {
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+        this.initCapacity();
+
+        if (stack.getCount() != 1 || resource == null || resource.amount <= 0 || !resource.isFluidEqual(getFluid())) {
             return null;
         }
-        
+
         return drain(resource.amount, doDrain);
     }
 
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain)
-    {
-    	this.initCapacity();
-    	
-        if (stack.getCount() != 1 || maxDrain <= 0)
-        {
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        this.initCapacity();
+
+        if (stack.getCount() != 1 || maxDrain <= 0) {
             return null;
         }
 
         FluidStack contained = getFluid();
-        
-        if (contained == null || contained.amount <= 0 || !canDrainFluidType(contained))
-        {
+
+        if (contained == null || contained.amount <= 0 || !canDrainFluidType(contained)) {
             return null;
         }
 
@@ -163,16 +141,12 @@ public class CapaFluidContainer implements IFluidHandler, ICapabilityProvider
         FluidStack drained = contained.copy();
         drained.amount = drainAmount;
 
-        if (doDrain)
-        {
+        if (doDrain) {
             contained.amount -= drainAmount;
-            
-            if (contained.amount == 0)
-            {
+
+            if (contained.amount == 0) {
                 setContainerToEmpty();
-            }
-            else
-            {
+            } else {
                 setFluid(contained);
             }
         }
@@ -180,13 +154,11 @@ public class CapaFluidContainer implements IFluidHandler, ICapabilityProvider
         return drained;
     }
 
-    public boolean canFillFluidType(FluidStack fluid)
-    {
+    public boolean canFillFluidType(FluidStack fluid) {
         return true;
     }
 
-    public boolean canDrainFluidType(FluidStack fluid)
-    {
+    public boolean canDrainFluidType(FluidStack fluid) {
         return true;
     }
 
@@ -195,23 +167,20 @@ public class CapaFluidContainer implements IFluidHandler, ICapabilityProvider
      * Can be used to swap out the container's item for a different one with "container.setItem".
      * Can be used to destroy the container with "container.getCount()--"
      */
-    protected void setContainerToEmpty()
-    {
-    	stack.getTagCompound().removeTag(FLUID_NBT_KEY);
+    protected void setContainerToEmpty() {
+        stack.getTagCompound().removeTag(FLUID_NBT_KEY);
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-    {
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
     }
-    
-    
+
+
 }

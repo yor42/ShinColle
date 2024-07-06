@@ -42,11 +42,7 @@ public class GuiShipInventory extends GuiContainer {
     private static final ResourceLocation TEXTURE_ICON0 = new ResourceLocation(Reference.TEXTURES_GUI + "GuiNameIcon0.png");
     private static final ResourceLocation TEXTURE_ICON1 = new ResourceLocation(Reference.TEXTURES_GUI + "GuiNameIcon1.png");
     private static final ResourceLocation TEXTURE_ICON2 = new ResourceLocation(Reference.TEXTURES_GUI + "GuiNameIcon2.png");
-
-    public BasicEntityShip entity;
-    public InventoryPlayer player;
-    private final BasicEntityShip[] shipRiding = new BasicEntityShip[3];    //0:host, 1:rider, 2:mount
-    private final AttrsAdv attrs;
+    private static final int[] btCols = new int[]{189, 205, 222};
     private static String lvMark, hpMark, strAttrATK, strAttrAIR, strAttrDEF, strAttrSPD, strAttrMOV,
             strAttrHIT, strAttrCri, strAttrDHIT, strAttrTHIT, strAttrAA, strAttrASM, strAttrMiss,
             strAttrMissR, strAttrDodge, strAttrFPos, strAttrFormat, strAttrWedding,
@@ -58,8 +54,16 @@ public class GuiShipInventory extends GuiContainer {
             strNbt, strInput, strOutput, strFuel, strCook, strFish, strMine, strCraft;
     private static String[] strMorale;
     private static int widthHoveringText1, widthHoveringText2, widthHoveringText3;
-
+    private final BasicEntityShip[] shipRiding = new BasicEntityShip[3];    //0:host, 1:rider, 2:mount
+    private final AttrsAdv attrs;
     private final List<String> mouseoverList;
+    private final boolean[] switchPage1a;
+    private final boolean[] switchPage1b;
+    private final boolean[] switchPage3;
+    private final boolean[] switchPage4;
+    private final boolean[] switchPage6;
+    public BasicEntityShip entity;
+    public InventoryPlayer player;
     private String strATK;
     private String strAATK;
     private String Owner;
@@ -75,13 +79,7 @@ public class GuiShipInventory extends GuiContainer {
     private int maxBtn;
     private float xMouse, yMouse;
     private boolean mousePress;
-    private final boolean[] switchPage1a;
-    private final boolean[] switchPage1b;
-    private final boolean[] switchPage3;
-    private final boolean[] switchPage4;
-    private final boolean[] switchPage6;
-    private int[][] iconXY;  //icon array:  [ship type, ship name][file,x,y]
-
+    private final int[][] iconXY;  //icon array:  [ship type, ship name][file,x,y]
 
     public GuiShipInventory(InventoryPlayer invPlayer, BasicEntityShip entity) {
         super(new ContainerShipInventory(invPlayer, entity));
@@ -213,6 +211,111 @@ public class GuiShipInventory extends GuiContainer {
         strFish = I18n.format("gui.shincolle:ai.fishing");
         strMine = I18n.format("gui.shincolle:ai.mining");
         strCraft = I18n.format("gui.shincolle:ai.crafting");
+    }
+
+    //draw entity model, copy from player inventory class
+    public static void drawEntityModel(int x, int y, float[] modelPos, float yaw, float pitch, BasicEntityShip[] entity) {
+        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+
+        //set basic position and rotation
+        GlStateManager.enableColorMaterial();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + modelPos[0], y + modelPos[1], 50.0F + modelPos[2]);
+        GlStateManager.scale(-modelPos[3], modelPos[3], modelPos[3]);
+        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+
+        float f2 = entity[0].renderYawOffset;
+        float f3 = entity[0].rotationYaw;
+        float f4 = entity[0].rotationPitch;
+        float f5 = entity[0].prevRotationYawHead;
+        float f6 = entity[0].rotationYawHead;
+
+        //set the light of model (face to player)
+        GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
+
+        //set head look angle
+        GlStateManager.rotate(-((float) Math.atan(pitch / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
+
+        entity[0].renderYawOffset = (float) Math.atan(yaw / 40.0F) * 20.0F;
+        entity[0].rotationYaw = (float) Math.atan(yaw / 40.0F) * 40.0F;
+        entity[0].rotationPitch = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
+        entity[0].rotationYawHead = entity[0].rotationYaw;
+        entity[0].prevRotationYawHead = entity[0].rotationYaw;
+
+        //get mount or rider
+        if (entity[2] != null) {
+            entity[2].renderYawOffset = entity[0].renderYawOffset;
+            entity[2].rotationYaw = entity[0].rotationYaw;
+            entity[2].rotationPitch = entity[0].rotationPitch;
+            entity[2].rotationYawHead = entity[0].rotationYawHead;
+            entity[2].prevRotationYawHead = entity[0].prevRotationYawHead;
+        } else if (entity[1] != null) {
+            entity[1].renderYawOffset = entity[0].renderYawOffset;
+            entity[1].rotationYaw = entity[0].rotationYaw;
+            entity[1].rotationPitch = entity[0].rotationPitch;
+            entity[1].rotationYawHead = entity[0].rotationYawHead;
+            entity[1].prevRotationYawHead = entity[0].prevRotationYawHead;
+        }
+
+        GlStateManager.translate(0.0F, entity[0].getYOffset(), 0.0F);
+        rendermanager.setPlayerViewY(180.0F);
+        rendermanager.setRenderShadow(false);
+
+        //draw rider ot mounts
+        if (entity[1] != null) {
+            float specialOffset = 0F;
+
+            //special case
+            if (entity[1].getShipClass() == ID.ShipClass.DDIkazuchi) {
+                if (entity[0].getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
+                    specialOffset = entity[0].isSitting() ? -0.34F : -0.57F;
+                } else {
+                    specialOffset = entity[0].isSitting() ? -0.55F : -0.45F;
+                }
+            }
+
+            //ship必須先畫才畫mounts
+            float[] partPos = CalcHelper.rotateXZByAxis(-0.2F, 0F, (entity[0].renderYawOffset % 360) / 57.2957F, 1F);
+            GlStateManager.translate(partPos[1], (float) entity[0].getMountedYOffset() + specialOffset, partPos[0]);
+            rendermanager.renderEntity(entity[1], 0D, 0D, 0D, 0F, 1F, false);
+            GlStateManager.translate(-partPos[1], -((float) entity[0].getMountedYOffset() + specialOffset), -partPos[0]);
+            rendermanager.renderEntity(entity[0], 0D, 0D, 0D, 0F, 1F, false);
+        } else if (entity[2] != null) {
+            float specialOffset = 0F;
+
+            //special case
+            if (entity[2].getShipClass() == ID.ShipClass.DDInazuma) {
+                if (entity[2].getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
+                    specialOffset = entity[2].isSitting() ? -0.34F : -0.57F;
+                } else {
+                    specialOffset = entity[2].isSitting() ? -0.55F : -0.45F;
+                }
+            }
+
+            //ship必須先畫才畫mounts
+            float[] partPos = CalcHelper.rotateXZByAxis(-0.2F, 0F, (entity[0].renderYawOffset % 360) / 57.2957F, 1F);
+            GlStateManager.translate(partPos[1], (float) entity[2].getMountedYOffset() + specialOffset, partPos[0]);
+            rendermanager.renderEntity(entity[0], 0D, 0D, 0D, 0F, 1F, false);
+            GlStateManager.translate(-partPos[1], -((float) entity[2].getMountedYOffset() + specialOffset), -partPos[0]);
+            rendermanager.renderEntity(entity[2], 0D, 0D, 0D, 0F, 1F, false);
+        } else {
+            rendermanager.renderEntity(entity[0], 0D, 0D, 0D, 0F, 1F, false);
+        }
+
+//		entity.renderYawOffset = f2;
+//		entity.rotationYaw = f3;
+//		entity.rotationPitch = f4;
+//		entity.prevRotationYawHead = f5;
+//		entity.rotationYawHead = f6;
+        rendermanager.setRenderShadow(true);
+        GlStateManager.popMatrix();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.disableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
     //有用到fontRenderer的必須放在此init
@@ -838,11 +941,11 @@ public class GuiShipInventory extends GuiContainer {
                     mouseoverList.add(String.valueOf(attrs.getAttrsBonus(ID.AttrsBase.ATK)));
                     mouseoverList.add(strATK);
                     mouseoverList.add(strAATK);
-                    overText = String.valueOf((int) (attrs.getAttrsBuffed(ID.Attrs.CRI) * 100F)) + " %";
+                    overText = (int) (attrs.getAttrsBuffed(ID.Attrs.CRI) * 100F) + " %";
                     mouseoverList.add(overText);
-                    overText = String.valueOf((int) (attrs.getAttrsBuffed(ID.Attrs.DHIT) * 100F)) + " %";
+                    overText = (int) (attrs.getAttrsBuffed(ID.Attrs.DHIT) * 100F) + " %";
                     mouseoverList.add(overText);
-                    overText = String.valueOf((int) (attrs.getAttrsBuffed(ID.Attrs.THIT) * 100F)) + " %";
+                    overText = (int) (attrs.getAttrsBuffed(ID.Attrs.THIT) * 100F) + " %";
                     mouseoverList.add(overText);
                     overText = String.valueOf((int) (attrs.getAttrsBuffed(ID.Attrs.AA)));
                     mouseoverList.add(overText);
@@ -870,15 +973,15 @@ public class GuiShipInventory extends GuiContainer {
                     }
                     mouseoverList.add(overText);
 
-                    overText = String.valueOf((int) ((attrs.getAttrsBuffed(ID.Attrs.XP) - 1F) * 100F)) + " %";
+                    overText = (int) ((attrs.getAttrsBuffed(ID.Attrs.XP) - 1F) * 100F) + " %";
                     mouseoverList.add(overText);
-                    overText = String.valueOf((int) ((attrs.getAttrsBuffed(ID.Attrs.GRUDGE) - 1F) * 100F)) + " %";
+                    overText = (int) ((attrs.getAttrsBuffed(ID.Attrs.GRUDGE) - 1F) * 100F) + " %";
                     mouseoverList.add(overText);
-                    overText = String.valueOf((int) ((attrs.getAttrsBuffed(ID.Attrs.AMMO) - 1F) * 100F)) + " %";
+                    overText = (int) ((attrs.getAttrsBuffed(ID.Attrs.AMMO) - 1F) * 100F) + " %";
                     mouseoverList.add(overText);
-                    overText = String.valueOf((int) ((attrs.getAttrsBuffed(ID.Attrs.HPRES) - 1F) * 100F)) + " %";
+                    overText = (int) ((attrs.getAttrsBuffed(ID.Attrs.HPRES) - 1F) * 100F) + " %";
                     mouseoverList.add(overText);
-                    overText = String.valueOf((int) (attrs.getAttrsBuffed(ID.Attrs.KB) * 100F)) + " %";
+                    overText = (int) (attrs.getAttrsBuffed(ID.Attrs.KB) * 100F) + " %";
                     mouseoverList.add(overText);
                     this.drawHoveringText(mouseoverList, 61 + widthHoveringText1, 57, this.fontRenderer);
                 }
@@ -1009,116 +1112,12 @@ public class GuiShipInventory extends GuiContainer {
     //get new mouseX,Y and draw gui
     @Override
     public void drawScreen(int mouseX, int mouseY, float f) {
+        this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, f);
 
         xMouse = mouseX;
         yMouse = mouseY;
         this.renderHoveredToolTip(mouseX, mouseY);
-    }
-
-    //draw entity model, copy from player inventory class
-    public static void drawEntityModel(int x, int y, float[] modelPos, float yaw, float pitch, BasicEntityShip[] entity) {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
-
-        //set basic position and rotation
-        GlStateManager.enableColorMaterial();
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x + modelPos[0], y + modelPos[1], 50.0F + modelPos[2]);
-        GlStateManager.scale(-modelPos[3], modelPos[3], modelPos[3]);
-        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-
-        float f2 = entity[0].renderYawOffset;
-        float f3 = entity[0].rotationYaw;
-        float f4 = entity[0].rotationPitch;
-        float f5 = entity[0].prevRotationYawHead;
-        float f6 = entity[0].rotationYawHead;
-
-        //set the light of model (face to player)
-        GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
-        RenderHelper.enableStandardItemLighting();
-        GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-
-        //set head look angle
-        GlStateManager.rotate(-((float) Math.atan(pitch / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
-
-        entity[0].renderYawOffset = (float) Math.atan(yaw / 40.0F) * 20.0F;
-        entity[0].rotationYaw = (float) Math.atan(yaw / 40.0F) * 40.0F;
-        entity[0].rotationPitch = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
-        entity[0].rotationYawHead = entity[0].rotationYaw;
-        entity[0].prevRotationYawHead = entity[0].rotationYaw;
-
-        //get mount or rider
-        if (entity[2] != null) {
-            entity[2].renderYawOffset = entity[0].renderYawOffset;
-            entity[2].rotationYaw = entity[0].rotationYaw;
-            entity[2].rotationPitch = entity[0].rotationPitch;
-            entity[2].rotationYawHead = entity[0].rotationYawHead;
-            entity[2].prevRotationYawHead = entity[0].prevRotationYawHead;
-        } else if (entity[1] != null) {
-            entity[1].renderYawOffset = entity[0].renderYawOffset;
-            entity[1].rotationYaw = entity[0].rotationYaw;
-            entity[1].rotationPitch = entity[0].rotationPitch;
-            entity[1].rotationYawHead = entity[0].rotationYawHead;
-            entity[1].prevRotationYawHead = entity[0].prevRotationYawHead;
-        }
-
-        GlStateManager.translate(0.0F, entity[0].getYOffset(), 0.0F);
-        rendermanager.setPlayerViewY(180.0F);
-        rendermanager.setRenderShadow(false);
-
-        //draw rider ot mounts
-        if (entity[1] != null) {
-            float specialOffset = 0F;
-
-            //special case
-            if (entity[1].getShipClass() == ID.ShipClass.DDIkazuchi) {
-                if (entity[0].getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
-                    specialOffset = entity[0].isSitting() ? -0.34F : -0.57F;
-                } else {
-                    specialOffset = entity[0].isSitting() ? -0.55F : -0.45F;
-                }
-            }
-
-            //ship必須先畫才畫mounts
-            float[] partPos = CalcHelper.rotateXZByAxis(-0.2F, 0F, (entity[0].renderYawOffset % 360) / 57.2957F, 1F);
-            GlStateManager.translate(partPos[1], (float) entity[0].getMountedYOffset() + specialOffset, partPos[0]);
-            rendermanager.renderEntity((Entity) entity[1], 0D, 0D, 0D, 0F, 1F, false);
-            GlStateManager.translate(-partPos[1], -((float) entity[0].getMountedYOffset() + specialOffset), -partPos[0]);
-            rendermanager.renderEntity((Entity) entity[0], 0D, 0D, 0D, 0F, 1F, false);
-        } else if (entity[2] != null) {
-            float specialOffset = 0F;
-
-            //special case
-            if (entity[2].getShipClass() == ID.ShipClass.DDInazuma) {
-                if (entity[2].getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
-                    specialOffset = entity[2].isSitting() ? -0.34F : -0.57F;
-                } else {
-                    specialOffset = entity[2].isSitting() ? -0.55F : -0.45F;
-                }
-            }
-
-            //ship必須先畫才畫mounts
-            float[] partPos = CalcHelper.rotateXZByAxis(-0.2F, 0F, (entity[0].renderYawOffset % 360) / 57.2957F, 1F);
-            GlStateManager.translate(partPos[1], (float) entity[2].getMountedYOffset() + specialOffset, partPos[0]);
-            rendermanager.renderEntity((Entity) entity[0], 0D, 0D, 0D, 0F, 1F, false);
-            GlStateManager.translate(-partPos[1], -((float) entity[2].getMountedYOffset() + specialOffset), -partPos[0]);
-            rendermanager.renderEntity((Entity) entity[2], 0D, 0D, 0D, 0F, 1F, false);
-        } else {
-            rendermanager.renderEntity((Entity) entity[0], 0D, 0D, 0D, 0F, 1F, false);
-        }
-
-//		entity.renderYawOffset = f2;
-//		entity.rotationYaw = f3;
-//		entity.rotationPitch = f4;
-//		entity.prevRotationYawHead = f5;
-//		entity.rotationYawHead = f6;
-        rendermanager.setRenderShadow(true);
-        GlStateManager.popMatrix();
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GlStateManager.disableTexture2D();
-        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
     //draw level,hp,atk,def...
@@ -1143,7 +1142,7 @@ public class GuiShipInventory extends GuiContainer {
 
         //draw maxhp
         color = GuiHelper.getBonusPointColor(attrs.getAttrsBonus(ID.AttrsBase.HP));
-        this.fontRenderer.drawStringWithShadow("/" + String.valueOf(hpMax), 148 + this.fontRenderer.getStringWidth(String.valueOf(hpCurrent)), 6, color);
+        this.fontRenderer.drawStringWithShadow("/" + hpMax, 148 + this.fontRenderer.getStringWidth(String.valueOf(hpCurrent)), 6, color);
 
         //draw current hp, if currHP < maxHP, use darker color
         if (hpCurrent < hpMax) color = GuiHelper.getDarkerColor(color, 0.8F);
@@ -1206,7 +1205,7 @@ public class GuiShipInventory extends GuiContainer {
 
                 //draw value
                 entity.setExpNext();  //update exp value
-                String exp = String.valueOf(this.entity.getStateMinor(ID.M.ExpCurrent)) + "/" + String.valueOf(this.entity.getStateMinor(ID.M.ExpNext));
+                String exp = this.entity.getStateMinor(ID.M.ExpCurrent) + "/" + this.entity.getStateMinor(ID.M.ExpNext);
                 String kills = String.valueOf(this.entity.getStateMinor(ID.M.Kills));
                 String ammoLight = String.valueOf(this.entity.getStateMinor(ID.M.NumAmmoLight));
                 String ammoHeavy = String.valueOf(this.entity.getStateMinor(ID.M.NumAmmoHeavy));
@@ -1449,8 +1448,6 @@ public class GuiShipInventory extends GuiContainer {
         mousePress = false;
         mousePressBar = -1;
     }
-
-    private static final int[] btCols = new int[]{189, 205, 222};
 
     //handle mouse click, @parm posX, posY, mouseKey (0:left 1:right 2:middle 3:...etc)
     @Override

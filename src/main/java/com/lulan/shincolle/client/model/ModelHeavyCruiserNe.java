@@ -4,7 +4,6 @@ import com.lulan.shincolle.entity.IShipEmotion;
 import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.utility.EmotionHelper;
-
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
@@ -17,9 +16,8 @@ import net.minecraft.util.math.MathHelper;
  * ModelHeavyCruiserNe - PinkaLulan
  * Created using Tabula 4.1.1 2016/2/14
  */
-public class ModelHeavyCruiserNe extends ShipModelBaseAdv
-{
-	
+public class ModelHeavyCruiserNe extends ShipModelBaseAdv {
+
     public ModelRenderer BodyMain;
     public ModelRenderer ArmLeft01;
     public ModelRenderer ArmRight01;
@@ -66,16 +64,15 @@ public class ModelHeavyCruiserNe extends ShipModelBaseAdv
     public ModelRenderer GlowBodyMain;
     public ModelRenderer GlowHead;
 
-    
-    public ModelHeavyCruiserNe()
-    {
+
+    public ModelHeavyCruiserNe() {
         this.textureWidth = 128;
         this.textureHeight = 128;
         this.scale = 0.4F;
         this.offsetY = 2.63F;
-        this.offsetItem = new float[] {0.07F, 0.99F, -0.09F};
-        this.offsetBlock = new float[] {0.07F, 0.99F, -0.09F};
-        
+        this.offsetItem = new float[]{0.07F, 0.99F, -0.09F};
+        this.offsetBlock = new float[]{0.07F, 0.99F, -0.09F};
+
         this.TailRC02 = new ModelRenderer(this, 0, 0);
         this.TailRC02.setRotationPoint(-3.0F, 2.0F, 13.5F);
         this.TailRC02.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 11, 0.0F);
@@ -295,7 +292,7 @@ public class ModelHeavyCruiserNe extends ShipModelBaseAdv
         this.TailL01.addChild(this.TailL02);
         this.TailLHead01.addChild(this.TailLC03);
         this.TailR04.addChild(this.TailR05);
-        
+
         //glow part
         this.GlowBodyMain = new ModelRenderer(this, 0, 0);
         this.GlowBodyMain.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -332,7 +329,7 @@ public class ModelHeavyCruiserNe extends ShipModelBaseAdv
         this.Flush1 = new ModelRenderer(this, 114, 58);
         this.Flush1.setRotationPoint(6F, 0.7F, -6.8F);
         this.Flush1.addBox(-1.0F, 0.0F, -0.5F, 2, 1, 0, 0.0F);
-        
+
         this.GlowBodyMain.addChild(this.GlowHead);
         this.GlowHead.addChild(this.Face0);
         this.GlowHead.addChild(this.Face1);
@@ -344,696 +341,596 @@ public class ModelHeavyCruiserNe extends ShipModelBaseAdv
         this.GlowHead.addChild(this.Mouth2);
         this.GlowHead.addChild(this.Flush0);
         this.GlowHead.addChild(this.Flush1);
-        
-     	//for held item rendering
-        this.armMain = new ModelRenderer[] {this.BodyMain, this.ArmRight01, this.ArmRight02};
-        this.armOff = new ModelRenderer[] {this.BodyMain, this.ArmLeft01, this.ArmLeft02};
+
+        //for held item rendering
+        this.armMain = new ModelRenderer[]{this.BodyMain, this.ArmRight01, this.ArmRight02};
+        this.armOff = new ModelRenderer[]{this.BodyMain, this.ArmLeft01, this.ArmLeft02};
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	//FIX: head rotation bug while riding
-    	if (f3 <= -180F) { f3 += 360F; }
-    	else if (f3 >= 180F) { f3 -= 360F; }
-    	
-    	GlStateManager.pushMatrix();
-    	GlStateManager.enableBlend();
-    	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    	GlStateManager.scale(this.scale, this.scale, this.scale);
-    	GlStateManager.translate(0F, this.offsetY, 0F);
-    	
-    	//main body
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	this.BodyMain.render(f5);
-    	
-    	//light part
-    	GlStateManager.disableLighting();
-    	GlStateManager.enableCull();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.GlowBodyMain.render(f5);
-    	GlStateManager.disableCull();
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.disableBlend();
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        //FIX: head rotation bug while riding
+        if (f3 <= -180F) {
+            f3 += 360F;
+        } else if (f3 >= 180F) {
+            f3 -= 360F;
+        }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.scale(this.scale, this.scale, this.scale);
+        GlStateManager.translate(0F, this.offsetY, 0F);
+
+        //main body
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.BodyMain.render(f5);
+
+        //light part
+        GlStateManager.disableLighting();
+        GlStateManager.enableCull();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.GlowBodyMain.render(f5);
+        GlStateManager.disableCull();
+        GlStateManager.enableLighting();
+
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
-	@Override
-	public void showEquip(IShipEmotion ent)
-	{
-	}
+    @Override
+    public void showEquip(IShipEmotion ent) {
+    }
 
-	@Override
-	public void syncRotationGlowPart()
-	{
-		this.GlowBodyMain.rotateAngleX = this.BodyMain.rotateAngleX;
-		this.GlowBodyMain.rotateAngleY = this.BodyMain.rotateAngleY;
-		this.GlowBodyMain.rotateAngleZ = this.BodyMain.rotateAngleZ;
-		this.GlowHead.rotateAngleX = this.Head.rotateAngleX;
-		this.GlowHead.rotateAngleY = this.Head.rotateAngleY;
-		this.GlowHead.rotateAngleZ = this.Head.rotateAngleZ;
-	}
+    @Override
+    public void syncRotationGlowPart() {
+        this.GlowBodyMain.rotateAngleX = this.BodyMain.rotateAngleX;
+        this.GlowBodyMain.rotateAngleY = this.BodyMain.rotateAngleY;
+        this.GlowBodyMain.rotateAngleZ = this.BodyMain.rotateAngleZ;
+        this.GlowHead.rotateAngleX = this.Head.rotateAngleX;
+        this.GlowHead.rotateAngleY = this.Head.rotateAngleY;
+        this.GlowHead.rotateAngleZ = this.Head.rotateAngleZ;
+    }
 
-	@Override
-	public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-    	GlStateManager.translate(0F, 0.2F, 0F);
-    	this.setFaceHungry(ent);
+    @Override
+    public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        GlStateManager.translate(0F, 0.2F, 0F);
+        this.setFaceHungry(ent);
 
-  	    //頭部
-	  	this.Head.rotateAngleX = 0.7853F;
-	  	this.Head.rotateAngleY = 0F;
-	  	//Body
-  	    this.Ahoke.rotateAngleY = 0.45F;
-	  	this.BodyMain.rotateAngleX = 0F;
-	  	this.BodyMain.rotateAngleY = 0F;
-	  	this.BodyMain.rotateAngleZ = -1.4835F;
-	  	this.Head.offsetY = 0F;
-	  	this.GlowHead.offsetY = 0F;
-	  	//hair
-	  	this.Hair02.rotateAngleX = 0.21F;
-	  	this.Hair02.rotateAngleZ = 0F;
-	  	this.Hair03.rotateAngleX = -0.2618F;
-	  	this.Hair03.rotateAngleZ = 0F;
-	  	//arm
-	  	this.ArmLeft01.rotateAngleX = 0.1745F;
-	  	this.ArmLeft01.rotateAngleZ = 0.4537F;
-	  	this.ArmLeft01.offsetZ = 0F;
-	  	this.ArmLeft02.rotateAngleZ = 0F;
-	  	this.ArmRight01.rotateAngleX = -0.1745F;
-	  	this.ArmRight01.rotateAngleZ = -0.05F;
-	  	this.ArmRight01.offsetZ = 0F;
-	  	this.ArmRight02.rotateAngleZ = 0F;
-		//leg
-	  	this.LegLeft01.rotateAngleX = -0.1745F;
-		this.LegLeft01.rotateAngleY = 0F;
-		this.LegLeft01.rotateAngleZ = 0.4537F;
-		this.LegLeft02.rotateAngleX = 0F;
-		this.LegLeft02.rotateAngleZ = 0F;
-		this.LegRight01.rotateAngleX = 0.1745F;
-		this.LegRight01.rotateAngleY = 0F;
-		this.LegRight01.rotateAngleZ = -0.05F;
-		this.LegRight02.rotateAngleX = 0F;
-		this.LegRight02.rotateAngleZ = 0F;
-	  	//tail
-		this.TailBase.rotateAngleX = 0.8F;
-	  	this.TailL01.rotateAngleX = 0.2618F;
-		this.TailL01.rotateAngleY = -0.2F;
-		this.TailL01.rotateAngleZ = this.TailL01.rotateAngleY * 0.25F;
-		this.TailL02.rotateAngleX = 0.2618F;
-		this.TailL02.rotateAngleY = -0.3F;
-		this.TailL02.rotateAngleZ = this.TailL02.rotateAngleY * 0.25F;
-		this.TailL03.rotateAngleX = 0.2618F;
-		this.TailL03.rotateAngleY = -0.2F;
-		this.TailL03.rotateAngleZ = this.TailL03.rotateAngleY * 0.25F;
-		this.TailL04.rotateAngleX = 0.35F;
-		this.TailL04.rotateAngleY = 0.2F;
-		this.TailL04.rotateAngleZ = this.TailL04.rotateAngleY * 0.25F;
-		this.TailL05.rotateAngleX = 0.4F;
-		this.TailL05.rotateAngleY = 0.2F;
-		this.TailL05.rotateAngleZ = this.TailL05.rotateAngleY * 0.25F;
-		this.TailL06.rotateAngleX = 0.45F;
-		this.TailL06.rotateAngleY = 0.1F;
-		this.TailL06.rotateAngleZ = this.TailL06.rotateAngleY * 0.25F;
-		this.TailR01.rotateAngleX = 0.6F;
-		this.TailR01.rotateAngleY = 0.2617F;
-		this.TailR01.rotateAngleZ = this.TailR01.rotateAngleY * 0.25F;
-		this.TailR02.rotateAngleX = 0.6F;
-		this.TailR02.rotateAngleY = -0.2F;
-		this.TailR02.rotateAngleZ = this.TailR02.rotateAngleY * 0.25F;
-		this.TailR03.rotateAngleX = 0.5F;
-		this.TailR03.rotateAngleY = -0.1F;
-		this.TailR03.rotateAngleZ = this.TailR03.rotateAngleY * 0.25F;
-		this.TailR04.rotateAngleX = 0.3F;
-		this.TailR04.rotateAngleY = -0.1F;
-		this.TailR04.rotateAngleZ = this.TailR04.rotateAngleY * 0.25F;
-		this.TailR05.rotateAngleX = 0.1F;
-		this.TailR05.rotateAngleY = 0.1F;
-		this.TailR05.rotateAngleZ = this.TailR05.rotateAngleY * 0.25F;
-		this.TailR06.rotateAngleX = -0.1F;
-		this.TailR06.rotateAngleY = 0.1F;
-		this.TailR06.rotateAngleZ = this.TailR06.rotateAngleY * 0.25F;
-	}
+        //頭部
+        this.Head.rotateAngleX = 0.7853F;
+        this.Head.rotateAngleY = 0F;
+        //Body
+        this.Ahoke.rotateAngleY = 0.45F;
+        this.BodyMain.rotateAngleX = 0F;
+        this.BodyMain.rotateAngleY = 0F;
+        this.BodyMain.rotateAngleZ = -1.4835F;
+        this.Head.offsetY = 0F;
+        this.GlowHead.offsetY = 0F;
+        //hair
+        this.Hair02.rotateAngleX = 0.21F;
+        this.Hair02.rotateAngleZ = 0F;
+        this.Hair03.rotateAngleX = -0.2618F;
+        this.Hair03.rotateAngleZ = 0F;
+        //arm
+        this.ArmLeft01.rotateAngleX = 0.1745F;
+        this.ArmLeft01.rotateAngleZ = 0.4537F;
+        this.ArmLeft01.offsetZ = 0F;
+        this.ArmLeft02.rotateAngleZ = 0F;
+        this.ArmRight01.rotateAngleX = -0.1745F;
+        this.ArmRight01.rotateAngleZ = -0.05F;
+        this.ArmRight01.offsetZ = 0F;
+        this.ArmRight02.rotateAngleZ = 0F;
+        //leg
+        this.LegLeft01.rotateAngleX = -0.1745F;
+        this.LegLeft01.rotateAngleY = 0F;
+        this.LegLeft01.rotateAngleZ = 0.4537F;
+        this.LegLeft02.rotateAngleX = 0F;
+        this.LegLeft02.rotateAngleZ = 0F;
+        this.LegRight01.rotateAngleX = 0.1745F;
+        this.LegRight01.rotateAngleY = 0F;
+        this.LegRight01.rotateAngleZ = -0.05F;
+        this.LegRight02.rotateAngleX = 0F;
+        this.LegRight02.rotateAngleZ = 0F;
+        //tail
+        this.TailBase.rotateAngleX = 0.8F;
+        this.TailL01.rotateAngleX = 0.2618F;
+        this.TailL01.rotateAngleY = -0.2F;
+        this.TailL01.rotateAngleZ = this.TailL01.rotateAngleY * 0.25F;
+        this.TailL02.rotateAngleX = 0.2618F;
+        this.TailL02.rotateAngleY = -0.3F;
+        this.TailL02.rotateAngleZ = this.TailL02.rotateAngleY * 0.25F;
+        this.TailL03.rotateAngleX = 0.2618F;
+        this.TailL03.rotateAngleY = -0.2F;
+        this.TailL03.rotateAngleZ = this.TailL03.rotateAngleY * 0.25F;
+        this.TailL04.rotateAngleX = 0.35F;
+        this.TailL04.rotateAngleY = 0.2F;
+        this.TailL04.rotateAngleZ = this.TailL04.rotateAngleY * 0.25F;
+        this.TailL05.rotateAngleX = 0.4F;
+        this.TailL05.rotateAngleY = 0.2F;
+        this.TailL05.rotateAngleZ = this.TailL05.rotateAngleY * 0.25F;
+        this.TailL06.rotateAngleX = 0.45F;
+        this.TailL06.rotateAngleY = 0.1F;
+        this.TailL06.rotateAngleZ = this.TailL06.rotateAngleY * 0.25F;
+        this.TailR01.rotateAngleX = 0.6F;
+        this.TailR01.rotateAngleY = 0.2617F;
+        this.TailR01.rotateAngleZ = this.TailR01.rotateAngleY * 0.25F;
+        this.TailR02.rotateAngleX = 0.6F;
+        this.TailR02.rotateAngleY = -0.2F;
+        this.TailR02.rotateAngleZ = this.TailR02.rotateAngleY * 0.25F;
+        this.TailR03.rotateAngleX = 0.5F;
+        this.TailR03.rotateAngleY = -0.1F;
+        this.TailR03.rotateAngleZ = this.TailR03.rotateAngleY * 0.25F;
+        this.TailR04.rotateAngleX = 0.3F;
+        this.TailR04.rotateAngleY = -0.1F;
+        this.TailR04.rotateAngleZ = this.TailR04.rotateAngleY * 0.25F;
+        this.TailR05.rotateAngleX = 0.1F;
+        this.TailR05.rotateAngleY = 0.1F;
+        this.TailR05.rotateAngleZ = this.TailR05.rotateAngleY * 0.25F;
+        this.TailR06.rotateAngleX = -0.1F;
+        this.TailR06.rotateAngleY = 0.1F;
+        this.TailR06.rotateAngleZ = this.TailR06.rotateAngleY * 0.25F;
+    }
 
-	@Override
-	public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-  		float angleX = MathHelper.cos(f2*0.08F + f * 0.25F);
-  		float angleX1 = MathHelper.cos(f2*0.08F + 0.3F + f * 0.5F);
-  		float angleX2 = MathHelper.cos(f2*0.08F + 0.6F + f * 0.5F);
-  		float angleAdd1 = MathHelper.cos(f * 0.7F) * f1;
-  		float angleAdd2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1;
-  		float addk1 = 0;
-  		float addk2 = 0;
-  		
-  		//水上漂浮
-  		if (ent.getShipDepth(0) > 0D)
-  		{
-  			GlStateManager.translate(0F, angleX * 0.05F + 0.025F, 0F);
-    	}
-  		
-    	//leg move
-  		addk1 = angleAdd1 * 0.5F - 0.14F;  //LegLeft01
-	  	addk2 = angleAdd2 * 0.5F + 0.14F;  //LegRight01
-	  	this.ArmRight01.rotateAngleX = addk1;
-    	this.ArmLeft01.rotateAngleX = addk2;
+    @Override
+    public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        float angleX = MathHelper.cos(f2 * 0.08F + f * 0.25F);
+        float angleX1 = MathHelper.cos(f2 * 0.08F + 0.3F + f * 0.5F);
+        float angleX2 = MathHelper.cos(f2 * 0.08F + 0.6F + f * 0.5F);
+        float angleAdd1 = MathHelper.cos(f * 0.7F) * f1;
+        float angleAdd2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1;
+        float addk1 = 0;
+        float addk2 = 0;
 
-  	    //head
-	  	this.Head.rotateAngleX = f4 * 0.014F; 	//上下角度
-	  	this.Head.rotateAngleY = f3 * 0.01F;	//左右角度 角度轉成rad 即除以57.29578
-	  	//body
-  	    this.Ahoke.rotateAngleY = angleX * 0.25F + 0.45F;
-	  	this.BodyMain.rotateAngleX = 0F;
-	  	this.BodyMain.rotateAngleY = 0F;
-	  	this.BodyMain.rotateAngleZ = 0F;
-	  	this.Head.offsetY = 0F;
-	  	this.GlowHead.offsetY = 0F;
-	  	//hair
-	  	this.Hair02.rotateAngleX = angleX1 * 0.04F + 0.21F;
-	  	this.Hair02.rotateAngleZ = 0F;
-	  	this.Hair03.rotateAngleX = angleX2 * 0.07F - 0.2618F;
-	  	this.Hair03.rotateAngleZ = 0F;
-	  	//arm
-	  	this.ArmLeft01.rotateAngleZ = 0.21F;
-	  	this.ArmLeft01.offsetZ = 0F;
-	  	this.ArmLeft02.rotateAngleZ = 0F;
-	  	this.ArmRight01.rotateAngleZ = -0.21F;
-	  	this.ArmRight01.offsetZ = 0F;
-	  	this.ArmRight02.rotateAngleZ = 0F;
-		//leg
-		this.LegLeft01.rotateAngleY = 0F;
-		this.LegLeft01.rotateAngleZ = 0.1745F;
-		this.LegLeft02.rotateAngleX = 0F;
-		this.LegLeft02.rotateAngleZ = 0F;
-		this.LegRight01.rotateAngleY = 0F;
-		this.LegRight01.rotateAngleZ = -0.1745F;
-		this.LegRight02.rotateAngleX = 0F;
-		this.LegRight02.rotateAngleZ = 0F;
-	  	//tail
-		this.TailBase.rotateAngleX = 0.8F;
-	  	this.TailL01.rotateAngleX = 0.2618F;
-		this.TailL01.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 0.7F) * 0.2F + 0.5F;
-		this.TailL01.rotateAngleZ = this.TailL01.rotateAngleY * 0.25F;
-		this.TailL02.rotateAngleX = 0.2618F;
-		this.TailL02.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 1.4F) * 0.25F;
-		this.TailL02.rotateAngleZ = this.TailL02.rotateAngleY * 0.25F;
-		this.TailL03.rotateAngleX = 0.2618F;
-		this.TailL03.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 2.1F) * 0.3F;
-		this.TailL03.rotateAngleZ = this.TailL03.rotateAngleY * 0.25F;
-		this.TailL04.rotateAngleX = 0.35F;
-		this.TailL04.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 2.8F) * 0.35F;
-		this.TailL04.rotateAngleZ = this.TailL04.rotateAngleY * 0.25F;
-		this.TailL05.rotateAngleX = 0.4F;
-		this.TailL05.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 3.5F) * 0.4F;
-		this.TailL05.rotateAngleZ = this.TailL05.rotateAngleY * 0.25F;
-		this.TailL06.rotateAngleX = 0.45F;
-		this.TailL06.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 4.2F) * 0.35F;
-		this.TailL06.rotateAngleZ = this.TailL06.rotateAngleY * 0.25F;
-		this.TailR01.rotateAngleX = 0.2618F;
-		this.TailR01.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 0.7F) * 0.2F - 0.5F;
-		this.TailR01.rotateAngleZ = this.TailR01.rotateAngleY * 0.25F;
-		this.TailR02.rotateAngleX = 0.2618F;
-		this.TailR02.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 1.4F) * 0.25F;
-		this.TailR02.rotateAngleZ = this.TailR02.rotateAngleY * 0.25F;
-		this.TailR03.rotateAngleX = 0.2618F;
-		this.TailR03.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 2.1F) * 0.3F;
-		this.TailR03.rotateAngleZ = this.TailR03.rotateAngleY * 0.25F;
-		this.TailR04.rotateAngleX = 0.35F;
-		this.TailR04.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 2.8F) * 0.35F;
-		this.TailR04.rotateAngleZ = this.TailR04.rotateAngleY * 0.25F;
-		this.TailR05.rotateAngleX = 0.4F;
-		this.TailR05.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 3.5F) * 0.4F;
-		this.TailR05.rotateAngleZ = this.TailR05.rotateAngleY * 0.25F;
-		this.TailR06.rotateAngleX = 0.45F;
-		this.TailR06.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 4.2F) * 0.45F;
-		this.TailR06.rotateAngleZ = this.TailR06.rotateAngleY * 0.25F;
-		
-		//ear
-		float modf2 = f2 % 128F;
-		if (modf2 < 6F)
-		{
-			//total 10 ticks, loop twice in 20 ticks
-			if(modf2 >= 3F) modf2 -= 3F;
-			float anglef2 = MathHelper.sin(modf2 * 1.0472F) * 0.25F;
-			this.Ear01.rotateAngleZ = anglef2 + 0.1745F;
-			this.Ear02.rotateAngleZ = -anglef2 - 0.1745F;
-		}
-		else
-		{
-			this.Ear01.rotateAngleZ = 0.1745F;
-			this.Ear02.rotateAngleZ = -0.1745F;
-		}
+        //水上漂浮
+        if (ent.getShipDepth(0) > 0D) {
+            GlStateManager.translate(0F, angleX * 0.05F + 0.025F, 0F);
+        }
 
-	    if (ent.getIsSprinting() || f1 > 0.8F)
-	    {	//奔跑動作
-	    	//leg
-	    	addk1 *= 2F;
-	    	addk2 *= 2F;
-	    	this.ArmRight01.rotateAngleX = addk1;
-	    	this.ArmLeft01.rotateAngleX = addk2;
-  		}
+        //leg move
+        addk1 = angleAdd1 * 0.5F - 0.14F;  //LegLeft01
+        addk2 = angleAdd2 * 0.5F + 0.14F;  //LegRight01
+        this.ArmRight01.rotateAngleX = addk1;
+        this.ArmLeft01.rotateAngleX = addk2;
 
-	    //head tilt angle
-	    this.Head.rotateAngleZ = EmotionHelper.getHeadTiltAngle(ent, f2);
-	    
-	    if (ent.getIsSneaking())
-	    {		//潛行, 蹲下動作
-	    	//head
-	    	this.Head.offsetY = 0.2F;
-	    	this.GlowHead.offsetY = 0.2F;
-  		}//end if sneaking
-  		
-	    if (ent.getIsSitting() || ent.getIsRiding())
-	    {
-	    	//騎乘動作
-	    	if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED)
-	    	{
-	    		GlStateManager.translate(0F, 0.22F, 0F);
-		    	//head
-		    	this.Head.rotateAngleX = 1.5359F;
-		    	this.Head.offsetY = 0.25F;
-		    	this.GlowHead.rotateAngleX = 1.5359F;
-		    	this.GlowHead.offsetY = 0.25F;
-		    	//arm
-		    	addk1 = 1.5359F;
-		    	addk2 = 1.5359F;
-		    	this.ArmLeft01.rotateAngleX = -1.5359F;
-		    	this.ArmLeft01.rotateAngleZ = 0F;
-		    	this.ArmLeft01.offsetZ = -0.18F;
-		    	this.ArmRight01.rotateAngleX = -1.5359F;
-		    	this.ArmRight01.rotateAngleZ = 0F;
-		    	this.ArmRight01.offsetZ = -0.18F;
-		    	//tail
-		    	this.TailBase.rotateAngleX = 0.0873F;
-			  	this.TailL01.rotateAngleX = 0.02618F;
-			  	this.TailL01.rotateAngleY *= 0.5F;
-				this.TailL02.rotateAngleX = -0.02618F;
-				this.TailL02.rotateAngleY *= 0.5F;
-				this.TailL03.rotateAngleX = -0.02618F;
-				this.TailL03.rotateAngleY *= 0.5F;
-				this.TailL04.rotateAngleX = -0.035F;
-				this.TailL04.rotateAngleY *= 0.5F;
-				this.TailL05.rotateAngleX = -0.04F;
-				this.TailL05.rotateAngleY *= 0.5F;
-				this.TailL06.rotateAngleX = -0.045F;
-				this.TailL06.rotateAngleY *= 0.5F;
-				this.TailR01.rotateAngleX = -0.02618F;
-				this.TailR01.rotateAngleY *= 0.5F;
-				this.TailR02.rotateAngleX = -0.02618F;
-				this.TailR02.rotateAngleY *= 0.5F;
-				this.TailR03.rotateAngleX = -0.02618F;
-				this.TailR03.rotateAngleY *= 0.5F;
-				this.TailR04.rotateAngleX = -0.035F;
-				this.TailR04.rotateAngleY *= 0.5F;
-				this.TailR05.rotateAngleX = -0.04F;
-				this.TailR05.rotateAngleY *= 0.5F;
-				this.TailR06.rotateAngleX = -0.045F;
-				this.TailR06.rotateAngleY *= 0.5F;
-	    	}
-	    	else
-	    	{
-	    		GlStateManager.translate(0F, 0.22F, 0F);
-		    	//head
-		    	this.Head.rotateAngleX -= 0.5F;
-		    	this.GlowHead.rotateAngleX -= 0.5F;
-		    	this.Head.offsetY = 0.25F;
-		    	this.GlowHead.offsetY = 0.25F;
-		    	//arm
-		    	addk1 = 1.5359F;
-		    	addk2 = 1.5359F;
-		    	this.ArmLeft01.rotateAngleX = -1.5359F;
-		    	this.ArmLeft01.rotateAngleZ = 0F;
-		    	this.ArmLeft01.offsetZ = -0.18F;
-		    	this.ArmLeft02.rotateAngleZ = 1.1868F;
-		    	this.ArmRight01.rotateAngleX = -1.5359F;
-		    	this.ArmRight01.rotateAngleZ = 0F;
-		    	this.ArmRight01.offsetZ = -0.18F;
-		    	this.ArmRight02.rotateAngleZ = -1.1868F;
-	    	}
-  		}//end if sitting
-	    
-	    //攻擊動作    
-	    if (ent.getAttackTick() > 20)
-	    {
-	    	//tail
-		  	this.TailL01.rotateAngleX = 0.2618F;
-		  	this.TailL01.rotateAngleY = 0.2618F;
-		  	this.TailL01.rotateAngleZ = 0F;
-		  	this.TailL02.rotateAngleX = 0.35F;
-		  	this.TailL02.rotateAngleY = 0.1748F;
-		  	this.TailL02.rotateAngleZ = 0F;
-		  	this.TailL03.rotateAngleX = 0.4363F;
-		  	this.TailL03.rotateAngleY = 0.14F;
-		  	this.TailL03.rotateAngleZ = 0F;
-		  	this.TailL04.rotateAngleX = 0.5236F;
-		  	this.TailL04.rotateAngleY = 0.14F;
-		  	this.TailL04.rotateAngleZ = 0F;
-		  	this.TailL05.rotateAngleX = 0.6109F;
-		  	this.TailL05.rotateAngleY = 0.1745F;
-		  	this.TailL05.rotateAngleZ = 0F;
-		  	this.TailL06.rotateAngleX = 0.35F;
-		  	this.TailL06.rotateAngleY = 0F;
-		  	this.TailL06.rotateAngleZ = 0F;
-		  	this.TailR01.rotateAngleX = 0.2618F;
-		  	this.TailR01.rotateAngleY = -0.2618F;
-		  	this.TailR01.rotateAngleZ = 0F;
-		  	this.TailR02.rotateAngleX = 0.35F;
-		  	this.TailR02.rotateAngleY = -0.1748F;
-		  	this.TailR02.rotateAngleZ = 0F;
-		  	this.TailR03.rotateAngleX = 0.35F;
-		  	this.TailR03.rotateAngleY = -0.14F;
-		  	this.TailR03.rotateAngleZ = 0F;
-		  	this.TailR04.rotateAngleX = 0.4363F;
-		  	this.TailR04.rotateAngleY = -0.14F;
-		  	this.TailR04.rotateAngleZ = 0F;
-		  	this.TailR05.rotateAngleX = 0.4363F;
-		  	this.TailR05.rotateAngleY = -0.14F;
-		  	this.TailR05.rotateAngleZ = 0F;
-		  	this.TailR06.rotateAngleX = 0.35F;
-		  	this.TailR06.rotateAngleY = 0F;
-		  	this.TailR06.rotateAngleZ = 0F;
-	    }
-	    
-	    //swing arm
-	  	float f6 = ent.getSwingTime(f2 - (int)f2);
-	  	if (f6 != 0F)
-	  	{
-	  		float f7 = MathHelper.sin(f6 * f6 * (float)Math.PI);
-	        float f8 = MathHelper.sin(MathHelper.sqrt(f6) * (float)Math.PI);
-	        this.ArmRight01.rotateAngleX = -0.6F - f8 * 80.0F * Values.N.DIV_PI_180;
-	        this.ArmRight01.rotateAngleY = 0F - f7 * 20.0F * Values.N.DIV_PI_180 + 0.2F;
-	        this.ArmRight01.rotateAngleZ = 0.2F - -f8 * 20.0F * Values.N.DIV_PI_180;
-	  	}
-	    
-	    //鬢毛調整
-	    float headZ = this.Head.rotateAngleZ * -0.5F;
-	    float headX = this.Head.rotateAngleX * -0.5F - 0.05F;
-	  	this.Hair02.rotateAngleX += headX * 0.5F;
-	  	this.Hair03.rotateAngleX += headX * 0.2F;
-	  	this.Hair02.rotateAngleZ += headZ * 0.8F;
-	  	this.Hair03.rotateAngleZ += headZ * 0.4F;
-	    
-	    //leg motion
-	    this.LegLeft01.rotateAngleX = addk1;
-	    this.LegRight01.rotateAngleX = addk2;
-	}
-	
-	@Override
-	public void setFaceNormal(IShipEmotion ent)
-	{
-		this.setFace(0);
-		
-		if (ent.getStateEmotion(ID.S.Emotion4) == ID.Emotion.BORED && (ent.getTickExisted() & 255) > 200)
-		{
-			this.setMouth(0);
-		}
-		else
-		{
-			this.setMouth(3);
-		}
-	}
+        //head
+        this.Head.rotateAngleX = f4 * 0.014F;    //上下角度
+        this.Head.rotateAngleY = f3 * 0.01F;    //左右角度 角度轉成rad 即除以57.29578
+        //body
+        this.Ahoke.rotateAngleY = angleX * 0.25F + 0.45F;
+        this.BodyMain.rotateAngleX = 0F;
+        this.BodyMain.rotateAngleY = 0F;
+        this.BodyMain.rotateAngleZ = 0F;
+        this.Head.offsetY = 0F;
+        this.GlowHead.offsetY = 0F;
+        //hair
+        this.Hair02.rotateAngleX = angleX1 * 0.04F + 0.21F;
+        this.Hair02.rotateAngleZ = 0F;
+        this.Hair03.rotateAngleX = angleX2 * 0.07F - 0.2618F;
+        this.Hair03.rotateAngleZ = 0F;
+        //arm
+        this.ArmLeft01.rotateAngleZ = 0.21F;
+        this.ArmLeft01.offsetZ = 0F;
+        this.ArmLeft02.rotateAngleZ = 0F;
+        this.ArmRight01.rotateAngleZ = -0.21F;
+        this.ArmRight01.offsetZ = 0F;
+        this.ArmRight02.rotateAngleZ = 0F;
+        //leg
+        this.LegLeft01.rotateAngleY = 0F;
+        this.LegLeft01.rotateAngleZ = 0.1745F;
+        this.LegLeft02.rotateAngleX = 0F;
+        this.LegLeft02.rotateAngleZ = 0F;
+        this.LegRight01.rotateAngleY = 0F;
+        this.LegRight01.rotateAngleZ = -0.1745F;
+        this.LegRight02.rotateAngleX = 0F;
+        this.LegRight02.rotateAngleZ = 0F;
+        //tail
+        this.TailBase.rotateAngleX = 0.8F;
+        this.TailL01.rotateAngleX = 0.2618F;
+        this.TailL01.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 0.7F) * 0.2F + 0.5F;
+        this.TailL01.rotateAngleZ = this.TailL01.rotateAngleY * 0.25F;
+        this.TailL02.rotateAngleX = 0.2618F;
+        this.TailL02.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 1.4F) * 0.25F;
+        this.TailL02.rotateAngleZ = this.TailL02.rotateAngleY * 0.25F;
+        this.TailL03.rotateAngleX = 0.2618F;
+        this.TailL03.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 2.1F) * 0.3F;
+        this.TailL03.rotateAngleZ = this.TailL03.rotateAngleY * 0.25F;
+        this.TailL04.rotateAngleX = 0.35F;
+        this.TailL04.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 2.8F) * 0.35F;
+        this.TailL04.rotateAngleZ = this.TailL04.rotateAngleY * 0.25F;
+        this.TailL05.rotateAngleX = 0.4F;
+        this.TailL05.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 3.5F) * 0.4F;
+        this.TailL05.rotateAngleZ = this.TailL05.rotateAngleY * 0.25F;
+        this.TailL06.rotateAngleX = 0.45F;
+        this.TailL06.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 4.2F) * 0.35F;
+        this.TailL06.rotateAngleZ = this.TailL06.rotateAngleY * 0.25F;
+        this.TailR01.rotateAngleX = 0.2618F;
+        this.TailR01.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 0.7F) * 0.2F - 0.5F;
+        this.TailR01.rotateAngleZ = this.TailR01.rotateAngleY * 0.25F;
+        this.TailR02.rotateAngleX = 0.2618F;
+        this.TailR02.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 1.4F) * 0.25F;
+        this.TailR02.rotateAngleZ = this.TailR02.rotateAngleY * 0.25F;
+        this.TailR03.rotateAngleX = 0.2618F;
+        this.TailR03.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 2.1F) * 0.3F;
+        this.TailR03.rotateAngleZ = this.TailR03.rotateAngleY * 0.25F;
+        this.TailR04.rotateAngleX = 0.35F;
+        this.TailR04.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 2.8F) * 0.35F;
+        this.TailR04.rotateAngleZ = this.TailR04.rotateAngleY * 0.25F;
+        this.TailR05.rotateAngleX = 0.4F;
+        this.TailR05.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 3.5F) * 0.4F;
+        this.TailR05.rotateAngleZ = this.TailR05.rotateAngleY * 0.25F;
+        this.TailR06.rotateAngleX = 0.45F;
+        this.TailR06.rotateAngleY = MathHelper.cos(-f2 * 0.1F + 4.2F) * 0.45F;
+        this.TailR06.rotateAngleZ = this.TailR06.rotateAngleY * 0.25F;
 
-	@Override
-	public void setFaceBlink0(IShipEmotion ent)
-	{
-		this.setFace(0);
-	}
+        //ear
+        float modf2 = f2 % 128F;
+        if (modf2 < 6F) {
+            //total 10 ticks, loop twice in 20 ticks
+            if (modf2 >= 3F) modf2 -= 3F;
+            float anglef2 = MathHelper.sin(modf2 * 1.0472F) * 0.25F;
+            this.Ear01.rotateAngleZ = anglef2 + 0.1745F;
+            this.Ear02.rotateAngleZ = -anglef2 - 0.1745F;
+        } else {
+            this.Ear01.rotateAngleZ = 0.1745F;
+            this.Ear02.rotateAngleZ = -0.1745F;
+        }
 
-	@Override
-	public void setFaceBlink1(IShipEmotion ent)
-	{
-		this.setFace(1);
-	}
+        if (ent.getIsSprinting() || f1 > 0.8F) {    //奔跑動作
+            //leg
+            addk1 *= 2F;
+            addk2 *= 2F;
+            this.ArmRight01.rotateAngleX = addk1;
+            this.ArmLeft01.rotateAngleX = addk2;
+        }
 
-	@Override
-	public void setFaceCry(IShipEmotion ent)
-	{
-		int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 255;
-		
-		if (t < 128)
-		{
-			this.setFace(6);
-			
-			if (t < 64)
-			{
-				this.setMouth(2);
-			}
-			else
-			{
-				this.setMouth(1);
-			}
-		}
-		else
-		{
-			this.setFace(7);
-			this.setMouth(2);
-		}
-	}
+        //head tilt angle
+        this.Head.rotateAngleZ = EmotionHelper.getHeadTiltAngle(ent, f2);
 
-	@Override
-	public void setFaceAttack(IShipEmotion ent)
-	{
-		int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 511;
-		
-		if (t < 160)
-		{
-			this.setFace(0);
-			
-			if (t < 80)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(1);
-			}
-		}
-		else if (t < 320)
-		{
-			this.setFace(2);
-			
-			if (t < 220)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(1);
-			}
-		}
-		else if (t < 410)
-		{
-			this.setFace(3);
-			
-			if (t < 360)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(4);
-			}
-		}
-		else
-		{
-			this.setFace(8);
-			
-			if (t < 470)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(1);
-			}
-		}
-	}
-	
-	@Override
-	public void setFaceDamaged(IShipEmotion ent)
-	{
-		int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 511;
-		
-		if (t < 200)
-		{
-			this.setFace(6);
-			
-			if (t < 60)
-			{
-				this.setMouth(2);
-			}
-			else
-			{
-				this.setMouth(1);
-			}
-		}
-		else if (t < 400)
-		{
-			this.setFace(3);
-			
-			if (t < 250)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(3);
-			}
-		}
-		else
-		{
-			this.setFace(9);
-			
-			if (t < 450)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(1);
-			}
-		}
-	}
-	
-	@Override
-	public void setFaceScorn(IShipEmotion ent)
-	{
-		this.setFace(2);
-		this.setMouth(1);
-	}
+        if (ent.getIsSneaking()) {        //潛行, 蹲下動作
+            //head
+            this.Head.offsetY = 0.2F;
+            this.GlowHead.offsetY = 0.2F;
+        }//end if sneaking
 
-	@Override
-	public void setFaceHungry(IShipEmotion ent)
-	{
-		this.setFace(4);	
-		this.setMouth(2);
-	}
+        if (ent.getIsSitting() || ent.getIsRiding()) {
+            //騎乘動作
+            if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
+                GlStateManager.translate(0F, 0.22F, 0F);
+                //head
+                this.Head.rotateAngleX = 1.5359F;
+                this.Head.offsetY = 0.25F;
+                this.GlowHead.rotateAngleX = 1.5359F;
+                this.GlowHead.offsetY = 0.25F;
+                //arm
+                addk1 = 1.5359F;
+                addk2 = 1.5359F;
+                this.ArmLeft01.rotateAngleX = -1.5359F;
+                this.ArmLeft01.rotateAngleZ = 0F;
+                this.ArmLeft01.offsetZ = -0.18F;
+                this.ArmRight01.rotateAngleX = -1.5359F;
+                this.ArmRight01.rotateAngleZ = 0F;
+                this.ArmRight01.offsetZ = -0.18F;
+                //tail
+                this.TailBase.rotateAngleX = 0.0873F;
+                this.TailL01.rotateAngleX = 0.02618F;
+                this.TailL01.rotateAngleY *= 0.5F;
+                this.TailL02.rotateAngleX = -0.02618F;
+                this.TailL02.rotateAngleY *= 0.5F;
+                this.TailL03.rotateAngleX = -0.02618F;
+                this.TailL03.rotateAngleY *= 0.5F;
+                this.TailL04.rotateAngleX = -0.035F;
+                this.TailL04.rotateAngleY *= 0.5F;
+                this.TailL05.rotateAngleX = -0.04F;
+                this.TailL05.rotateAngleY *= 0.5F;
+                this.TailL06.rotateAngleX = -0.045F;
+                this.TailL06.rotateAngleY *= 0.5F;
+                this.TailR01.rotateAngleX = -0.02618F;
+                this.TailR01.rotateAngleY *= 0.5F;
+                this.TailR02.rotateAngleX = -0.02618F;
+                this.TailR02.rotateAngleY *= 0.5F;
+                this.TailR03.rotateAngleX = -0.02618F;
+                this.TailR03.rotateAngleY *= 0.5F;
+                this.TailR04.rotateAngleX = -0.035F;
+                this.TailR04.rotateAngleY *= 0.5F;
+                this.TailR05.rotateAngleX = -0.04F;
+                this.TailR05.rotateAngleY *= 0.5F;
+                this.TailR06.rotateAngleX = -0.045F;
+                this.TailR06.rotateAngleY *= 0.5F;
+            } else {
+                GlStateManager.translate(0F, 0.22F, 0F);
+                //head
+                this.Head.rotateAngleX -= 0.5F;
+                this.GlowHead.rotateAngleX -= 0.5F;
+                this.Head.offsetY = 0.25F;
+                this.GlowHead.offsetY = 0.25F;
+                //arm
+                addk1 = 1.5359F;
+                addk2 = 1.5359F;
+                this.ArmLeft01.rotateAngleX = -1.5359F;
+                this.ArmLeft01.rotateAngleZ = 0F;
+                this.ArmLeft01.offsetZ = -0.18F;
+                this.ArmLeft02.rotateAngleZ = 1.1868F;
+                this.ArmRight01.rotateAngleX = -1.5359F;
+                this.ArmRight01.rotateAngleZ = 0F;
+                this.ArmRight01.offsetZ = -0.18F;
+                this.ArmRight02.rotateAngleZ = -1.1868F;
+            }
+        }//end if sitting
 
-	@Override
-	public void setFaceAngry(IShipEmotion ent)
-	{
-		int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 255;
-		
-		if (t < 128)
-		{
-			this.setFace(1);
-			
-			if (t < 64)
-			{
-				this.setMouth(3);
-			}
-			else
-			{
-				this.setMouth(1);
-			}
-		}
-		else
-		{
-			this.setFace(2);
+        //攻擊動作
+        if (ent.getAttackTick() > 20) {
+            //tail
+            this.TailL01.rotateAngleX = 0.2618F;
+            this.TailL01.rotateAngleY = 0.2618F;
+            this.TailL01.rotateAngleZ = 0F;
+            this.TailL02.rotateAngleX = 0.35F;
+            this.TailL02.rotateAngleY = 0.1748F;
+            this.TailL02.rotateAngleZ = 0F;
+            this.TailL03.rotateAngleX = 0.4363F;
+            this.TailL03.rotateAngleY = 0.14F;
+            this.TailL03.rotateAngleZ = 0F;
+            this.TailL04.rotateAngleX = 0.5236F;
+            this.TailL04.rotateAngleY = 0.14F;
+            this.TailL04.rotateAngleZ = 0F;
+            this.TailL05.rotateAngleX = 0.6109F;
+            this.TailL05.rotateAngleY = 0.1745F;
+            this.TailL05.rotateAngleZ = 0F;
+            this.TailL06.rotateAngleX = 0.35F;
+            this.TailL06.rotateAngleY = 0F;
+            this.TailL06.rotateAngleZ = 0F;
+            this.TailR01.rotateAngleX = 0.2618F;
+            this.TailR01.rotateAngleY = -0.2618F;
+            this.TailR01.rotateAngleZ = 0F;
+            this.TailR02.rotateAngleX = 0.35F;
+            this.TailR02.rotateAngleY = -0.1748F;
+            this.TailR02.rotateAngleZ = 0F;
+            this.TailR03.rotateAngleX = 0.35F;
+            this.TailR03.rotateAngleY = -0.14F;
+            this.TailR03.rotateAngleZ = 0F;
+            this.TailR04.rotateAngleX = 0.4363F;
+            this.TailR04.rotateAngleY = -0.14F;
+            this.TailR04.rotateAngleZ = 0F;
+            this.TailR05.rotateAngleX = 0.4363F;
+            this.TailR05.rotateAngleY = -0.14F;
+            this.TailR05.rotateAngleZ = 0F;
+            this.TailR06.rotateAngleX = 0.35F;
+            this.TailR06.rotateAngleY = 0F;
+            this.TailR06.rotateAngleZ = 0F;
+        }
 
-			if (t < 170)
-			{
-				this.setMouth(1);
-			}
-			else
-			{
-				this.setMouth(3);
-			}
-		}
-	}
+        //swing arm
+        float f6 = ent.getSwingTime(f2 - (int) f2);
+        if (f6 != 0F) {
+            float f7 = MathHelper.sin(f6 * f6 * (float) Math.PI);
+            float f8 = MathHelper.sin(MathHelper.sqrt(f6) * (float) Math.PI);
+            this.ArmRight01.rotateAngleX = -0.6F - f8 * 80.0F * Values.N.DIV_PI_180;
+            this.ArmRight01.rotateAngleY = 0F - f7 * 20.0F * Values.N.DIV_PI_180 + 0.2F;
+            this.ArmRight01.rotateAngleZ = 0.2F - -f8 * 20.0F * Values.N.DIV_PI_180;
+        }
 
-	@Override
-	public void setFaceBored(IShipEmotion ent)
-	{
-		int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 511;
-		
-		if (t < 170)
-		{
-			this.setFace(1);
-			
-			if (t < 80)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(3);
-			}
-		}
-		else if (t < 340)
-		{
-			this.setFace(8);
+        //鬢毛調整
+        float headZ = this.Head.rotateAngleZ * -0.5F;
+        float headX = this.Head.rotateAngleX * -0.5F - 0.05F;
+        this.Hair02.rotateAngleX += headX * 0.5F;
+        this.Hair03.rotateAngleX += headX * 0.2F;
+        this.Hair02.rotateAngleZ += headZ * 0.8F;
+        this.Hair03.rotateAngleZ += headZ * 0.4F;
 
-			if (t < 250)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(3);
-			}
-		}
-		else
-		{
-			this.setFace(0);
+        //leg motion
+        this.LegLeft01.rotateAngleX = addk1;
+        this.LegRight01.rotateAngleX = addk2;
+    }
 
-			if (t < 420)
-			{
-				this.setMouth(0);
-			}
-			else
-			{
-				this.setMouth(3);
-			}
-		}
-	}
-	
-	@Override
-	public void setFaceShy(IShipEmotion ent)
-	{
-		this.setFlush(true);
-		
-		int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 255;
-		
-		this.setFace(0);
-		
-		if (t < 150)
-		{
-			this.setMouth(3);
-		}
-		else
-		{
-			this.setMouth(2);
-		}
-	}
-	
-	@Override
-	public void setFaceHappy(IShipEmotion ent)
-	{
-		this.setFlush(true);
-		
-		int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 255;
-		
-		if (t < 140)
-		{
-			this.setFace(3);
-			
-			if (t < 80)
-			{
-				this.setMouth(3);
-			}
-			else
-			{
-				this.setMouth(4);
-			}
-		}
-		else
-		{
-			this.setFace(8);
-			this.setMouth(0);
-		}
-	}
-	
-    
+    @Override
+    public void setFaceNormal(IShipEmotion ent) {
+        this.setFace(0);
+
+        if (ent.getStateEmotion(ID.S.Emotion4) == ID.Emotion.BORED && (ent.getTickExisted() & 255) > 200) {
+            this.setMouth(0);
+        } else {
+            this.setMouth(3);
+        }
+    }
+
+    @Override
+    public void setFaceBlink0(IShipEmotion ent) {
+        this.setFace(0);
+    }
+
+    @Override
+    public void setFaceBlink1(IShipEmotion ent) {
+        this.setFace(1);
+    }
+
+    @Override
+    public void setFaceCry(IShipEmotion ent) {
+        int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 255;
+
+        if (t < 128) {
+            this.setFace(6);
+
+            if (t < 64) {
+                this.setMouth(2);
+            } else {
+                this.setMouth(1);
+            }
+        } else {
+            this.setFace(7);
+            this.setMouth(2);
+        }
+    }
+
+    @Override
+    public void setFaceAttack(IShipEmotion ent) {
+        int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 511;
+
+        if (t < 160) {
+            this.setFace(0);
+
+            if (t < 80) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(1);
+            }
+        } else if (t < 320) {
+            this.setFace(2);
+
+            if (t < 220) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(1);
+            }
+        } else if (t < 410) {
+            this.setFace(3);
+
+            if (t < 360) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(4);
+            }
+        } else {
+            this.setFace(8);
+
+            if (t < 470) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(1);
+            }
+        }
+    }
+
+    @Override
+    public void setFaceDamaged(IShipEmotion ent) {
+        int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 511;
+
+        if (t < 200) {
+            this.setFace(6);
+
+            if (t < 60) {
+                this.setMouth(2);
+            } else {
+                this.setMouth(1);
+            }
+        } else if (t < 400) {
+            this.setFace(3);
+
+            if (t < 250) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(3);
+            }
+        } else {
+            this.setFace(9);
+
+            if (t < 450) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(1);
+            }
+        }
+    }
+
+    @Override
+    public void setFaceScorn(IShipEmotion ent) {
+        this.setFace(2);
+        this.setMouth(1);
+    }
+
+    @Override
+    public void setFaceHungry(IShipEmotion ent) {
+        this.setFace(4);
+        this.setMouth(2);
+    }
+
+    @Override
+    public void setFaceAngry(IShipEmotion ent) {
+        int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 255;
+
+        if (t < 128) {
+            this.setFace(1);
+
+            if (t < 64) {
+                this.setMouth(3);
+            } else {
+                this.setMouth(1);
+            }
+        } else {
+            this.setFace(2);
+
+            if (t < 170) {
+                this.setMouth(1);
+            } else {
+                this.setMouth(3);
+            }
+        }
+    }
+
+    @Override
+    public void setFaceBored(IShipEmotion ent) {
+        int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 511;
+
+        if (t < 170) {
+            this.setFace(1);
+
+            if (t < 80) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(3);
+            }
+        } else if (t < 340) {
+            this.setFace(8);
+
+            if (t < 250) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(3);
+            }
+        } else {
+            this.setFace(0);
+
+            if (t < 420) {
+                this.setMouth(0);
+            } else {
+                this.setMouth(3);
+            }
+        }
+    }
+
+    @Override
+    public void setFaceShy(IShipEmotion ent) {
+        this.setFlush(true);
+
+        int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 255;
+
+        this.setFace(0);
+
+        if (t < 150) {
+            this.setMouth(3);
+        } else {
+            this.setMouth(2);
+        }
+    }
+
+    @Override
+    public void setFaceHappy(IShipEmotion ent) {
+        this.setFlush(true);
+
+        int t = (ent.getTickExisted() + (ent.getStateMinor(ID.M.ShipUID) << 7)) & 255;
+
+        if (t < 140) {
+            this.setFace(3);
+
+            if (t < 80) {
+                this.setMouth(3);
+            } else {
+                this.setMouth(4);
+            }
+        } else {
+            this.setFace(8);
+            this.setMouth(0);
+        }
+    }
+
+
 }

@@ -896,3 +896,16 @@ gui.shincolle:morph.nofuel=No Fuel
 gui.shincolle:morph.sit=Sitting
 gui.shincolle:morph.emo1=Emotion Flag1
 gui.shincolle:morph.emo2=Emotion Flag2
+
+fluid.shincolle.abyssium.name=Molten Abyssium
+material.abyssium.name=Abyssium
+
+fluid.shincolle.polymetal.name=Molten Polymetal
+material.polymetal.name=Polymetal
+
+modifier.grudgeful.name=Grudgeful
+modifier.grudgeful.desc=§4Oh, Sweet sweet Revenge!§r\nKilling mobs drops extra grudge, even more if mob is hostile!
+modifier.depthdigger.name=Depth Digger
+modifier.depthdigger.desc=§8What came from the abyss, returns to abyss.§r\nThe deeper you go, tool mines faster.
+modifier.omnivore.name=Omnivore
+modifier.omnivore.desc=§7Yum!§r\nTool repairs itself from bits of every ore it mines!

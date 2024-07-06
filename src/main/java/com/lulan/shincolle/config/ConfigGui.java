@@ -15,39 +15,36 @@ import java.util.List;
  * GUI config
  * tuts: http://jabelarminecraft.blogspot.tw/p/minecraft-modding-configuration-guis.html
  */
-public class ConfigGui extends GuiConfig
-{
+public class ConfigGui extends GuiConfig {
 
-	
-	/** this constructor is NECESSARY!! GuiModList::actionPerformed will use this constructor only */
-	public ConfigGui(GuiScreen parent)
-	{
-		this(parent, getAllCategoryList(), Reference.MOD_ID, false, false, "NOW EDITING: shincolle.cfg");
-	}
-	
-	public ConfigGui(GuiScreen parent, List<IConfigElement> configs, String modid, boolean worldRestart, boolean mcRestart, String title)
-	{
-		super(parent, configs, modid, worldRestart, mcRestart, title,
-			"All changes are CLIENT side only, it DO NOT affect SERVER side config file!!");
-	}
-	
-    @Override
-    protected void actionPerformed(GuiButton button)
-    {
-    	super.actionPerformed(button);
+
+    /**
+     * this constructor is NECESSARY!! GuiModList::actionPerformed will use this constructor only
+     */
+    public ConfigGui(GuiScreen parent) {
+        this(parent, getAllCategoryList(), Reference.MOD_ID, false, false, "NOW EDITING: shincolle.cfg");
     }
 
-	public static List<IConfigElement> getAllCategoryList()
-	{
-		//create a config element list instance
-		ArrayList<IConfigElement> cfgs = new ArrayList<IConfigElement>();
-		cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_GENERAL)));
-		cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_SHIP)));
-		cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_WORLD)));
-		cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_INTERMOD)));
-	
-		return cfgs;
-	}
-    
-    
+    public ConfigGui(GuiScreen parent, List<IConfigElement> configs, String modid, boolean worldRestart, boolean mcRestart, String title) {
+        super(parent, configs, modid, worldRestart, mcRestart, title,
+                "All changes are CLIENT side only, it DO NOT affect SERVER side config file!!");
+    }
+
+    public static List<IConfigElement> getAllCategoryList() {
+        //create a config element list instance
+        ArrayList<IConfigElement> cfgs = new ArrayList<IConfigElement>();
+        cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_GENERAL)));
+        cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_SHIP)));
+        cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_WORLD)));
+        cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_INTERMOD)));
+
+        return cfgs;
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        super.actionPerformed(button);
+    }
+
+
 }

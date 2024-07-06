@@ -13,8 +13,7 @@ import net.minecraft.util.math.MathHelper;
  * ModelTakoyaki - PinkaLulan 2015/2/18
  * Created using Tabula 4.1.1
  */
-public class ModelTakoyaki extends ModelBase
-{
+public class ModelTakoyaki extends ModelBase {
     public ModelRenderer BodyMain;
     public ModelRenderer JawMain;
     public ModelRenderer EyeL;
@@ -29,9 +28,8 @@ public class ModelTakoyaki extends ModelBase
     public ModelRenderer Tongue;
     public ModelRenderer GlowBodyMain;
 
-    
-    public ModelTakoyaki()
-    {
+
+    public ModelTakoyaki() {
         this.textureWidth = 128;
         this.textureHeight = 64;
         this.JawMain = new ModelRenderer(this, 0, 38);
@@ -94,52 +92,49 @@ public class ModelTakoyaki extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	GlStateManager.pushMatrix();
-    	
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	
-    	GlStateManager.enableBlend();
-    	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    	GlStateManager.scale(0.45F, 0.45F, 0.45F);
-    	GlStateManager.translate(0F, 2.7F, 0F);
-    	
-    	//main body
-    	this.BodyMain.render(f5);
-    	
-    	GlStateManager.disableBlend();
-    	
-    	//light part
-    	GlStateManager.disableLighting();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.GlowBodyMain.render(f5);
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        GlStateManager.pushMatrix();
+
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.scale(0.45F, 0.45F, 0.45F);
+        GlStateManager.translate(0F, 2.7F, 0F);
+
+        //main body
+        this.BodyMain.render(f5);
+
+        GlStateManager.disableBlend();
+
+        //light part
+        GlStateManager.disableLighting();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.GlowBodyMain.render(f5);
+        GlStateManager.enableLighting();
+
+        GlStateManager.popMatrix();
     }
 
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
-    
+
     //for idle/run animation
     @Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-    {  
-    	this.BodyMain.rotateAngleY = f3 / 57F;	//左右角度
-    	this.BodyMain.rotateAngleX = f4 / 57F; 	//上下角度
-    	this.GlowBodyMain.rotateAngleY = f3 / 57F;
-    	this.GlowBodyMain.rotateAngleX = f4 / 57F;
-    	this.JawMain.rotateAngleZ = 0F;
-    	this.JawMain.rotateAngleX = MathHelper.cos(entity.ticksExisted * 0.125F) * 0.2F + 1.1F;
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+        this.BodyMain.rotateAngleY = f3 / 57F;    //左右角度
+        this.BodyMain.rotateAngleX = f4 / 57F;    //上下角度
+        this.GlowBodyMain.rotateAngleY = f3 / 57F;
+        this.GlowBodyMain.rotateAngleX = f4 / 57F;
+        this.JawMain.rotateAngleZ = 0F;
+        this.JawMain.rotateAngleX = MathHelper.cos(entity.ticksExisted * 0.125F) * 0.2F + 1.1F;
     }
-    
-    
+
+
 }

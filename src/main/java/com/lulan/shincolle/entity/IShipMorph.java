@@ -5,17 +5,22 @@ import net.minecraft.entity.player.EntityPlayer;
 /**
  * inter-mod support interface for Metamorph
  */
-public interface IShipMorph
-{
-	
-	
-	/** entity is morph */
-	public boolean isMorph();
-	public void setIsMorph(boolean par1);
-	
-	/** morph host */
-	public EntityPlayer getMorphHost();
-	public void setMorphHost(EntityPlayer player);
-	
-	
+public interface IShipMorph {
+
+
+    /**
+     * entity is morph
+     */
+    boolean isMorph();
+
+    void setIsMorph(boolean par1);
+
+    /**
+     * morph host
+     */
+    EntityPlayer getMorphHost();
+
+    void setMorphHost(EntityPlayer player);
+
+
 }

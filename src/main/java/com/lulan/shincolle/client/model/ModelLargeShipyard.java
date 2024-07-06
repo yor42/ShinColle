@@ -11,8 +11,7 @@ import net.minecraft.entity.Entity;
  * ModelLargeShipyard - PinkaLulan 2015/2/10
  * Created using Tabula 4.1.1
  */
-public class ModelLargeShipyard extends ModelBase
-{
+public class ModelLargeShipyard extends ModelBase {
     public ModelRenderer BodyMain;
     public ModelRenderer Body01;
     public ModelRenderer Body02;
@@ -40,12 +39,11 @@ public class ModelLargeShipyard extends ModelBase
     public ModelRenderer Pillar01a_1;
     public ModelRenderer Pillar01b_1;
 
-    
-    public ModelLargeShipyard()
-    {
+
+    public ModelLargeShipyard() {
         this.textureWidth = 64;
         this.textureHeight = 32;
-        
+
         this.Body06 = new ModelRenderer(this, 0, 0);
         this.Body06.setRotationPoint(-10.0F, -6.0F, -23.0F);
         this.Body06.addBox(0.0F, 0.0F, 0.0F, 20, 6, 10, 0.0F);
@@ -132,7 +130,7 @@ public class ModelLargeShipyard extends ModelBase
         this.Pillar03a.setRotationPoint(6.0F, 1.0F, 7.0F);
         this.Pillar03a.addBox(-4.5F, -8.0F, -5.0F, 9, 9, 10, 0.0F);
         this.setRotateAngle(Pillar03a, -0.17453292519943295F, 0.0F, 0.17453292519943295F);
-        
+
         this.BodyMain.addChild(this.Base00);
         this.BodyMain.addChild(this.Body06);
         this.BodyMain.addChild(this.Body07);
@@ -161,37 +159,34 @@ public class ModelLargeShipyard extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	GlStateManager.pushAttrib();
-    	GlStateManager.pushMatrix();
-    	
-    	GlStateManager.disableLighting();
-    	GlStateManager.enableCull();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.BodyMain.render(f5);
-    	GlStateManager.disableCull();
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.popMatrix();
-    	GlStateManager.popAttrib();
-    	
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        GlStateManager.pushAttrib();
+        GlStateManager.pushMatrix();
+
+        GlStateManager.disableLighting();
+        GlStateManager.enableCull();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.BodyMain.render(f5);
+        GlStateManager.disableCull();
+        GlStateManager.enableLighting();
+
+        GlStateManager.popMatrix();
+        GlStateManager.popAttrib();
+
     }
-    
-    public void render(float f5)
-    {
-    	this.render(null, 0F, 0F, 0F, 0F, 0F, f5);
+
+    public void render(float f5) {
+        this.render(null, 0F, 0F, 0F, 0F, 0F, f5);
     }
 
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
-    
-    
+
+
 }

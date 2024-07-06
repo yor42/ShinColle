@@ -2,7 +2,6 @@ package com.lulan.shincolle.client.model;
 
 import com.lulan.shincolle.entity.IShipEmotion;
 import com.lulan.shincolle.utility.EmotionHelper;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,8 +14,7 @@ import net.minecraft.util.math.MathHelper;
  * ModelRensouhou - PinkaLulan 2015/3/27
  * Created using Tabula 4.1.1
  */
-public class ModelRensouhou extends ModelBase implements IModelEmotion
-{
+public class ModelRensouhou extends ModelBase implements IModelEmotion {
     public ModelRenderer BodyMain;
     public ModelRenderer SwimRing;
     public ModelRenderer Head;
@@ -36,16 +34,15 @@ public class ModelRensouhou extends ModelBase implements IModelEmotion
     public ModelRenderer Face2;
     public ModelRenderer CannonL02;
     public ModelRenderer CannonR02;
-    
+
     private float scale;
     private float offsetY;
 
-    
-    public ModelRensouhou()
-    {
+
+    public ModelRensouhou() {
         this.textureWidth = 128;
         this.textureHeight = 64;
-        
+
         this.CannonL02 = new ModelRenderer(this, 0, 1);
         this.CannonL02.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.CannonL02.addBox(-1.5F, -1.5F, -26.0F, 3, 3, 20, 0.0F);
@@ -129,191 +126,178 @@ public class ModelRensouhou extends ModelBase implements IModelEmotion
         this.Head.addChild(this.EarR);
         this.BodyMain.addChild(this.Head);
     }
-    
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
+
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	//FIX: head rotation bug while riding
-    	if (f3 <= -180F) { f3 += 360F; }
-    	else if (f3 >= 180F) { f3 -= 360F; }
-    	
-    	switch (((IShipEmotion)entity).getScaleLevel())
-    	{
-    	case 3:
-    		scale = 1.08F;
-        	offsetY = -0.09F;
-		break;
-    	case 2:
-    		scale = 0.81F;
-    		offsetY = 0.4F;
-		break;
-    	case 1:
-    		scale = 0.54F;
-    		offsetY = 1.32F;
-		break;
-    	default:
-    		scale = 0.27F;
-    		offsetY = 4.09F;
-		break;
-    	}
-    	
-    	GlStateManager.pushMatrix();
-    	GlStateManager.enableBlend();
-    	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    	GlStateManager.scale(scale, scale, scale);
-    	GlStateManager.translate(0F, offsetY, 0F);
-    	
-    	//main body
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	this.BodyMain.render(f5);
-    	
-    	GlStateManager.disableBlend();
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        //FIX: head rotation bug while riding
+        if (f3 <= -180F) {
+            f3 += 360F;
+        } else if (f3 >= 180F) {
+            f3 -= 360F;
+        }
+
+        switch (((IShipEmotion) entity).getScaleLevel()) {
+            case 3:
+                scale = 1.08F;
+                offsetY = -0.09F;
+                break;
+            case 2:
+                scale = 0.81F;
+                offsetY = 0.4F;
+                break;
+            case 1:
+                scale = 0.54F;
+                offsetY = 1.32F;
+                break;
+            default:
+                scale = 0.27F;
+                offsetY = 4.09F;
+                break;
+        }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.scale(scale, scale, scale);
+        GlStateManager.translate(0F, offsetY, 0F);
+
+        //main body
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.BodyMain.render(f5);
+
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
-    
+
     //for idle/run animation
     @Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-    {
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		  
-		IShipEmotion ent = (IShipEmotion)entity;
-		
-		EmotionHelper.rollEmotion(this, ent);
-		  
-		motionHumanPos(f, f1, f2, f3, f4, ent);
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+
+        IShipEmotion ent = (IShipEmotion) entity;
+
+        EmotionHelper.rollEmotion(this, ent);
+
+        motionHumanPos(f, f1, f2, f3, f4, ent);
     }
-    
-	//雙腳移動計算
-  	private void motionHumanPos(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-  	{   
-  		float angleX = MathHelper.cos(f2 * 0.08F);
-  		float angleRun = MathHelper.cos(f) * f1;
-  		float addk1 = 0;
-  		float addk2 = 0;
-  		
-  		//leg move parm
-  		addk1 = MathHelper.cos(f * 0.7F) * f1 + 0.7F;
-	  	addk2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1 + 0.7F;
 
-	    //正常站立動作
-	  	//Body
-	  	this.Head.rotateAngleY = f3 / 57F;
-	  	this.BodyMain.rotateAngleX = 0F;
-	    //arm 
-	    this.ArmLeft.rotateAngleX = angleX * 0.3F + 0.9F;
-		this.ArmRight.rotateAngleX = angleX * 0.3F + 0.9F;
-		//cannon
-		this.CannonL01.rotateAngleX = angleX * 0.05F - 0.5F;
-		this.CannonR01.rotateAngleX = -angleX * 0.05F - 0.5F;
-		//propeller
-		this.Propeller.rotateAngleZ = (f2 / 4) % 360;
+    //雙腳移動計算
+    private void motionHumanPos(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        float angleX = MathHelper.cos(f2 * 0.08F);
+        float angleRun = MathHelper.cos(f) * f1;
+        float addk1 = 0;
+        float addk2 = 0;
 
-	    if (f1 > 0.9F)
-	    {	//奔跑動作
-	    	setFace(2);
-	    	//body
-	    	this.BodyMain.rotateAngleX = 0.2618F;
-	    	//arm
-	    	this.ArmLeft.rotateAngleX = angleRun * 0.3F + 0.9F;
-	    	this.ArmRight.rotateAngleX = angleRun * 0.3F + 0.9F;
-	    	//cannon
-			this.CannonL01.rotateAngleX = angleRun * 0.05F - 0.5F;
-			this.CannonR01.rotateAngleX = -angleRun * 0.05F - 0.5F;
-			//propeller
-			this.Propeller.rotateAngleZ = (f / 2) % 360;
-  		}
-	    
-	    //攻擊動作    
-	    if (ent.getAttackTick() > 0)
-	    {
-	    	setFace(2);
-	    }
-	    
-	    //leg motion
-	    this.LegLeft.rotateAngleX = addk1;
-	    this.LegRight.rotateAngleX = addk2;    
-  	}
-  	
+        //leg move parm
+        addk1 = MathHelper.cos(f * 0.7F) * f1 + 0.7F;
+        addk2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1 + 0.7F;
+
+        //正常站立動作
+        //Body
+        this.Head.rotateAngleY = f3 / 57F;
+        this.BodyMain.rotateAngleX = 0F;
+        //arm
+        this.ArmLeft.rotateAngleX = angleX * 0.3F + 0.9F;
+        this.ArmRight.rotateAngleX = angleX * 0.3F + 0.9F;
+        //cannon
+        this.CannonL01.rotateAngleX = angleX * 0.05F - 0.5F;
+        this.CannonR01.rotateAngleX = -angleX * 0.05F - 0.5F;
+        //propeller
+        this.Propeller.rotateAngleZ = (f2 / 4) % 360;
+
+        if (f1 > 0.9F) {    //奔跑動作
+            setFace(2);
+            //body
+            this.BodyMain.rotateAngleX = 0.2618F;
+            //arm
+            this.ArmLeft.rotateAngleX = angleRun * 0.3F + 0.9F;
+            this.ArmRight.rotateAngleX = angleRun * 0.3F + 0.9F;
+            //cannon
+            this.CannonL01.rotateAngleX = angleRun * 0.05F - 0.5F;
+            this.CannonR01.rotateAngleX = -angleRun * 0.05F - 0.5F;
+            //propeller
+            this.Propeller.rotateAngleZ = (f / 2) % 360;
+        }
+
+        //攻擊動作
+        if (ent.getAttackTick() > 0) {
+            setFace(2);
+        }
+
+        //leg motion
+        this.LegLeft.rotateAngleX = addk1;
+        this.LegRight.rotateAngleX = addk2;
+    }
+
     //設定顯示的臉型
     @Override
-  	public void setFace(int emo)
-    {
-  		switch (emo)
-  		{
-  		case 0:
-  			this.Face0.isHidden = false;
-  			this.Face1.isHidden = true;
-  			this.Face2.isHidden = true;
-  		break;
-  		case 1:
-  		case 4:
-  			this.Face0.isHidden = true;
-  			this.Face1.isHidden = false;
-  			this.Face2.isHidden = true;
-  		break;
-  		case 2:
-  		case 3:
-  			this.Face0.isHidden = true;
-  			this.Face1.isHidden = true;
-  			this.Face2.isHidden = false;
-  		break;
-  		default:
-  		break;
-  		}
-  	}
+    public void setFace(int emo) {
+        switch (emo) {
+            case 0:
+                this.Face0.isHidden = false;
+                this.Face1.isHidden = true;
+                this.Face2.isHidden = true;
+                break;
+            case 1:
+            case 4:
+                this.Face0.isHidden = true;
+                this.Face1.isHidden = false;
+                this.Face2.isHidden = true;
+                break;
+            case 2:
+            case 3:
+                this.Face0.isHidden = true;
+                this.Face1.isHidden = true;
+                this.Face2.isHidden = false;
+                break;
+            default:
+                break;
+        }
+    }
 
-	@Override
-	public int getFieldCount()
-	{
-		return 0;
-	}
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
 
-	@Override
-	public void setField(int id, float value)
-	{
-	}
+    @Override
+    public void setField(int id, float value) {
+    }
 
-	@Override
-	public float getField(int id)
-	{
-		return 0;
-	}
+    @Override
+    public float getField(int id) {
+        return 0;
+    }
 
-	@Override
-	public void showEquip(IShipEmotion ent)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void showEquip(IShipEmotion ent) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void syncRotationGlowPart()
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void syncRotationGlowPart() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-    
+    @Override
+    public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        // TODO Auto-generated method stub
+
+    }
+
+
 }

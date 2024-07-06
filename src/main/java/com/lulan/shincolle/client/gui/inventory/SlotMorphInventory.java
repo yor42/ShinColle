@@ -9,36 +9,29 @@ import net.minecraft.item.ItemStack;
 /**
  * slots for morph inventory
  */
-public class SlotMorphInventory extends Slot
-{
+public class SlotMorphInventory extends Slot {
 
-	private int slotIndex;  //slot index
-	private CapaTeitoku capa;
+    private final int slotIndex;  //slot index
+    private final CapaTeitoku capa;
 
-	public SlotMorphInventory(CapaTeitoku capa, int slotIndex, int x, int y)
-	{
-		super(capa, slotIndex, x, y);
-		this.capa = capa;
-		this.slotIndex = slotIndex;
-	}
-
-	//設定每個slot可以放進的物品
-	@Override
-	public boolean isItemValid(ItemStack stack)
-	{	
-		if (!stack.isEmpty())
-		{
-			Item item = stack.getItem();
-			
-			//只有equip item可以塞進equip slot
-			if (item instanceof BasicEquip)
-			{
-				return true;
-			}
-		}
-		
-		return false;
+    public SlotMorphInventory(CapaTeitoku capa, int slotIndex, int x, int y) {
+        super(capa, slotIndex, x, y);
+        this.capa = capa;
+        this.slotIndex = slotIndex;
     }
-	
-	
+
+    //設定每個slot可以放進的物品
+    @Override
+    public boolean isItemValid(ItemStack stack) {
+        if (!stack.isEmpty()) {
+            Item item = stack.getItem();
+
+            //只有equip item可以塞進equip slot
+            return item instanceof BasicEquip;
+        }
+
+        return false;
+    }
+
+
 }

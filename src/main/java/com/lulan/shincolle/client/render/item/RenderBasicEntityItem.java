@@ -14,32 +14,28 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderBasicEntityItem extends Render
-{
-    
-	public static final Factory FACTORY = new Factory();
-	private static final ResourceLocation entityTexture = new ResourceLocation(Reference.TEXTURES_ENTITY+"ModelBasicEntityItem.png");
-	private ModelBasicEntityItem model = new ModelBasicEntityItem();
-	
-	
-    public RenderBasicEntityItem(RenderManager render)
-    {
+public class RenderBasicEntityItem extends Render {
+
+    public static final Factory FACTORY = new Factory();
+    private static final ResourceLocation entityTexture = new ResourceLocation(Reference.TEXTURES_ENTITY + "ModelBasicEntityItem.png");
+    private final ModelBasicEntityItem model = new ModelBasicEntityItem();
+
+
+    public RenderBasicEntityItem(RenderManager render) {
         super(render);
         this.shadowSize = 0F;
     }
-    
+
     @Override
-	protected ResourceLocation getEntityTexture(Entity entity)
-    {
-		return entityTexture;
-	}
+    protected ResourceLocation getEntityTexture(Entity entity) {
+        return entityTexture;
+    }
 
-    public void doRender(BasicEntityItem entity, double x, double y, double z, float yaw, float ptick)
-    {
+    public void doRender(BasicEntityItem entity, double x, double y, double z, float yaw, float ptick) {
 
-    	//bind texture
-        this.bindEntityTexture(entity);  		//call getEntityTexture
-        
+        //bind texture
+        this.bindEntityTexture(entity);        //call getEntityTexture
+
         //render start
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y + 0.1F, z);
@@ -52,22 +48,21 @@ public class RenderBasicEntityItem extends Render
 
     //傳入entity的都轉成abyssmissile
     @Override
-	public void doRender(Entity entity, double x, double y, double z, float yaw, float ptick)
-    {
-    	this.doRender((BasicEntityItem)entity, x, y, z, yaw, ptick);
+    public void doRender(Entity entity, double x, double y, double z, float yaw, float ptick) {
+        this.doRender((BasicEntityItem) entity, x, y, z, yaw, ptick);
     }
-    
-    /** render factory for register */
-    public static class Factory implements IRenderFactory<BasicEntityItem>
-    {
+
+    /**
+     * render factory for register
+     */
+    public static class Factory implements IRenderFactory<BasicEntityItem> {
 
         @Override
-        public Render<? super BasicEntityItem> createRenderFor(RenderManager manager)
-        {
+        public Render<? super BasicEntityItem> createRenderFor(RenderManager manager) {
             return new RenderBasicEntityItem(manager);
         }
 
     }
-    
-    
+
+
 }

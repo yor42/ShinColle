@@ -10,32 +10,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class RepairGoddess extends BasicItem
-{
-	
-	private static final String NAME = "RepairGoddess";
-	
-	public RepairGoddess()
-	{
-		super();
-		this.setTranslationKey(NAME);
-		this.setMaxStackSize(16);
-	}
+public class RepairGoddess extends BasicItem {
 
-	//display equip information
-    @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4)
-    {  	
-    	list.add(TextFormatting.RED + I18n.format("gui.shincolle:repairgoddess"));
+    private static final String NAME = "RepairGoddess";
+
+    public RepairGoddess() {
+        super();
+        this.setTranslationKey(NAME);
+        this.setMaxStackSize(16);
     }
-    
-	//item glow effect
-  	@Override
-  	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack item)
-  	{
-  		return true;
-	}
 
-  	
+    //display equip information
+    @Override
+    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+        list.add(TextFormatting.RED + I18n.format("gui.shincolle:repairgoddess"));
+    }
+
+    //item glow effect
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack item) {
+        return true;
+    }
+
+
 }

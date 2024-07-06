@@ -5,7 +5,6 @@ import com.lulan.shincolle.entity.IShipEmotion;
 import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.utility.EmotionHelper;
-
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
@@ -18,10 +17,9 @@ import net.minecraft.util.math.MathHelper;
  * ModelBattleshipHime - PinkaLulan 2015/4/12
  * Created using Tabula 4.1.1
  */
-public class ModelBattleshipHime extends ShipModelBaseAdv
-{
-	
-	public ModelRenderer BodyMain;
+public class ModelBattleshipHime extends ShipModelBaseAdv {
+
+    public ModelRenderer BodyMain;
     public ModelRenderer Neck;
     public ModelRenderer BoobR;
     public ModelRenderer BoobL;
@@ -57,19 +55,18 @@ public class ModelBattleshipHime extends ShipModelBaseAdv
     public ModelRenderer GlowBodyMain;
     public ModelRenderer GlowNeck;
     public ModelRenderer GlowHead;
-    
 
-    public ModelBattleshipHime()
-    {
+
+    public ModelBattleshipHime() {
         this.textureWidth = 128;
         this.textureHeight = 128;
         this.scale = 0.5F;
         this.offsetY = 0F;
-        this.offsetItem = new float[] {0.08F, 0.43F, -0.08F};
-        this.offsetBlock = new float[] {0.08F, 0.43F, -0.08F};
-        
+        this.offsetItem = new float[]{0.08F, 0.43F, -0.08F};
+        this.offsetBlock = new float[]{0.08F, 0.43F, -0.08F};
+
         this.setDefaultFaceModel();
-        
+
         this.HairL02 = new ModelRenderer(this, 88, 100);
         this.HairL02.setRotationPoint(0.0F, 10.0F, 0.0F);
         this.HairL02.addBox(-1.0F, 0.0F, 0.0F, 2, 12, 3, 0.0F);
@@ -201,7 +198,7 @@ public class ModelBattleshipHime extends ShipModelBaseAdv
         this.HairL01.setRotationPoint(6.5F, 0.0F, -5.0F);
         this.HairL01.addBox(-1.0F, 0.0F, 0.0F, 2, 11, 3, 0.0F);
         this.setRotateAngle(HairL01, -0.13962634015954636F, -0.17453292519943295F, -0.13962634015954636F);
-        
+
         this.HairL01.addChild(this.HairL02);
         this.HairR01.addChild(this.HairR02);
         this.LegRight01.addChild(this.ClothR02);
@@ -234,7 +231,7 @@ public class ModelBattleshipHime extends ShipModelBaseAdv
         this.BodyMain.addChild(this.ArmRight01);
         this.Head.addChild(this.HeadHR);
         this.Hair.addChild(this.HairL01);
-        
+
         //發光支架
         this.GlowBodyMain = new ModelRenderer(this, 0, 0);
         this.GlowBodyMain.setRotationPoint(0.0F, -15.0F, 0.0F);
@@ -244,7 +241,7 @@ public class ModelBattleshipHime extends ShipModelBaseAdv
         this.setRotateAngle(GlowNeck, 0.05235987755982988F, 0.0F, 0.0F);
         this.GlowHead = new ModelRenderer(this, 0, 0);
         this.GlowHead.setRotationPoint(0.0F, -1.5F, 0.0F);
-        
+
         this.GlowBodyMain.addChild(this.GlowNeck);
         this.GlowNeck.addChild(this.GlowHead);
         this.GlowHead.addChild(this.Face0);
@@ -257,528 +254,506 @@ public class ModelBattleshipHime extends ShipModelBaseAdv
         this.GlowHead.addChild(this.Mouth2);
         this.GlowHead.addChild(this.Flush0);
         this.GlowHead.addChild(this.Flush1);
-        
-     	//for held item rendering
-        armMain = new ModelRenderer[] {this.BodyMain, this.ArmRight01, this.ArmRight02};
-        armOff = new ModelRenderer[] {this.BodyMain, this.ArmLeft01, this.ArmLeft02};
+
+        //for held item rendering
+        armMain = new ModelRenderer[]{this.BodyMain, this.ArmRight01, this.ArmRight02};
+        armOff = new ModelRenderer[]{this.BodyMain, this.ArmLeft01, this.ArmLeft02};
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	//FIX: head rotation bug while riding
-    	if (f3 <= -180F) { f3 += 360F; }
-    	else if (f3 >= 180F) { f3 -= 360F; }
-    	
-    	GlStateManager.pushMatrix();
-    	GlStateManager.enableBlend();
-    	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    	GlStateManager.scale(this.scale, this.scale, this.scale);
-    	GlStateManager.translate(0F, this.offsetY, 0F);
-    	
-    	//main body
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	this.BodyMain.render(f5);
-    	
-    	//light part
-    	GlStateManager.disableLighting();
-    	GlStateManager.enableCull();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.GlowBodyMain.render(f5);
-    	GlStateManager.disableCull();
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.disableBlend();
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        //FIX: head rotation bug while riding
+        if (f3 <= -180F) {
+            f3 += 360F;
+        } else if (f3 >= 180F) {
+            f3 -= 360F;
+        }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.scale(this.scale, this.scale, this.scale);
+        GlStateManager.translate(0F, this.offsetY, 0F);
+
+        //main body
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.BodyMain.render(f5);
+
+        //light part
+        GlStateManager.disableLighting();
+        GlStateManager.enableCull();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.GlowBodyMain.render(f5);
+        GlStateManager.disableCull();
+        GlStateManager.enableLighting();
+
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
-    
-	@Override
-	public void syncRotationGlowPart()
-	{
-		this.GlowBodyMain.rotateAngleX = this.BodyMain.rotateAngleX;
-		this.GlowBodyMain.rotateAngleY = this.BodyMain.rotateAngleY;
-		this.GlowBodyMain.rotateAngleZ = this.BodyMain.rotateAngleZ;
-		this.GlowNeck.rotateAngleX = this.Neck.rotateAngleX;
-		this.GlowNeck.rotateAngleY = this.Neck.rotateAngleY;
-		this.GlowNeck.rotateAngleZ = this.Neck.rotateAngleZ;
-		this.GlowHead.rotateAngleX = this.Head.rotateAngleX;
-		this.GlowHead.rotateAngleY = this.Head.rotateAngleY;
-		this.GlowHead.rotateAngleZ = this.Head.rotateAngleZ;
-	}
 
-	@Override
-	public void showEquip(IShipEmotion ent)
-	{
-	}
+    @Override
+    public void syncRotationGlowPart() {
+        this.GlowBodyMain.rotateAngleX = this.BodyMain.rotateAngleX;
+        this.GlowBodyMain.rotateAngleY = this.BodyMain.rotateAngleY;
+        this.GlowBodyMain.rotateAngleZ = this.BodyMain.rotateAngleZ;
+        this.GlowNeck.rotateAngleX = this.Neck.rotateAngleX;
+        this.GlowNeck.rotateAngleY = this.Neck.rotateAngleY;
+        this.GlowNeck.rotateAngleZ = this.Neck.rotateAngleZ;
+        this.GlowHead.rotateAngleX = this.Head.rotateAngleX;
+        this.GlowHead.rotateAngleY = this.Head.rotateAngleY;
+        this.GlowHead.rotateAngleZ = this.Head.rotateAngleZ;
+    }
 
-	@Override
-	public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-    	float addk1 = 0F;
-  		float addk2 = 0F;
-  		float headX = 0F;
-  		float headZ = 0F;
-  		
-  		GlStateManager.translate(0F, 1.05F, 0F);
-  		this.setFaceHungry(ent);
-  		
-  		//移動頭部使其看人
-	  	this.Head.rotateAngleX = 0F; 	//上下角度
-	  	this.Head.rotateAngleY = 0F;	//左右角度 角度轉成rad 即除以57.29578
-	  	this.Head.rotateAngleZ = 0F;
-	    //正常站立動作
-	    //胸部
-  	    this.BoobL.rotateAngleX = -0.7F;
-  	    this.BoobR.rotateAngleX = -0.7F;
-	  	//Body
-	  	this.BodyMain.rotateAngleZ = 0F;
-	  	//hair
-	  	this.Hair01.rotateAngleX = 0.26F;
-	  	this.Hair02.rotateAngleX = -0.08F;
-	  	this.Hair03.rotateAngleX = -0.14F;
-	    //arm 
-	  	this.ArmLeft01.rotateAngleY = 0F;
-	    this.ArmLeft02.rotateAngleX = 0F;
-	    this.ArmLeft02.offsetX = 0F;
-	    this.ArmLeft02.offsetY = 0F;
-	    this.ArmLeft02.offsetZ = 0F;
-		this.ArmRight02.rotateAngleX = 0F;
-		this.ArmRight02.offsetX = 0F;
-		this.ArmRight02.offsetY = 0F;
-	    this.ArmRight02.offsetZ = 0F;
-		//leg
-		this.LegLeft01.rotateAngleY = 0F;
-		this.LegRight01.rotateAngleY = 0F;
-		
-    	//Body
-    	this.Head.rotateAngleX += 0.14F;
-	  	this.BodyMain.rotateAngleX = 0.4F;
-	  	this.Butt.rotateAngleX = -0.4F;
-	  	this.Butt.offsetZ = 0.19F;
-	  	this.BoobL.rotateAngleX -= 0.2F;
-	  	this.BoobR.rotateAngleX -= 0.2F;
-	    //arm 
-	  	this.ArmLeft01.rotateAngleX = -1.3F;
-	    this.ArmLeft01.rotateAngleZ = -0.1F;
-	    this.ArmLeft02.rotateAngleZ = 1.15F;
-		this.ArmRight01.rotateAngleX = -1.3F;
-		this.ArmRight01.rotateAngleZ = 0.1F;
-		this.ArmRight02.rotateAngleZ = -1.4F;
-		//leg
-		addk1 = -2.1232F;
-		addk2 = -2.0708F;
-		this.LegLeft01.rotateAngleZ = -0.2F;
-		this.LegLeft02.rotateAngleX = 1.34F;
-		this.LegRight01.rotateAngleZ = 0.2F;
-		this.LegRight02.rotateAngleX = 1.13F;
-		//hair
-		this.Hair01.rotateAngleX -= 0.2F;
-		this.Hair02.rotateAngleX -= 0.2F;
-		this.Hair03.rotateAngleX -= 0.1F;
-		
-		//移動頭髮避免穿過身體
-	    headZ = this.Head.rotateAngleZ * -0.5F;
-	    this.Hair01.rotateAngleZ = headZ;
-	  	this.Hair02.rotateAngleZ = headZ;
-	  	this.HairL01.rotateAngleZ = headZ - 0.0F;
-	  	this.HairL02.rotateAngleZ = headZ + 0.087F;
-	  	this.HairR01.rotateAngleZ = headZ + 0.0F;
-	  	this.HairR02.rotateAngleZ = headZ - 0.052F;
-	  	
-	    headX = this.Head.rotateAngleX * -0.5F;
-	    this.HairL01.rotateAngleX = headX - 0.1F;
-	  	this.HairL02.rotateAngleX = headX - 0.3F;
-	  	this.HairL03.rotateAngleX = headX - 0.0F;
-	  	this.HairR01.rotateAngleX = headX - 0.1F;
-	  	this.HairR02.rotateAngleX = headX - 0.3F;
-	  	this.HairR03.rotateAngleX = headX - 0.0F;
-	  	
-	    //leg motion
-	    this.LegLeft01.rotateAngleX = addk1;
-	    this.LegRight01.rotateAngleX = addk2;
-	}
+    @Override
+    public void showEquip(IShipEmotion ent) {
+    }
 
-	@Override
-	public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-  		float angleX = MathHelper.cos(f2*0.08F);
-  		float angleX1 = MathHelper.cos(f2*0.08F + 0.3F + f * 0.5F);
-  		float angleX2 = MathHelper.cos(f2*0.08F + 0.6F + f * 0.5F);
-  		float angleAdd1 = MathHelper.cos(f * 0.7F) * f1 * 0.7F;
-  		float angleAdd2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1 * 0.7F;
-  		float addk1 = 0F;
-  		float addk2 = 0F;
-  		float headX = 0F;
-  		float headZ = 0F;
-  		
-  		GlStateManager.translate(0F, 0.5F, 0F);
-  		
-  		//水上漂浮
-  		if (ent.getShipDepth(0) > 0D || ent.getShipDepth(1) > 0D)
-  		{
-  			GlStateManager.translate(0F, angleX * 0.05F + 0.025F, 0F);
-    	}
-  		
-  		//leg move parm
-  		addk1 = angleAdd1 - 0.122F;
-	  	addk2 = angleAdd2 - 0.174F;
+    @Override
+    public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        float addk1 = 0F;
+        float addk2 = 0F;
+        float headX = 0F;
+        float headZ = 0F;
 
-  	    //移動頭部使其看人
-	  	this.Head.rotateAngleX = f4 * 0.014F + 0.05F; 	//上下角度
-	  	this.Head.rotateAngleY = f3 * 0.01F;
-	    //正常站立動作
-	    //胸部
-  	    this.BoobL.rotateAngleX = angleX * 0.06F - 0.7F;
-  	    this.BoobR.rotateAngleX = angleX * 0.06F - 0.7F;
-	  	//Body
-  	    this.Ahoke.rotateAngleZ = angleX * 0.02F - 0.02F;
-  	    this.BodyMain.rotateAngleX = -0.1F;
-	  	this.Butt.rotateAngleX = 0.2618F;
-	  	this.Butt.offsetZ = 0F;
-	  	//hair
-	  	this.Hair01.rotateAngleX = angleX * 0.03F + 0.15F;
-	  	this.Hair02.rotateAngleX = -angleX1 * 0.04F - 0.05F;
-	  	this.Hair03.rotateAngleX = -angleX2 * 0.07F - 0.08F;
-	  	this.Hair01.rotateAngleZ = 0F;
-	  	this.Hair02.rotateAngleZ = 0F;
-	  	this.Hair03.rotateAngleZ = 0F;
-	  	this.HairL01.rotateAngleX = angleX * 0.02F - 0.14F;
-	  	this.HairL02.rotateAngleX = -angleX1 * 0.04F + 0.08F;
-	  	this.HairL03.rotateAngleX = -angleX2 * 0.07F + 0.1F;
-	  	this.HairR01.rotateAngleX = angleX * 0.02F - 0.14F;
-	  	this.HairR02.rotateAngleX = -angleX1 * 0.04F + 0.08F;
-	  	this.HairR03.rotateAngleX = -angleX2 * 0.07F + 0.1F;
-	  	this.HairL01.rotateAngleZ = -0.14F;
-	  	this.HairL02.rotateAngleZ = 0.087F;
-	  	this.HairL03.rotateAngleZ = 0.087F;
-	  	this.HairR01.rotateAngleZ = 0.14F;
-	  	this.HairR02.rotateAngleZ = -0.06F;
-	  	this.HairR03.rotateAngleZ = -0.06F;
-	    //arm 
-	  	this.ArmLeft01.rotateAngleX = angleAdd2 * 0.8F;
-	    this.ArmLeft01.rotateAngleZ = angleX * 0.08F - 0.2F;
-	    this.ArmLeft02.rotateAngleX = 0F;
-	    this.ArmLeft02.rotateAngleZ = 0F;
-	    this.ArmLeft02.offsetX = 0F;
-	    this.ArmLeft02.offsetY = 0F;
-	    this.ArmLeft02.offsetZ = 0F;
-	    this.ArmRight01.rotateAngleX = angleAdd1 * 0.8F + 0.1745F;
-		this.ArmRight01.rotateAngleZ = -angleX * 0.08F + 0.2F;
-		this.ArmRight02.rotateAngleX = 0F;
-		this.ArmRight02.rotateAngleY = 0F;
-		this.ArmRight02.rotateAngleZ = 0F;
-		this.ArmRight02.offsetX = 0F;
-	    this.ArmRight02.offsetY = 0F;
-	    this.ArmRight02.offsetZ = 0F;
-		//leg
-		this.LegLeft01.rotateAngleY = 0F;
-		this.LegLeft01.rotateAngleZ = 0.087F;
-		this.LegLeft02.rotateAngleX = 0F;
-		this.LegRight01.rotateAngleY = 0F;
-		this.LegRight01.rotateAngleZ = -0.087F;
-		this.LegRight02.rotateAngleX = 0F;
+        GlStateManager.translate(0F, 1.05F, 0F);
+        this.setFaceHungry(ent);
 
-		//奔跑動作
-	    if (ent.getIsSprinting() || f1 > 0.9F)
-	    {
-	    	//沒有特殊跑步動作
-  		}
+        //移動頭部使其看人
+        this.Head.rotateAngleX = 0F;    //上下角度
+        this.Head.rotateAngleY = 0F;    //左右角度 角度轉成rad 即除以57.29578
+        this.Head.rotateAngleZ = 0F;
+        //正常站立動作
+        //胸部
+        this.BoobL.rotateAngleX = -0.7F;
+        this.BoobR.rotateAngleX = -0.7F;
+        //Body
+        this.BodyMain.rotateAngleZ = 0F;
+        //hair
+        this.Hair01.rotateAngleX = 0.26F;
+        this.Hair02.rotateAngleX = -0.08F;
+        this.Hair03.rotateAngleX = -0.14F;
+        //arm
+        this.ArmLeft01.rotateAngleY = 0F;
+        this.ArmLeft02.rotateAngleX = 0F;
+        this.ArmLeft02.offsetX = 0F;
+        this.ArmLeft02.offsetY = 0F;
+        this.ArmLeft02.offsetZ = 0F;
+        this.ArmRight02.rotateAngleX = 0F;
+        this.ArmRight02.offsetX = 0F;
+        this.ArmRight02.offsetY = 0F;
+        this.ArmRight02.offsetZ = 0F;
+        //leg
+        this.LegLeft01.rotateAngleY = 0F;
+        this.LegRight01.rotateAngleY = 0F;
 
-	    //head tilt angle
-	    this.Head.rotateAngleZ = EmotionHelper.getHeadTiltAngle(ent, f2);
-	    
-	    //潛行, 蹲下動作
-	    if (ent.getIsSneaking())
-	    {
-	    	GlStateManager.translate(0F, 0.08F, 0F);
-	    	//Body
-	    	this.Head.rotateAngleX -= 0.6283F;
-		  	this.BodyMain.rotateAngleX = 0.8727F;
-		    //arm 
-		  	this.ArmLeft01.rotateAngleX = -0.35F;
-		    this.ArmLeft01.rotateAngleZ = 0.2618F;
-			this.ArmRight01.rotateAngleX = -0.35F;
-			this.ArmRight01.rotateAngleZ = -0.2618F;
-			//leg
-			addk1 -= 0.88F;
-			addk2 -= 0.88F;
-			//hair
-			this.Hair01.rotateAngleX += 0.37F;
-			this.Hair02.rotateAngleX += 0.23F;
-			this.Hair03.rotateAngleX -= 0.1F;
-  		}//end if sneaking
-  		
-	    //騎乘動作 
-	    if (ent.getIsSitting() && !ent.getIsRiding())
-	    {
-	    	if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED)
-	    	{
-	    		GlStateManager.translate(0F, 0.65F, 0F);
-		    	//Body
-		    	this.Head.rotateAngleX = -1.2217F;
-		    	this.Head.rotateAngleY = this.Head.rotateAngleY * 0.5F;
-			  	this.BodyMain.rotateAngleX = 1.2217F;
-			    //arm 
-			  	this.ArmLeft01.rotateAngleX = -1.9199F;
-			  	this.ArmLeft01.rotateAngleZ = -0.1745F;
-			    this.ArmLeft02.rotateAngleX = -2.31F;
-			    this.ArmLeft02.offsetY = 0.22F;
-			    this.ArmLeft02.offsetZ = -0.21F;
-				this.ArmRight01.rotateAngleX = -1.9199F;
-				this.ArmRight01.rotateAngleZ = 0.1745F;
-				this.ArmRight02.rotateAngleX = -2.31F;
-				this.ArmRight02.offsetY = 0.22F;
-			    this.ArmRight02.offsetZ = -0.21F;
-				//leg
-				addk1 = 0F;
-				addk2 = 0F;
-				this.LegLeft02.rotateAngleX = angleX * 0.4F + 1F;
-				this.LegRight02.rotateAngleX = -angleX * 0.4F + 1F;
-				//hair
-				this.Hair01.rotateAngleX += 0.1F;
-				this.Hair02.rotateAngleX += 0.05F;
-				this.HairL01.rotateAngleX -= 0.3F;
-				this.HairR01.rotateAngleX -= 0.3F;
-				this.HairL02.rotateAngleX += 0.3F;
-				this.HairR02.rotateAngleX += 0.3F;
-	    	}
-	    	else
-	    	{
-	    		GlStateManager.translate(0F, 0.33F, 0F);
-		    	//Body
-		    	this.Head.rotateAngleX += 0.14F;
-			  	this.BodyMain.rotateAngleX = -0.4363F;
-			  	this.BoobL.rotateAngleX -= 0.25F;
-			  	this.BoobR.rotateAngleX -= 0.25F;
-			    //arm 
-			  	this.ArmLeft01.rotateAngleX = -0.3142F;
-			    this.ArmLeft01.rotateAngleZ = 0.3490F;
-			    this.ArmLeft02.rotateAngleZ = 1.15F;
-				this.ArmRight01.rotateAngleX = -0.4363F;
-				this.ArmRight01.rotateAngleZ = -0.2793F;
-				this.ArmRight02.rotateAngleZ = -1.4F;
-				//leg
-				addk1 = -1.3090F;
-				addk2 = -1.7F;
-				this.LegLeft01.rotateAngleY = 0.3142F;
-				this.LegLeft02.rotateAngleX = 1.0472F;
-				this.LegRight01.rotateAngleY = -0.35F;
-				this.LegRight01.rotateAngleZ = -0.2618F;
-				this.LegRight02.rotateAngleX = 0.9F;
-				//hair
-				this.Hair01.rotateAngleX += 0.12F;
-				this.Hair02.rotateAngleX += 0.15F;
-				this.Hair03.rotateAngleX += 0.25F;
-	    	}
-  		}//end sitting
-	    
-	    if (ent.getIsRiding())
-	    {
-	    	if (((Entity) ent).getRidingEntity() instanceof BasicEntityMount)
-	    	{
-	    		if (ent.getIsSitting())
-	    		{
-		    		if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED)
-		    		{
-		    			GlStateManager.translate(0F, 0.68F, -0.05F);
-				    	//Body
-				    	this.Head.rotateAngleX = -1.2217F;
-				    	this.Head.rotateAngleY = this.Head.rotateAngleY / 2F;
-					  	this.BodyMain.rotateAngleX = 1.2217F;
-					  	//arm 
-					  	this.ArmLeft01.rotateAngleX = -1.9199F;
-					  	this.ArmLeft01.rotateAngleZ = -0.1745F;
-					    this.ArmLeft02.rotateAngleX = -2.31F;
-					    this.ArmLeft02.offsetY = 0.22F;
-					    this.ArmLeft02.offsetZ = -0.21F;
-						this.ArmRight01.rotateAngleX = -1.9199F;
-						this.ArmRight01.rotateAngleZ = 0.1745F;
-						this.ArmRight02.rotateAngleX = -2.31F;
-						this.ArmRight02.offsetY = 0.22F;
-					    this.ArmRight02.offsetZ = -0.21F;
-					    //leg
-						addk1 = 0F;
-						addk2 = 0F;
-						this.LegLeft02.rotateAngleX = angleX * 0.4F + 1F;
-						this.LegRight02.rotateAngleX = -angleX * 0.4F + 1F;
-						//hair
-						this.Hair01.rotateAngleX += 0.1F;
-						this.Hair02.rotateAngleX += 0.05F;
-						this.HairL01.rotateAngleX -= 0.3F;
-						this.HairR01.rotateAngleX -= 0.3F;
-						this.HairL02.rotateAngleX += 0.3F;
-						this.HairR02.rotateAngleX += 0.3F;
-			    	}
-			    	else
-			    	{
-			    		GlStateManager.translate(0F, 0.51F, -0.05F);
-			    		//Body
-				    	this.Head.rotateAngleX += 0.14F;
-					  	this.BodyMain.rotateAngleX = -0.4363F;
-					  	this.BoobL.rotateAngleX -= 0.25F;
-					  	this.BoobR.rotateAngleX -= 0.25F;
-					    //arm 
-					  	this.ArmLeft01.rotateAngleX = -0.3142F;
-					    this.ArmLeft01.rotateAngleZ = 0.3490F;
-					    this.ArmLeft02.rotateAngleZ = 1.15F;
-						this.ArmRight01.rotateAngleX = -0.4363F;
-						this.ArmRight01.rotateAngleZ = -0.2793F;
-						this.ArmRight02.rotateAngleZ = -1.4F;
-						//leg
-						addk1 = -1.3090F;
-						addk2 = -1.7F;
-						this.LegLeft01.rotateAngleY = 0.3142F;
-						this.LegLeft02.rotateAngleX = 1.0472F;
-						this.LegRight01.rotateAngleY = -0.35F;
-						this.LegRight01.rotateAngleZ = -0.2618F;
-						this.LegRight02.rotateAngleX = 0.9F;
-						//hair
-						this.Hair01.rotateAngleX += 0.12F;
-						this.Hair02.rotateAngleX += 0.15F;
-						this.Hair03.rotateAngleX += 0.25F;
-			    	}
-		    	}//end if sitting
-		    	else
-		    	{
-		    		GlStateManager.translate(0F, 0.17F, 0F);
-			    	//Body
-			    	this.Head.rotateAngleX += 0.1745F;
-				  	this.BodyMain.rotateAngleX = -0.35F;
-				    //arm
-				  	this.ArmLeft01.rotateAngleX = -0.2F;
-				    this.ArmLeft01.rotateAngleZ = 0.3490F;
-				    this.ArmLeft02.rotateAngleZ = 1.15F;
-					this.ArmRight01.rotateAngleX = -0.3F;
-					this.ArmRight01.rotateAngleZ = -0.2793F;
-					this.ArmRight02.rotateAngleZ = -1.4F;
-					//leg
-					addk1 = 0.1745F;
-					addk2 = -0.8727F;
-					this.LegLeft01.rotateAngleZ = -0.1F;
-					this.LegRight01.rotateAngleZ = 0.1F;
-					this.LegRight02.rotateAngleX = 1.0472F;
-					//hair
-					this.Hair01.rotateAngleX += 0.12F;
-					this.Hair02.rotateAngleX += 0.22F;
-					this.Hair03.rotateAngleX += 0.25F;    		
-		    	}
-	    	}//end ship mount
-	    	else
-	    	{	//normal mount ex: cart
-	    		if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED)
-	    		{
-	    			GlStateManager.translate(0F, 1.3F, 0F);
-			    	//Body
-			    	this.Head.rotateAngleX = -1.2217F;
-			    	this.Head.rotateAngleY = this.Head.rotateAngleY / 2F;
-				  	this.BodyMain.rotateAngleX = 1.2217F;
-				  	//arm 
-				  	this.ArmLeft01.rotateAngleX = -1.9199F;
-				  	this.ArmLeft01.rotateAngleZ = -0.1745F;
-				    this.ArmLeft02.rotateAngleX = -2.31F;
-				    this.ArmLeft02.offsetY = 0.22F;
-				    this.ArmLeft02.offsetZ = -0.21F;
-					this.ArmRight01.rotateAngleX = -1.9199F;
-					this.ArmRight01.rotateAngleZ = 0.1745F;
-					this.ArmRight02.rotateAngleX = -2.31F;
-					this.ArmRight02.offsetY = 0.22F;
-				    this.ArmRight02.offsetZ = -0.21F;
-				    //leg
-					addk1 = 0F;
-					addk2 = 0F;
-					this.LegLeft02.rotateAngleX = angleX * 0.4F + 1F;
-					this.LegRight02.rotateAngleX = -angleX * 0.4F + 1F;
-					//hair
-					this.Hair01.rotateAngleX += 0.1F;
-					this.Hair02.rotateAngleX += 0.05F;
-					this.HairL01.rotateAngleX -= 0.3F;
-					this.HairR01.rotateAngleX -= 0.3F;
-					this.HairL02.rotateAngleX += 0.3F;
-					this.HairR02.rotateAngleX += 0.3F;
-		    	}
-		    	else
-		    	{
-		    		GlStateManager.translate(0F, 0.8F, 0F);
-			    	//Body
-			    	this.Head.rotateAngleX += 0.14F;
-				  	this.BodyMain.rotateAngleX = -0.4363F;
-				    //arm 
-				  	this.ArmLeft01.rotateAngleX = -0.3142F;
-				    this.ArmLeft01.rotateAngleZ = 0.3490F;
-				    this.ArmLeft02.rotateAngleZ = 1.15F;
-					this.ArmRight01.rotateAngleX = -0.4363F;
-					this.ArmRight01.rotateAngleZ = -0.2793F;
-					this.ArmRight02.rotateAngleZ = -1.4F;
-					//leg
-					addk1 = -1.3090F;
-					addk2 = -1.7F;
-					this.LegLeft01.rotateAngleY = 0.3142F;
-					this.LegLeft02.rotateAngleX = 1.0472F;
-					this.LegRight01.rotateAngleY = -0.35F;
-					this.LegRight01.rotateAngleZ = -0.2618F;
-					this.LegRight02.rotateAngleX = 0.9F;
-					//hair
-					this.Hair01.rotateAngleX += 0.12F;
-					this.Hair02.rotateAngleX += 0.15F;
-					this.Hair03.rotateAngleX += 0.25F;
-		    	}
-	    	}
-	    }//end ridding
-    
-	    //攻擊動作    
-	    if (ent.getAttackTick() > 20)
-	    {
-	    	//arm
-		  	this.ArmLeft01.rotateAngleX = -1.6F;
-		  	this.ArmLeft01.rotateAngleY = 0F;
-		    this.ArmLeft01.rotateAngleZ = 0.21F;
-		    this.ArmLeft02.rotateAngleX = 0F;
-		    this.ArmLeft02.rotateAngleZ = 0F;
-	    }
-	    
-	    //swing arm
-	  	float f6 = ent.getSwingTime(f2 - (int)f2);
-	  	if (f6 != 0F)
-	  	{
-	  		float f7 = MathHelper.sin(f6 * f6 * (float)Math.PI);
-	        float f8 = MathHelper.sin(MathHelper.sqrt(f6) * (float)Math.PI);
-	        this.ArmRight01.rotateAngleX = -0.4F;
-	        this.ArmRight01.rotateAngleY = 0F;
-	        this.ArmRight01.rotateAngleZ = -0.2F;
-	        this.ArmRight01.rotateAngleX += -f8 * 80.0F * Values.N.DIV_PI_180;
-	        this.ArmRight01.rotateAngleY += -f7 * 20.0F * Values.N.DIV_PI_180 + 0.2F;
-	        this.ArmRight01.rotateAngleZ += -f8 * 20.0F * Values.N.DIV_PI_180;
-	        this.ArmRight02.rotateAngleX = 0F;
-	        this.ArmRight02.rotateAngleY = 0F;
-	        this.ArmRight02.rotateAngleZ = 0F;
-	  	}
-	  	
-	  	//鬢毛調整
-	    headX = this.Head.rotateAngleX * -0.5F;
-	    headZ = this.Head.rotateAngleZ * -0.5F;
-	    this.Hair01.rotateAngleX += headX;
-	    this.Hair01.rotateAngleZ += headZ;
-	    this.Hair02.rotateAngleX += headX * 0.5F;
-	    this.Hair02.rotateAngleZ += headZ * 0.5F;
-	    this.Hair03.rotateAngleX += headX * 0.5F;
-	    this.Hair03.rotateAngleZ += headZ * 0.5F;
-		this.HairL01.rotateAngleX += headX;
-	  	this.HairL02.rotateAngleX += headX * 0.5F;
-	  	this.HairL03.rotateAngleX += headX * 0.5F;
-	  	this.HairR01.rotateAngleX += headX;
-	  	this.HairR02.rotateAngleX += headX * 0.5F;
-	  	this.HairR03.rotateAngleX += headX * 0.5F;
-	  	this.HairL01.rotateAngleZ += headZ;
-	  	this.HairL02.rotateAngleZ += headZ * 0.5F;
-	  	this.HairL03.rotateAngleZ += headZ * 0.5F;
-	  	this.HairR01.rotateAngleZ += headZ;
-	  	this.HairR02.rotateAngleZ += headZ * 0.5F;
-	  	this.HairR03.rotateAngleZ += headZ * 0.5F;
-	    
-	    //leg motion
-	    this.LegLeft01.rotateAngleX = addk1;
-	    this.LegRight01.rotateAngleX = addk2;
-	}
+        //Body
+        this.Head.rotateAngleX += 0.14F;
+        this.BodyMain.rotateAngleX = 0.4F;
+        this.Butt.rotateAngleX = -0.4F;
+        this.Butt.offsetZ = 0.19F;
+        this.BoobL.rotateAngleX -= 0.2F;
+        this.BoobR.rotateAngleX -= 0.2F;
+        //arm
+        this.ArmLeft01.rotateAngleX = -1.3F;
+        this.ArmLeft01.rotateAngleZ = -0.1F;
+        this.ArmLeft02.rotateAngleZ = 1.15F;
+        this.ArmRight01.rotateAngleX = -1.3F;
+        this.ArmRight01.rotateAngleZ = 0.1F;
+        this.ArmRight02.rotateAngleZ = -1.4F;
+        //leg
+        addk1 = -2.1232F;
+        addk2 = -2.0708F;
+        this.LegLeft01.rotateAngleZ = -0.2F;
+        this.LegLeft02.rotateAngleX = 1.34F;
+        this.LegRight01.rotateAngleZ = 0.2F;
+        this.LegRight02.rotateAngleX = 1.13F;
+        //hair
+        this.Hair01.rotateAngleX -= 0.2F;
+        this.Hair02.rotateAngleX -= 0.2F;
+        this.Hair03.rotateAngleX -= 0.1F;
 
-    
+        //移動頭髮避免穿過身體
+        headZ = this.Head.rotateAngleZ * -0.5F;
+        this.Hair01.rotateAngleZ = headZ;
+        this.Hair02.rotateAngleZ = headZ;
+        this.HairL01.rotateAngleZ = headZ - 0.0F;
+        this.HairL02.rotateAngleZ = headZ + 0.087F;
+        this.HairR01.rotateAngleZ = headZ + 0.0F;
+        this.HairR02.rotateAngleZ = headZ - 0.052F;
+
+        headX = this.Head.rotateAngleX * -0.5F;
+        this.HairL01.rotateAngleX = headX - 0.1F;
+        this.HairL02.rotateAngleX = headX - 0.3F;
+        this.HairL03.rotateAngleX = headX - 0.0F;
+        this.HairR01.rotateAngleX = headX - 0.1F;
+        this.HairR02.rotateAngleX = headX - 0.3F;
+        this.HairR03.rotateAngleX = headX - 0.0F;
+
+        //leg motion
+        this.LegLeft01.rotateAngleX = addk1;
+        this.LegRight01.rotateAngleX = addk2;
+    }
+
+    @Override
+    public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        float angleX = MathHelper.cos(f2 * 0.08F);
+        float angleX1 = MathHelper.cos(f2 * 0.08F + 0.3F + f * 0.5F);
+        float angleX2 = MathHelper.cos(f2 * 0.08F + 0.6F + f * 0.5F);
+        float angleAdd1 = MathHelper.cos(f * 0.7F) * f1 * 0.7F;
+        float angleAdd2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1 * 0.7F;
+        float addk1 = 0F;
+        float addk2 = 0F;
+        float headX = 0F;
+        float headZ = 0F;
+
+        GlStateManager.translate(0F, 0.5F, 0F);
+
+        //水上漂浮
+        if (ent.getShipDepth(0) > 0D || ent.getShipDepth(1) > 0D) {
+            GlStateManager.translate(0F, angleX * 0.05F + 0.025F, 0F);
+        }
+
+        //leg move parm
+        addk1 = angleAdd1 - 0.122F;
+        addk2 = angleAdd2 - 0.174F;
+
+        //移動頭部使其看人
+        this.Head.rotateAngleX = f4 * 0.014F + 0.05F;    //上下角度
+        this.Head.rotateAngleY = f3 * 0.01F;
+        //正常站立動作
+        //胸部
+        this.BoobL.rotateAngleX = angleX * 0.06F - 0.7F;
+        this.BoobR.rotateAngleX = angleX * 0.06F - 0.7F;
+        //Body
+        this.Ahoke.rotateAngleZ = angleX * 0.02F - 0.02F;
+        this.BodyMain.rotateAngleX = -0.1F;
+        this.Butt.rotateAngleX = 0.2618F;
+        this.Butt.offsetZ = 0F;
+        //hair
+        this.Hair01.rotateAngleX = angleX * 0.03F + 0.15F;
+        this.Hair02.rotateAngleX = -angleX1 * 0.04F - 0.05F;
+        this.Hair03.rotateAngleX = -angleX2 * 0.07F - 0.08F;
+        this.Hair01.rotateAngleZ = 0F;
+        this.Hair02.rotateAngleZ = 0F;
+        this.Hair03.rotateAngleZ = 0F;
+        this.HairL01.rotateAngleX = angleX * 0.02F - 0.14F;
+        this.HairL02.rotateAngleX = -angleX1 * 0.04F + 0.08F;
+        this.HairL03.rotateAngleX = -angleX2 * 0.07F + 0.1F;
+        this.HairR01.rotateAngleX = angleX * 0.02F - 0.14F;
+        this.HairR02.rotateAngleX = -angleX1 * 0.04F + 0.08F;
+        this.HairR03.rotateAngleX = -angleX2 * 0.07F + 0.1F;
+        this.HairL01.rotateAngleZ = -0.14F;
+        this.HairL02.rotateAngleZ = 0.087F;
+        this.HairL03.rotateAngleZ = 0.087F;
+        this.HairR01.rotateAngleZ = 0.14F;
+        this.HairR02.rotateAngleZ = -0.06F;
+        this.HairR03.rotateAngleZ = -0.06F;
+        //arm
+        this.ArmLeft01.rotateAngleX = angleAdd2 * 0.8F;
+        this.ArmLeft01.rotateAngleZ = angleX * 0.08F - 0.2F;
+        this.ArmLeft02.rotateAngleX = 0F;
+        this.ArmLeft02.rotateAngleZ = 0F;
+        this.ArmLeft02.offsetX = 0F;
+        this.ArmLeft02.offsetY = 0F;
+        this.ArmLeft02.offsetZ = 0F;
+        this.ArmRight01.rotateAngleX = angleAdd1 * 0.8F + 0.1745F;
+        this.ArmRight01.rotateAngleZ = -angleX * 0.08F + 0.2F;
+        this.ArmRight02.rotateAngleX = 0F;
+        this.ArmRight02.rotateAngleY = 0F;
+        this.ArmRight02.rotateAngleZ = 0F;
+        this.ArmRight02.offsetX = 0F;
+        this.ArmRight02.offsetY = 0F;
+        this.ArmRight02.offsetZ = 0F;
+        //leg
+        this.LegLeft01.rotateAngleY = 0F;
+        this.LegLeft01.rotateAngleZ = 0.087F;
+        this.LegLeft02.rotateAngleX = 0F;
+        this.LegRight01.rotateAngleY = 0F;
+        this.LegRight01.rotateAngleZ = -0.087F;
+        this.LegRight02.rotateAngleX = 0F;
+
+        //奔跑動作
+        if (ent.getIsSprinting() || f1 > 0.9F) {
+            //沒有特殊跑步動作
+        }
+
+        //head tilt angle
+        this.Head.rotateAngleZ = EmotionHelper.getHeadTiltAngle(ent, f2);
+
+        //潛行, 蹲下動作
+        if (ent.getIsSneaking()) {
+            GlStateManager.translate(0F, 0.08F, 0F);
+            //Body
+            this.Head.rotateAngleX -= 0.6283F;
+            this.BodyMain.rotateAngleX = 0.8727F;
+            //arm
+            this.ArmLeft01.rotateAngleX = -0.35F;
+            this.ArmLeft01.rotateAngleZ = 0.2618F;
+            this.ArmRight01.rotateAngleX = -0.35F;
+            this.ArmRight01.rotateAngleZ = -0.2618F;
+            //leg
+            addk1 -= 0.88F;
+            addk2 -= 0.88F;
+            //hair
+            this.Hair01.rotateAngleX += 0.37F;
+            this.Hair02.rotateAngleX += 0.23F;
+            this.Hair03.rotateAngleX -= 0.1F;
+        }//end if sneaking
+
+        //騎乘動作
+        if (ent.getIsSitting() && !ent.getIsRiding()) {
+            if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
+                GlStateManager.translate(0F, 0.65F, 0F);
+                //Body
+                this.Head.rotateAngleX = -1.2217F;
+                this.Head.rotateAngleY = this.Head.rotateAngleY * 0.5F;
+                this.BodyMain.rotateAngleX = 1.2217F;
+                //arm
+                this.ArmLeft01.rotateAngleX = -1.9199F;
+                this.ArmLeft01.rotateAngleZ = -0.1745F;
+                this.ArmLeft02.rotateAngleX = -2.31F;
+                this.ArmLeft02.offsetY = 0.22F;
+                this.ArmLeft02.offsetZ = -0.21F;
+                this.ArmRight01.rotateAngleX = -1.9199F;
+                this.ArmRight01.rotateAngleZ = 0.1745F;
+                this.ArmRight02.rotateAngleX = -2.31F;
+                this.ArmRight02.offsetY = 0.22F;
+                this.ArmRight02.offsetZ = -0.21F;
+                //leg
+                addk1 = 0F;
+                addk2 = 0F;
+                this.LegLeft02.rotateAngleX = angleX * 0.4F + 1F;
+                this.LegRight02.rotateAngleX = -angleX * 0.4F + 1F;
+                //hair
+                this.Hair01.rotateAngleX += 0.1F;
+                this.Hair02.rotateAngleX += 0.05F;
+                this.HairL01.rotateAngleX -= 0.3F;
+                this.HairR01.rotateAngleX -= 0.3F;
+                this.HairL02.rotateAngleX += 0.3F;
+                this.HairR02.rotateAngleX += 0.3F;
+            } else {
+                GlStateManager.translate(0F, 0.33F, 0F);
+                //Body
+                this.Head.rotateAngleX += 0.14F;
+                this.BodyMain.rotateAngleX = -0.4363F;
+                this.BoobL.rotateAngleX -= 0.25F;
+                this.BoobR.rotateAngleX -= 0.25F;
+                //arm
+                this.ArmLeft01.rotateAngleX = -0.3142F;
+                this.ArmLeft01.rotateAngleZ = 0.3490F;
+                this.ArmLeft02.rotateAngleZ = 1.15F;
+                this.ArmRight01.rotateAngleX = -0.4363F;
+                this.ArmRight01.rotateAngleZ = -0.2793F;
+                this.ArmRight02.rotateAngleZ = -1.4F;
+                //leg
+                addk1 = -1.3090F;
+                addk2 = -1.7F;
+                this.LegLeft01.rotateAngleY = 0.3142F;
+                this.LegLeft02.rotateAngleX = 1.0472F;
+                this.LegRight01.rotateAngleY = -0.35F;
+                this.LegRight01.rotateAngleZ = -0.2618F;
+                this.LegRight02.rotateAngleX = 0.9F;
+                //hair
+                this.Hair01.rotateAngleX += 0.12F;
+                this.Hair02.rotateAngleX += 0.15F;
+                this.Hair03.rotateAngleX += 0.25F;
+            }
+        }//end sitting
+
+        if (ent.getIsRiding()) {
+            if (((Entity) ent).getRidingEntity() instanceof BasicEntityMount) {
+                if (ent.getIsSitting()) {
+                    if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
+                        GlStateManager.translate(0F, 0.68F, -0.05F);
+                        //Body
+                        this.Head.rotateAngleX = -1.2217F;
+                        this.Head.rotateAngleY = this.Head.rotateAngleY / 2F;
+                        this.BodyMain.rotateAngleX = 1.2217F;
+                        //arm
+                        this.ArmLeft01.rotateAngleX = -1.9199F;
+                        this.ArmLeft01.rotateAngleZ = -0.1745F;
+                        this.ArmLeft02.rotateAngleX = -2.31F;
+                        this.ArmLeft02.offsetY = 0.22F;
+                        this.ArmLeft02.offsetZ = -0.21F;
+                        this.ArmRight01.rotateAngleX = -1.9199F;
+                        this.ArmRight01.rotateAngleZ = 0.1745F;
+                        this.ArmRight02.rotateAngleX = -2.31F;
+                        this.ArmRight02.offsetY = 0.22F;
+                        this.ArmRight02.offsetZ = -0.21F;
+                        //leg
+                        addk1 = 0F;
+                        addk2 = 0F;
+                        this.LegLeft02.rotateAngleX = angleX * 0.4F + 1F;
+                        this.LegRight02.rotateAngleX = -angleX * 0.4F + 1F;
+                        //hair
+                        this.Hair01.rotateAngleX += 0.1F;
+                        this.Hair02.rotateAngleX += 0.05F;
+                        this.HairL01.rotateAngleX -= 0.3F;
+                        this.HairR01.rotateAngleX -= 0.3F;
+                        this.HairL02.rotateAngleX += 0.3F;
+                        this.HairR02.rotateAngleX += 0.3F;
+                    } else {
+                        GlStateManager.translate(0F, 0.51F, -0.05F);
+                        //Body
+                        this.Head.rotateAngleX += 0.14F;
+                        this.BodyMain.rotateAngleX = -0.4363F;
+                        this.BoobL.rotateAngleX -= 0.25F;
+                        this.BoobR.rotateAngleX -= 0.25F;
+                        //arm
+                        this.ArmLeft01.rotateAngleX = -0.3142F;
+                        this.ArmLeft01.rotateAngleZ = 0.3490F;
+                        this.ArmLeft02.rotateAngleZ = 1.15F;
+                        this.ArmRight01.rotateAngleX = -0.4363F;
+                        this.ArmRight01.rotateAngleZ = -0.2793F;
+                        this.ArmRight02.rotateAngleZ = -1.4F;
+                        //leg
+                        addk1 = -1.3090F;
+                        addk2 = -1.7F;
+                        this.LegLeft01.rotateAngleY = 0.3142F;
+                        this.LegLeft02.rotateAngleX = 1.0472F;
+                        this.LegRight01.rotateAngleY = -0.35F;
+                        this.LegRight01.rotateAngleZ = -0.2618F;
+                        this.LegRight02.rotateAngleX = 0.9F;
+                        //hair
+                        this.Hair01.rotateAngleX += 0.12F;
+                        this.Hair02.rotateAngleX += 0.15F;
+                        this.Hair03.rotateAngleX += 0.25F;
+                    }
+                }//end if sitting
+                else {
+                    GlStateManager.translate(0F, 0.17F, 0F);
+                    //Body
+                    this.Head.rotateAngleX += 0.1745F;
+                    this.BodyMain.rotateAngleX = -0.35F;
+                    //arm
+                    this.ArmLeft01.rotateAngleX = -0.2F;
+                    this.ArmLeft01.rotateAngleZ = 0.3490F;
+                    this.ArmLeft02.rotateAngleZ = 1.15F;
+                    this.ArmRight01.rotateAngleX = -0.3F;
+                    this.ArmRight01.rotateAngleZ = -0.2793F;
+                    this.ArmRight02.rotateAngleZ = -1.4F;
+                    //leg
+                    addk1 = 0.1745F;
+                    addk2 = -0.8727F;
+                    this.LegLeft01.rotateAngleZ = -0.1F;
+                    this.LegRight01.rotateAngleZ = 0.1F;
+                    this.LegRight02.rotateAngleX = 1.0472F;
+                    //hair
+                    this.Hair01.rotateAngleX += 0.12F;
+                    this.Hair02.rotateAngleX += 0.22F;
+                    this.Hair03.rotateAngleX += 0.25F;
+                }
+            }//end ship mount
+            else {    //normal mount ex: cart
+                if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
+                    GlStateManager.translate(0F, 1.3F, 0F);
+                    //Body
+                    this.Head.rotateAngleX = -1.2217F;
+                    this.Head.rotateAngleY = this.Head.rotateAngleY / 2F;
+                    this.BodyMain.rotateAngleX = 1.2217F;
+                    //arm
+                    this.ArmLeft01.rotateAngleX = -1.9199F;
+                    this.ArmLeft01.rotateAngleZ = -0.1745F;
+                    this.ArmLeft02.rotateAngleX = -2.31F;
+                    this.ArmLeft02.offsetY = 0.22F;
+                    this.ArmLeft02.offsetZ = -0.21F;
+                    this.ArmRight01.rotateAngleX = -1.9199F;
+                    this.ArmRight01.rotateAngleZ = 0.1745F;
+                    this.ArmRight02.rotateAngleX = -2.31F;
+                    this.ArmRight02.offsetY = 0.22F;
+                    this.ArmRight02.offsetZ = -0.21F;
+                    //leg
+                    addk1 = 0F;
+                    addk2 = 0F;
+                    this.LegLeft02.rotateAngleX = angleX * 0.4F + 1F;
+                    this.LegRight02.rotateAngleX = -angleX * 0.4F + 1F;
+                    //hair
+                    this.Hair01.rotateAngleX += 0.1F;
+                    this.Hair02.rotateAngleX += 0.05F;
+                    this.HairL01.rotateAngleX -= 0.3F;
+                    this.HairR01.rotateAngleX -= 0.3F;
+                    this.HairL02.rotateAngleX += 0.3F;
+                    this.HairR02.rotateAngleX += 0.3F;
+                } else {
+                    GlStateManager.translate(0F, 0.8F, 0F);
+                    //Body
+                    this.Head.rotateAngleX += 0.14F;
+                    this.BodyMain.rotateAngleX = -0.4363F;
+                    //arm
+                    this.ArmLeft01.rotateAngleX = -0.3142F;
+                    this.ArmLeft01.rotateAngleZ = 0.3490F;
+                    this.ArmLeft02.rotateAngleZ = 1.15F;
+                    this.ArmRight01.rotateAngleX = -0.4363F;
+                    this.ArmRight01.rotateAngleZ = -0.2793F;
+                    this.ArmRight02.rotateAngleZ = -1.4F;
+                    //leg
+                    addk1 = -1.3090F;
+                    addk2 = -1.7F;
+                    this.LegLeft01.rotateAngleY = 0.3142F;
+                    this.LegLeft02.rotateAngleX = 1.0472F;
+                    this.LegRight01.rotateAngleY = -0.35F;
+                    this.LegRight01.rotateAngleZ = -0.2618F;
+                    this.LegRight02.rotateAngleX = 0.9F;
+                    //hair
+                    this.Hair01.rotateAngleX += 0.12F;
+                    this.Hair02.rotateAngleX += 0.15F;
+                    this.Hair03.rotateAngleX += 0.25F;
+                }
+            }
+        }//end ridding
+
+        //攻擊動作
+        if (ent.getAttackTick() > 20) {
+            //arm
+            this.ArmLeft01.rotateAngleX = -1.6F;
+            this.ArmLeft01.rotateAngleY = 0F;
+            this.ArmLeft01.rotateAngleZ = 0.21F;
+            this.ArmLeft02.rotateAngleX = 0F;
+            this.ArmLeft02.rotateAngleZ = 0F;
+        }
+
+        //swing arm
+        float f6 = ent.getSwingTime(f2 - (int) f2);
+        if (f6 != 0F) {
+            float f7 = MathHelper.sin(f6 * f6 * (float) Math.PI);
+            float f8 = MathHelper.sin(MathHelper.sqrt(f6) * (float) Math.PI);
+            this.ArmRight01.rotateAngleX = -0.4F;
+            this.ArmRight01.rotateAngleY = 0F;
+            this.ArmRight01.rotateAngleZ = -0.2F;
+            this.ArmRight01.rotateAngleX += -f8 * 80.0F * Values.N.DIV_PI_180;
+            this.ArmRight01.rotateAngleY += -f7 * 20.0F * Values.N.DIV_PI_180 + 0.2F;
+            this.ArmRight01.rotateAngleZ += -f8 * 20.0F * Values.N.DIV_PI_180;
+            this.ArmRight02.rotateAngleX = 0F;
+            this.ArmRight02.rotateAngleY = 0F;
+            this.ArmRight02.rotateAngleZ = 0F;
+        }
+
+        //鬢毛調整
+        headX = this.Head.rotateAngleX * -0.5F;
+        headZ = this.Head.rotateAngleZ * -0.5F;
+        this.Hair01.rotateAngleX += headX;
+        this.Hair01.rotateAngleZ += headZ;
+        this.Hair02.rotateAngleX += headX * 0.5F;
+        this.Hair02.rotateAngleZ += headZ * 0.5F;
+        this.Hair03.rotateAngleX += headX * 0.5F;
+        this.Hair03.rotateAngleZ += headZ * 0.5F;
+        this.HairL01.rotateAngleX += headX;
+        this.HairL02.rotateAngleX += headX * 0.5F;
+        this.HairL03.rotateAngleX += headX * 0.5F;
+        this.HairR01.rotateAngleX += headX;
+        this.HairR02.rotateAngleX += headX * 0.5F;
+        this.HairR03.rotateAngleX += headX * 0.5F;
+        this.HairL01.rotateAngleZ += headZ;
+        this.HairL02.rotateAngleZ += headZ * 0.5F;
+        this.HairL03.rotateAngleZ += headZ * 0.5F;
+        this.HairR01.rotateAngleZ += headZ;
+        this.HairR02.rotateAngleZ += headZ * 0.5F;
+        this.HairR03.rotateAngleZ += headZ * 0.5F;
+
+        //leg motion
+        this.LegLeft01.rotateAngleX = addk1;
+        this.LegRight01.rotateAngleX = addk2;
+    }
+
+
 }

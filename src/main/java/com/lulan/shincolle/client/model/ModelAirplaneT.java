@@ -1,8 +1,6 @@
 package com.lulan.shincolle.client.model;
 
 import com.lulan.shincolle.entity.IShipEmotion;
-import com.lulan.shincolle.handler.EventHandler;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,9 +13,8 @@ import net.minecraft.entity.Entity;
  * ModelAirplane97T - PinkaLulan
  * Created using Tabula 4.1.1
  */
-public class ModelAirplaneT extends ModelBase
-{
-	
+public class ModelAirplaneT extends ModelBase {
+
     public ModelRenderer BodyMain;
     public ModelRenderer Tail01;
     public ModelRenderer Wing01;
@@ -33,10 +30,9 @@ public class ModelAirplaneT extends ModelBase
 
     private float scale;
     private float offsetY;
-    
-    
-    public ModelAirplaneT()
-    {
+
+
+    public ModelAirplaneT() {
         this.textureWidth = 64;
         this.textureHeight = 32;
 
@@ -88,81 +84,79 @@ public class ModelAirplaneT extends ModelBase
         this.BodyMain.addChild(this.Prop02);
         this.BodyMain.addChild(this.Wing01);
         this.BodyMain.addChild(this.Tank);
-        
+
         //glow
         this.GlowBodyMain = new ModelRenderer(this, 0, 17);
         this.GlowBodyMain.setRotationPoint(0.0F, 0.0F, 0.0F);
-        
+
         this.GlowBodyMain.addChild(this.BodyU);
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	//FIX: head rotation bug while riding
-    	if (f3 <= -180F) { f3 += 360F; }
-    	else if (f3 >= 180F) { f3 -= 360F; }
-    	
-    	switch (((IShipEmotion)entity).getScaleLevel())
-    	{
-    	case 3:
-    		scale = 1.6F;
-        	offsetY = 0.37F;
-		break;
-    	case 2:
-    		scale = 1.2F;
-        	offsetY = 0.68F;
-		break;
-    	case 1:
-    		scale = 0.8F;
-        	offsetY = 1.32F;
-		break;
-    	default:
-    		scale = 0.4F;
-        	offsetY = 3.22F;
-		break;
-    	}
-    	
-        if (entity.ticksExisted > 6)
-        {
-        	GlStateManager.pushMatrix();
-        	GlStateManager.enableBlend();
-        	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-        	GlStateManager.scale(scale, scale, scale);
-        	GlStateManager.translate(0F, offsetY, 0F);
-        	
-        	//main body
-        	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        	this.BodyMain.render(f5);
-        	GlStateManager.disableBlend();
-        	
-        	//light part
-        	GlStateManager.disableLighting();
-        	GlStateManager.enableCull();
-        	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-        	this.GlowBodyMain.render(f5);
-        	GlStateManager.disableCull();
-        	GlStateManager.enableLighting();
-        	
-        	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        //FIX: head rotation bug while riding
+        if (f3 <= -180F) {
+            f3 += 360F;
+        } else if (f3 >= 180F) {
+            f3 -= 360F;
+        }
+
+        switch (((IShipEmotion) entity).getScaleLevel()) {
+            case 3:
+                scale = 1.6F;
+                offsetY = 0.37F;
+                break;
+            case 2:
+                scale = 1.2F;
+                offsetY = 0.68F;
+                break;
+            case 1:
+                scale = 0.8F;
+                offsetY = 1.32F;
+                break;
+            default:
+                scale = 0.4F;
+                offsetY = 3.22F;
+                break;
+        }
+
+        if (entity.ticksExisted > 6) {
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+            GlStateManager.scale(scale, scale, scale);
+            GlStateManager.translate(0F, offsetY, 0F);
+
+            //main body
+            setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+            this.BodyMain.render(f5);
+            GlStateManager.disableBlend();
+
+            //light part
+            GlStateManager.disableLighting();
+            GlStateManager.enableCull();
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+            this.GlowBodyMain.render(f5);
+            GlStateManager.disableCull();
+            GlStateManager.enableLighting();
+
+            GlStateManager.popMatrix();
         }
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
-    
+
     @Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-    {  
-    	this.BodyMain.rotateAngleY = f3 / 57F;	//左右角度
-    	this.BodyMain.rotateAngleX = f4 / 57F; 	//上下角度
-    	this.GlowBodyMain.rotateAngleY = this.BodyMain.rotateAngleY;
-    	this.GlowBodyMain.rotateAngleX = this.BodyMain.rotateAngleX;
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+        this.BodyMain.rotateAngleY = f3 / 57F;    //左右角度
+        this.BodyMain.rotateAngleX = f4 / 57F;    //上下角度
+        this.GlowBodyMain.rotateAngleY = this.BodyMain.rotateAngleY;
+        this.GlowBodyMain.rotateAngleX = this.BodyMain.rotateAngleX;
     }
-    
-    
+
+
 }

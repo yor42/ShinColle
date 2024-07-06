@@ -1,27 +1,30 @@
 package com.lulan.shincolle.entity;
 
-/**STATE getter/setter
+/**
+ * STATE getter/setter
  */
-public interface IShipFlags
-{
-	
-	/**
-	 * minor states like level, kills, ammo...
-	 */
-	public int getStateMinor(int id);
-	public void setStateMinor(int state, int par1);
-	
-	/**
-	 * state flags
-	 */
-	public boolean getStateFlag(int flag);
-	public void setStateFlag(int id, boolean flag);
+public interface IShipFlags {
 
-	/**
-	 * update flag
-	 */
-	public void setUpdateFlag(int id, boolean value);
-	public boolean getUpdateFlag(int id);
-	
-	
+    /**
+     * minor states like level, kills, ammo...
+     */
+    int getStateMinor(int id);
+
+    void setStateMinor(int state, int par1);
+
+    /**
+     * state flags
+     */
+    boolean getStateFlag(int flag);
+
+    void setStateFlag(int id, boolean flag);
+
+    /**
+     * update flag
+     */
+    void setUpdateFlag(int id, boolean value);
+
+    boolean getUpdateFlag(int id);
+
+
 }

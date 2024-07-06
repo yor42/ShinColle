@@ -12,8 +12,7 @@ import net.minecraft.entity.Entity;
  * ModelAirplane - PinkaLulan 2015/2/18
  * Created using Tabula 4.1.1
  */
-public class ModelAirplane extends ModelBase
-{
+public class ModelAirplane extends ModelBase {
     public ModelRenderer BodyMain;
     public ModelRenderer EyeL;
     public ModelRenderer EyeR;
@@ -29,11 +28,10 @@ public class ModelAirplane extends ModelBase
     public ModelRenderer Gun;
     public ModelRenderer GlowBodyMain;
 
-    public ModelAirplane()
-    {
+    public ModelAirplane() {
         this.textureWidth = 32;
         this.textureHeight = 32;
-        
+
         this.Head = new ModelRenderer(this, 8, 24);
         this.Head.setRotationPoint(0.0F, 0.0F, -6.2F);
         this.Head.addBox(-2.0F, -2.0F, -2.0F, 4, 4, 4, 0.0F);
@@ -101,52 +99,49 @@ public class ModelAirplane extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    { 
-    	GlStateManager.pushMatrix();
-    	
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	
-    	GlStateManager.enableBlend();
-    	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    	GlStateManager.scale(0.5F, 0.5F, 0.5F);
-    	GlStateManager.translate(0F, 2.5F, 0F);
-    	
-    	//main body
-    	this.BodyMain.render(f5);
-    	
-    	GlStateManager.disableBlend();
-    	
-    	//light part
-    	GlStateManager.disableLighting();
-    	GlStateManager.enableCull();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.GlowBodyMain.render(f5);
-    	GlStateManager.disableCull();
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        GlStateManager.pushMatrix();
+
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.scale(0.5F, 0.5F, 0.5F);
+        GlStateManager.translate(0F, 2.5F, 0F);
+
+        //main body
+        this.BodyMain.render(f5);
+
+        GlStateManager.disableBlend();
+
+        //light part
+        GlStateManager.disableLighting();
+        GlStateManager.enableCull();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.GlowBodyMain.render(f5);
+        GlStateManager.disableCull();
+        GlStateManager.enableLighting();
+
+        GlStateManager.popMatrix();
     }
 
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
-    
+
     //for idle/run animation
     @Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-    {  
-    	this.BodyMain.rotateAngleY = f3 / 57F;	//左右角度
-    	this.BodyMain.rotateAngleX = f4 / 57F; 	//上下角度
-    	this.GlowBodyMain.rotateAngleY = f3 / 57F;
-    	this.GlowBodyMain.rotateAngleX = f4 / 57F;
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+        this.BodyMain.rotateAngleY = f3 / 57F;    //左右角度
+        this.BodyMain.rotateAngleX = f4 / 57F;    //上下角度
+        this.GlowBodyMain.rotateAngleY = f3 / 57F;
+        this.GlowBodyMain.rotateAngleX = f4 / 57F;
     }
-    
-    
+
+
 }

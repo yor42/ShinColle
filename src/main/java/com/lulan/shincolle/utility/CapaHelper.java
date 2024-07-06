@@ -10,76 +10,64 @@ import net.minecraftforge.items.IItemHandler;
 
 /**
  * helper for capability
- *
  */
-public class CapaHelper
-{
-	
-	
-	/**
-	 * get item handler
-	 *   side: -1:check all side, 0~5:DUNSWE
-	 */
-	public static IItemHandler getCapaInventory(ICapabilityProvider host, int side)
-	{
-		return getCapaHandler(host, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side);
-	}
-	
-	/**
-	 * check item handler
-	 *   side: -1:check all side, 0~5:DUNSWE
-	 */
-	public static boolean hasCapaInventory(ICapabilityProvider host, int side)
-	{
-		return getCapaHandler(host, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) != null;
-	}
-	
-	/**
-	 * get fluid handler
-	 *   side: -1:check all side, 0~5:DUNSWE
-	 */
-	public static IFluidHandler getCapaFluid(ICapabilityProvider host, int side)
-	{
-		return getCapaHandler(host, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
-	}
-	
-	/**
-	 * check fluid handler
-	 *   side: -1:check all side, 0~5:DUNSWE
-	 */
-	public static boolean hasCapaFluid(ICapabilityProvider host, int side)
-	{
-		return getCapaHandler(host, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side) != null;
-	}
-	
-	/**
-	 * get capability handler
-	 *   side: -1:check all side, 0~5:DUNSWE
-	 */
-	public static <T> T getCapaHandler(ICapabilityProvider host, Capability<T> capa, int side)
-	{
-		if (host != null)
-		{
-			//check all sides
-			if (side < 0)
-			{
-				for (int i = 0; i < 6; i++)
-				{
-					if (host.hasCapability(capa, EnumFacing.byIndex(i)))
-					{
-						return (T) host.getCapability(capa, EnumFacing.byIndex(i));
-					}
-				}
-			}
-			//check spec side
-			else
-			{
-				return (T) host.getCapability(capa, EnumFacing.byIndex(side));
-			}
-		}
-		
-		return null;
-	}
-	
-	
+public class CapaHelper {
+
+
+    /**
+     * get item handler
+     * side: -1:check all side, 0~5:DUNSWE
+     */
+    public static IItemHandler getCapaInventory(ICapabilityProvider host, int side) {
+        return getCapaHandler(host, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side);
+    }
+
+    /**
+     * check item handler
+     * side: -1:check all side, 0~5:DUNSWE
+     */
+    public static boolean hasCapaInventory(ICapabilityProvider host, int side) {
+        return getCapaHandler(host, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) != null;
+    }
+
+    /**
+     * get fluid handler
+     * side: -1:check all side, 0~5:DUNSWE
+     */
+    public static IFluidHandler getCapaFluid(ICapabilityProvider host, int side) {
+        return getCapaHandler(host, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+    }
+
+    /**
+     * check fluid handler
+     * side: -1:check all side, 0~5:DUNSWE
+     */
+    public static boolean hasCapaFluid(ICapabilityProvider host, int side) {
+        return getCapaHandler(host, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side) != null;
+    }
+
+    /**
+     * get capability handler
+     * side: -1:check all side, 0~5:DUNSWE
+     */
+    public static <T> T getCapaHandler(ICapabilityProvider host, Capability<T> capa, int side) {
+        if (host != null) {
+            //check all sides
+            if (side < 0) {
+                for (int i = 0; i < 6; i++) {
+                    if (host.hasCapability(capa, EnumFacing.byIndex(i))) {
+                        return host.getCapability(capa, EnumFacing.byIndex(i));
+                    }
+                }
+            }
+            //check spec side
+            else {
+                return host.getCapability(capa, EnumFacing.byIndex(side));
+            }
+        }
+
+        return null;
+    }
+
+
 }

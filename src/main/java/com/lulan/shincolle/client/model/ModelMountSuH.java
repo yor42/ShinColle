@@ -2,7 +2,6 @@ package com.lulan.shincolle.client.model;
 
 import com.lulan.shincolle.entity.IShipEmotion;
 import com.lulan.shincolle.utility.EmotionHelper;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,9 +15,8 @@ import net.minecraft.util.math.MathHelper;
  * ModelMountSuH - PinkaLulan
  * Created using Tabula 6.0.0
  */
-public class ModelMountSuH extends ModelBase implements IModelEmotion
-{
-	
+public class ModelMountSuH extends ModelBase implements IModelEmotion {
+
     public ModelRenderer BodyMain;
     public ModelRenderer Neck;
     public ModelRenderer Head01;
@@ -59,13 +57,12 @@ public class ModelMountSuH extends ModelBase implements IModelEmotion
     public ModelRenderer GlowJaw;
     public ModelRenderer GlowHead01;
 
-    
-    public ModelMountSuH()
-    {
-    	
+
+    public ModelMountSuH() {
+
         this.textureWidth = 128;
         this.textureHeight = 64;
-        
+
         this.Eye03a = new ModelRenderer(this, 77, 16);
         this.Eye03a.setRotationPoint(9.6F, -9.0F, -15.0F);
         this.Eye03a.addBox(0.0F, 0.0F, 0.0F, 0, 8, 8, 0.0F);
@@ -206,7 +203,7 @@ public class ModelMountSuH extends ModelBase implements IModelEmotion
         this.Body02.addChild(this.Body02a);
         this.Neck.addChild(this.Head01);
         this.BodyMain.addChild(this.Neck);
-        
+
         //glow part
         this.GlowBodyMain = new ModelRenderer(this, 0, 0);
         this.GlowBodyMain.setRotationPoint(0.0F, 10.0F, 8.0F);
@@ -217,7 +214,7 @@ public class ModelMountSuH extends ModelBase implements IModelEmotion
         this.setRotateAngle(GlowJaw, 0.2617993877991494F, 0.0F, 0.0F);
         this.GlowHead01 = new ModelRenderer(this, 0, 3);
         this.GlowHead01.setRotationPoint(0.0F, -9.0F, -7.0F);
-        
+
         this.GlowBodyMain.addChild(this.GlowNeck);
         this.GlowNeck.addChild(this.GlowJaw);
         this.GlowJaw.addChild(this.JawTooth);
@@ -231,153 +228,141 @@ public class ModelMountSuH extends ModelBase implements IModelEmotion
         this.GlowHead01.addChild(this.Eye03a);
         this.GlowHead01.addChild(this.Eye03b);
     }
-    
+
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-    {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
-    
+
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	//FIX: head rotation bug while riding
-    	if (f3 <= -180F) { f3 += 360F; }
-    	else if (f3 >= 180F) { f3 -= 360F; }
-    	
-    	GlStateManager.pushMatrix();
-    	GlStateManager.enableBlend();
-    	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    	GlStateManager.scale(0.6F, 0.6F, 0.6F);
-    	GlStateManager.translate(0F, 1F, 0F);
-    	
-    	//main body
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	this.BodyMain.render(f5);
-    	GlStateManager.disableBlend();
-    	
-    	//light part
-    	GlStateManager.disableLighting();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.GlowBodyMain.render(f5);
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        //FIX: head rotation bug while riding
+        if (f3 <= -180F) {
+            f3 += 360F;
+        } else if (f3 >= 180F) {
+            f3 -= 360F;
+        }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.scale(0.6F, 0.6F, 0.6F);
+        GlStateManager.translate(0F, 1F, 0F);
+
+        //main body
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.BodyMain.render(f5);
+        GlStateManager.disableBlend();
+
+        //light part
+        GlStateManager.disableLighting();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.GlowBodyMain.render(f5);
+        GlStateManager.enableLighting();
+
+        GlStateManager.popMatrix();
     }
-    
+
     @Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-    {
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		  
-		IShipEmotion ent = (IShipEmotion)entity;
-		
-		EmotionHelper.rollEmotion(this, ent);
-		  
-		motionHumanPos(f, f1, f2, f3, f4, ent);
-		
-		syncRotationGlowPart();
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+
+        IShipEmotion ent = (IShipEmotion) entity;
+
+        EmotionHelper.rollEmotion(this, ent);
+
+        motionHumanPos(f, f1, f2, f3, f4, ent);
+
+        syncRotationGlowPart();
     }
-    
+
     //雙腳移動計算
-  	private void motionHumanPos(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-  	{   
-  		float angleX = MathHelper.cos(f2 * 0.08F);
-  		float angleX2 = MathHelper.cos(-f * 0.8F + 0.7F);
-  		
-  		//水上漂浮
-  		if (ent.getShipDepth(0) > 0D)
-  		{
-  			GlStateManager.translate(0F, angleX * 0.025F + 0.025F, 0F);
-    	}
+    private void motionHumanPos(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        float angleX = MathHelper.cos(f2 * 0.08F);
+        float angleX2 = MathHelper.cos(-f * 0.8F + 0.7F);
 
-	    //idle
-	  	this.Jaw.rotateAngleX = angleX * 0.075F + 0.26F;
-	  	this.Body04.rotateAngleY = angleX * 0.15F;
-	  	
-	  	//running
-	  	if (ent.getIsSprinting() || f1 > 0.9F)
-	  	{
-	  		this.Body03.rotateAngleY = angleX2 * 0.075F;
-	  		this.Body04.rotateAngleY = angleX2 * 0.15F;
-	  	}
-  	}
-  	
-  	@Override
-	public void syncRotationGlowPart()
-	{
-		//sync rotate
-	    this.GlowJaw.rotateAngleX = this.Jaw.rotateAngleX;
-	}
-  	
-	//設定顯示的臉型
-  	@Override
-   	public void setFace(int emo)
-   	{
-   		switch (emo)
-   		{
-   		case 0: // O_O
-   			this.Eye01a.isHidden = true;
-   			this.Eye01b.isHidden = true;
-   			this.Eye02a.isHidden = false;
-   			this.Eye02b.isHidden = false;
-   			this.Eye03a.isHidden = true;
-   			this.Eye03b.isHidden = true;
-   		break;
-   		case 1: // -_-
-   			this.Eye01a.isHidden = true;
-   			this.Eye01b.isHidden = true;
-   			this.Eye02a.isHidden = true;
-   			this.Eye02b.isHidden = true;
-   			this.Eye03a.isHidden = false;
-   			this.Eye03b.isHidden = false;
-   		break;
-   		default:// ><
-   			this.Eye01a.isHidden = false;
-   			this.Eye01b.isHidden = false;
-   			this.Eye02a.isHidden = true;
-   			this.Eye02b.isHidden = true;
-   			this.Eye03a.isHidden = true;
-   			this.Eye03b.isHidden = true;
-   		break;
-   		}
-   	}
+        //水上漂浮
+        if (ent.getShipDepth(0) > 0D) {
+            GlStateManager.translate(0F, angleX * 0.025F + 0.025F, 0F);
+        }
 
-	@Override
-	public void showEquip(IShipEmotion ent)
-	{
-	}
+        //idle
+        this.Jaw.rotateAngleX = angleX * 0.075F + 0.26F;
+        this.Body04.rotateAngleY = angleX * 0.15F;
 
-	@Override
-	public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-	}
+        //running
+        if (ent.getIsSprinting() || f1 > 0.9F) {
+            this.Body03.rotateAngleY = angleX2 * 0.075F;
+            this.Body04.rotateAngleY = angleX2 * 0.15F;
+        }
+    }
 
-	@Override
-	public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-	}
+    @Override
+    public void syncRotationGlowPart() {
+        //sync rotate
+        this.GlowJaw.rotateAngleX = this.Jaw.rotateAngleX;
+    }
 
-	@Override
-	public int getFieldCount()
-	{
-		return 0;
-	}
+    //設定顯示的臉型
+    @Override
+    public void setFace(int emo) {
+        switch (emo) {
+            case 0: // O_O
+                this.Eye01a.isHidden = true;
+                this.Eye01b.isHidden = true;
+                this.Eye02a.isHidden = false;
+                this.Eye02b.isHidden = false;
+                this.Eye03a.isHidden = true;
+                this.Eye03b.isHidden = true;
+                break;
+            case 1: // -_-
+                this.Eye01a.isHidden = true;
+                this.Eye01b.isHidden = true;
+                this.Eye02a.isHidden = true;
+                this.Eye02b.isHidden = true;
+                this.Eye03a.isHidden = false;
+                this.Eye03b.isHidden = false;
+                break;
+            default:// ><
+                this.Eye01a.isHidden = false;
+                this.Eye01b.isHidden = false;
+                this.Eye02a.isHidden = true;
+                this.Eye02b.isHidden = true;
+                this.Eye03a.isHidden = true;
+                this.Eye03b.isHidden = true;
+                break;
+        }
+    }
 
-	@Override
-	public void setField(int id, float value)
-	{
-	}
+    @Override
+    public void showEquip(IShipEmotion ent) {
+    }
 
-	@Override
-	public float getField(int id)
-	{
-		return 0;
-	}
-   	
-   	
+    @Override
+    public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+    }
+
+    @Override
+    public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, float value) {
+    }
+
+    @Override
+    public float getField(int id) {
+        return 0;
+    }
+
+
 }

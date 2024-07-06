@@ -18,9 +18,8 @@ import net.minecraft.util.math.MathHelper;
  * ModelSubmRO500 - PinkaLulan 2015/5/20
  * Created using Tabula 4.1.1
  */
-public class ModelSubmRo500 extends ShipModelBaseAdv
-{
-	
+public class ModelSubmRo500 extends ShipModelBaseAdv {
+
     public ModelRenderer BodyMain;
     public ModelRenderer Neck;
     public ModelRenderer ArmLeft01;
@@ -60,19 +59,18 @@ public class ModelSubmRo500 extends ShipModelBaseAdv
     public ModelRenderer GlowBodyMain;
     public ModelRenderer GlowNeck;
     public ModelRenderer GlowHead;
-    
-    protected float[] offsetItem2 = new float[] {-0.03F, 0.93F, 0.1F};
-    
 
-    public ModelSubmRo500()
-    {
+    protected float[] offsetItem2 = new float[]{-0.03F, 0.93F, 0.1F};
+
+
+    public ModelSubmRo500() {
         this.textureWidth = 128;
         this.textureHeight = 128;
-        this.offsetItem = new float[] {-0.01F, 1.1F, -0.05F};
-        this.offsetBlock = new float[] {-0.01F, 1.1F, -0.05F};
-        
+        this.offsetItem = new float[]{-0.01F, 1.1F, -0.05F};
+        this.offsetBlock = new float[]{-0.01F, 1.1F, -0.05F};
+
         this.setDefaultFaceModel();
-        
+
         this.ArmRight02 = new ModelRenderer(this, 24, 86);
         this.ArmRight02.setRotationPoint(-2.0F, 10.5F, 2.5F);
         this.ArmRight02.addBox(-2.5F, 0.0F, -5.0F, 5, 11, 5, 0.0F);
@@ -240,7 +238,7 @@ public class ModelSubmRo500 extends ShipModelBaseAdv
         this.Hair.addChild(this.Ahoke);
         this.HairR01.addChild(this.HairR02);
         this.Equip101.addChild(this.Equip102);
-        
+
         //發光支架
         this.GlowBodyMain = new ModelRenderer(this, 0, 0);
         this.GlowBodyMain.setRotationPoint(0.0F, -13.5F, 0.0F);
@@ -250,7 +248,7 @@ public class ModelSubmRo500 extends ShipModelBaseAdv
         this.setRotateAngle(GlowNeck, 0.05235987755982988F, 0.0F, 0.0F);
         this.GlowHead = new ModelRenderer(this, 0, 0);
         this.GlowHead.setRotationPoint(0.0F, -1.5F, 0.0F);
-        
+
         this.GlowBodyMain.addChild(this.GlowNeck);
         this.GlowNeck.addChild(this.GlowHead);
         this.GlowHead.addChild(this.Face0);
@@ -268,341 +266,318 @@ public class ModelSubmRo500 extends ShipModelBaseAdv
         this.FlowerBase.addChild(this.Flower2);
         this.FlowerBase.addChild(this.Flower3);
         this.FlowerBase.addChild(this.Flower4);
-        
-     	//for held item rendering
-        this.armMain = new ModelRenderer[] {this.BodyMain, this.ArmRight01, this.ArmRight02};
-        this.armOff = new ModelRenderer[] {this.BodyMain, this.ArmLeft01, this.ArmLeft02};
+
+        //for held item rendering
+        this.armMain = new ModelRenderer[]{this.BodyMain, this.ArmRight01, this.ArmRight02};
+        this.armOff = new ModelRenderer[]{this.BodyMain, this.ArmLeft01, this.ArmLeft02};
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-    	//FIX: head rotation bug while riding
-    	if (f3 <= -180F) { f3 += 360F; }
-    	else if (f3 >= 180F) { f3 -= 360F; }
-    	
-    	switch (((IShipEmotion)entity).getScaleLevel())
-    	{
-    	case 3:
-    		scale = 1.44F;
-        	offsetY = -0.45F;
-		break;
-    	case 2:
-    		scale = 1.08F;
-        	offsetY = -0.06F;
-		break;
-    	case 1:
-    		scale = 0.72F;
-        	offsetY = 0.66F;
-		break;
-    	default:
-    		scale = 0.36F;
-        	offsetY = 2.86F;
-		break;
-    	}
-    	
-    	GlStateManager.pushMatrix();
-    	GlStateManager.enableBlend();
-    	GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    	GlStateManager.scale(scale, scale * 0.95F, scale);
-    	GlStateManager.translate(0F, offsetY, 0F);
-    	
-    	//main body
-    	setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    	this.BodyMain.render(f5);
-    	
-    	//light part
-    	GlStateManager.disableLighting();
-    	GlStateManager.enableCull();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-    	this.GlowBodyMain.render(f5);
-    	GlStateManager.disableCull();
-    	GlStateManager.enableLighting();
-    	
-    	GlStateManager.disableBlend();
-    	GlStateManager.popMatrix();
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        //FIX: head rotation bug while riding
+        if (f3 <= -180F) {
+            f3 += 360F;
+        } else if (f3 >= 180F) {
+            f3 -= 360F;
+        }
+
+        switch (((IShipEmotion) entity).getScaleLevel()) {
+            case 3:
+                scale = 1.44F;
+                offsetY = -0.45F;
+                break;
+            case 2:
+                scale = 1.08F;
+                offsetY = -0.06F;
+                break;
+            case 1:
+                scale = 0.72F;
+                offsetY = 0.66F;
+                break;
+            default:
+                scale = 0.36F;
+                offsetY = 2.86F;
+                break;
+        }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.scale(scale, scale * 0.95F, scale);
+        GlStateManager.translate(0F, offsetY, 0F);
+
+        //main body
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.BodyMain.render(f5);
+
+        //light part
+        GlStateManager.disableLighting();
+        GlStateManager.enableCull();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        this.GlowBodyMain.render(f5);
+        GlStateManager.disableCull();
+        GlStateManager.enableLighting();
+
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
-	@Override
-	public void showEquip(IShipEmotion ent)
-	{
-		int state = ent.getStateEmotion(ID.S.State);
-		
-		boolean flag = !EmotionHelper.checkModelState(0, state);	//equip1
-		this.EquipBase1.isHidden = flag;
-				
-		flag = !EmotionHelper.checkModelState(1, state);			//equip2
-		this.EquipBase2.isHidden = flag;
-		
-		flag = !EmotionHelper.checkModelState(2, state);			//flower
-		this.FlowerBase.isHidden = flag;
-	}
+    @Override
+    public void showEquip(IShipEmotion ent) {
+        int state = ent.getStateEmotion(ID.S.State);
 
-	@Override
-	public void syncRotationGlowPart()
-	{
-		this.GlowBodyMain.rotateAngleX = this.BodyMain.rotateAngleX;
-		this.GlowBodyMain.rotateAngleY = this.BodyMain.rotateAngleY;
-		this.GlowBodyMain.rotateAngleZ = this.BodyMain.rotateAngleZ;
-		this.GlowNeck.rotateAngleX = this.Neck.rotateAngleX;
-		this.GlowNeck.rotateAngleY = this.Neck.rotateAngleY;
-		this.GlowNeck.rotateAngleZ = this.Neck.rotateAngleZ;
-		this.GlowHead.rotateAngleX = this.Head.rotateAngleX;
-		this.GlowHead.rotateAngleY = this.Head.rotateAngleY;
-		this.GlowHead.rotateAngleZ = this.Head.rotateAngleZ;
-	}
+        boolean flag = !EmotionHelper.checkModelState(0, state);    //equip1
+        this.EquipBase1.isHidden = flag;
 
-	@Override
-	public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-    	GlStateManager.translate(0F, 0.55F + 0.29F * ent.getScaleLevel(), 0F);
-    	this.setFaceHungry(ent);
-    	
-  	    //頭部
-	  	this.Head.rotateAngleX = -0.35F;
-	  	this.Head.rotateAngleY = 0F;
-	  	//body
-  	    this.Ahoke.rotateAngleY = 0.5236F;
-  	    this.BodyMain.rotateAngleX = -1.6F;
-	  	//hair
-	  	this.Hair01.rotateAngleX = 0.3F;
-	    //arm 
-	  	this.ArmLeft01.rotateAngleX = 3.1F;
-	  	this.ArmLeft01.rotateAngleY = 0F;
-    	this.ArmLeft01.rotateAngleZ = 0.7F;
-		this.ArmRight01.rotateAngleX = 3.1F;
-		this.ArmRight01.rotateAngleY = 0F;
-    	this.ArmRight01.rotateAngleZ = -0.7F;
-    	this.ArmLeft02.rotateAngleX = 0F;
-    	this.ArmRight02.rotateAngleX = 0F;
-		//leg
-    	this.LegLeft01.rotateAngleX = -0.2F;
-		this.LegLeft01.rotateAngleY = 0F;
-		this.LegLeft01.rotateAngleZ = -0.1F;
-		this.LegRight01.rotateAngleX = -0.2F;
-		this.LegRight01.rotateAngleY = 0F;
-		this.LegRight01.rotateAngleZ = 0.1F;
-		this.LegLeft02.rotateAngleX = 0F;
-    	this.LegRight02.rotateAngleX = 0F;
-    	//equip
-    	this.EquipBase1.offsetZ = 0F;
-    	this.EquipBase2.offsetY = 0F;
-    	this.EquipBase2.rotateAngleX = 0.3142F;
-	}
+        flag = !EmotionHelper.checkModelState(1, state);            //equip2
+        this.EquipBase2.isHidden = flag;
 
-	@Override
-	public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent)
-	{
-  		float angleX = MathHelper.cos(f2*0.08F);
-  		float angleX2 = MathHelper.cos(f2*0.25F);
-  		float angleAdd1 = MathHelper.cos(f * 0.7F) * f1;
-  		float angleAdd2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1;
-  		float addk1 = 0;
-  		float addk2 = 0;
-  		
-  		//水上漂浮
-  		if (ent.getShipDepth(0) > 0D)
-  		{
-  			GlStateManager.translate(0F, angleX * 0.05F + 0.025F, 0F);
-    	}
-  		
-  		//leg move parm
-  		addk1 = angleAdd1 - 0.122F;
-	  	addk2 = angleAdd2 - 0.122F;
-
-  	    //移動頭部使其看人
-	  	this.Head.rotateAngleX = f4 * 0.014F;
-	  	this.Head.rotateAngleY = f3 * 0.01F;
-	    
-	    //正常站立動作
-	  	//body
-  	    this.Ahoke.rotateAngleY = angleX * 0.25F + 0.5236F;
-	  	this.BodyMain.rotateAngleX = -0.1F;
-	  	//hair
-	  	this.Hair01.rotateAngleX = angleX * 0.06F + 0.3F;
-	    this.Hair01.rotateAngleZ = 0F;
-		this.HairL01.rotateAngleX = -0.17F;
-	  	this.HairL02.rotateAngleX = 0.17F;
-	  	this.HairR01.rotateAngleX = -0.17F;
-	  	this.HairR02.rotateAngleX = 0.17F;
-	  	this.HairL01.rotateAngleZ = -0.14F;
-	  	this.HairL02.rotateAngleZ = 0.08F;
-	  	this.HairR01.rotateAngleZ = 0.14F;
-	  	this.HairR02.rotateAngleZ = -0.05F;
-	    //arm
-		boolean flag = !EmotionHelper.checkModelState(1, ent.getStateEmotion(ID.S.State));
-	  	this.ArmLeft01.rotateAngleX = 0.157F;
-	  	this.ArmLeft01.rotateAngleY = 0F;
-	  	this.ArmLeft01.rotateAngleZ = -0.384F;
-	  	if (flag) this.ArmLeft01.rotateAngleZ += -angleX * 0.06F;
-	    this.ArmRight01.rotateAngleX = 0.157F;
-	    this.ArmRight01.rotateAngleY = 0F;
-	    this.ArmRight01.rotateAngleZ = 0.384F;
-	    if (flag) this.ArmRight01.rotateAngleZ += angleX * 0.06F;
-    	this.ArmLeft02.rotateAngleX = 0F;
-    	this.ArmRight02.rotateAngleX = 0F;
-		//leg
-		this.LegLeft01.rotateAngleY = 0F;
-		this.LegLeft01.rotateAngleZ = -0.035F;
-		this.LegRight01.rotateAngleY = 0F;
-		this.LegRight01.rotateAngleZ = 0.035F;
-		this.LegLeft02.rotateAngleX = 0F;
-    	this.LegRight02.rotateAngleX = 0F;
-    	//equip
-    	this.EquipBase1.offsetZ = 0F;
-    	this.EquipBase2.offsetY = 0F;
-    	this.EquipBase2.rotateAngleX = 0.3142F;
-
-	    if (ent.getIsSprinting() || f1 > 0.9F)
-	    {	//奔跑動作
-	    	setFace(3);
-	    	//Body
-			this.BodyMain.rotateAngleX = 0.1745F;
-			this.Head.rotateAngleX -= 0.35F;
-			//leg move parm
-	  		addk1 -= 0.25F;
-		  	addk2 -= 0.25F;
-		  	
-	    	//change run type base on tickExisted
-			if (ent.getTickExisted() % 256 > 128)
-			{	//run type 1
-				//arm 
-				this.ArmLeft01.rotateAngleX = 2.6F;
-		    	this.ArmLeft01.rotateAngleZ = 0.7F;
-				this.ArmRight01.rotateAngleX = 2.6F;
-		    	this.ArmRight01.rotateAngleZ = -0.7F;
-			}
-			else
-			{	
-			  	//arm 
-			    this.ArmRight01.rotateAngleX = -2.8F;
-		    	this.ArmRight01.rotateAngleZ = -0.7F;
-			}	
-  		}
-
-	    //head tilt angle
-	    this.Head.rotateAngleZ = EmotionHelper.getHeadTiltAngle(ent, f2);
-	    
-	    if (ent.getIsSneaking())
-	    {	//潛行, 蹲下動作
-	    	GlStateManager.translate(0F, 0.1F, 0F);
-	    	//body
-	    	this.Head.rotateAngleX -= 0.8727F;
-	    	this.BodyMain.rotateAngleX = 1.0472F;
-		  	//hair
-		  	this.Hair01.rotateAngleX += 0.2236F;
-		  	//leg
-		  	addk1 -= 1.2F;
-		  	addk2 -= 1.2F;
-  		}//end if sneaking
-  		
-	    if (ent.getIsSitting() || ent.getIsRiding())
-	    {  //騎乘動作
-	    	if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED)
-	    	{
-	    		if (((IShipFloating)ent).getShipDepth() > 0)
-	    		{
-	    			GlStateManager.translate(0F, -0.21F, 0F);
-		    	}
-		    	else
-		    	{
-		    		GlStateManager.translate(0F, 0.43F, 0F);
-		    	}
-		    	//body
-		    	this.Head.rotateAngleX += 0.35F;
-		    	this.BodyMain.rotateAngleX = -0.7F;
-		    	//arm
-		    	this.ArmLeft01.rotateAngleX = 0.5236F;
-		    	this.ArmLeft01.rotateAngleZ = -0.5236F;
-		    	this.ArmLeft02.rotateAngleX = -1.0472F;
-		    	this.ArmRight01.rotateAngleX = 0.7F;
-		    	this.ArmRight01.rotateAngleZ = 0.5236F;
-		    	this.ArmRight02.rotateAngleX = -1.0472F;
-		    	//leg
-		    	addk1 = -1.9F;
-		    	addk2 = -1.9F;
-		    	this.LegLeft02.rotateAngleX = angleX2 * 0.4F + 0.8F;
-		    	this.LegRight02.rotateAngleX = -angleX2 * 0.4F + 0.8F;
-		    	//equip
-		    	this.EquipBase1.offsetZ = -0.9F;
-		    	this.EquipBase2.isHidden = false;
-		    	this.EquipBase2.rotateAngleX = 0.7F;
-	    	}
-	    	else
-	    	{
-	    		if(((IShipFloating)ent).getShipDepth() > 0)
-	    		{
-	    			GlStateManager.translate(0F, -0.22F, 0F);
-		    	}
-		    	else
-		    	{
-		    		GlStateManager.translate(0F, 0.41F, 0F);
-		    	}	
-		    	//body
-		    	this.Head.rotateAngleX += 0.2F;
-		    	this.BodyMain.rotateAngleX = -0.7F;
-		    	//arm
-		    	this.ArmLeft01.rotateAngleX = 0.95F;
-		    	this.ArmLeft01.rotateAngleZ = -0.3146F;
-		    	this.ArmRight01.rotateAngleX = 0.95F;
-		    	this.ArmRight01.rotateAngleZ = 0.3146F;
-		    	//leg
-		    	addk1 = -1.1F;
-		    	addk2 = -1.1F;
-		    	this.LegLeft01.rotateAngleY = -0.3491F;
-		    	this.LegRight01.rotateAngleY = 0.3491F;
-		    	//equip
-		    	this.EquipBase1.offsetZ = -0.15F;
-		    	this.EquipBase2.offsetY = -0.15F;
-	    	}    	
-  		}//end if sitting
-	    
-	    //攻擊動作
-	    if (ent.getAttackTick() > 41)
-	    {
-	    	setFace(3);
-	    	//swing arm
-		    float ft = (50 - ent.getAttackTick()) + (f2 - (int)f2);
-		    ft *= 0.125F;
-	  		float fa = MathHelper.sin(ft * ft * (float)Math.PI);
-	        float fb = MathHelper.sin(MathHelper.sqrt(ft) * (float)Math.PI);
-	        this.ArmLeft01.rotateAngleX += -fb * 180.0F * Values.N.DIV_PI_180 + 0.1F;
-	        this.ArmLeft01.rotateAngleY += fa * 20.0F * Values.N.DIV_PI_180 - 0.6F;
-	        this.ArmLeft01.rotateAngleZ += fb * 20.0F * Values.N.DIV_PI_180;
-	        this.ArmRight01.rotateAngleX += -fb * 180.0F * Values.N.DIV_PI_180 + 0.1F;
-	        this.ArmRight01.rotateAngleY += -fa * 20.0F * Values.N.DIV_PI_180 + 0.6F;
-	        this.ArmRight01.rotateAngleZ += -fb * 20.0F * Values.N.DIV_PI_180;
-	    }
-	    
-	    //swing arm
-	  	float f6 = ent.getSwingTime(f2 - (int)f2);
-	  	if (f6 != 0F)
-	  	{
-	  		float f7 = MathHelper.sin(f6 * f6 * (float)Math.PI);
-	        float f8 = MathHelper.sin(MathHelper.sqrt(f6) * (float)Math.PI);
-	        this.ArmRight01.rotateAngleX = -0.4F;
-	        this.ArmRight01.rotateAngleY = 0F;
-	        this.ArmRight01.rotateAngleZ = -0.2F;
-	        this.ArmRight01.rotateAngleX += -f8 * 80.0F * Values.N.DIV_PI_180;
-	        this.ArmRight01.rotateAngleY += -f7 * 20.0F * Values.N.DIV_PI_180 + 0.2F;
-	        this.ArmRight01.rotateAngleZ += -f8 * 20.0F * Values.N.DIV_PI_180;
-	  	}
-	    
-	    //leg motion
-	    this.LegLeft01.rotateAngleX = addk1;
-	    this.LegRight01.rotateAngleX = addk2;
-	}
-	
-	@Override
-    public float[] getHeldItemOffset(IShipEmotion ent, EnumHandSide side, int type)
-    {
-		if (ent.getIsSprinting())
-		{
-			return this.offsetItem2;
-		}
-		
-    	return this.offsetItem;
+        flag = !EmotionHelper.checkModelState(2, state);            //flower
+        this.FlowerBase.isHidden = flag;
     }
 
-    
+    @Override
+    public void syncRotationGlowPart() {
+        this.GlowBodyMain.rotateAngleX = this.BodyMain.rotateAngleX;
+        this.GlowBodyMain.rotateAngleY = this.BodyMain.rotateAngleY;
+        this.GlowBodyMain.rotateAngleZ = this.BodyMain.rotateAngleZ;
+        this.GlowNeck.rotateAngleX = this.Neck.rotateAngleX;
+        this.GlowNeck.rotateAngleY = this.Neck.rotateAngleY;
+        this.GlowNeck.rotateAngleZ = this.Neck.rotateAngleZ;
+        this.GlowHead.rotateAngleX = this.Head.rotateAngleX;
+        this.GlowHead.rotateAngleY = this.Head.rotateAngleY;
+        this.GlowHead.rotateAngleZ = this.Head.rotateAngleZ;
+    }
+
+    @Override
+    public void applyDeadPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        GlStateManager.translate(0F, 0.55F + 0.29F * ent.getScaleLevel(), 0F);
+        this.setFaceHungry(ent);
+
+        //頭部
+        this.Head.rotateAngleX = -0.35F;
+        this.Head.rotateAngleY = 0F;
+        //body
+        this.Ahoke.rotateAngleY = 0.5236F;
+        this.BodyMain.rotateAngleX = -1.6F;
+        //hair
+        this.Hair01.rotateAngleX = 0.3F;
+        //arm
+        this.ArmLeft01.rotateAngleX = 3.1F;
+        this.ArmLeft01.rotateAngleY = 0F;
+        this.ArmLeft01.rotateAngleZ = 0.7F;
+        this.ArmRight01.rotateAngleX = 3.1F;
+        this.ArmRight01.rotateAngleY = 0F;
+        this.ArmRight01.rotateAngleZ = -0.7F;
+        this.ArmLeft02.rotateAngleX = 0F;
+        this.ArmRight02.rotateAngleX = 0F;
+        //leg
+        this.LegLeft01.rotateAngleX = -0.2F;
+        this.LegLeft01.rotateAngleY = 0F;
+        this.LegLeft01.rotateAngleZ = -0.1F;
+        this.LegRight01.rotateAngleX = -0.2F;
+        this.LegRight01.rotateAngleY = 0F;
+        this.LegRight01.rotateAngleZ = 0.1F;
+        this.LegLeft02.rotateAngleX = 0F;
+        this.LegRight02.rotateAngleX = 0F;
+        //equip
+        this.EquipBase1.offsetZ = 0F;
+        this.EquipBase2.offsetY = 0F;
+        this.EquipBase2.rotateAngleX = 0.3142F;
+    }
+
+    @Override
+    public void applyNormalPose(float f, float f1, float f2, float f3, float f4, IShipEmotion ent) {
+        float angleX = MathHelper.cos(f2 * 0.08F);
+        float angleX2 = MathHelper.cos(f2 * 0.25F);
+        float angleAdd1 = MathHelper.cos(f * 0.7F) * f1;
+        float angleAdd2 = MathHelper.cos(f * 0.7F + 3.1415927F) * f1;
+        float addk1 = 0;
+        float addk2 = 0;
+
+        //水上漂浮
+        if (ent.getShipDepth(0) > 0D) {
+            GlStateManager.translate(0F, angleX * 0.05F + 0.025F, 0F);
+        }
+
+        //leg move parm
+        addk1 = angleAdd1 - 0.122F;
+        addk2 = angleAdd2 - 0.122F;
+
+        //移動頭部使其看人
+        this.Head.rotateAngleX = f4 * 0.014F;
+        this.Head.rotateAngleY = f3 * 0.01F;
+
+        //正常站立動作
+        //body
+        this.Ahoke.rotateAngleY = angleX * 0.25F + 0.5236F;
+        this.BodyMain.rotateAngleX = -0.1F;
+        //hair
+        this.Hair01.rotateAngleX = angleX * 0.06F + 0.3F;
+        this.Hair01.rotateAngleZ = 0F;
+        this.HairL01.rotateAngleX = -0.17F;
+        this.HairL02.rotateAngleX = 0.17F;
+        this.HairR01.rotateAngleX = -0.17F;
+        this.HairR02.rotateAngleX = 0.17F;
+        this.HairL01.rotateAngleZ = -0.14F;
+        this.HairL02.rotateAngleZ = 0.08F;
+        this.HairR01.rotateAngleZ = 0.14F;
+        this.HairR02.rotateAngleZ = -0.05F;
+        //arm
+        boolean flag = !EmotionHelper.checkModelState(1, ent.getStateEmotion(ID.S.State));
+        this.ArmLeft01.rotateAngleX = 0.157F;
+        this.ArmLeft01.rotateAngleY = 0F;
+        this.ArmLeft01.rotateAngleZ = -0.384F;
+        if (flag) this.ArmLeft01.rotateAngleZ += -angleX * 0.06F;
+        this.ArmRight01.rotateAngleX = 0.157F;
+        this.ArmRight01.rotateAngleY = 0F;
+        this.ArmRight01.rotateAngleZ = 0.384F;
+        if (flag) this.ArmRight01.rotateAngleZ += angleX * 0.06F;
+        this.ArmLeft02.rotateAngleX = 0F;
+        this.ArmRight02.rotateAngleX = 0F;
+        //leg
+        this.LegLeft01.rotateAngleY = 0F;
+        this.LegLeft01.rotateAngleZ = -0.035F;
+        this.LegRight01.rotateAngleY = 0F;
+        this.LegRight01.rotateAngleZ = 0.035F;
+        this.LegLeft02.rotateAngleX = 0F;
+        this.LegRight02.rotateAngleX = 0F;
+        //equip
+        this.EquipBase1.offsetZ = 0F;
+        this.EquipBase2.offsetY = 0F;
+        this.EquipBase2.rotateAngleX = 0.3142F;
+
+        if (ent.getIsSprinting() || f1 > 0.9F) {    //奔跑動作
+            setFace(3);
+            //Body
+            this.BodyMain.rotateAngleX = 0.1745F;
+            this.Head.rotateAngleX -= 0.35F;
+            //leg move parm
+            addk1 -= 0.25F;
+            addk2 -= 0.25F;
+
+            //change run type base on tickExisted
+            if (ent.getTickExisted() % 256 > 128) {    //run type 1
+                //arm
+                this.ArmLeft01.rotateAngleX = 2.6F;
+                this.ArmLeft01.rotateAngleZ = 0.7F;
+                this.ArmRight01.rotateAngleX = 2.6F;
+                this.ArmRight01.rotateAngleZ = -0.7F;
+            } else {
+                //arm
+                this.ArmRight01.rotateAngleX = -2.8F;
+                this.ArmRight01.rotateAngleZ = -0.7F;
+            }
+        }
+
+        //head tilt angle
+        this.Head.rotateAngleZ = EmotionHelper.getHeadTiltAngle(ent, f2);
+
+        if (ent.getIsSneaking()) {    //潛行, 蹲下動作
+            GlStateManager.translate(0F, 0.1F, 0F);
+            //body
+            this.Head.rotateAngleX -= 0.8727F;
+            this.BodyMain.rotateAngleX = 1.0472F;
+            //hair
+            this.Hair01.rotateAngleX += 0.2236F;
+            //leg
+            addk1 -= 1.2F;
+            addk2 -= 1.2F;
+        }//end if sneaking
+
+        if (ent.getIsSitting() || ent.getIsRiding()) {  //騎乘動作
+            if (ent.getStateEmotion(ID.S.Emotion) == ID.Emotion.BORED) {
+                if (((IShipFloating) ent).getShipDepth() > 0) {
+                    GlStateManager.translate(0F, -0.21F, 0F);
+                } else {
+                    GlStateManager.translate(0F, 0.43F, 0F);
+                }
+                //body
+                this.Head.rotateAngleX += 0.35F;
+                this.BodyMain.rotateAngleX = -0.7F;
+                //arm
+                this.ArmLeft01.rotateAngleX = 0.5236F;
+                this.ArmLeft01.rotateAngleZ = -0.5236F;
+                this.ArmLeft02.rotateAngleX = -1.0472F;
+                this.ArmRight01.rotateAngleX = 0.7F;
+                this.ArmRight01.rotateAngleZ = 0.5236F;
+                this.ArmRight02.rotateAngleX = -1.0472F;
+                //leg
+                addk1 = -1.9F;
+                addk2 = -1.9F;
+                this.LegLeft02.rotateAngleX = angleX2 * 0.4F + 0.8F;
+                this.LegRight02.rotateAngleX = -angleX2 * 0.4F + 0.8F;
+                //equip
+                this.EquipBase1.offsetZ = -0.9F;
+                this.EquipBase2.isHidden = false;
+                this.EquipBase2.rotateAngleX = 0.7F;
+            } else {
+                if (((IShipFloating) ent).getShipDepth() > 0) {
+                    GlStateManager.translate(0F, -0.22F, 0F);
+                } else {
+                    GlStateManager.translate(0F, 0.41F, 0F);
+                }
+                //body
+                this.Head.rotateAngleX += 0.2F;
+                this.BodyMain.rotateAngleX = -0.7F;
+                //arm
+                this.ArmLeft01.rotateAngleX = 0.95F;
+                this.ArmLeft01.rotateAngleZ = -0.3146F;
+                this.ArmRight01.rotateAngleX = 0.95F;
+                this.ArmRight01.rotateAngleZ = 0.3146F;
+                //leg
+                addk1 = -1.1F;
+                addk2 = -1.1F;
+                this.LegLeft01.rotateAngleY = -0.3491F;
+                this.LegRight01.rotateAngleY = 0.3491F;
+                //equip
+                this.EquipBase1.offsetZ = -0.15F;
+                this.EquipBase2.offsetY = -0.15F;
+            }
+        }//end if sitting
+
+        //攻擊動作
+        if (ent.getAttackTick() > 41) {
+            setFace(3);
+            //swing arm
+            float ft = (50 - ent.getAttackTick()) + (f2 - (int) f2);
+            ft *= 0.125F;
+            float fa = MathHelper.sin(ft * ft * (float) Math.PI);
+            float fb = MathHelper.sin(MathHelper.sqrt(ft) * (float) Math.PI);
+            this.ArmLeft01.rotateAngleX += -fb * 180.0F * Values.N.DIV_PI_180 + 0.1F;
+            this.ArmLeft01.rotateAngleY += fa * 20.0F * Values.N.DIV_PI_180 - 0.6F;
+            this.ArmLeft01.rotateAngleZ += fb * 20.0F * Values.N.DIV_PI_180;
+            this.ArmRight01.rotateAngleX += -fb * 180.0F * Values.N.DIV_PI_180 + 0.1F;
+            this.ArmRight01.rotateAngleY += -fa * 20.0F * Values.N.DIV_PI_180 + 0.6F;
+            this.ArmRight01.rotateAngleZ += -fb * 20.0F * Values.N.DIV_PI_180;
+        }
+
+        //swing arm
+        float f6 = ent.getSwingTime(f2 - (int) f2);
+        if (f6 != 0F) {
+            float f7 = MathHelper.sin(f6 * f6 * (float) Math.PI);
+            float f8 = MathHelper.sin(MathHelper.sqrt(f6) * (float) Math.PI);
+            this.ArmRight01.rotateAngleX = -0.4F;
+            this.ArmRight01.rotateAngleY = 0F;
+            this.ArmRight01.rotateAngleZ = -0.2F;
+            this.ArmRight01.rotateAngleX += -f8 * 80.0F * Values.N.DIV_PI_180;
+            this.ArmRight01.rotateAngleY += -f7 * 20.0F * Values.N.DIV_PI_180 + 0.2F;
+            this.ArmRight01.rotateAngleZ += -f8 * 20.0F * Values.N.DIV_PI_180;
+        }
+
+        //leg motion
+        this.LegLeft01.rotateAngleX = addk1;
+        this.LegRight01.rotateAngleX = addk2;
+    }
+
+    @Override
+    public float[] getHeldItemOffset(IShipEmotion ent, EnumHandSide side, int type) {
+        if (ent.getIsSprinting()) {
+            return this.offsetItem2;
+        }
+
+        return this.offsetItem;
+    }
+
+
 }
