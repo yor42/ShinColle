@@ -16,6 +16,7 @@ Goal of this fork is:<br>
 - Add compatibility with Mekanism
 
 as always, you can grab build jar on [Github Actions](https://github.com/yor42/ShinColle/actions)
+this mod uses part of code and texture of PlusTic by Landmaster; which uses Apache License Version 2.0.
 
 # Shin Colle(Mikasa10843)
 
