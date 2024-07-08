@@ -6,6 +6,9 @@
 	"variants": {
 		"abyssium": [{
 			"custom": { "fluid": "abyssium" }
+		}],
+		"polymetal": [{
+			"custom": { "fluid": "polymetal" }
 		}]
 	}
 }

@@ -457,7 +457,7 @@ public class BasicEntityItem extends Entity {
 
                             //check player UID
                             //if no owner name
-                            if (pid1 == null || pid1.length() <= 1) {
+                            if (pid1.length() <= 1) {
                                 //ship's player UID isn't inited (for ship before 1.7.10.rv22)
                                 //check player UUID
                                 String uuid1 = nbt.getString("owner");

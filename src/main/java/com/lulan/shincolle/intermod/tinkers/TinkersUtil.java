@@ -1,6 +1,5 @@
 package com.lulan.shincolle.intermod.tinkers;
 
-import com.lulan.shincolle.ShinColle;
 import com.lulan.shincolle.intermod.tinkers.proxy.TinkersClientInit;
 import com.lulan.shincolle.reference.Reference;
 import net.minecraft.block.Block;
@@ -10,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,7 +42,7 @@ public class TinkersUtil {
         return fluid;
     }
 
-    public static BlockMolten registerMoltenBlock(Fluid fluid) {
+    public static void registerMoltenBlock(Fluid fluid) {
         BlockMolten block = new BlockMolten(fluid) {
             @Nonnull
             @Override
@@ -56,7 +54,7 @@ public class TinkersUtil {
                 return super.getTranslationKey();
             }
         };
-        return registerBlock(block, "molten_" + fluid.getName());
+        registerBlock(block, "molten_" + fluid.getName());
     }
 
     public static void setDispItem(Material mat, String modid, String name) {
@@ -82,7 +80,7 @@ public class TinkersUtil {
     public static <T extends Block> T registerBlock(T block, String name) {
         block.setTranslationKey(Reference.MOD_ID + "." + name);
         block.setRegistryName(Reference.MOD_ID + "." + name);
-        Item ib = new ItemBlock(block).setRegistryName(block.getRegistryName());
+        Item ib = new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(null);
         ForgeRegistries.BLOCKS.register(block);
         ForgeRegistries.ITEMS.register(ib);
         return block;
