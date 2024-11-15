@@ -34,13 +34,13 @@ jobs:
       run: |
         $content = Get-Content "gradle.properties"
         $version = ($content | Select-String -Pattern "mod_version\s*=\s*(.*)").Matches.Groups[1].Value.Trim()
-        echo "version=$version" >> $env:GITHUB_OUTPUT
+        echo "VERSION=$version" >> $env:GITHUB_ENV
 
     - name: Get current date
       id: date
       env:
         TZ: 'Asia/Seoul'
-      run: echo "::set-env name=NOW::$(date +'%Y-%m-%dT%H:%M:%S')"
+      run: echo "NOW=$(date +'%T')" >> $env:GITHUB_ENV
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
@@ -54,10 +54,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: build-${{ steps.mod_version.outputs.version }}-${{ env.NOW }}
-        release_name: Build ${{ steps.mod_version.outputs.version }} (${{ env.NOW }})
+        tag_name: build-${{ env.VERSION }}-${{ env.NOW }}
+        release_name: Build ${{ env.VERSION }} (${{ env.NOW }})
         body: |
-          Automated build for version ${{ steps.mod_version.outputs.version }}
+          Automated build for version ${{ env.VERSION }}
           Build date: ${{ env.NOW }}
           
           This is an automated pre-release build. For stable releases, please check the non-prerelease versions.
@@ -71,8 +71,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/build/libs/shincolle-${{ steps.mod_version.outputs.version }}.jar
-        asset_name: shincolle-${{ steps.mod_version.outputs.version }}.jar
+        asset_path: ${{ github.workspace }}/build/libs/shincolle-${{ env.VERSION }}.jar
+        asset_name: shincolle-${{ env.VERSION }}.jar
         asset_content_type: application/java-archive
 
     - name: Upload Release Asset (Dev JAR)
@@ -82,8 +82,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/build/libs/shincolle-${{ steps.mod_version.outputs.version }}-dev.jar
-        asset_name: shincolle-${{ steps.mod_version.outputs.version }}-dev.jar
+        asset_path: ${{ github.workspace }}/build/libs/shincolle-${{ env.VERSION }}-dev.jar
+        asset_name: shincolle-${{ env.VERSION }}-dev.jar
         asset_content_type: application/java-archive
 
     - name: Upload Release Asset (Sources JAR)
@@ -93,8 +93,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/build/libs/shincolle-${{ steps.mod_version.outputs.version }}-sources.jar
-        asset_name: shincolle-${{ steps.mod_version.outputs.version }}-sources.jar
+        asset_path: ${{ github.workspace }}/build/libs/shincolle-${{ env.VERSION }}-sources.jar
+        asset_name: shincolle-${{ env.VERSION }}-sources.jar
         asset_content_type: application/java-archive
 
     - name: Upload Artifact
