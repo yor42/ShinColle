@@ -40,7 +40,7 @@ jobs:
       id: date
       env:
         TZ: 'Asia/Seoul'
-      run: echo "date=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
+      run: echo "::set-env name=NOW::$(date +'%Y-%m-%dT%H:%M:%S')"
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
@@ -54,11 +54,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: build-${{ steps.mod_version.outputs.version }}-${{ steps.date.outputs.date }}
-        release_name: Build ${{ steps.mod_version.outputs.version }} (${{ steps.date.outputs.date }})
+        tag_name: build-${{ steps.mod_version.outputs.version }}-${{ env.NOW }}
+        release_name: Build ${{ steps.mod_version.outputs.version }} (${{ env.NOW }})
         body: |
           Automated build for version ${{ steps.mod_version.outputs.version }}
-          Build date: ${{ steps.date.outputs.date }}
+          Build date: ${{ env.NOW }}
           
           This is an automated pre-release build. For stable releases, please check the non-prerelease versions.
         draft: false
