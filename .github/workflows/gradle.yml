@@ -37,7 +37,6 @@ jobs:
       - name: Configure Gradle Properties
         shell: pwsh
         run: |
-          mkdir -p $env:USERPROFILE\.gradle
           Add-Content $env:USERPROFILE\.gradle\gradle.properties "systemProp.https.protocols=TLSv1.2"
           Add-Content $env:USERPROFILE\.gradle\gradle.properties "org.gradle.jvmargs=-Xmx3G -Dhttps.protocols=TLSv1.2"
 
