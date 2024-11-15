@@ -40,7 +40,7 @@ jobs:
       id: date
       env:
         TZ: 'Asia/Seoul'
-      run: echo "NOW=$(date +'%T')" >> $env:GITHUB_ENV
+      run: echo "NOW=$(date +'%Y%m%d-%H%M%S')" >> $env:GITHUB_ENV
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
