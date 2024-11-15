@@ -181,7 +181,7 @@ public class ShipCmdEmotes extends CommandBase {
         put("lll".hashCode(), 34);
     }};
     //command name list
-    private static final List Aliases = new ArrayList() {{
+    private static final List<String> Aliases = new ArrayList() {{
         add("em");
         add("emo");
         add("emote");
@@ -266,7 +266,7 @@ public class ShipCmdEmotes extends CommandBase {
         int emo = 0;
 
         //check emotes name
-        if (cmd != null && cmd.length > 0) {
+        if (cmd.length > 0) {
             emo = nameToEmoID(cmd[0]);
         }
         //random emotes
