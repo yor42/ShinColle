@@ -57,7 +57,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: build --info --stacktrace
+          arguments: build
         env:
           GRADLE_OPTS: "-Dhttps.protocols=TLSv1.2 -Dorg.gradle.daemon=false"
 
