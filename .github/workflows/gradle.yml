@@ -54,7 +54,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: build-${{ env.VERSION }}-${{ env.NOW }}
+        tag_name: v${{ env.VERSION }}-${{ env.NOW }}
         release_name: Build ${{ env.VERSION }} (${{ env.NOW }})
         body: |
           Automated build for version ${{ env.VERSION }}
