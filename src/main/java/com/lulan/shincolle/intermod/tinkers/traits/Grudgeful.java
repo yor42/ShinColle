@@ -2,7 +2,6 @@ package com.lulan.shincolle.intermod.tinkers.traits;
 
 import com.lulan.shincolle.init.ModBlocks;
 import com.lulan.shincolle.init.ModItems;
-import com.sun.org.apache.xerces.internal.impl.dv.XSSimpleType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;

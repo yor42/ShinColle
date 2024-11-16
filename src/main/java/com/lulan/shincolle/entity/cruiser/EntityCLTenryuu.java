@@ -3,7 +3,6 @@ package com.lulan.shincolle.entity.cruiser;
 import com.google.common.base.Predicate;
 import com.lulan.shincolle.ai.EntityAIShipRangeAttack;
 import com.lulan.shincolle.ai.EntityAIShipSkillAttack;
-import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.BasicEntityShipSmall;
 import com.lulan.shincolle.entity.IShipAttackBase;
 import com.lulan.shincolle.entity.IShipEmotion;

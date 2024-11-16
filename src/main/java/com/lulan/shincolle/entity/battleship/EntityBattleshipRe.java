@@ -2,7 +2,6 @@ package com.lulan.shincolle.entity.battleship;
 
 import com.lulan.shincolle.ai.EntityAIShipCarrierAttack;
 import com.lulan.shincolle.ai.EntityAIShipRangeAttack;
-import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.BasicEntityShipCV;
 import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.init.ModSounds;

@@ -1,12 +1,10 @@
 package com.lulan.shincolle.intermod.tinkers.traits;
 
-import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.world.BlockEvent;
-import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 
 import java.util.Random;

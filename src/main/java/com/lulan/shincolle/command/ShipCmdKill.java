@@ -4,7 +4,6 @@ import com.lulan.shincolle.crafting.ShipCalc;
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.BasicEntityShipHostile;
 import com.lulan.shincolle.utility.EntityHelper;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

@@ -1,25 +1,17 @@
 package com.lulan.shincolle.tileentity;
 
 import com.lulan.shincolle.block.BlockWaypoint;
-import com.lulan.shincolle.block.ItemBlockWaypoint;
 import com.lulan.shincolle.entity.BasicEntityShip;
-import com.lulan.shincolle.init.ModBlocks;
-import com.lulan.shincolle.init.ModItems;
-import com.lulan.shincolle.item.PointerItem;
 import com.lulan.shincolle.network.S2CGUIPackets;
-import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.PacketHelper;
-import com.lulan.shincolle.utility.ParticleHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityWaypoint extends BasicTileEntity implements ITileWaypoint, ITickable {
 

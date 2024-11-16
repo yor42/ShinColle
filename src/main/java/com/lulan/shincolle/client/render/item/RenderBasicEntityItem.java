@@ -3,7 +3,6 @@ package com.lulan.shincolle.client.render.item;
 import com.lulan.shincolle.client.model.ModelBasicEntityItem;
 import com.lulan.shincolle.item.BasicEntityItem;
 import com.lulan.shincolle.reference.Reference;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;

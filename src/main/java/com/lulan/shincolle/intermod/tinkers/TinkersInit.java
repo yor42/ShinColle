@@ -1,20 +1,20 @@
 package com.lulan.shincolle.intermod.tinkers;
 
-import com.lulan.shincolle.init.ModBlocks;
-import com.lulan.shincolle.init.ModItems;
 import com.lulan.shincolle.intermod.tinkers.traits.Grudgeful;
 import com.lulan.shincolle.intermod.tinkers.traits.Omnivore;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Items;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.StringUtils;
 import slimeknights.tconstruct.library.MaterialIntegration;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.fluid.FluidMolten;
-import slimeknights.tconstruct.library.materials.*;
+import slimeknights.tconstruct.library.materials.BowMaterialStats;
+import slimeknights.tconstruct.library.materials.ExtraMaterialStats;
+import slimeknights.tconstruct.library.materials.HeadMaterialStats;
+import slimeknights.tconstruct.library.materials.Material;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

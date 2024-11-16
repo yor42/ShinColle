@@ -3,11 +3,9 @@ package com.lulan.shincolle.intermod.mekanism;
 import com.lulan.shincolle.init.ModBlocks;
 import com.lulan.shincolle.init.ModItems;
 import mekanism.common.recipe.RecipeHandler;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class MekanismHelper {
 

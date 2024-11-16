@@ -2,7 +2,6 @@ package com.lulan.shincolle.init;
 
 import com.lulan.shincolle.item.*;
 import com.lulan.shincolle.reference.Reference;
-import com.lulan.shincolle.utility.LogHelper;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;

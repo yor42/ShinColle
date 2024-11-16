@@ -2,7 +2,6 @@ package com.lulan.shincolle.entity.destroyer;
 
 import com.lulan.shincolle.ai.EntityAIShipPickItem;
 import com.lulan.shincolle.ai.EntityAIShipRangeAttack;
-import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.BasicEntityShipSmall;
 import com.lulan.shincolle.entity.IShipSummonAttack;
 import com.lulan.shincolle.entity.other.EntityAbyssMissile;

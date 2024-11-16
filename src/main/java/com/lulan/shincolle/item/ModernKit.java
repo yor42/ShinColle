@@ -5,7 +5,6 @@ import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.utility.InteractHelper;
-import com.sun.istack.internal.NotNull;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;

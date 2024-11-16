@@ -1,27 +1,20 @@
 package com.lulan.shincolle.worldgen;
 
-import java.util.ArrayList;
-
 import com.lulan.shincolle.config.ConfigLoot;
 import com.lulan.shincolle.config.ConfigLoot.ItemEntry;
-import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.item.BasicItem;
 import com.lulan.shincolle.reference.Reference;
-
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootEntry;
-import net.minecraft.world.storage.loot.LootEntryItem;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraft.world.storage.loot.RandomValueRange;
+import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.conditions.RandomChance;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraft.world.storage.loot.functions.SetMetadata;
 import net.minecraftforge.event.LootTableLoadEvent;
+
+import java.util.ArrayList;
 
 /**
  * custom loot table:

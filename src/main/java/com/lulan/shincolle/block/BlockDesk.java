@@ -2,7 +2,6 @@ package com.lulan.shincolle.block;
 
 import com.lulan.shincolle.client.render.block.RenderDesk;
 import com.lulan.shincolle.tileentity.TileEntityDesk;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.tileentity.TileEntity;

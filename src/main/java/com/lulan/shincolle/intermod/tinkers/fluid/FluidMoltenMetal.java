@@ -1,11 +1,10 @@
 package com.lulan.shincolle.intermod.tinkers.fluid;
 
 import com.lulan.shincolle.reference.Reference;
-import slimeknights.tconstruct.library.fluid.*;
-import net.minecraft.item.*;
-import net.minecraft.util.*;
-import net.minecraft.util.text.translation.*;
-import net.minecraftforge.fluids.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fluids.FluidStack;
+import slimeknights.tconstruct.library.fluid.FluidColored;
 
 //From plustic -yor42
 public class FluidMoltenMetal extends FluidColored {

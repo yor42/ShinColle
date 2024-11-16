@@ -10,7 +10,6 @@ import com.lulan.shincolle.utility.BlockHelper;
 import com.lulan.shincolle.utility.CalcHelper;
 import com.lulan.shincolle.utility.EmotionHelper;
 import com.lulan.shincolle.utility.ParticleHelper;
-
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;

@@ -1,7 +1,6 @@
 package com.lulan.shincolle.init;
 
 import com.lulan.shincolle.config.ConfigSound;
-import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.reference.Reference;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;

@@ -1,7 +1,5 @@
 package com.lulan.shincolle.entity.destroyer;
 
-import java.util.List;
-
 import com.lulan.shincolle.ai.EntityAIShipRangeAttack;
 import com.lulan.shincolle.entity.BasicEntityShipHostile;
 import com.lulan.shincolle.entity.IShipRiderType;
@@ -10,10 +8,11 @@ import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.utility.CalcHelper;
 import com.lulan.shincolle.utility.EmotionHelper;
 import com.lulan.shincolle.utility.ParticleHelper;
-
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 /**
  * model state:

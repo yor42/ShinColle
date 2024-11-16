@@ -9,7 +9,6 @@ import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.utility.LogHelper;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;

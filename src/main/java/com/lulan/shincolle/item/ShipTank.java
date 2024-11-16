@@ -1,8 +1,6 @@
 package com.lulan.shincolle.item;
 
 import com.lulan.shincolle.capability.CapaFluidContainer;
-import com.lulan.shincolle.network.C2SInputPackets;
-import com.lulan.shincolle.proxy.CommonProxy;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
