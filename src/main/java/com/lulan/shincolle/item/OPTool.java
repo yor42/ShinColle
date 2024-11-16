@@ -8,6 +8,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -32,12 +34,12 @@ public class OPTool extends BasicItem {
     //item glow effect
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack item) {
+    public boolean hasEffect(@Nonnull ItemStack item) {
         return true;
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(@Nonnull ItemStack itemstack, @Nullable World world, List<String> list, @Nonnull ITooltipFlag par4) {
         list.add(TextFormatting.RED + I18n.format("gui.shincolle:optool1"));
         list.add(TextFormatting.AQUA + I18n.format("gui.shincolle:optool2"));
     }

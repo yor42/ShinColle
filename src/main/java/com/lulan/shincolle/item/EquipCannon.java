@@ -82,10 +82,6 @@ public class EquipCannon extends BasicEquip {
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
         switch (meta) {
-            case 0:
-            case 1:
-            case 12:
-                return ID.EquipType.CANNON_SI;
             case 2:
             case 3:
             case 4:
@@ -103,6 +99,9 @@ public class EquipCannon extends BasicEquip {
             case 15:
             case 16:
                 return ID.EquipType.CANNON_TR;
+            case 0:
+            case 1:
+            case 12:
             default:
                 return ID.EquipType.CANNON_SI;
         }

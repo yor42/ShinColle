@@ -36,6 +36,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +101,7 @@ public class PointerItem extends BasicItem {
     //item glow effect
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack item) {
+    public boolean hasEffect(@Nonnull ItemStack item) {
         return true;
     }
 
@@ -147,7 +149,7 @@ public class PointerItem extends BasicItem {
      * <br>
      */
     @Override
-    public boolean onEntitySwing(EntityLivingBase entity, ItemStack item) {
+    public boolean onEntitySwing(@Nonnull EntityLivingBase entity, ItemStack item) {
 //		LogHelper.debug("DEBUG: pointer swing (left click) "+entityLiving);
         int meta = item.getItemDamage();
 
@@ -157,7 +159,7 @@ public class PointerItem extends BasicItem {
             //玩家左鍵使用此武器時 (client side only)
             if (entity.world.isRemote) {
                 //create exlist
-                ArrayList<Entity> exlist = new ArrayList<Entity>();
+                ArrayList<Entity> exlist = new ArrayList<>();
                 exlist.add(player);
                 if (player.isRiding()) {
                     exlist.add(player.getRidingEntity());
@@ -197,7 +199,7 @@ public class PointerItem extends BasicItem {
                         //get ship entity
                         if (hitObj.entityHit instanceof BasicEntityShip) {
                             ship = (BasicEntityShip) hitObj.entityHit;
-                        } else if (hitObj.entityHit instanceof BasicEntityMount) {
+                        } else {
                             ship = (BasicEntityShip) ((BasicEntityMount) hitObj.entityHit).getHostEntity();
                         }
 
@@ -365,17 +367,18 @@ public class PointerItem extends BasicItem {
      * other:				-<br>
      */
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, EntityPlayer player,@Nonnull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
 
         int meta = stack.getMetadata();
 
-        if (meta > 2) return new ActionResult(EnumActionResult.SUCCESS, stack);
+        if (meta > 2) return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 
         //client side
         if (world.isRemote) {
             //create exlist
-            ArrayList<Entity> exlist = new ArrayList<Entity>();
+            ArrayList<Entity> exlist = new ArrayList<>();
             exlist.add(player);
             if (player.isRiding()) {
                 exlist.add(player.getRidingEntity());
@@ -397,7 +400,7 @@ public class PointerItem extends BasicItem {
                 if (keySet.keyBindSprint.isKeyDown()) {
                     //set guard entity (move only: type = 0)
                     CommonProxy.channelG.sendToServer(new C2SGUIPackets(player, C2SGUIPackets.PID.GuardEntity, meta, 0, hitObj.entityHit.getEntityId()));
-                    return new ActionResult(EnumActionResult.SUCCESS, stack);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                 }
 
                 //若為ship or mounts
@@ -412,7 +415,7 @@ public class PointerItem extends BasicItem {
                     }
 
                     //null check
-                    if (ship == null) return new ActionResult(EnumActionResult.PASS, stack);
+                    if (ship == null) return new ActionResult<>(EnumActionResult.PASS, stack);
 
                     //是主人: 右鍵: set sitting
                     if (TeamHelper.checkSameOwner(player, ship)) {
@@ -426,7 +429,7 @@ public class PointerItem extends BasicItem {
                             //對座騎: 若4格內則上座騎(BasicEntityMount.class內判定)
                             if (hitObj.entityHit instanceof BasicEntityMount) {
                                 if (player.getDistanceSq(hitObj.entityHit) <= 16D) {
-                                    return new ActionResult(EnumActionResult.SUCCESS, stack);
+                                    return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                                 }
                             }
 
@@ -434,7 +437,7 @@ public class PointerItem extends BasicItem {
                             CommonProxy.channelG.sendToServer(new C2SGUIPackets(player, C2SGUIPackets.PID.SetSitting, meta, ship.getShipUID()));
                         }
 
-                        return new ActionResult(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     }
                     //ship類非主人
                     else {
@@ -483,7 +486,7 @@ public class PointerItem extends BasicItem {
                 if (keySet.keyBindSneak.isKeyDown()) {
                     //send GUI packet
                     CommonProxy.channelG.sendToServer(new C2SGUIPackets(player, C2SGUIPackets.PID.OpenItemGUI, 0));
-                    return new ActionResult(EnumActionResult.SUCCESS, stack);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                 }
 
                 RayTraceResult hitObj2 = BlockHelper.getPlayerMouseOverBlockOnWater(64D, 1F);
@@ -491,7 +494,7 @@ public class PointerItem extends BasicItem {
                 if (hitObj2 != null) {
                     //抓到的是block
                     if (hitObj2.typeOfHit == RayTraceResult.Type.BLOCK) {
-                        /**hit side (適合移動位置): 0:下方(y-1) 1:上方(y+1) 2:北方(z-1) 3:南方(z+1) 4:西方(x-1) 5:東方(x+1)*/
+                        /*hit side (適合移動位置): 0:下方(y-1) 1:上方(y+1) 2:北方(z-1) 3:南方(z+1) 4:西方(x-1) 5:東方(x+1)*/
                         int x = hitObj2.getBlockPos().getX();
                         int y = hitObj2.getBlockPos().getY();
                         int z = hitObj2.getBlockPos().getZ();
@@ -503,9 +506,6 @@ public class PointerItem extends BasicItem {
                         //if not waypoint, tweak target position
                         if (!BlockHelper.checkBlockIsLiquid(state) && !(tile instanceof ITileGuardPoint)) {
                             switch (hitObj2.sideHit.getIndex()) {
-                                default:
-                                    y--;
-                                    break;
                                 case 1:
                                     y++;
                                     break;
@@ -520,6 +520,9 @@ public class PointerItem extends BasicItem {
                                     break;
                                 case 5:
                                     x++;
+                                    break;
+                                default:
+                                    y--;
                                     break;
                             }
                         }
@@ -546,12 +549,12 @@ public class PointerItem extends BasicItem {
             }//end hitObj2 != null
         }//end client side
 
-        return new ActionResult(EnumActionResult.PASS, stack);
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     //left click on entity
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+    public boolean onLeftClickEntity(@Nonnull ItemStack stack,@Nonnull EntityPlayer player,@Nonnull Entity entity) {
         return true;    //prevent this item to attack entity
     }
 
@@ -564,7 +567,7 @@ public class PointerItem extends BasicItem {
      * 方法5: 自訂func_147447_a 自行修改參數, 不限近距離且可以抓液體方塊 (以上方法全都使用func_147447_a方法)
      */
     @Override
-    public void onUpdate(ItemStack item, World world, Entity player, int slot, boolean inUse) {
+    public void onUpdate(@Nonnull ItemStack item, World world,@Nonnull Entity player, int slot, boolean inUse) {
         if (world.isRemote) {
             //show caress position if debug mode
             if (inUse && ConfigHandler.debugMode && item.getItemDamage() > 2) {
@@ -625,22 +628,8 @@ public class PointerItem extends BasicItem {
                     }
                 }//end format CD
             }//end format flag
-
-            //not using
-            if (!inUse) {
-                //TODO dep
-//				if (item.hasTagCompound() && item.getTagCompound().getBoolean("chgHB"))
-//				{
-//					int orgCurrentItem = item.getTagCompound().getInteger("orgHB");
-//					LogHelper.debug("DEBUG: change hotbar "+((EntityPlayer)player).inventory.currentItem+" to "+orgCurrentItem);
-//					
-//					((EntityPlayer)player).inventory.currentItem = orgCurrentItem;
-//					CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.SyncHandheld, orgCurrentItem));
-//					item.getTagCompound().setBoolean("chgHB", false);
-//				}
-            }
             //if using
-            else {
+            if(inUse) {
                 GameSettings keys = ClientProxy.getGameSetting();
 
                 //press CTRL to show ship location particle
@@ -666,7 +655,10 @@ public class PointerItem extends BasicItem {
             if (world.isRemote) {
                 if (player.ticksExisted % 32 == 0) {
                     //顯示隊伍圈圈, 選擇圈圈, 可控制圈圈等
-                    CapaTeitoku capa = CapaTeitoku.getTeitokuCapability((EntityPlayer) player);
+                    CapaTeitoku capa = null;
+                    if (player instanceof EntityPlayer) {
+                        capa = CapaTeitoku.getTeitokuCapability((EntityPlayer) player);
+                    }
                     BasicEntityShip teamship = null;
                     boolean select = false;
                     int meta = item.getItemDamage();
@@ -687,9 +679,6 @@ public class PointerItem extends BasicItem {
                                 //若是控制目標, 則顯示為pointer顏色
                                 if (select) {
                                     switch (meta) {
-                                        default:    //default mode
-                                            type = 1;
-                                            break;
                                         case 1:        //group mode
                                         case 4:
                                             type = 2;
@@ -698,17 +687,20 @@ public class PointerItem extends BasicItem {
                                         case 5:
                                             type = 3;
                                             break;
+                                        default:    //default mode
+                                            type = 1;
+                                            break;
                                     }
                                 }
                                 //非控制目標, 都顯示為綠色, formation mode保持黃色
                                 else {
                                     switch (meta) {
-                                        default:    //default mode
-                                            type = 0;
-                                            break;
                                         case 2:        //formation mode
                                         case 5:
                                             type = 3;
+                                            break;
+                                        default:    //default mode
+                                            type = 0;
                                             break;
                                     }
                                 }
@@ -725,7 +717,7 @@ public class PointerItem extends BasicItem {
 
     //display equip information
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(@Nonnull ItemStack itemstack, @Nullable World world, @Nonnull List<String> list,@Nonnull ITooltipFlag par4) {
         CapaTeitoku capa = CapaTeitoku.getTeitokuCapabilityClientOnly();
 
         if (capa != null) {
@@ -778,7 +770,7 @@ public class PointerItem extends BasicItem {
                     level = ship.getStateMinor(ID.M.ShipLevel);
 
                     //get nam
-                    if (ship.getCustomNameTag() != null && ship.getCustomNameTag().length() > 0) {
+                    if (!ship.getCustomNameTag().isEmpty()) {
                         name = ship.getCustomNameTag();
                     } else {
                         name = ship.getName();

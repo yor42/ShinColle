@@ -25,6 +25,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class BasicEntityItem extends Entity {
     /**
      * item of this entity
      */
-    private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItem.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(BasicEntityItem.class, DataSerializers.ITEM_STACK);
     /**
      * The age of this EntityItem (used to animate it up and down as well as expire it)
      */
@@ -84,7 +85,7 @@ public class BasicEntityItem extends Entity {
 
     //can not damage this item
     @Override
-    public boolean attackEntityFrom(DamageSource attacker, float dmg) {
+    public boolean attackEntityFrom(@Nonnull DamageSource attacker, float dmg) {
         return false;
     }
 
@@ -176,7 +177,7 @@ public class BasicEntityItem extends Entity {
     }
 
     @Override
-    public void move(MoverType type, double x, double y, double z) {
+    public void move(@Nonnull MoverType type, double x, double y, double z) {
         this.world.profiler.startSection("move");
         double d0 = this.posX;
         double d1 = this.posY;
@@ -371,7 +372,7 @@ public class BasicEntityItem extends Entity {
     }
 
     @Override
-    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
+    protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
     }
 
     @Override
@@ -416,6 +417,9 @@ public class BasicEntityItem extends Entity {
      * Sets the ItemStack for this entity
      */
     public void setEntityItemStack(@Nullable ItemStack stack) {
+        if(stack == null){
+            stack = ItemStack.EMPTY;
+        }
         this.getDataManager().set(ITEM, stack);
         this.getDataManager().setDirty(ITEM);
     }
@@ -424,7 +428,7 @@ public class BasicEntityItem extends Entity {
      * Called by a player entity when they collide with an entity
      */
     @Override
-    public void onCollideWithPlayer(EntityPlayer player) {
+    public void onCollideWithPlayer(@Nonnull EntityPlayer player) {
         if (!this.world.isRemote && !this.isDead) {
             //check delay
             if (this.delayBeforeCanPickup > 0) return;
@@ -488,7 +492,7 @@ public class BasicEntityItem extends Entity {
                 //play pick sound
                 if (!this.isSilent() && !NeedJudge) {
                     this.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                } else if (!this.isSilent() && pid1.equals(pid2)) {
+                } else if (!this.isSilent() && pid1 != null && pid1.equals(pid2)) {
                     this.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }//end delay = 0
 
@@ -521,7 +525,7 @@ public class BasicEntityItem extends Entity {
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt) {
+    protected void writeEntityToNBT(@Nonnull NBTTagCompound nbt) {
         if (!this.getEntityItem().isEmpty()) {
             nbt.setTag("Item", this.getEntityItem().writeToNBT(new NBTTagCompound()));
         }

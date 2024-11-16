@@ -23,12 +23,10 @@ public class DeskItemBook extends BasicItem {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (player != null) {    //開啟方塊GUI 參數:玩家, mod instance, gui ID, world, 自訂參數1,2,3
-            FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.ADMIRALDESK, world, 2, 0, 0);
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-        }
+        //開啟方塊GUI 參數:玩家, mod instance, gui ID, world, 自訂參數1,2,3
+        FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.ADMIRALDESK, world, 2, 0, 0);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, ItemStack.EMPTY);
     }
 
 

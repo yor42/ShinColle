@@ -20,6 +20,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
@@ -62,10 +63,7 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
 
     @Override
     public float getSaturationValue(int meta) {
-        switch (meta) {
-            default:
-                return 10F;
-        }
+        return 10F;
     }
 
     @Override
@@ -93,22 +91,24 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
 
     //start use item
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill && hand == EnumHand.MAIN_HAND) {
             player.setActiveHand(hand);
-            return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
+            return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
         } else {
-            return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+            return new ActionResult<>(EnumActionResult.FAIL, player.getHeldItem(hand));
         }
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
+    @Nonnull
+    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
         return EnumAction.EAT;
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
+    public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             return 60;
         } else {
@@ -117,10 +117,9 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
     }
 
     @Override
-    @Nullable
-    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase host) {
-        if (host instanceof EntityPlayer && world != null && !world.isRemote &&
-                CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
+    @Nonnull
+    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase host) {
+        if (host instanceof EntityPlayer && !world.isRemote && CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             CapaTeitoku capa = CapaTeitoku.getTeitokuCapability((EntityPlayer) host);
 
             if (capa != null && capa.morphEntity instanceof BasicEntityShip) {
@@ -132,7 +131,7 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean inUse) {
+    public void onUpdate(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull Entity entity, int slot, boolean inUse) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
 
@@ -174,7 +173,7 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
 
     //display equip information
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag par4) {
+    public void addInformation(ItemStack itemstack, World world, @Nonnull List<String> list, @Nonnull ITooltipFlag par4) {
         if (!itemstack.isEmpty()) {
             int meta = itemstack.getItemDamage();
             String str = I18n.format("gui.shincolle:combatration" + meta);

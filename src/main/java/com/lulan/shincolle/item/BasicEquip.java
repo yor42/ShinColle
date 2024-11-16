@@ -112,11 +112,11 @@ abstract public class BasicEquip extends BasicItem implements IShipResourceItem 
     //display equip information
     @Override
     public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag par4) {
-        if (!stack.isEmpty() && stack.getItem() != null) {
-            //check tooltip flags
+        if (!stack.isEmpty()) {
+            stack.getItem();//check tooltip flags
             if (stack.hasTagCompound()) {
                 NBTTagCompound nbt = stack.getTagCompound();
-
+                assert nbt != null;
                 //has no flag, add new flag
                 if (!nbt.hasKey("HideFlags", 99)) {
                     nbt.setInteger("HideFlags", 1);
@@ -234,7 +234,7 @@ abstract public class BasicEquip extends BasicItem implements IShipResourceItem 
 
                 list.add(drawstr);
             }//end get item stat
-        }//end get item
+        }
     }
 
 

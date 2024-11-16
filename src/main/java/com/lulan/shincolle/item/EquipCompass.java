@@ -31,25 +31,21 @@ public class EquipCompass extends BasicEquip {
 
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
-        switch (meta) {
-            case 0:
-                return ID.EquipType.COMPASS_LO;
-            default:
-                return 0;
+        if (meta == 0) {
+            return ID.EquipType.COMPASS_LO;
         }
+        return 0;
     }
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.COMPASS_LO:  //90
-                return new int[]{itemRand.nextInt(5) + 5,
-                        itemRand.nextInt(3) + 4,
-                        itemRand.nextInt(2) + 2,
-                        itemRand.nextInt(2) + 2};
-            default:
-                return new int[]{0, 0, 0, 0};
+        if (this.getEquipTypeIDFromMeta(meta) == ID.EquipType.COMPASS_LO) {  //90
+            return new int[]{itemRand.nextInt(5) + 5,
+                    itemRand.nextInt(3) + 4,
+                    itemRand.nextInt(2) + 2,
+                    itemRand.nextInt(2) + 2};
         }
+        return new int[]{0, 0, 0, 0};
     }
 
     @Override

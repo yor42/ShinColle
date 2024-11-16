@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class RepairGoddess extends BasicItem {
@@ -22,14 +23,14 @@ public class RepairGoddess extends BasicItem {
 
     //display equip information
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(@Nonnull ItemStack itemstack, World world, @Nonnull List<String> list, @Nonnull ITooltipFlag par4) {
         list.add(TextFormatting.RED + I18n.format("gui.shincolle:repairgoddess"));
     }
 
     //item glow effect
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack item) {
+    public boolean hasEffect(@Nonnull ItemStack item) {
         return true;
     }
 

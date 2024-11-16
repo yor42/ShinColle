@@ -14,6 +14,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class BucketRepair extends BasicItem {
 
     private static final String NAME = "BucketRepair";
@@ -27,24 +29,26 @@ public class BucketRepair extends BasicItem {
 
     //start use item
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill && hand == EnumHand.MAIN_HAND) {
             player.setActiveHand(hand);
-            return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
+            return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
         } else {
-            return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+            return new ActionResult<>(EnumActionResult.FAIL, player.getHeldItem(hand));
         }
     }
 
     //item use animate
     @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
+    @Nonnull
+    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
         return EnumAction.DRINK;
     }
 
     //item use duration
     @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
+    public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             return 24;
         } else {
@@ -54,9 +58,9 @@ public class BucketRepair extends BasicItem {
 
     //item use result
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase host) {
-        if (host instanceof EntityPlayer && world != null && !world.isRemote &&
-                CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
+    @Nonnull
+    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase host) {
+        if (host instanceof EntityPlayer && !world.isRemote && CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             EntityPlayer player = (EntityPlayer) host;
             CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(player);
 

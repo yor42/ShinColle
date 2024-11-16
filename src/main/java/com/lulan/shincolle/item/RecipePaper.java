@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class RecipePaper extends BasicItem {
@@ -32,26 +33,25 @@ public class RecipePaper extends BasicItem {
 
     //開啟GUI 參數:玩家, mod instance, gui ID, world, 自訂參數1,2,3
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (player != null) {
-            FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.RECIPE, world, 0, 0, 0);
-            return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-        }
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+        FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.RECIPE, world, 0, 0, 0);
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 
-        return new ActionResult(EnumActionResult.PASS, ItemStack.EMPTY);
     }
 
     //show recipe content
     @Override
-    public void addInformation(ItemStack stack, World world, List list, ITooltipFlag advanced) {
+    public void addInformation(@Nonnull ItemStack stack, World world, @Nonnull List<String> list, @Nonnull ITooltipFlag advanced) {
         super.addInformation(stack, world, list, advanced);
 
         if (stack.hasTagCompound()) {
             //get recipe itemstack
             NBTTagCompound nbt = stack.getTagCompound();
+            if(nbt == null) return;
             NBTTagList tagList = nbt.getTagList("Recipe", Constants.NBT.TAG_COMPOUND);
 
-            if (tagList != null && tagList.tagCount() > 0) {
+            if (tagList.tagCount() > 0) {
                 NonNullList<ItemStack> stacks = NonNullList.withSize(10, ItemStack.EMPTY);
 
                 for (int i = 0; i < tagList.tagCount(); i++) {

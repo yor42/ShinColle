@@ -31,6 +31,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -318,8 +319,8 @@ public class ShipSpawnEgg extends BasicItem {
     /**
      * CALC ENTITY RANDOM BONUS ATTRIBUTE
      * calc materials amount and random gen the bonus attributes
-     *
-     * @parm spawn egg item, player, entity
+     * <p>
+     * &#064;parm  spawn egg item, player, entity
      */
     private void initEntityAttribute(ItemStack stack, EntityPlayer player, BasicEntityShip entity) {
         LogHelper.debug("DEBUG: init ship states");
@@ -394,16 +395,16 @@ public class ShipSpawnEgg extends BasicItem {
                 //set custom name
                 String customname = nbt.getString("customname");
 
-                if (customname != null && customname.length() > 0) {
+                if (!customname.isEmpty()) {
                     entity.setNameTag(customname);
                 }
 
-                /** OWNER SETTING
-                 *  1. check player UID first (after rv.22)
-                 *  2. if (1) fail, check player UUID string (before rv.22)
+                /* OWNER SETTING
+                   1. check player UID first (after rv.22)
+                   2. if (1) fail, check player UUID string (before rv.22)
                  */
 
-                /** set owner by player's UID (after rv.22) */
+                /* set owner by player's UID (after rv.22) */
                 int pid = nbt.getInteger("PlayerID");    //player uid
                 int sid = nbt.getInteger("ShipID");        //ship uid
 
@@ -415,11 +416,11 @@ public class ShipSpawnEgg extends BasicItem {
                     entity.setStateMinor(ID.M.ShipUID, sid);
                 }
 
-                /** set owner by player's UUID (before rv.22) */
+                /* set owner by player's UUID (before rv.22) */
                 String ownerid = nbt.getString("owner");
 
                 //get owner
-                if (ownerid != null && ownerid.length() > 5) {
+                if (ownerid.length() > 5) {
                     entity.setOwnerId(UUID.fromString(ownerid));
                 }
                 //get no owner from uuid string, get owner from pid
@@ -454,12 +455,13 @@ public class ShipSpawnEgg extends BasicItem {
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
 
         //client side
         if (world.isRemote) {
-            return new ActionResult(EnumActionResult.SUCCESS, stack);
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         //server side
         else {
@@ -467,89 +469,83 @@ public class ShipSpawnEgg extends BasicItem {
             RayTraceResult hitObj = this.rayTrace(world, player, true);
 
             //hit air
-            if (hitObj == null) {
-                return new ActionResult(EnumActionResult.PASS, stack);
-            }
-            //hit object
-            else {
-                //hit block
-                if (hitObj.typeOfHit == RayTraceResult.Type.BLOCK) {
-                    BlockPos hitPos = hitObj.getBlockPos();
+            //hit block
+            if (hitObj.typeOfHit == RayTraceResult.Type.BLOCK) {
+                BlockPos hitPos = hitObj.getBlockPos();
 
-                    //block can't be changed (ex: protected spawn area)
-                    if (!world.isBlockModifiable(player, hitPos)) {
-                        return new ActionResult(EnumActionResult.PASS, stack);
-                    }
+                //block can't be changed (ex: protected spawn area)
+                if (!world.isBlockModifiable(player, hitPos)) {
+                    return new ActionResult<>(EnumActionResult.PASS, stack);
+                }
 
-                    //player can't edit block
-                    if (!player.canPlayerEdit(hitPos, hitObj.sideHit, stack)) {
-                        return new ActionResult(EnumActionResult.PASS, stack);
-                    }
+                //player can't edit block
+                if (!player.canPlayerEdit(hitPos, hitObj.sideHit, stack)) {
+                    return new ActionResult<>(EnumActionResult.PASS, stack);
+                }
 
-                    //itemstack-- & exp-- & spawn entity
-                    //if creative mode = item not consume
-                    if (!player.capabilities.isCreativeMode) {
-                        //cost exp if use specific egg
-                        if (stack.getItemDamage() > 1 && stack.hasTagCompound()) {
-                            NBTTagCompound nbt = stack.getTagCompound();
-                            int costLevel = nbt.getIntArray("Attrs")[0] / 3;
+                //itemstack-- & exp-- & spawn entity
+                //if creative mode = item not consume
+                if (!player.capabilities.isCreativeMode) {
+                    //cost exp if use specific egg
+                    if (stack.getItemDamage() > 1 && stack.hasTagCompound() && stack.getTagCompound() != null) {
+                        NBTTagCompound nbt = stack.getTagCompound();
+                        int costLevel = nbt.getIntArray("Attrs")[0] / 3;
 
-                            if (player.experienceLevel < costLevel) {
-                                player.sendMessage(new TextComponentTranslation("chat.shincolle:levelfail"));
-                                return new ActionResult(EnumActionResult.FAIL, stack);
-                            } else {
-                                player.addExperienceLevel(-costLevel);
-                            }
-                        }
-
-                        //item -1
-                        stack.shrink(1);
-                    }
-
-                    //spawn entity in front of player (1 block)
-                    //if boss egg
-                    if (stack.getItemDamage() > 2000) {
-                        BasicEntityShipHostile ship = (BasicEntityShipHostile) getSpawnEntity(player, stack, hitPos.up(), false);
-
-                        if (ship != null) {
-                            ship.initAttrs(player.getRNG().nextInt(4));
-                            player.world.spawnEntity(ship);
-                            ship.playLivingSound();
+                        if (player.experienceLevel < costLevel) {
+                            player.sendMessage(new TextComponentTranslation("chat.shincolle:levelfail"));
+                            return new ActionResult<>(EnumActionResult.FAIL, stack);
+                        } else {
+                            player.addExperienceLevel(-costLevel);
                         }
                     }
-                    //normal egg
-                    else {
-                        BasicEntityShip ship = (BasicEntityShip) getSpawnEntity(player, stack, hitPos.up(), true);
 
-                        if (ship != null) {
-                            player.world.spawnEntity(ship);
-                            ship.playLivingSound();
+                    //item -1
+                    stack.shrink(1);
+                }
 
-                            //for egg with nameTag
-                            if (stack.hasDisplayName()) {
-                                ship.setNameTag(stack.getDisplayName());
-                            }
+                //spawn entity in front of player (1 block)
+                //if boss egg
+                if (stack.getItemDamage() > 2000) {
+                    BasicEntityShipHostile ship = (BasicEntityShipHostile) getSpawnEntity(player, stack, hitPos.up(), false);
 
-                            //calc bonus point, set custom name and owner name
-                            this.initEntityAttribute(stack, player, ship);
+                    if (ship != null) {
+                        ship.initAttrs(player.getRNG().nextInt(4));
+                        player.world.spawnEntity(ship);
+                        ship.playLivingSound();
+                    }
+                }
+                //normal egg
+                else {
+                    BasicEntityShip ship = (BasicEntityShip) getSpawnEntity(player, stack, hitPos.up(), true);
 
-                            //send sync packet
-                            ship.sendSyncPacketAll();
+                    if (ship != null) {
+                        player.world.spawnEntity(ship);
+                        ship.playLivingSound();
+
+                        //for egg with nameTag
+                        if (stack.hasDisplayName()) {
+                            ship.setNameTag(stack.getDisplayName());
                         }
-                    }//end spawn entity
-                }//end get position
 
-                return new ActionResult(EnumActionResult.SUCCESS, stack);
-            }//end else
+                        //calc bonus point, set custom name and owner name
+                        this.initEntityAttribute(stack, player, ship);
+
+                        //send sync packet
+                        ship.sendSyncPacketAll();
+                    }
+                }//end spawn entity
+            }//end get position
+
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
     }
 
     //display egg information
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(ItemStack itemstack, World world, @Nonnull List<String> list, @Nonnull ITooltipFlag par4) {
         int[] material = new int[4];
 
-        if (itemstack.hasTagCompound()) {    //正常製造egg, 會有四個材料tag
+        if (itemstack.hasTagCompound() && itemstack.getTagCompound() != null) {    //正常製造egg, 會有四個材料tag
             NBTTagCompound nbt = itemstack.getTagCompound();
 
             if (nbt.hasKey("Attrs")) {
@@ -558,7 +554,7 @@ public class ShipSpawnEgg extends BasicItem {
 
                 String ownername = nbt.getString("ownername");
 
-                if (ownername.length() < 1) {
+                if (ownername.isEmpty()) {
                     EntityPlayer p2 = EntityHelper.getEntityPlayerByUIDAtClient(nbt.getInteger("PlayerID"));
                     if (p2 != null) {
                         ownername = p2.getName();

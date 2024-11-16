@@ -10,6 +10,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
+import javax.annotation.Nonnull;
+
 public class DeskItemRadar extends BasicItem {
 
     private static final String NAME = "DeskItemRadar";
@@ -22,13 +24,12 @@ public class DeskItemRadar extends BasicItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (player != null) {    //開啟方塊GUI 參數:玩家, mod instance, gui ID, world, 自訂參數1,2,3
-            FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.ADMIRALDESK, world, 1, 0, 0);
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
-        }
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+        //開啟方塊GUI 參數:玩家, mod instance, gui ID, world, 自訂參數1,2,3
+        FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.ADMIRALDESK, world, 1, 0, 0);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
 
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, ItemStack.EMPTY);
     }
 
 

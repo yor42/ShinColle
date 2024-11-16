@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = Reference.MOD_ID_Baubles)
@@ -41,15 +42,19 @@ public class MarriageRing extends BasicItem implements IBauble {
 
     //activate or deactivate ring
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         //right click to launch
         if (!world.isRemote) {
             //change ring state
-            if (!stack.hasTagCompound()) {
-                stack.setTagCompound(new NBTTagCompound());
-                stack.getTagCompound().setBoolean("isActive", false);
+            if (!stack.hasTagCompound() || stack.getTagCompound() == null) {
+                NBTTagCompound compound = new NBTTagCompound();
+                compound.setBoolean("isActive", false);
+                stack.setTagCompound(compound);
             }
+
+            assert stack.getTagCompound() != null;
 
             boolean isActive = stack.getTagCompound().getBoolean("isActive");
             boolean invActive = !isActive;
@@ -72,7 +77,7 @@ public class MarriageRing extends BasicItem implements IBauble {
             }
         }
 
-        return new ActionResult(EnumActionResult.PASS, stack);
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     //item glow effect
@@ -80,6 +85,7 @@ public class MarriageRing extends BasicItem implements IBauble {
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack item) {
         if (item.hasTagCompound()) {
+            assert item.getTagCompound() != null;
             return item.getTagCompound().getBoolean("isActive");
         }
 
@@ -91,7 +97,7 @@ public class MarriageRing extends BasicItem implements IBauble {
      * ConfigHandler.ringAbility[]: 0:
      */
     @Override
-    public void onUpdate(ItemStack item, World world, Entity entity, int slot, boolean inUse) {
+    public void onUpdate(@Nonnull ItemStack item, @Nonnull World world, @Nonnull Entity entity, int slot, boolean inUse) {
         //BOTH SIDE
         if (entity instanceof EntityPlayer) {
             EntityPlayer owner = (EntityPlayer) entity;
@@ -159,7 +165,7 @@ public class MarriageRing extends BasicItem implements IBauble {
     //show ability text, this is CLIENT side
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag par4) {
+    public void addInformation(@Nonnull ItemStack itemstack, World world, @Nonnull List<String> list, @Nonnull ITooltipFlag par4) {
         CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(net.minecraft.client.Minecraft.getMinecraft().player);
 
         if (capa != null) {

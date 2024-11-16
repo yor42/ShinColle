@@ -5,7 +5,6 @@ import com.lulan.shincolle.intermod.metamorph.MetamorphHelper;
 import com.lulan.shincolle.network.C2SInputPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.tileentity.ITileWaypoint;
-import com.lulan.shincolle.tileentity.TileEntityCrane;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -21,6 +20,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -51,32 +51,30 @@ public class TargetWrench extends BasicItem {
      * sneaking: pair Chest, Crane and Waypoint
      */
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (player != null) {
-            //client side
-            if (world.isRemote) {
-                //sneaking
-                if (player.isSneaking()) {
-                    TileEntity tile = world.getTileEntity(pos);
+    @Nonnull
+    public EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,@Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
+        //client side
+        if (world.isRemote) {
+            //sneaking
+            if (player.isSneaking()) {
+                TileEntity tile = world.getTileEntity(pos);
 
-                    if (tile instanceof TileEntityCrane ||
-                            tile instanceof IInventory ||
-                            tile instanceof ITileWaypoint) {
-                        this.tilePoint[this.pointID] = pos;
-                        this.switchPoint();
-                        this.setPair(player);
+                if (tile instanceof IInventory ||
+                        tile instanceof ITileWaypoint) {
+                    this.tilePoint[this.pointID] = pos;
+                    this.switchPoint();
+                    this.setPair(player);
 
-                        return EnumActionResult.FAIL;    //return fail to prevent item swing
-                    } else {
-                        //fail msg
-                        player.sendMessage(new TextComponentTranslation("chat.shincolle:wrench.wrongtile"));
+                    return EnumActionResult.FAIL;    //return fail to prevent item swing
+                } else {
+                    //fail msg
+                    player.sendMessage(new TextComponentTranslation("chat.shincolle:wrench.wrongtile"));
 
-                        //clear data
-                        resetPos();
-                    }
+                    //clear data
+                    resetPos();
                 }
-            }//end client side
-        }//end get player
+            }
+        }//end client side
 
         return EnumActionResult.PASS;
     }
@@ -85,7 +83,7 @@ public class TargetWrench extends BasicItem {
      * left click on entity to get morph
      */
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+    public boolean onLeftClickEntity(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull Entity entity) {
         if (CommonProxy.activeMetamorph) {
             MetamorphHelper.acquireShipMorph(player, entity);
             return true;
@@ -95,7 +93,7 @@ public class TargetWrench extends BasicItem {
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(@Nonnull ItemStack itemstack, World world, List<String> list, @Nonnull ITooltipFlag par4) {
         list.add(TextFormatting.YELLOW + I18n.format("gui.shincolle:wrench3"));
     }
 
@@ -110,15 +108,15 @@ public class TargetWrench extends BasicItem {
     }
 
     //crane pairing, CLIENT SIDE ONLY
-    private boolean setPair(EntityPlayer player) {
+    private void setPair(EntityPlayer player) {
         //valid point position
-        if (tilePoint[0].getY() <= 0 || tilePoint[1].getY() <= 0) return false;
+        if (tilePoint[0].getY() <= 0 || tilePoint[1].getY() <= 0) return;
 
         //get player UID
         CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(player);
         int uid = 0;
         if (capa != null) uid = capa.getPlayerUID();
-        if (uid <= 0) return false;
+        if (uid <= 0) return;
 
         //get tile
         TileEntity[] tiles = new TileEntity[2];
@@ -137,7 +135,7 @@ public class TargetWrench extends BasicItem {
             //clear data
             resetPos();
 
-            return false;
+            return;
         }
 
         //chest and waypoint pairing
@@ -163,7 +161,6 @@ public class TargetWrench extends BasicItem {
             //clear data
             resetPos();
 
-            return true;
         }
         //waypoint pairing
         else if (tiles[0] instanceof ITileWaypoint && tiles[1] instanceof ITileWaypoint) {
@@ -181,7 +178,6 @@ public class TargetWrench extends BasicItem {
             //clear data
             resetPos();
 
-            return true;
         } else {
             TextComponentTranslation str = new TextComponentTranslation("chat.shincolle:wrench.wrongtile");
             str.getStyle().setColor(TextFormatting.YELLOW);
@@ -190,7 +186,6 @@ public class TargetWrench extends BasicItem {
             //clear data
             resetPos();
 
-            return false;
         }
     }
 

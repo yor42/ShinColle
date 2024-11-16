@@ -11,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 
+import javax.annotation.Nonnull;
+
 public class KaitaiHammer extends BasicItem {
 
     private static final String NAME = "KaitaiHammer";
@@ -28,12 +30,13 @@ public class KaitaiHammer extends BasicItem {
 
     //此鎚子可用於合成其他道具, 且不為消耗品, 故ContainerItem為耐久度-1的自己本身
     @Override
-    public boolean hasContainerItem(ItemStack stack) {
+    public boolean hasContainerItem(@Nonnull ItemStack stack) {
         return true;
     }
 
     //此鎚子在合成桌中使用後, 耐久度 -1
     @Override
+    @Nonnull
     public ItemStack getContainerItem(ItemStack stack) {
         //耐久度--
         int meta = stack.getItemDamage() + 1;
@@ -53,7 +56,7 @@ public class KaitaiHammer extends BasicItem {
 
     //左鍵用於自己的棲艦, 可使該棲艦一擊死亡 (轉回物品型態, 等級-1)
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+    public boolean onLeftClickEntity(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull Entity entity) {
         //check morph entity
         if (entity instanceof IShipMorph) {
             //clear morph entity by left click

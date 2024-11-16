@@ -18,7 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class TrainingBook extends BasicItem {
@@ -32,28 +32,30 @@ public class TrainingBook extends BasicItem {
 
     //display equip information
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(@Nonnull ItemStack itemstack, World world, List<String> list, @Nonnull ITooltipFlag par4) {
         list.add(TextFormatting.GOLD + I18n.format("gui.shincolle:trainingbook"));
     }
 
     //start use item
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill && hand == EnumHand.MAIN_HAND) {
             player.setActiveHand(hand);
-            return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
+            return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
         } else {
-            return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+            return new ActionResult<>(EnumActionResult.FAIL, player.getHeldItem(hand));
         }
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
+    @Nonnull
+    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
         return EnumAction.EAT;
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
+    public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             return 80;
         } else {
@@ -62,10 +64,9 @@ public class TrainingBook extends BasicItem {
     }
 
     @Override
-    @Nullable
-    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase host) {
-        if (host instanceof EntityPlayer && world != null && !world.isRemote &&
-                CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
+    @Nonnull
+    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase host) {
+        if (host instanceof EntityPlayer && !world.isRemote && CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             EntityPlayer player = (EntityPlayer) host;
             CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(player);
 

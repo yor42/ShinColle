@@ -88,19 +88,17 @@ public class EquipDrum extends BasicEquip {
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.DRUM_LO:  //120
-                return new int[]{itemRand.nextInt(4) + 5,
-                        itemRand.nextInt(5) + 9,
-                        itemRand.nextInt(4) + 4,
-                        itemRand.nextInt(3) + 3};
-            default:
-                return new int[]{0, 0, 0, 0};
+        if (this.getEquipTypeIDFromMeta(meta) == ID.EquipType.DRUM_LO) {  //120
+            return new int[]{itemRand.nextInt(4) + 5,
+                    itemRand.nextInt(5) + 9,
+                    itemRand.nextInt(4) + 4,
+                    itemRand.nextInt(3) + 3};
         }
+        return new int[]{0, 0, 0, 0};
     }
 
     @Override
-    public void addInformation(ItemStack stack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag par4) {
         switch (stack.getItemDamage()) {
             case 1: {
                 list.add(TextFormatting.GRAY + I18n.format("gui.shincolle:drum1"));

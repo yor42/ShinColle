@@ -5,6 +5,7 @@ import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.utility.InteractHelper;
+import com.sun.istack.internal.NotNull;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ModernKit extends BasicItem {
@@ -30,28 +32,30 @@ public class ModernKit extends BasicItem {
 
     //display equip information
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(@Nonnull ItemStack itemstack, World world, List<String> list, ITooltipFlag par4) {
         list.add(TextFormatting.GOLD + I18n.format("gui.shincolle:modernkit"));
     }
 
     //start use item
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world,@Nonnull EntityPlayer player,@Nonnull EnumHand hand) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill && hand == EnumHand.MAIN_HAND) {
             player.setActiveHand(hand);
-            return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
+            return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
         } else {
-            return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+            return new ActionResult<>(EnumActionResult.FAIL, player.getHeldItem(hand));
         }
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
+    @Nonnull
+    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
         return EnumAction.EAT;
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
+    public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             return 80;
         } else {
@@ -60,9 +64,9 @@ public class ModernKit extends BasicItem {
     }
 
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase host) {
-        if (host instanceof EntityPlayer && world != null && !world.isRemote &&
-                CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
+    @Nonnull
+    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase host) {
+        if (host instanceof EntityPlayer && !world.isRemote && CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             CapaTeitoku capa = CapaTeitoku.getTeitokuCapability((EntityPlayer) host);
 
             if (capa != null && capa.morphEntity instanceof BasicEntityShip) {

@@ -11,6 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class OwnerPaper extends BasicItem {
@@ -30,7 +31,8 @@ public class OwnerPaper extends BasicItem {
 
     //right click to sign the paper
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
 
         //server side
@@ -39,13 +41,14 @@ public class OwnerPaper extends BasicItem {
 
             if (capa != null) {
                 //first time use
-                if (!stack.hasTagCompound()) {
-                    stack.setTagCompound(new NBTTagCompound());
-                    stack.getTagCompound().setString(SignNameA, player.getName());
-                    stack.getTagCompound().setString(SignNameB, "");
-                    stack.getTagCompound().setInteger(SignIDA, capa.getPlayerUID());
-                    stack.getTagCompound().setInteger(SignIDB, -1);
-                    stack.getTagCompound().setBoolean("signPos", false);
+                if (!stack.hasTagCompound() || stack.getTagCompound() == null) {
+                    NBTTagCompound compound = new NBTTagCompound();
+                    compound.setString(SignNameA, player.getName());
+                    compound.setString(SignNameB, "");
+                    compound.setInteger(SignIDA, capa.getPlayerUID());
+                    compound.setInteger(SignIDB, -1);
+                    compound.setBoolean("signPos", false);
+                    stack.setTagCompound(compound);
                 }
                 //use > second time
                 else {
@@ -63,17 +66,19 @@ public class OwnerPaper extends BasicItem {
             }//end extprops != null
         }
 
-        return new ActionResult(EnumActionResult.PASS, stack);
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
-        if (itemstack.hasTagCompound()) {
-            list.add(TextFormatting.RED + String.valueOf(itemstack.getTagCompound().getInteger(SignIDA)) +
-                    " " + TextFormatting.AQUA + itemstack.getTagCompound().getString(SignNameA));
-            list.add(TextFormatting.RED + String.valueOf(itemstack.getTagCompound().getInteger(SignIDB)) +
-                    " " + TextFormatting.AQUA + itemstack.getTagCompound().getString(SignNameB));
+    public void addInformation(ItemStack itemstack, World world, @Nonnull List<String> list, @Nonnull ITooltipFlag par4) {
+
+        if(!itemstack.hasTagCompound() || itemstack.getTagCompound() == null){
+            return;
         }
+        list.add(TextFormatting.RED + String.valueOf(itemstack.getTagCompound().getInteger(SignIDA)) +
+                " " + TextFormatting.AQUA + itemstack.getTagCompound().getString(SignNameA));
+        list.add(TextFormatting.RED + String.valueOf(itemstack.getTagCompound().getInteger(SignIDB)) +
+                " " + TextFormatting.AQUA + itemstack.getTagCompound().getString(SignNameB));
     }
 
 

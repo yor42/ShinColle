@@ -31,29 +31,25 @@ public class EquipFlare extends BasicEquip {
 
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
-        switch (meta) {
-            case 0:
-                return ID.EquipType.FLARE_LO;
-            default:
-                return 0;
+        if (meta == 0) {
+            return ID.EquipType.FLARE_LO;
         }
+        return 0;
     }
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.FLARE_LO:  //80
-                return new int[]{itemRand.nextInt(2) + 2,
-                        itemRand.nextInt(3) + 3,
-                        itemRand.nextInt(4) + 4,
-                        itemRand.nextInt(2) + 2};
-            default:
-                return new int[]{0, 0, 0, 0};
+        if (this.getEquipTypeIDFromMeta(meta) == ID.EquipType.FLARE_LO) {  //80
+            return new int[]{itemRand.nextInt(2) + 2,
+                    itemRand.nextInt(3) + 3,
+                    itemRand.nextInt(4) + 4,
+                    itemRand.nextInt(2) + 2};
         }
+        return new int[]{0, 0, 0, 0};
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag par4) {
         list.add(TextFormatting.GRAY + I18n.format("gui.shincolle:flare"));
         super.addInformation(itemstack, world, list, par4);
     }

@@ -133,12 +133,10 @@ public class EquipAmmo extends BasicEquip implements IShipEffectItem {
 
     @Override
     public int getMissileMoveType(int meta) {
-        switch (meta) {
-            case 8:  //cluster bomb
-                return 1;
-            default:
-                return -1;
+        if (meta == 8) {  //cluster bomb
+            return 1;
         }
+        return -1;
     }
 
     @Override
@@ -160,6 +158,7 @@ public class EquipAmmo extends BasicEquip implements IShipEffectItem {
             {
                 if (stack.hasTagCompound()) {
                     NBTTagCompound nbt = stack.getTagCompound();
+                    assert nbt != null;
                     NBTTagList nbtlist = nbt.getTagList(EquipAmmo.PLIST, Constants.NBT.TAG_COMPOUND);
                     int pid = 0;
                     int plv = 0;
@@ -194,7 +193,7 @@ public class EquipAmmo extends BasicEquip implements IShipEffectItem {
         //show other effect
         Map<Integer, int[]> emap = getEffectOnAttack(stack.getMetadata());
 
-        if (emap != null && emap.size() > 0) {
+        if (emap != null && !emap.isEmpty()) {
             emap.forEach((pid, pdata) ->
             {
                 Potion pt = Potion.getPotionById(pid);

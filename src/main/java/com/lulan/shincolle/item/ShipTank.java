@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -140,8 +141,8 @@ public class ShipTank extends BasicItem {
 
     //right click: place liquid block or fill tank
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (player == null) return new ActionResult(EnumActionResult.PASS, ItemStack.EMPTY);
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
 
         ItemStack stack = player.getHeldItem(hand);
 
@@ -151,37 +152,20 @@ public class ShipTank extends BasicItem {
         BlockPos pos;
 
         //client side
-        if (world.isRemote) {
-            if (raytraceresult == null) {
-                pos = getBlockInFrontOfPlayer(player);
+        if (world.isRemote || fh ==null) {
 
-                //check player permission
-                if (!world.isBlockModifiable(player, pos)) {
-                    return new ActionResult(EnumActionResult.FAIL, stack);
-                } else {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(
-                            C2SInputPackets.PID.Request_PlaceFluid, pos.getX(), pos.getY(), pos.getZ()));
-
-                    return new ActionResult(EnumActionResult.SUCCESS, stack);
-                }
-            }
-
-            return new ActionResult(EnumActionResult.PASS, stack);
+            return new ActionResult<>(EnumActionResult.PASS, stack);
         }
 
         //server side
         //no target
-        if (raytraceresult == null) {
-            return new ActionResult(EnumActionResult.FAIL, stack);
-        }
-        //hit block
-        else if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
+        if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
             pos = raytraceresult.getBlockPos();
 
             //check player permission
             if (!world.isBlockModifiable(player, pos) ||
                     !player.canPlayerEdit(pos.offset(raytraceresult.sideHit), raytraceresult.sideHit, stack)) {
-                return new ActionResult(EnumActionResult.FAIL, stack);
+                return new ActionResult<>(EnumActionResult.FAIL, stack);
             } else {
                 IBlockState state = world.getBlockState(pos);
                 TileEntity tile = world.getTileEntity(pos);
@@ -190,7 +174,7 @@ public class ShipTank extends BasicItem {
                 //hit vanilla liquid, fill liquid
                 if (state.getBlock() instanceof BlockLiquid) {
                     //get water
-                    if (state.getMaterial() == Material.WATER && state.getValue(BlockLiquid.LEVEL).intValue() == 0) {
+                    if (state.getMaterial() == Material.WATER && state.getValue(BlockLiquid.LEVEL) == 0) {
                         fs = new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
 
                         if (fh.fill(fs, false) > 0) {
@@ -200,7 +184,7 @@ public class ShipTank extends BasicItem {
                         }
                     }
                     //get lava
-                    else if (state.getMaterial() == Material.LAVA && state.getValue(BlockLiquid.LEVEL).intValue() == 0) {
+                    else if (state.getMaterial() == Material.LAVA && state.getValue(BlockLiquid.LEVEL) == 0) {
                         fs = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 
                         if (fh.fill(fs, false) > 0) {
@@ -226,7 +210,7 @@ public class ShipTank extends BasicItem {
                             //fill tank
                             fh.fill(fs, true);
 
-                            return new ActionResult(EnumActionResult.SUCCESS, stack);
+                            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                         }
                     }
                 }
@@ -238,12 +222,12 @@ public class ShipTank extends BasicItem {
                         //drain liquid from tile
                         if (player.isSneaking()) {
                             fs = FluidUtil.tryFluidTransfer(fh, tilefh, 1000, true);
-                            if (fs != null) return new ActionResult(EnumActionResult.SUCCESS, stack);
+                            if (fs != null) return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                         }
                         //fill liquid to tile
                         else {
                             fs = FluidUtil.tryFluidTransfer(tilefh, fh, 1000, true);
-                            if (fs != null) return new ActionResult(EnumActionResult.SUCCESS, stack);
+                            if (fs != null) return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                         }
                     }
                 }
@@ -254,22 +238,22 @@ public class ShipTank extends BasicItem {
                     BlockPos pos2 = (flag1 && raytraceresult.sideHit == EnumFacing.UP) ? pos : pos.offset(raytraceresult.sideHit);
 
                     if (!player.canPlayerEdit(pos2, raytraceresult.sideHit, stack)) {
-                        return new ActionResult(EnumActionResult.FAIL, stack);
+                        return new ActionResult<>(EnumActionResult.FAIL, stack);
                     } else if (tryPlaceContainedLiquid(player, world, pos, pos2, fh)) {
-                        return new ActionResult(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
                     } else {
-                        return new ActionResult(EnumActionResult.FAIL, stack);
+                        return new ActionResult<>(EnumActionResult.FAIL, stack);
                     }
                 }
             }//end can edit
         }//end hit block
 
-        return new ActionResult(EnumActionResult.PASS, stack);
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     //add fluid capability
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, NBTTagCompound nbt) {
         return new CapaFluidContainer(stack);
     }
 

@@ -13,6 +13,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * 基本item class
@@ -54,6 +56,7 @@ abstract public class BasicItem extends Item implements ICustomModels {
     //將name冠上mod名稱 用於之後給各語系檔案放上正確名稱
     //格式為item.MOD名稱:物品名稱.name
     @Override
+    @Nonnull
     public String getTranslationKey() {
         return String.format("item.%s%s", Reference.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
     }
@@ -61,6 +64,7 @@ abstract public class BasicItem extends Item implements ICustomModels {
     //同getUnlocalizedName() 此為加上itemstack版本
     //格式為item.MOD名稱:物品名稱.name
     @Override
+    @Nonnull
     public String getTranslationKey(ItemStack itemstack) {
         int meta = itemstack.getItemDamage();
 
@@ -72,7 +76,8 @@ abstract public class BasicItem extends Item implements ICustomModels {
     }
 
     @Override
-    public Item setTranslationKey(String name) {
+    @Nonnull
+    public Item setTranslationKey(@Nonnull String name) {
         super.setTranslationKey(name);
         this.setRegistryName(Reference.MOD_ID + ":" + name.toLowerCase());
         return this;
