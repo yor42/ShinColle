@@ -98,14 +98,12 @@ public class EntityHelper {
      */
     public static int checkEntityMovingType(Entity entity) {
         if (entity instanceof IShipAttackBase) {
-            switch (((IShipAttackBase) entity).getDamageType()) {
-                case ID.ShipDmgType.AIRPLANE:
-                    return 1;
-                case ID.ShipDmgType.SUBMARINE:
-                    return 2;
-                default:    //default type
-                    return 0;
-            }
+            return switch (((IShipAttackBase) entity).getDamageType()) {
+                case ID.ShipDmgType.AIRPLANE -> 1;
+                case ID.ShipDmgType.SUBMARINE -> 2;
+                default ->    //default type
+                        0;
+            };
         } else if (entity instanceof EntityWaterMob || entity instanceof EntityGuardian) {
             return 2;
         } else if (entity instanceof EntityBlaze || entity instanceof EntityWither ||
@@ -216,7 +214,7 @@ public class EntityHelper {
         String name = "";
 
         //1. get name from ship
-        if (ship.ownerName != null && ship.ownerName.length() > 0) {
+        if (ship.ownerName != null && !ship.ownerName.isEmpty()) {
             name = ship.ownerName;
         } else {
             //2. get name from playerUID -> server cache
@@ -589,8 +587,7 @@ public class EntityHelper {
         int len = 0;
         int[] points = null;
 
-        if (path instanceof ShipPath) {
-            ShipPath p = (ShipPath) path;
+        if (path instanceof ShipPath p) {
             ShipPathPoint temp;
 
             parType = 0;
@@ -607,8 +604,7 @@ public class EntityHelper {
                 points[i * 3 + 2] = temp.yCoord;
                 points[i * 3 + 3] = temp.zCoord;
             }
-        } else if (path instanceof Path) {
-            Path p = (Path) path;
+        } else if (path instanceof Path p) {
             PathPoint temp;
 
             parType = 1;
@@ -704,7 +700,7 @@ public class EntityHelper {
             //檢查抓到的entity, 是否在玩家~目標方塊的視線上
             for (Entity entity : list) {
                 //check target in exlist
-                if (exlist != null && exlist.size() > 0) {
+                if (exlist != null && !exlist.isEmpty()) {
                     boolean exequal = false;
 
                     for (Entity ex : exlist) {
@@ -1338,11 +1334,11 @@ public class EntityHelper {
         if (mount != null && cls != null) {
             List<Entity> list = mount.getPassengers();
 
-            if (list.size() > 0 && list.size() > id) {
+            if (!list.isEmpty() && list.size() > id) {
                 //no id checking
                 if (id < 0) {
-                    for (int i = 0; i < list.size(); i++) {
-                        if (cls.isAssignableFrom(list.get(i).getClass())) return true;
+                    for (Entity entity : list) {
+                        if (cls.isAssignableFrom(entity.getClass())) return true;
                     }
                 }
                 //apply id checking
@@ -1525,18 +1521,11 @@ public class EntityHelper {
             else heightArray = ship.getBodyHeightStand();
 
             //get body id
-            switch (hit) {
-                case 0:
-                    return new int[]{120, heightArray[0]};
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                    return new int[]{heightArray[hit - 1], heightArray[hit]};
-                default:
-                    return new int[]{heightArray[5], -20};
-            }
+            return switch (hit) {
+                case 0 -> new int[]{120, heightArray[0]};
+                case 1, 2, 3, 4, 5 -> new int[]{heightArray[hit - 1], heightArray[hit]};
+                default -> new int[]{heightArray[5], -20};
+            };
         }
 
         return new int[]{1, 0};
@@ -1559,22 +1548,15 @@ public class EntityHelper {
             int hit = getBodyArrayIDFromHeight(heightPercent, ship);
 
             //get body id
-            switch (hit) {
-                case 0:
-                    return Enums.BodyHeight.TOP;
-                case 1:
-                    return Enums.BodyHeight.HEAD;
-                case 2:
-                    return Enums.BodyHeight.NECK;
-                case 3:
-                    return Enums.BodyHeight.CHEST;
-                case 4:
-                    return Enums.BodyHeight.BELLY;
-                case 5:
-                    return Enums.BodyHeight.UBELLY;
-                default:
-                    return Enums.BodyHeight.LEG;
-            }
+            return switch (hit) {
+                case 0 -> Enums.BodyHeight.TOP;
+                case 1 -> Enums.BodyHeight.HEAD;
+                case 2 -> Enums.BodyHeight.NECK;
+                case 3 -> Enums.BodyHeight.CHEST;
+                case 4 -> Enums.BodyHeight.BELLY;
+                case 5 -> Enums.BodyHeight.UBELLY;
+                default -> Enums.BodyHeight.LEG;
+            };
         }
 
         return Enums.BodyHeight.LEG;
@@ -1641,23 +1623,17 @@ public class EntityHelper {
             case NECK:
                 return ID.Body.Neck;
             case CHEST:
-                switch (s) {
-                    case FRONT:
-                        return ID.Body.Chest;
-                    case BACK:
-                        return ID.Body.Back;
-                    default:
-                        return ID.Body.Arm;
-                }
+                return switch (s) {
+                    case FRONT -> ID.Body.Chest;
+                    case BACK -> ID.Body.Back;
+                    default -> ID.Body.Arm;
+                };
             case BELLY:
-                switch (s) {
-                    case FRONT:
-                        return ID.Body.Belly;
-                    case BACK:
-                        return ID.Body.Butt;
-                    default:
-                        return ID.Body.Arm;
-                }
+                return switch (s) {
+                    case FRONT -> ID.Body.Belly;
+                    case BACK -> ID.Body.Butt;
+                    default -> ID.Body.Arm;
+                };
             case UBELLY:
                 if (s == Enums.BodySide.FRONT) {
                     return ID.Body.UBelly;
@@ -1690,8 +1666,7 @@ public class EntityHelper {
         }
 
         //set ship attrs
-        if (ent instanceof BasicEntityShip) {
-            BasicEntityShip ship = (BasicEntityShip) ent;
+        if (ent instanceof BasicEntityShip ship) {
 
             //set alive
             ship.setHealth(ship.getMaxHealth());
@@ -1725,22 +1700,22 @@ public class EntityHelper {
         if (ConfigHandler.showTag ||
                 ClientProxy.getGameSetting().keyBindSprint.isKeyDown() ||
                 ship.getDistanceSq(ClientProxy.getClientPlayer()) < (ConfigHandler.nameTagDist * ConfigHandler.nameTagDist)) {
-            String str;
+            StringBuilder str;
 
             //is owner
             if (ship.getPlayerUID() == EntityHelper.getPlayerUID(ClientProxy.getClientPlayer())) {
-                str = TextFormatting.YELLOW + "";
+                str = new StringBuilder(TextFormatting.YELLOW + "");
             }
             //not owner
             else {
-                str = TextFormatting.GOLD + "";
+                str = new StringBuilder(TextFormatting.GOLD + "");
             }
 
             int strLen = 1;
             int strH = 0;
             int strLenTemp = 0;
 
-            if (ship.unitNames.size() > 0) {
+            if (!ship.unitNames.isEmpty()) {
                 //add unit names
                 for (String s : ship.unitNames) {
                     if (s != null && s.length() > 1) {
@@ -1748,7 +1723,7 @@ public class EntityHelper {
                         strLenTemp = ClientProxy.getMineraft().getRenderManager().getFontRenderer().getStringWidth(s);
                         if (strLenTemp > strLen) strLen = strLenTemp;
 
-                        str += s + "\n";
+                        str.append(s).append("\n");
                     }
                 }
             }
@@ -1758,12 +1733,12 @@ public class EntityHelper {
                 String uids = TextFormatting.GREEN + "UID " + ship.getShipUID();
 
                 strH++;
-                str += uids;
+                str.append(uids);
                 strLenTemp = ClientProxy.getMineraft().getRenderManager().getFontRenderer().getStringWidth(uids);
                 if (strLenTemp > strLen) strLen = strLenTemp;
             }
 
-            ParticleHelper.spawnAttackParticleAt(str, 0D, ship.height + 0.8D, 0D, (byte) 1, strH, strLen + 1, ship.getEntityId());
+            ParticleHelper.spawnAttackParticleAt(str.toString(), 0D, ship.height + 0.8D, 0D, (byte) 1, strH, strLen + 1, ship.getEntityId());
         }//end can show tag
     }
 
@@ -1834,8 +1809,7 @@ public class EntityHelper {
             return true;
         }
         //teleport normal entity
-        else if (host instanceof EntityLiving) {
-            EntityLiving host2 = (EntityLiving) host;
+        else if (host instanceof EntityLiving host2) {
 
             //too far away, dismount
             if (dist > 1024D) {
@@ -1969,9 +1943,7 @@ public class EntityHelper {
 
         //check biome
         if (canSpawn) {
-            if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.WATER) ||
-                    BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
-            } else {
+            if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.WATER) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
                 canSpawn = false;
             }
         }
@@ -1992,24 +1964,24 @@ public class EntityHelper {
                         int offX = rng.nextInt(30) + 20;
                         int offZ = rng.nextInt(30) + 20;
 
-                        switch (rng.nextInt(4)) {
-                            case 1:
+                        spawnZ = switch (rng.nextInt(4)) {
+                            case 1 -> {
                                 spawnX = blockX - offX;
-                                spawnZ = blockZ - offZ;
-                                break;
-                            case 2:
+                                yield blockZ - offZ;
+                            }
+                            case 2 -> {
                                 spawnX = blockX + offX;
-                                spawnZ = blockZ - offZ;
-                                break;
-                            case 3:
+                                yield blockZ - offZ;
+                            }
+                            case 3 -> {
                                 spawnX = blockX - offX;
-                                spawnZ = blockZ + offZ;
-                                break;
-                            default:
+                                yield blockZ + offZ;
+                            }
+                            default -> {
                                 spawnX = blockX + offX;
-                                spawnZ = blockZ + offZ;
-                                break;
-                        }
+                                yield blockZ + offZ;
+                            }
+                        };
 
                         IBlockState blockY = w.getBlockState(new BlockPos(spawnX, w.provider.getAverageGroundLevel() - 2, spawnZ));
                         LogHelper.debug("DEBUG: spawn mob ship: group: " + groups +
@@ -2089,24 +2061,24 @@ public class EntityHelper {
                     int offX = rng.nextInt(32) + 32;
                     int offZ = rng.nextInt(32) + 32;
 
-                    switch (rng.nextInt(4)) {
-                        case 1:
+                    spawnZ = switch (rng.nextInt(4)) {
+                        case 1 -> {
                             spawnX = blockX - offX;
-                            spawnZ = blockZ - offZ;
-                            break;
-                        case 2:
+                            yield blockZ - offZ;
+                        }
+                        case 2 -> {
                             spawnX = blockX + offX;
-                            spawnZ = blockZ - offZ;
-                            break;
-                        case 3:
+                            yield blockZ - offZ;
+                        }
+                        case 3 -> {
                             spawnX = blockX - offX;
-                            spawnZ = blockZ + offZ;
-                            break;
-                        default:
+                            yield blockZ + offZ;
+                        }
+                        default -> {
                             spawnX = blockX + offX;
-                            spawnZ = blockZ + offZ;
-                            break;
-                    }
+                            yield blockZ + offZ;
+                        }
+                    };
 
                     IBlockState blockY = w.getBlockState(new BlockPos(spawnX, w.provider.getAverageGroundLevel() - 2, spawnZ));
 
