@@ -1,7 +1,7 @@
 package com.lulan.shincolle.init;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.block.*;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.tileentity.*;
 import com.lulan.shincolle.utility.LogHelper;
 import net.minecraft.block.Block;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 
 @Mod.EventBusSubscriber
-@GameRegistry.ObjectHolder(Reference.MOD_ID)
+@GameRegistry.ObjectHolder(Tags.MOD_ID)
 public class ModBlocks {
 
     //list for blocks
@@ -70,14 +70,14 @@ public class ModBlocks {
     }
 
     public static void init() {
-        GameRegistry.registerTileEntity(TileEntityWaypoint.class, new ResourceLocation(Reference.MOD_ID, "TileEntityWaypoint"));
-        GameRegistry.registerTileEntity(TileEntityVolCore.class, new ResourceLocation(Reference.MOD_ID, "TileEntityVolCore"));
-        GameRegistry.registerTileEntity(TileEntitySmallShipyard.class, new ResourceLocation(Reference.MOD_ID, "TileEntitySmallShipyard"));
-        GameRegistry.registerTileEntity(TileMultiPolymetal.class, new ResourceLocation(Reference.MOD_ID, "TileMultiPolymetal"));
-        GameRegistry.registerTileEntity(TileEntityLightBlock.class, new ResourceLocation(Reference.MOD_ID, "TileEntityLightBlock"));
-        GameRegistry.registerTileEntity(TileEntityDesk.class, new ResourceLocation(Reference.MOD_ID, "TileEntityDesk"));
-        GameRegistry.registerTileEntity(TileEntityCrane.class, new ResourceLocation(Reference.MOD_ID, "TileEntityCrane"));
-        GameRegistry.registerTileEntity(TileMultiGrudgeHeavy.class, new ResourceLocation(Reference.MOD_ID, "TileMultiLargeShipyard"));
+        GameRegistry.registerTileEntity(TileEntityWaypoint.class, new ResourceLocation(Tags.MOD_ID, "TileEntityWaypoint"));
+        GameRegistry.registerTileEntity(TileEntityVolCore.class, new ResourceLocation(Tags.MOD_ID, "TileEntityVolCore"));
+        GameRegistry.registerTileEntity(TileEntitySmallShipyard.class, new ResourceLocation(Tags.MOD_ID, "TileEntitySmallShipyard"));
+        GameRegistry.registerTileEntity(TileMultiPolymetal.class, new ResourceLocation(Tags.MOD_ID, "TileMultiPolymetal"));
+        GameRegistry.registerTileEntity(TileEntityLightBlock.class, new ResourceLocation(Tags.MOD_ID, "TileEntityLightBlock"));
+        GameRegistry.registerTileEntity(TileEntityDesk.class, new ResourceLocation(Tags.MOD_ID, "TileEntityDesk"));
+        GameRegistry.registerTileEntity(TileEntityCrane.class, new ResourceLocation(Tags.MOD_ID, "TileEntityCrane"));
+        GameRegistry.registerTileEntity(TileMultiGrudgeHeavy.class, new ResourceLocation(Tags.MOD_ID, "TileMultiLargeShipyard"));
     }
 
     @SideOnly(Side.CLIENT)

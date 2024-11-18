@@ -72,21 +72,27 @@ public class SmallRecipes {
         return false;
     }
 
-    //判定材料種類: 0:grudge 1:abyss 2:ammo 3:poly 4:fuel -1:other
     public static int getMaterialType(ItemStack itemstack) {
-        Item item = itemstack.getItem();
-        int meta = itemstack.getItemDamage();
-        int itemID = -1;
+    Item item = itemstack.getItem();
+    int meta = itemstack.getItemDamage();
 
-        if (item == ModItems.Grudge) itemID = 0;
-        else if (item == ModItems.AbyssMetal && meta == 0) itemID = 1;
-        else if (item == ModItems.Ammo && meta == 0) itemID = 2;
-        else if (item == ModItems.AbyssMetal && meta == 1) itemID = 3;
-        else if (TileEntityHelper.getItemFuelValue(itemstack) > 0) itemID = 4;
-        else if (item == ModItems.InstantConMat) itemID = 4;
+    if (item == ModItems.Grudge) return 0;
 
-        return itemID;
+    if (item == ModItems.AbyssMetal) {
+        return switch (meta) {
+            case 0 -> 1;
+            case 1 -> 3;
+            default -> -1;
+        };
     }
+
+    if (item == ModItems.Ammo && meta == 0) return 2;
+
+    if (TileEntityHelper.getItemFuelValue(itemstack) > 0 ||
+        item == ModItems.InstantConMat) return 4;
+
+    return -1;
+}
 
     //取得四樣材料個數with null check
     //itemstack:0:grudge 1:abyss 2:ammo 3:poly 4:fuel 5:output

@@ -1,7 +1,7 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.gui.inventory.ContainerRecipePaper;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiRecipePaper extends GuiContainer {
 
-    private static final ResourceLocation guiTexture = new ResourceLocation(Reference.TEXTURES_GUI + "GuiRecipePaper.png");
+    private static final ResourceLocation guiTexture = new ResourceLocation(Tags.TEXTURES_GUI + "GuiRecipePaper.png");
 
 
     public GuiRecipePaper(EntityPlayer player, ItemStack stack) {

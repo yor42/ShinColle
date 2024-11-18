@@ -1,7 +1,7 @@
 package com.lulan.shincolle.init;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.item.*;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber
-@GameRegistry.ObjectHolder(Reference.MOD_ID)
+@GameRegistry.ObjectHolder(Tags.MOD_ID)
 public class ModItems {
 
 

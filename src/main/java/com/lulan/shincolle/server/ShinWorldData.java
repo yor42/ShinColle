@@ -1,7 +1,7 @@
 package com.lulan.shincolle.server;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.proxy.ServerProxy;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.team.TeamData;
 import com.lulan.shincolle.utility.LogHelper;
 import com.lulan.shincolle.utility.NBTHelper;
@@ -21,7 +21,7 @@ import java.util.HashMap;
  */
 public class ShinWorldData extends WorldSavedData {
 
-    public static final String SAVEID = Reference.MOD_ID;
+    public static final String SAVEID = Tags.MOD_ID;
 
     //global data tag name
     public static final String TAG_NEXTPLAYERID = "nextPlayerID";

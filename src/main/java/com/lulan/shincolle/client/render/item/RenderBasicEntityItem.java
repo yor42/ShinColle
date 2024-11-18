@@ -1,8 +1,8 @@
 package com.lulan.shincolle.client.render.item;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.model.ModelBasicEntityItem;
 import com.lulan.shincolle.item.BasicEntityItem;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderBasicEntityItem extends Render {
 
     public static final Factory FACTORY = new Factory();
-    private static final ResourceLocation entityTexture = new ResourceLocation(Reference.TEXTURES_ENTITY + "ModelBasicEntityItem.png");
+    private static final ResourceLocation entityTexture = new ResourceLocation(Tags.TEXTURES_ENTITY + "ModelBasicEntityItem.png");
     private final ModelBasicEntityItem model = new ModelBasicEntityItem();
 
 

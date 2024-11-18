@@ -1,8 +1,8 @@
 package com.lulan.shincolle.client.render;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.model.*;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -15,21 +15,21 @@ import javax.annotation.Nonnull;
 public class RenderMountsEntity extends RenderShipEntity {
 
     //textures
-    public static final ResourceLocation TEX_AirfieldMount = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMountAfH.png");
+    public static final ResourceLocation TEX_AirfieldMount = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMountAfH.png");
     public static final ModelBase MD_AirfieldMount = new ModelMountAfH();
-    public static final ResourceLocation TEX_BattleshipMount = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMountBaH.png");
+    public static final ResourceLocation TEX_BattleshipMount = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMountBaH.png");
     public static final ModelBase MD_BattleshipMount = new ModelMountBaH();
-    public static final ResourceLocation TEX_CarrierMount = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMountCaH.png");
+    public static final ResourceLocation TEX_CarrierMount = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMountCaH.png");
     public static final ModelBase MD_CarrierMount = new ModelMountCaH();
-    public static final ResourceLocation TEX_CarrierWDMount = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMountCaWD.png");
+    public static final ResourceLocation TEX_CarrierWDMount = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMountCaWD.png");
     public static final ModelBase MD_CarrierWDMount = new ModelMountCaWD();
-    public static final ResourceLocation TEX_HarbourMount = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMountHbH.png");
+    public static final ResourceLocation TEX_HarbourMount = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMountHbH.png");
     public static final ModelBase MD_HarbourMount = new ModelMountHbH();
-    public static final ResourceLocation TEX_IsloatedMount = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMountIsH.png");
+    public static final ResourceLocation TEX_IsloatedMount = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMountIsH.png");
     public static final ModelBase MD_IsloatedMount = new ModelMountIsH();
-    public static final ResourceLocation TEX_MidwayMount = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMountMiH.png");
+    public static final ResourceLocation TEX_MidwayMount = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMountMiH.png");
     public static final ModelBase MD_MidwayMount = new ModelMountMiH();
-    public static final ResourceLocation TEX_SubmMount = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMountSuH.png");
+    public static final ResourceLocation TEX_SubmMount = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMountSuH.png");
     public static final ModelBase MD_SubmMount = new ModelMountSuH();
 
     //factory

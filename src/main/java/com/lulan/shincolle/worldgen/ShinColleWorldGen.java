@@ -17,26 +17,13 @@ import java.util.Random;
 public class ShinColleWorldGen implements IWorldGenerator {
 
     public BlockPos chunkPos;
-    private WorldGenerator genPolymetal, genPolyGravel;
 
     //維度判定
     @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
-                         IChunkProvider chunkProvider) {
-        //依照維度id呼叫不同生成方法
-        switch (world.provider.getDimension()) {
-            //將chunk位置x16 轉成block位置
-            case -1:    //地獄
-                //	generateNether(world, random, chunkX*16, chunkZ*16);
-                break;
-            case 1:        //終界
-                //	generateEnd(world, random, chunkX*16, chunkZ*16);
-                break;
-            case 0:        //一般世界
-            default:    //其他維度
-                generateSurface(world, random, chunkX * 16, chunkZ * 16);
-                generateSea(world, random, chunkX * 16, chunkZ * 16);
-                break;
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        if(world.provider.getDimension() == 0){
+            generateSurface(world, random, chunkX * 16, chunkZ * 16);
+            generateSea(world, random, chunkX * 16, chunkZ * 16);
         }
     }
 
@@ -67,7 +54,7 @@ public class ShinColleWorldGen implements IWorldGenerator {
     //一般世界生成方法  每個chunk都會呼叫一次
     private void generateSurface(World world, Random rand, int x, int z) {
         //Polymetal生成: 生成大小4~8個block 每chunk生成次數10次 生成高度2~40
-        genPolymetal = new WorldGenMinable(ModBlocks.BlockPolymetalOre.getDefaultState(), 4 + rand.nextInt(4));  //每個chunk會重新隨機一次生成礦物大小
+        WorldGenerator genPolymetal = new WorldGenMinable(ModBlocks.BlockPolymetalOre.getDefaultState(), 4 + rand.nextInt(4));  //每個chunk會重新隨機一次生成礦物大小
         oreGenerator(genPolymetal, world, rand, x, z, ConfigHandler.polyOreBaseRate, 3, 50);
 
     }
@@ -77,9 +64,7 @@ public class ShinColleWorldGen implements IWorldGenerator {
         Biome biome = world.getBiomeForCoordsBody(new BlockPos(x, 0, z));
 
         if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) {
-            genPolyGravel = new WorldGenPolyGravel(2 + rand.nextInt(2));
-            int i2 = rand.nextInt(16) + 8;
-            int j6 = rand.nextInt(16) + 8;
+            WorldGenerator genPolyGravel = new WorldGenPolyGravel(2 + rand.nextInt(2));
             BlockPos pos;
 
             for (int i = 0; i < ConfigHandler.polyGravelBaseRate; i++) {
@@ -89,12 +74,4 @@ public class ShinColleWorldGen implements IWorldGenerator {
             }
         }
     }
-
-    private void generateNether(World world, Random rand, int x, int z) {
-    }
-
-    private void generateEnd(World world, Random rand, int x, int z) {
-    }
-
-
 }

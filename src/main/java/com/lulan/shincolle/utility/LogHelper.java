@@ -1,7 +1,7 @@
 package com.lulan.shincolle.utility;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.handler.ConfigHandler;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Level;
 public class LogHelper {
 
     private static void createLog(Level logLevel, Object object) {
-        FMLLog.log(Reference.MOD_NAME, logLevel, String.valueOf(object));
+        FMLLog.log(Tags.MOD_NAME, logLevel, String.valueOf(object));
     }
 
     //off: 不紀錄log

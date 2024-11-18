@@ -1,17 +1,12 @@
-[
-{
-  "modid": "shincolle",
-  "name": "Shinkeiseikan Collection",
-  "description": "Collect cute SeiKan mobs!  forum: http://forum.gamer.com.tw/C.php?bsn=18673&snA=124090&tnum=1  github: https://github.com/PinkaLulan/ShinColle  Sound Source: Amitaro's Sound Material Workshop http://www14.big.or.jp/~amiami/happy/index.html  Unofficial 1.12.2 port completed by Theray070696 and MystiaLorelei.",
-  "version": "1.12.2.1.3",
-  "mcversion": "",
-  "logoFile": "",
-  "url": "https://github.com/misaka10843/ShinColle",
-  "updateUrl": "",
-  "authorList": ["PinkaLulan","misaka10843","KCFindstr","sddsd2332","Cappycot", "yor42"],
-  "credits": "Thanks to Pahimar, diesieben07, Jabelar, coolAlias, Neale and all the tutorials on the web _(:3",
-  "parent": "",
-  "screenshots": [],
-  "dependencies": []
-}
-]
+[{
+  "modid": "${mod_id}",
+  "name": "${mod_name}",
+  "version": "${mod_version}",
+  "mcversion": "1.12.2",
+  "description": "${mod_description}",
+  "authorList": ["${mod_authors}"],
+  "credits": "${mod_credits}",
+  "url": "${mod_url}",
+  "updateJSON": "${mod_update_json}",
+  "logoFile": "${mod_logo_path}"
+}]

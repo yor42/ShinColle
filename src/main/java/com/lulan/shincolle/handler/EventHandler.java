@@ -1,5 +1,6 @@
 package com.lulan.shincolle.handler;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaShipSavedValues;
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.entity.*;
@@ -13,7 +14,6 @@ import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.proxy.ServerProxy;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.utility.*;
 import com.lulan.shincolle.worldgen.ChestLootTable;
 import mchorse.metamorph.api.events.MorphActionEvent;
@@ -607,7 +607,7 @@ public class EventHandler {
                 }
 
                 //check ring with Baubles slots
-                if (!hasRing && Loader.isModLoaded(Reference.MOD_ID_Baubles)) {
+                if (!hasRing && Loader.isModLoaded(Tags.MOD_ID_Baubles)) {
                     hasRing = InventoryHelper.checkRingInBaubles(event.player);
                 }
 
@@ -990,7 +990,7 @@ public class EventHandler {
     /**
      * tweak nbt data before morphing, SERVER SIDE ONLY
      */
-    @Optional.Method(modid = Reference.MOD_ID_Metamorph)
+    @Optional.Method(modid = Tags.MOD_ID_Metamorph)
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public void onMorphPre(MorphEvent.Pre event) {
         if (event.player == null) return;
@@ -1050,7 +1050,7 @@ public class EventHandler {
     /**
      * delete or reset some data in nbt tag after morphing, SERVER SIDE ONLY
      */
-    @Optional.Method(modid = Reference.MOD_ID_Metamorph)
+    @Optional.Method(modid = Tags.MOD_ID_Metamorph)
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public void onMorphPost(MorphEvent.Post event) {
         //cancel morph, reset HP
@@ -1092,7 +1092,7 @@ public class EventHandler {
     /**
      * change morph entity's attribute on spawn, SERVER SIDE ONLY
      */
-    @Optional.Method(modid = Reference.MOD_ID_Metamorph)
+    @Optional.Method(modid = Tags.MOD_ID_Metamorph)
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public void onSpawnMorphPre(SpawnGhostEvent.Pre event) {
         if (event.player != null && !event.player.world.isRemote && event.morph instanceof EntityMorph) {
@@ -1129,7 +1129,7 @@ public class EventHandler {
     /**
      * add skill to morph entity, SERVER SIDE ONLY
      */
-    @Optional.Method(modid = Reference.MOD_ID_Metamorph)
+    @Optional.Method(modid = Tags.MOD_ID_Metamorph)
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public void onMorphAction(MorphActionEvent event) {
         if (event.player != null && !event.player.world.isRemote &&

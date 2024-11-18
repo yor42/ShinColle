@@ -1,5 +1,6 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.client.gui.inventory.ContainerFormation;
 import com.lulan.shincolle.entity.BasicEntityShip;
@@ -8,7 +9,6 @@ import com.lulan.shincolle.network.C2SGUIPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.Enums;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.unitclass.Attrs;
 import com.lulan.shincolle.reference.unitclass.AttrsAdv;
 import com.lulan.shincolle.utility.*;
@@ -30,8 +30,8 @@ import java.util.List;
  */
 public class GuiFormation extends GuiContainer {
 
-    private static final ResourceLocation guiFormat = new ResourceLocation(Reference.TEXTURES_GUI + "GuiFormation.png");
-    private static final ResourceLocation guiNameIcon = new ResourceLocation(Reference.TEXTURES_GUI + "GuiNameIcon0.png");
+    private static final ResourceLocation guiFormat = new ResourceLocation(Tags.TEXTURES_GUI + "GuiFormation.png");
+    private static final ResourceLocation guiNameIcon = new ResourceLocation(Tags.TEXTURES_GUI + "GuiNameIcon0.png");
     private static final int[] barRows = new int[]{54, 69, 84, 99, 114, 129};
     private static final int[] barCols = new int[]{9, 52, 95};
     private static String attrATKL;

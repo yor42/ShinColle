@@ -68,7 +68,7 @@ public class TileEntitySmallShipyard extends BasicTileInventory implements ITile
         super();
 
         //slots: 0:grudge 1:abyss 2:ammo 3:poly 4:fuel 5:output
-        this.itemHandler = new CapaInventory(6, this);
+        this.itemHandler = new CapaInventory<>(6, this);
         this.isActive = false;
         this.syncTime = 0;
 
@@ -95,12 +95,7 @@ public class TileEntitySmallShipyard extends BasicTileInventory implements ITile
 
     @Override
     public byte getPacketID(int type) {
-        switch (type) {
-            case 0:
-                return S2CGUIPackets.PID.TileSmallSY;
-        }
-
-        return -1;
+        return type == 0? S2CGUIPackets.PID.TileSmallSY:-1;
     }
 
     //依照輸出入口設定, 決定漏斗等裝置如何輸出入物品到特定slot中
@@ -122,6 +117,7 @@ public class TileEntitySmallShipyard extends BasicTileInventory implements ITile
                 //is fluid container (1.10.2 capability)
             else if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
                 IFluidHandler fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
+                assert fluid != null;
                 FluidStack fstack = fluid.drain(BlockHelper.SampleFluidLava, false);
                 return fstack == null;
             } else {
@@ -440,7 +436,7 @@ public class TileEntitySmallShipyard extends BasicTileInventory implements ITile
     //計算建造時間 (換算成真實時間)
     public String getBuildTimeString() {
         //剩餘秒數 = (目標能量 - 目前能量) / (每tick增加能量) / 20
-        int timeSec = (int) ((powerGoal - powerConsumed) / BUILDSPEED * 0.05F);  //get time (單位: sec)
+        int timeSec = (int) ((float) (powerGoal - powerConsumed) / BUILDSPEED * 0.05F);  //get time (單位: sec)
         return CalcHelper.getTimeFormated(timeSec);
     }
 

@@ -1,10 +1,10 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.gui.inventory.ContainerVolCore;
 import com.lulan.shincolle.network.C2SGUIPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.tileentity.TileEntityVolCore;
 import com.lulan.shincolle.utility.GuiHelper;
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GuiVolCore extends GuiContainer {
 
-    private static final ResourceLocation guiTexture = new ResourceLocation(Reference.TEXTURES_GUI + "GuiVolCore.png");
+    private static final ResourceLocation guiTexture = new ResourceLocation(Tags.TEXTURES_GUI + "GuiVolCore.png");
     private static String conName;
     private final TileEntityVolCore tile;
     private int xClick, yClick, xMouse, yMouse;

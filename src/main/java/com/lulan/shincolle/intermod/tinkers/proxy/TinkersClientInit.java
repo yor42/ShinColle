@@ -1,6 +1,6 @@
 package com.lulan.shincolle.intermod.tinkers.proxy;
 
-import com.lulan.shincolle.reference.Reference;
+import com.lulan.shincolle.Tags;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -44,7 +44,7 @@ public class TinkersClientInit {
 
         public FluidStateMapper(Fluid fluid) {
             this.fluid = fluid;
-            this.location = new ModelResourceLocation(new ResourceLocation(Reference.MOD_ID, "fluid_block"),
+            this.location = new ModelResourceLocation(new ResourceLocation(Tags.MOD_ID, "fluid_block"),
                     fluid.getName());
         }
 

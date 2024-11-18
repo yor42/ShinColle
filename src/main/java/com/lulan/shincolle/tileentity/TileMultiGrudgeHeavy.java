@@ -227,14 +227,14 @@ public class TileMultiGrudgeHeavy extends BasicTileMulti implements ITileLiquidF
     public void buildComplete() {
         //輸入材料數量, 取得build output到slot 5
         switch (this.buildType) {
-            default:
-            case ID.Build.SHIP:            //build ship
-            case ID.Build.SHIP_LOOP:
-                itemHandler.setStackInSlot(SLOTS_OUT, LargeRecipes.getBuildResultShip(getMatBuild()));
-                break;
             case ID.Build.EQUIP:        //build equip
             case ID.Build.EQUIP_LOOP:
                 itemHandler.setStackInSlot(SLOTS_OUT, LargeRecipes.getBuildResultEquip(getMatBuild()));
+                break;
+            case ID.Build.SHIP:            //build ship
+            case ID.Build.SHIP_LOOP:
+            default:
+                itemHandler.setStackInSlot(SLOTS_OUT, LargeRecipes.getBuildResultShip(getMatBuild()));
                 break;
         }
     }
@@ -350,16 +350,16 @@ public class TileMultiGrudgeHeavy extends BasicTileMulti implements ITileLiquidF
 
                     //continue build if mode = loop mode
                     switch (buildType) {
-                        default:
-                        case ID.Build.SHIP:
-                        case ID.Build.EQUIP:        //reset build type
-                            this.buildType = ID.Build.NONE;
-                            //將建造材料清除
-                            this.setMatBuild(new int[]{0, 0, 0, 0});
-                            break;
                         case ID.Build.SHIP_LOOP:    //remain build type
                         case ID.Build.EQUIP_LOOP:    //remain build type
                             this.setRepeatBuild();
+                            break;
+                        case ID.Build.SHIP:
+                        case ID.Build.EQUIP:        //reset build type
+                        default:
+                            this.buildType = ID.Build.NONE;
+                            //將建造材料清除
+                            this.setMatBuild(new int[]{0, 0, 0, 0});
                             break;
                     }
 
@@ -426,7 +426,7 @@ public class TileMultiGrudgeHeavy extends BasicTileMulti implements ITileLiquidF
     //計算建造時間 (換算成真實時間)
     public String getBuildTimeString() {
         //剩餘秒數 = (目標能量 - 目前能量) / (每tick增加能量) / 20
-        int timeSec = (int) ((powerGoal - powerConsumed) / BUILDSPEED * 0.05F);  //get time (單位: sec)
+        int timeSec = (int) ((float) (powerGoal - powerConsumed) / BUILDSPEED * 0.05F);  //get time (單位: sec)
         return CalcHelper.getTimeFormated(timeSec);
     }
 
@@ -587,8 +587,7 @@ public class TileMultiGrudgeHeavy extends BasicTileMulti implements ITileLiquidF
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         BlockPos pos = getPos();
-        AxisAlignedBB bb = new AxisAlignedBB(pos.add(-2, -3, -2), pos.add(2, 2, 2));
-        return bb;
+        return new AxisAlignedBB(pos.add(-2, -3, -2), pos.add(2, 2, 2));
     }
 
 

@@ -1,9 +1,9 @@
 package com.lulan.shincolle.item;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.IShipMorph;
 import com.lulan.shincolle.init.ModItems;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.TeamHelper;
 import net.minecraft.entity.Entity;
@@ -51,7 +51,7 @@ public class KaitaiHammer extends BasicItem {
     //避免meta值影響到物品名稱
     @Override
     public String getTranslationKey(ItemStack itemstack) {
-        return String.format("item.%s", Reference.MOD_ID + ":KaitaiHammer");
+        return String.format("item.%s", Tags.MOD_ID + ":KaitaiHammer");
     }
 
     //左鍵用於自己的棲艦, 可使該棲艦一擊死亡 (轉回物品型態, 等級-1)

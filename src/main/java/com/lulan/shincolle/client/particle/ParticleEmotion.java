@@ -1,7 +1,7 @@
 package com.lulan.shincolle.client.particle;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.proxy.ClientProxy;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.utility.CalcHelper;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ import org.lwjgl.opengl.GL11;
 public class ParticleEmotion extends Particle {
 
     public static final int EMO_NUMBER = 30;
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Reference.TEXTURES_PARTICLE + "ParticleEmotion.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Tags.TEXTURES_PARTICLE + "ParticleEmotion.png");
     private Entity host = null;
     private final int particleType;
     private int playTimes;

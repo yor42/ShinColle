@@ -29,9 +29,9 @@ public class ShipCalc {
 
     //init roll table
     static {
-        /**roll table: 0:ship id, 1:material mean, 2:modified material type
-         * material mean: material amount correspond to normal dist, high = need more materials
-         * modified material type: mat can increase build rate: -1:none 0:grudge 1:metal 2:ammo 3:poly
+        /*roll table: 0:ship id, 1:material mean, 2:modified material type
+          material mean: material amount correspond to normal dist, high = need more materials
+          modified material type: mat can increase build rate: -1:none 0:grudge 1:metal 2:ammo 3:poly
          */
         //small build
         EquipSmall.add(new int[]{ID.ShipClass.DDI, 80, 0});
@@ -70,6 +70,7 @@ public class ShipCalc {
         int[] matAmount = {0, 0, 0, 0};    //grudge, abyssium, ammo, polymetal
 
         if (itemstack.hasTagCompound()) {
+            assert itemstack.getTagCompound() != null;
             matAmount[0] = itemstack.getTagCompound().getInteger("Grudge");
             matAmount[1] = itemstack.getTagCompound().getInteger("Abyssium");
             matAmount[2] = itemstack.getTagCompound().getInteger("Ammo");
@@ -92,6 +93,7 @@ public class ShipCalc {
 
         //get materials amount
         if (item.hasTagCompound()) {    //正常製造egg, 會有四個材料tag
+            assert item.getTagCompound() != null;
             material[0] = item.getTagCompound().getInteger("Grudge");
             material[1] = item.getTagCompound().getInteger("Abyssium");
             material[2] = item.getTagCompound().getInteger("Ammo");
@@ -111,11 +113,11 @@ public class ShipCalc {
             shiplistOrg = EquipLarge;
         }
 
-        /**roll ship type
-         * 0. tweak roll list by mat.amount: specific material decrease the mean value
-         * 1. get prob of ships in roll list
-         * 2. roll 0~1 to get ship
-         * 3. return ship id
+        /*roll ship type
+          0. tweak roll list by mat.amount: specific material decrease the mean value
+          1. get prob of ships in roll list
+          2. roll 0~1 to get ship
+          3. return ship id
          */
         //prob list: map<ship ID, prob parameter>
         Map<Integer, Float> probList = new HashMap<Integer, Float>();
@@ -153,10 +155,10 @@ public class ShipCalc {
         int rollresult = -1;
 
         //get total prob
-        Iterator iter = probList.entrySet().iterator();
+        Iterator<Map.Entry<Integer, Float>> iter = probList.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            totalProb += (Float) entry.getValue();
+            Map.Entry<Integer, Float> entry = iter.next();
+            totalProb += entry.getValue();
         }
 
         //scale random number to totalProb
@@ -165,12 +167,12 @@ public class ShipCalc {
         //roll ship
         iter = probList.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            sumProb += (Float) entry.getValue();
+            Map.Entry<Integer, Float> entry = iter.next();
+            sumProb += entry.getValue();
             LogHelper.debug("DEBUG: roll ship type: random: " + random + " sum.pr " + sumProb + " total.pr " + totalProb);
 
             if (sumProb > random) {    //get item
-                rollresult = (Integer) entry.getKey();
+                rollresult = entry.getKey();
                 LogHelper.debug("DEBUG: roll ship type: get ship:" + rollresult);
                 break;
             }

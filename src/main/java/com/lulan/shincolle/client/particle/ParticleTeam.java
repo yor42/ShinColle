@@ -1,6 +1,6 @@
 package com.lulan.shincolle.client.particle;
 
-import com.lulan.shincolle.reference.Reference;
+import com.lulan.shincolle.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -32,7 +32,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class ParticleTeam extends Particle {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Reference.TEXTURES_PARTICLE + "ParticleTeam.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Tags.TEXTURES_PARTICLE + "ParticleTeam.png");
     private final int particleType;    //0:green 1:cyan 2:red 3:yellow
     private final double height;
     private float particleAlphaA, particleAlphaC;  //arrow alpha, circle alpha

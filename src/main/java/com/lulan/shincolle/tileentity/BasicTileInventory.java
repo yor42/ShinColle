@@ -1,8 +1,8 @@
 package com.lulan.shincolle.tileentity;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaInventory;
 import com.lulan.shincolle.entity.IShipOwner;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.utility.PacketHelper;
 import com.lulan.shincolle.utility.TeamHelper;
 import net.minecraft.entity.Entity;
@@ -206,7 +206,7 @@ abstract public class BasicTileInventory extends BasicTileEntity implements ISid
 
     @Override
     public String getName() {
-        return "tile." + Reference.MOD_ID + ":" + getRegName();
+        return "tile." + Tags.MOD_ID + ":" + getRegName();
     }
 
     @Override

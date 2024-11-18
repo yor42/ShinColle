@@ -1,11 +1,11 @@
 package com.lulan.shincolle.client.render;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.model.*;
 import com.lulan.shincolle.entity.IShipEmotion;
 import com.lulan.shincolle.entity.other.EntityAirplaneTakoyaki;
 import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.Values;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -28,109 +28,109 @@ public class RenderShipEntity extends RenderBasic {
 
     //textures
     //AP
-    public static final ResourceLocation TEX_AP_Wa = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityTransportWa.png");
+    public static final ResourceLocation TEX_AP_Wa = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityTransportWa.png");
     public static final ModelBase MD_AP_Wa = new ModelTransportWa();
     //BB
-    public static final ResourceLocation TEX_BB_Re = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBattleshipRe.png");
+    public static final ResourceLocation TEX_BB_Re = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBattleshipRe.png");
     public static final ModelBase MD_BB_Re = new ModelBattleshipRe();
-    public static final ResourceLocation TEX_BB_Ru = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBattleshipRu.png");
+    public static final ResourceLocation TEX_BB_Ru = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBattleshipRu.png");
     public static final ModelBase MD_BB_Ru = new ModelBattleshipRu();
-    public static final ResourceLocation TEX_BB_Ta = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBattleshipTa.png");
+    public static final ResourceLocation TEX_BB_Ta = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBattleshipTa.png");
     public static final ModelBase MD_BB_Ta = new ModelBattleshipTa();
     //CA
-    public static final ResourceLocation TEX_CA_Ri = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityHeavyCruiserRi.png");
+    public static final ResourceLocation TEX_CA_Ri = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityHeavyCruiserRi.png");
     public static final ModelBase MD_CA_Ri = new ModelHeavyCruiserRi();
-    public static final ResourceLocation TEX_CA_Ne = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityHeavyCruiserNe.png");
+    public static final ResourceLocation TEX_CA_Ne = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityHeavyCruiserNe.png");
     public static final ModelBase MD_CA_Ne = new ModelHeavyCruiserNe();
     //CV
-    public static final ResourceLocation TEX_CV_Wo = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCarrierWo.png");
+    public static final ResourceLocation TEX_CV_Wo = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCarrierWo.png");
     public static final ModelBase MD_CV_Wo = new ModelCarrierWo();
     //DD
-    public static final ResourceLocation TEX_DD_I = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerI.png");
+    public static final ResourceLocation TEX_DD_I = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerI.png");
     public static final ModelBase MD_DD_I = new ModelDestroyerI();
-    public static final ResourceLocation TEX_DD_Ro = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerRo.png");
+    public static final ResourceLocation TEX_DD_Ro = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerRo.png");
     public static final ModelBase MD_DD_Ro = new ModelDestroyerRo();
-    public static final ResourceLocation TEX_DD_Ha = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerHa.png");
+    public static final ResourceLocation TEX_DD_Ha = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerHa.png");
     public static final ModelBase MD_DD_Ha = new ModelDestroyerHa();
-    public static final ResourceLocation TEX_DD_Ni = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerNi.png");
+    public static final ResourceLocation TEX_DD_Ni = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerNi.png");
     public static final ModelBase MD_DD_Ni = new ModelDestroyerNi();
     //Hime
-    public static final ResourceLocation TEX_Hime_Airfield = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityAirfieldHime.png");
+    public static final ResourceLocation TEX_Hime_Airfield = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityAirfieldHime.png");
     public static final ModelBase MD_Hime_Airfield = new ModelAirfieldHime();
-    public static final ResourceLocation TEX_Hime_Battleship = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBattleshipHime.png");
+    public static final ResourceLocation TEX_Hime_Battleship = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBattleshipHime.png");
     public static final ModelBase MD_Hime_Battleship = new ModelBattleshipHime();
-    public static final ResourceLocation TEX_Hime_Destroyer = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerHime.png");
+    public static final ResourceLocation TEX_Hime_Destroyer = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerHime.png");
     public static final ModelBase MD_Hime_Destroyer = new ModelDestroyerHime();
-    public static final ResourceLocation TEX_Hime_Carrier = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCarrierHime.png");
+    public static final ResourceLocation TEX_Hime_Carrier = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCarrierHime.png");
     public static final ModelBase MD_Hime_Carrier = new ModelCarrierHime();
-    public static final ResourceLocation TEX_Hime_CA = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCAHime.png");
+    public static final ResourceLocation TEX_Hime_CA = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCAHime.png");
     public static final ModelBase MD_Hime_CA = new ModelCAHime();
-    public static final ResourceLocation TEX_Hime_Harbour = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityHarbourHime.png");
+    public static final ResourceLocation TEX_Hime_Harbour = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityHarbourHime.png");
     public static final ModelBase MD_Hime_Harbour = new ModelHarbourHime();
-    public static final ResourceLocation TEX_Hime_Isolated = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityIsolatedHime.png");
+    public static final ResourceLocation TEX_Hime_Isolated = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityIsolatedHime.png");
     public static final ModelBase MD_Hime_Isolated = new ModelIsolatedHime();
-    public static final ResourceLocation TEX_Hime_Midway = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityMidwayHime.png");
+    public static final ResourceLocation TEX_Hime_Midway = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityMidwayHime.png");
     public static final ModelBase MD_Hime_Midway = new ModelMidwayHime();
-    public static final ResourceLocation TEX_Hime_Northern = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityNorthernHime.png");
+    public static final ResourceLocation TEX_Hime_Northern = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityNorthernHime.png");
     public static final ModelBase MD_Hime_Northern = new ModelNorthernHime();
-    public static final ResourceLocation TEX_Hime_Subm = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntitySubmHime.png");
+    public static final ResourceLocation TEX_Hime_Subm = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntitySubmHime.png");
     public static final ModelBase MD_Hime_Subm = new ModelSubmHime();
-    public static final ResourceLocation TEX_Hime_SubmNew = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntitySubmHimeNew.png");
+    public static final ResourceLocation TEX_Hime_SubmNew = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntitySubmHimeNew.png");
     public static final ModelBase MD_Hime_SubmNew = new ModelSSNH();
     //SS
-    public static final ResourceLocation TEX_SS_Ka = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntitySubmKa.png");
+    public static final ResourceLocation TEX_SS_Ka = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntitySubmKa.png");
     public static final ModelBase MD_SS_Ka = new ModelSubmKa();
-    public static final ResourceLocation TEX_SS_Yo = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntitySubmYo.png");
+    public static final ResourceLocation TEX_SS_Yo = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntitySubmYo.png");
     public static final ModelBase MD_SS_Yo = new ModelSubmYo();
-    public static final ResourceLocation TEX_SS_So = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntitySubmSo.png");
+    public static final ResourceLocation TEX_SS_So = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntitySubmSo.png");
     public static final ModelBase MD_SS_So = new ModelSubmSo();
     //WD
-    public static final ResourceLocation TEX_WD_Carrier = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCarrierWDemon.png");
+    public static final ResourceLocation TEX_WD_Carrier = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCarrierWDemon.png");
     public static final ModelBase MD_WD_Carrier = new ModelCarrierWDemon();
     //Hostile Sip
     //BB
-    public static final ResourceLocation TEX_BB_Nagato = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBattleshipNagato.png");
+    public static final ResourceLocation TEX_BB_Nagato = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBattleshipNagato.png");
     public static final ModelBase MD_BB_Nagato = new ModelBattleshipNagato();
-    public static final ResourceLocation TEX_BB_Yamato = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBattleshipYamato.png");
+    public static final ResourceLocation TEX_BB_Yamato = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBattleshipYamato.png");
     public static final ModelBase MD_BB_Yamato = new ModelBattleshipYamato();
-    public static final ResourceLocation TEX_BB_Kongou = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBBKongou.png");
+    public static final ResourceLocation TEX_BB_Kongou = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBBKongou.png");
     public static final ModelBase MD_BB_Kongou = new ModelBBKongou();
-    public static final ResourceLocation TEX_BB_Hiei = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBBHiei.png");
+    public static final ResourceLocation TEX_BB_Hiei = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBBHiei.png");
     public static final ModelBase MD_BB_Hiei = new ModelBBHiei();
-    public static final ResourceLocation TEX_BB_Haruna = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBBHaruna.png");
+    public static final ResourceLocation TEX_BB_Haruna = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBBHaruna.png");
     public static final ModelBase MD_BB_Haruna = new ModelBBHaruna();
-    public static final ResourceLocation TEX_BB_Kirishima = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityBBKirishima.png");
+    public static final ResourceLocation TEX_BB_Kirishima = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityBBKirishima.png");
     public static final ModelBase MD_BB_Kirishima = new ModelBBKirishima();
     //CV
-    public static final ResourceLocation TEX_CV_Akagi = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCarrierAkagi.png");
+    public static final ResourceLocation TEX_CV_Akagi = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCarrierAkagi.png");
     public static final ModelBase MD_CV_Akagi = new ModelCarrierAkagi();
-    public static final ResourceLocation TEX_CV_Kaga = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCarrierKaga.png");
+    public static final ResourceLocation TEX_CV_Kaga = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCarrierKaga.png");
     public static final ModelBase MD_CV_Kaga = new ModelCarrierKaga();
     //CL
-    public static final ResourceLocation TEX_CL_Tenryuu = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCruiserTenryuu.png");
+    public static final ResourceLocation TEX_CL_Tenryuu = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCruiserTenryuu.png");
     public static final ModelBase MD_CL_Tenryuu = new ModelCruiserTenryuu();
-    public static final ResourceLocation TEX_CL_Tatsuta = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCruiserTatsuta.png");
+    public static final ResourceLocation TEX_CL_Tatsuta = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCruiserTatsuta.png");
     public static final ModelBase MD_CL_Tatsuta = new ModelCruiserTatsuta();
     //CA
-    public static final ResourceLocation TEX_CA_Atago = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCruiserAtago.png");
+    public static final ResourceLocation TEX_CA_Atago = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCruiserAtago.png");
     public static final ModelBase MD_CA_Atago = new ModelCruiserAtago();
-    public static final ResourceLocation TEX_CA_Takao = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityCruiserTakao.png");
+    public static final ResourceLocation TEX_CA_Takao = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityCruiserTakao.png");
     public static final ModelBase MD_CA_Takao = new ModelCruiserTakao();
     //DD
-    public static final ResourceLocation TEX_DD_Akatsuki = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerAkatsuki.png");
+    public static final ResourceLocation TEX_DD_Akatsuki = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerAkatsuki.png");
     public static final ModelBase MD_DD_Akatsuki = new ModelDestroyerAkatsuki();
-    public static final ResourceLocation TEX_DD_Hibiki = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerHibiki.png");
+    public static final ResourceLocation TEX_DD_Hibiki = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerHibiki.png");
     public static final ModelBase MD_DD_Hibiki = new ModelDestroyerHibiki();
-    public static final ResourceLocation TEX_DD_Ikazuchi = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerIkazuchi.png");
+    public static final ResourceLocation TEX_DD_Ikazuchi = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerIkazuchi.png");
     public static final ModelBase MD_DD_Ikazuchi = new ModelDestroyerIkazuchi();
-    public static final ResourceLocation TEX_DD_Inazuma = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerInazuma.png");
+    public static final ResourceLocation TEX_DD_Inazuma = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerInazuma.png");
     public static final ModelBase MD_DD_Inazuma = new ModelDestroyerInazuma();
-    public static final ResourceLocation TEX_DD_Shimakaze = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityDestroyerShimakaze.png");
+    public static final ResourceLocation TEX_DD_Shimakaze = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityDestroyerShimakaze.png");
     public static final ModelBase MD_DD_Shimakaze = new ModelDestroyerShimakaze();
     //SS
-    public static final ResourceLocation TEX_SS_Ro500 = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntitySubmRo500.png");
+    public static final ResourceLocation TEX_SS_Ro500 = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntitySubmRo500.png");
     public static final ModelBase MD_SS_Ro500 = new ModelSubmRo500();
-    public static final ResourceLocation TEX_SS_U511 = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntitySubmU511.png");
+    public static final ResourceLocation TEX_SS_U511 = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntitySubmU511.png");
     public static final ModelBase MD_SS_U511 = new ModelSubmU511();
 
     //factory

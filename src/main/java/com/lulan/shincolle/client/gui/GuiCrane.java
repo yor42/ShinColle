@@ -1,11 +1,11 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.gui.inventory.ContainerCrane;
 import com.lulan.shincolle.network.C2SGUIPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.Enums;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.tileentity.TileEntityCrane;
 import com.lulan.shincolle.utility.CalcHelper;
 import com.lulan.shincolle.utility.GuiHelper;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class GuiCrane extends GuiContainer {
 
-    private static final ResourceLocation guiTexture = new ResourceLocation(Reference.TEXTURES_GUI + "GuiCrane.png");
+    private static final ResourceLocation guiTexture = new ResourceLocation(Tags.TEXTURES_GUI + "GuiCrane.png");
     private static String strLoad;
     private static String strUnload;
     private static String strMeta;

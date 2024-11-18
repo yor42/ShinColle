@@ -1,11 +1,11 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.gui.inventory.ContainerLargeShipyard;
 import com.lulan.shincolle.network.C2SGUIPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.Enums.EnumColors;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.tileentity.TileMultiGrudgeHeavy;
 import com.lulan.shincolle.utility.GuiHelper;
 import com.lulan.shincolle.utility.LogHelper;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class GuiLargeShipyard extends GuiContainer {
 
-    private static final ResourceLocation TEXTURE_BG = new ResourceLocation(Reference.TEXTURES_GUI + "GuiLargeShipyard.png");
+    private static final ResourceLocation TEXTURE_BG = new ResourceLocation(Tags.TEXTURES_GUI + "GuiLargeShipyard.png");
     private final TileMultiGrudgeHeavy tile;
     private int xClick, yClick, selectMat, buildType, invMode, xMouse, yMouse;
     private String time;

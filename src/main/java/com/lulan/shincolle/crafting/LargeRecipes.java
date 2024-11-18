@@ -94,11 +94,9 @@ public class LargeRecipes {
             switch (selectMat) {
                 case 0: // block grudge
                     matchItem = Item.getItemFromBlock(ModBlocks.BlockGrudge);
-                    meta = 0;
                     break;
                 case 1: // block abyssium
                     matchItem = Item.getItemFromBlock(ModBlocks.BlockAbyssium);
-                    meta = 0;
                     break;
                 case 2: // light ammo container
                     matchItem = ModItems.Ammo;
@@ -106,22 +104,18 @@ public class LargeRecipes {
                     break;
                 case 3: // block polymetal
                     matchItem = Item.getItemFromBlock(ModBlocks.BlockPolymetal);
-                    meta = 0;
                     break;
             }
         } else { // 輸出單件物品
             switch (selectMat) {
                 case 0: // item grudge
                     matchItem = ModItems.Grudge;
-                    meta = 0;
                     break;
                 case 1: // item abyssium
                     matchItem = ModItems.AbyssMetal;
-                    meta = 0;
                     break;
                 case 2: // item light ammo
                     matchItem = ModItems.Ammo;
-                    meta = 0;
                     break;
                 case 3: // item polymetal nodules
                     matchItem = ModItems.AbyssMetal;

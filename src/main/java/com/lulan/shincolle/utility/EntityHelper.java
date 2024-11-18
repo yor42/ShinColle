@@ -1,6 +1,7 @@
 package com.lulan.shincolle.utility;
 
 import com.google.common.base.Predicate;
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.ai.path.ShipMoveHelper;
 import com.lulan.shincolle.ai.path.ShipPath;
 import com.lulan.shincolle.ai.path.ShipPathNavigate;
@@ -20,7 +21,6 @@ import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.proxy.ServerProxy;
 import com.lulan.shincolle.reference.Enums;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.unitclass.Attrs;
 import com.lulan.shincolle.server.CacheDataPlayer;
 import com.lulan.shincolle.server.CacheDataShip;
@@ -1674,7 +1674,7 @@ public class EntityHelper {
      */
     public static Entity createShipEntity(World world, int classID, NBTTagCompound nbt, double px, double py, double pz, boolean updateUID) {
         //create new ship entity
-        Entity ent = EntityList.createEntityByIDFromName(new ResourceLocation(Reference.MOD_ID, ShipCalc.getEntityToSpawnName(classID)), world);
+        Entity ent = EntityList.createEntityByIDFromName(new ResourceLocation(Tags.MOD_ID, ShipCalc.getEntityToSpawnName(classID)), world);
 
         if (ent != null) {
             //set pos
@@ -2034,7 +2034,7 @@ public class EntityHelper {
                             //spawn mob
                             for (int i = 0; i < shipNum; i++) {
                                 //get random mob
-                                Entity mobToSpawn = EntityList.createEntityByIDFromName(new ResourceLocation(Reference.MOD_ID, ShipCalc.getRandomMobToSpawnName()), w);
+                                Entity mobToSpawn = EntityList.createEntityByIDFromName(new ResourceLocation(Tags.MOD_ID, ShipCalc.getRandomMobToSpawnName()), w);
 
                                 //spawn mob
                                 if (mobToSpawn instanceof BasicEntityShipHostile) {
@@ -2138,7 +2138,7 @@ public class EntityHelper {
                             //roll boss ship
                             int j;
                             for (j = 0; j < ConfigHandler.spawnBossNum; j++) {
-                                mobToSpawn = EntityList.createEntityByIDFromName(new ResourceLocation(Reference.MOD_ID, ShipCalc.getRandomMobToSpawnName()), w);
+                                mobToSpawn = EntityList.createEntityByIDFromName(new ResourceLocation(Tags.MOD_ID, ShipCalc.getRandomMobToSpawnName()), w);
 
                                 //spawn mob
                                 if (mobToSpawn instanceof BasicEntityShipHostile) {
@@ -2150,7 +2150,7 @@ public class EntityHelper {
 
                             //roll small ship
                             for (j = 0; j < ConfigHandler.spawnMobNum; j++) {
-                                mobToSpawn = EntityList.createEntityByIDFromName(new ResourceLocation(Reference.MOD_ID, ShipCalc.getRandomMobToSpawnName()), w);
+                                mobToSpawn = EntityList.createEntityByIDFromName(new ResourceLocation(Tags.MOD_ID, ShipCalc.getRandomMobToSpawnName()), w);
 
                                 //spawn mob
                                 if (mobToSpawn instanceof BasicEntityShipHostile) {

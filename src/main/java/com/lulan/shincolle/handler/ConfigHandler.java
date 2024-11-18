@@ -1,9 +1,9 @@
 package com.lulan.shincolle.handler;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.config.ConfigLoot;
 import com.lulan.shincolle.config.ConfigMining;
 import com.lulan.shincolle.config.ConfigSound;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -416,8 +416,8 @@ public class ConfigHandler {
         // 如果設定檔實體還未建立 則建立之
         if (config == null) {
             // get file
-            String configRootLoc = event.getModConfigurationDirectory() + "/" + Reference.MOD_ID + "/";
-            File fileMainConfig = new File(configRootLoc + Reference.MOD_ID + ".cfg");
+            String configRootLoc = event.getModConfigurationDirectory() + "/" + Tags.MOD_ID + "/";
+            File fileMainConfig = new File(configRootLoc + Tags.MOD_ID + ".cfg");
             File fileSounds = new File(configRootLoc + "sounds.cfg");
             File fileLootTable = new File(configRootLoc + "loottable.cfg");
             File fileMining = new File(configRootLoc + "mining.cfg");
@@ -504,7 +504,7 @@ public class ConfigHandler {
     @SubscribeEvent
     public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
         // 若設定檔的mod id跟目前mod id不同時 則進行更新
-        if (event.getModID().equalsIgnoreCase(Reference.MOD_ID)) {
+        if (event.getModID().equalsIgnoreCase(Tags.MOD_ID)) {
             loadConfiguration();
         }
 

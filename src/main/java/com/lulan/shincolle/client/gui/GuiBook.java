@@ -1,8 +1,8 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.reference.Enums;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.utility.CalcHelper;
 import net.minecraft.client.Minecraft;
@@ -38,7 +38,7 @@ public class GuiBook {
     public static final int[] PageLimit = new int[]{1, 28, 6, 20, 26, 19, 4};  //max page number
 //	private static final ResourceLocation guiBookPic02 = new ResourceLocation(Reference.TEXTURES_GUI+"book/BookPic02.png");
     //book picture
-    private static final ResourceLocation guiBookPic01 = new ResourceLocation(Reference.TEXTURES_GUI + "book/BookPic01.png");
+    private static final ResourceLocation guiBookPic01 = new ResourceLocation(Tags.TEXTURES_GUI + "book/BookPic01.png");
     public static int PageLeftCurrent = 0;  //current page for random icon counting
     public static int PageRightCurrent = 0; //current page for random icon counting
     public static int PageWidth = 135;        //page width, no scale = 106

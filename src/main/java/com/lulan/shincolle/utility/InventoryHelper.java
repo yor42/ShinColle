@@ -2,6 +2,7 @@ package com.lulan.shincolle.utility;
 
 import baubles.api.cap.BaublesCapabilities;
 import baubles.api.cap.IBaublesItemHandler;
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaShipInventory;
 import com.lulan.shincolle.client.gui.inventory.ContainerShipInventory;
 import com.lulan.shincolle.handler.ConfigHandler;
@@ -9,7 +10,6 @@ import com.lulan.shincolle.init.ModItems;
 import com.lulan.shincolle.network.S2CSpawnParticle;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.Values;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -918,7 +918,7 @@ public class InventoryHelper {
         return movedItem;
     }
 
-    @Optional.Method(modid = Reference.MOD_ID_Baubles)
+    @Optional.Method(modid = Tags.MOD_ID_Baubles)
     public static boolean checkRingInBaubles(EntityPlayer player) {
         IBaublesItemHandler bb = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, null);
 

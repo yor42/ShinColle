@@ -74,11 +74,9 @@ public class TileEntityVolCore extends BasicTileInventory implements ITickable {
 
     @Override
     public byte getPacketID(int type) {
-        switch (type) {
-            case 0:
-                return S2CGUIPackets.PID.TileVolCore;
+        if(type == 0){
+            return S2CGUIPackets.PID.TileVolCore;
         }
-
         return -1;
     }
 
@@ -209,22 +207,12 @@ public class TileEntityVolCore extends BasicTileInventory implements ITickable {
                             double dx = pos.getX() + 0.5D;
                             double dy = pos.getY() + 2.5D;
                             double dz = pos.getZ() + 0.5D;
-                            int emotes;
-
-                            switch (this.world.rand.nextInt(5)) {
-                                case 0:
-                                    emotes = 2;  //panic
-                                    break;
-                                case 1:
-                                    emotes = 30;  //pif
-                                    break;
-                                case 2:
-                                    emotes = 10;  //spin
-                                    break;
-                                default:
-                                    emotes = 27;  //-w-
-                                    break;
-                            }
+                            int emotes = switch (this.world.rand.nextInt(5)) {
+                                case 0 -> 2;  //panic
+                                case 1 -> 30;  //pif
+                                case 2 -> 10;  //spin
+                                default -> 27;  //-w-
+                            };
 
                             AxisAlignedBB box = new AxisAlignedBB(dx - 6D, dy - 6D, dz - 6D, dx + 6D, dy + 6D, dz + 6D);
                             List<BasicEntityShip> slist = this.world.getEntitiesWithinAABB(BasicEntityShip.class, box);
@@ -282,22 +270,20 @@ public class TileEntityVolCore extends BasicTileInventory implements ITickable {
             AxisAlignedBB box = new AxisAlignedBB(dx - 6D, dy - 6D, dz - 6D, dx + 6D, dy + 6D, dz + 6D);
             List<BasicEntityShip> slist = this.world.getEntitiesWithinAABB(BasicEntityShip.class, box);
 
-            if (slist != null) {
-                for (BasicEntityShip s : slist) {
-                    //check ship is out of combat and in liquid
-                    if (EntityHelper.checkShipOutOfCombat(s) && EntityHelper.checkEntityIsInLiquid(s)) {
-                        //restore HP
-                        if (s.getHealth() < s.getMaxHealth()) {
-                            s.heal(s.getMaxHealth() * 0.01F + 4F);
-                        }
+            for (BasicEntityShip s : slist) {
+                //check ship is out of combat and in liquid
+                if (EntityHelper.checkShipOutOfCombat(s) && EntityHelper.checkEntityIsInLiquid(s)) {
+                    //restore HP
+                    if (s.getHealth() < s.getMaxHealth()) {
+                        s.heal(s.getMaxHealth() * 0.01F + 4F);
+                    }
 
-                        //restore Morale
-                        if (s.getMorale() < (int) (ID.Morale.L_Excited * 1.8F)) {
-                            s.addMorale(80);
-                        }
-                    }//end ship OOC
-                }//end loop all ship
-            }//end get list
+                    //restore Morale
+                    if (s.getMorale() < (int) (ID.Morale.L_Excited * 1.8F)) {
+                        s.addMorale(80);
+                    }
+                }//end ship OOC
+            }//end loop all ship
         }
         //no water, ignite nearby entity
         else {
@@ -309,42 +295,31 @@ public class TileEntityVolCore extends BasicTileInventory implements ITickable {
             AxisAlignedBB box = new AxisAlignedBB(dx - 6D, dy - 6D, dz - 6D, dx + 6D, dy + 6D, dz + 6D);
             List<EntityLivingBase> slist = this.world.getEntitiesWithinAABB(EntityLivingBase.class, box);
 
-            if (slist != null) {
-                for (EntityLivingBase ent : slist) {
-                    if (ent instanceof BasicEntityShip || ent instanceof BasicEntityMount ||
-                            ent instanceof BasicEntityAirplane || ent instanceof BasicEntityShipHostile) {
-                        //ship immune fire, return
-                        return;
-                    } else {
-                        //ignite target
-                        ent.setFire(2);
+            for (EntityLivingBase ent : slist) {
+                if (ent instanceof BasicEntityShip || ent instanceof BasicEntityMount ||
+                        ent instanceof BasicEntityAirplane || ent instanceof BasicEntityShipHostile) {
+                    //ship immune fire, return
+                    return;
+                } else {
+                    //ignite target
+                    ent.setFire(2);
 
-                        //hurt target
-                        ent.attackEntityFrom(DamageSource.FALL, 4F);
+                    //hurt target
+                    ent.attackEntityFrom(DamageSource.FALL, 4F);
 
-                        //show hot emotes
-                        int emotes;
-                        switch (this.world.rand.nextInt(5)) {
-                            case 0:
-                                emotes = 12;  //omg
-                                break;
-                            case 1:
-                                emotes = 28;  //-o-
-                                break;
-                            case 2:
-                                emotes = 0;  //drop
-                                break;
-                            default:
-                                emotes = 2;  //panic
-                                break;
-                        }
+                    //show hot emotes
+                    int emotes = switch (this.world.rand.nextInt(5)) {
+                        case 0 -> 12;  //omg
+                        case 1 -> 28;  //-o-
+                        case 2 -> 0;  //drop
+                        default -> 2;  //panic
+                    };
 
-                        //send emotes packet
-                        TargetPoint point = new TargetPoint(ent.dimension, ent.posX, ent.posY, ent.posZ, 48D);
-                        CommonProxy.channelP.sendToAllAround(new S2CSpawnParticle(ent, 36, ent.height * 0.75F, 0, emotes), point);
-                    }
+                    //send emotes packet
+                    TargetPoint point = new TargetPoint(ent.dimension, ent.posX, ent.posY, ent.posZ, 48D);
+                    CommonProxy.channelP.sendToAllAround(new S2CSpawnParticle(ent, 36, ent.height * 0.75F, 0, emotes), point);
                 }
-            }//end hit list
+            }
         }//end no water
     }
 
@@ -375,20 +350,16 @@ public class TileEntityVolCore extends BasicTileInventory implements ITickable {
      */
     @Override
     public int getField(int id) {
-        switch (id) {
-            case 0:
-                return this.btnActive ? 1 : 0;
-            default:
-                return 0;
+        if(id == 0){
+            return this.btnActive ? 1 : 0;
         }
+        return 0;
     }
 
     @Override
     public void setField(int id, int value) {
-        switch (id) {
-            case 0:
-                this.btnActive = value != 0;
-                break;
+        if (id == 0) {
+            this.btnActive = value != 0;
         }
     }
 

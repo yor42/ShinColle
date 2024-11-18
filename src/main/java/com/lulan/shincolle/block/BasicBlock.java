@@ -1,7 +1,7 @@
 package com.lulan.shincolle.block;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.creativetab.CreativeTabSC;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -48,7 +48,7 @@ abstract public class BasicBlock extends Block implements ICustomModels {
     @Override
     public Block setTranslationKey(String name) {
         super.setTranslationKey(name);
-        this.setRegistryName(Reference.MOD_ID + ":" + name.toLowerCase());
+        this.setRegistryName(Tags.MOD_ID + ":" + name.toLowerCase());
         return this;
     }
 
@@ -56,7 +56,7 @@ abstract public class BasicBlock extends Block implements ICustomModels {
     //格式為tile.MOD名稱:方塊名稱.name
     @Override
     public String getTranslationKey() {
-        return String.format("tile.%s%s", Reference.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
+        return String.format("tile.%s%s", Tags.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
     }
 
 

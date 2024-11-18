@@ -1,8 +1,8 @@
 package com.lulan.shincolle.item;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.block.ICustomModels;
 import com.lulan.shincolle.creativetab.CreativeTabSC;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -58,7 +58,7 @@ abstract public class BasicItem extends Item implements ICustomModels {
     @Override
     @Nonnull
     public String getTranslationKey() {
-        return String.format("item.%s%s", Reference.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
+        return String.format("item.%s%s", Tags.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
     }
 
     //同getUnlocalizedName() 此為加上itemstack版本
@@ -69,9 +69,9 @@ abstract public class BasicItem extends Item implements ICustomModels {
         int meta = itemstack.getItemDamage();
 
         if (meta > 0) {
-            return String.format("item.%s%s", Reference.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()) + meta);
+            return String.format("item.%s%s", Tags.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()) + meta);
         } else {
-            return String.format("item.%s%s", Reference.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
+            return String.format("item.%s%s", Tags.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
         }
     }
 
@@ -79,7 +79,7 @@ abstract public class BasicItem extends Item implements ICustomModels {
     @Nonnull
     public Item setTranslationKey(@Nonnull String name) {
         super.setTranslationKey(name);
-        this.setRegistryName(Reference.MOD_ID + ":" + name.toLowerCase());
+        this.setRegistryName(Tags.MOD_ID + ":" + name.toLowerCase());
         return this;
     }
 

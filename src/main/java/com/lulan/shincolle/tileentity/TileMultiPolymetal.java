@@ -23,7 +23,7 @@ public class TileMultiPolymetal extends BasicTileMulti {
         super();
 
         //use master's inventory
-        this.itemHandler = new CapaInventory(0, this);
+        this.itemHandler = new CapaInventory<>(0, this);
     }
 
     @Override

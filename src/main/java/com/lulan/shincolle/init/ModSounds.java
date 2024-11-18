@@ -1,7 +1,7 @@
 package com.lulan.shincolle.init;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.config.ConfigSound;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -231,7 +231,7 @@ public class ModSounds {
 
     //register sound
     private static SoundEvent initSounds(String soundName) {
-        ResourceLocation name = new ResourceLocation(Reference.MOD_ID, soundName);
+        ResourceLocation name = new ResourceLocation(Tags.MOD_ID, soundName);
         SoundEvent event = new SoundEvent(name);
         event.setRegistryName(name);
         ForgeRegistries.SOUND_EVENTS.register(event);

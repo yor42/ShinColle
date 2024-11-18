@@ -42,8 +42,8 @@ public class WorldGenPolyGravel extends WorldGenerator {
         //碰到frozen ocean, 會抓到海面的冰塊, 必須往下找海底
         if (world.getBlockState(pos.down(1)).getMaterial() == Material.ICE &&
                 world.getBlockState(pos.down(2)).getMaterial() == Material.WATER) {
-            IBlockState getblock = null;
-            int newy = 1;
+            IBlockState getblock;
+            int newy;
 
             //從目前y往下3格開始找海底, 即水深必須至少3格
             for (newy = y - 3; newy > 3; newy--) {

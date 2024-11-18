@@ -9,7 +9,6 @@ import com.lulan.shincolle.intermod.mekanism.MekanismHelper;
 import com.lulan.shincolle.intermod.tinkers.TinkersInit;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.proxy.ServerProxy;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.utility.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -30,20 +29,20 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import java.util.Optional;
 
 
-@Mod(modid = Reference.MOD_ID,
-        name = Reference.MOD_NAME,
-        version = Reference.MOD_VERSION,
+@Mod(modid = Tags.MOD_ID,
+        name = Tags.MOD_NAME,
+        version = Tags.VERSION,
         dependencies = "required-after:forge@[14.23.5.2768,)",
         guiFactory = "com.lulan.shincolle.config.ConfigGuiFactory")
 @Mod.EventBusSubscriber
 public class ShinColle {
 
     //mod instance
-    @Mod.Instance(Reference.MOD_ID)
+    @Mod.Instance(Tags.MOD_ID)
     public static ShinColle instance;
 
     //proxy for client/server event
-    @SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
+    @SidedProxy(clientSide = Tags.CLIENT_PROXY, serverSide = Tags.SERVER_PROXY)
     public static CommonProxy proxy;
 
     @SubscribeEvent(priority = EventPriority.LOW)
@@ -115,7 +114,7 @@ public class ShinColle {
     public static void missingBlockMappings(RegistryEvent.MissingMappings<Block> event) {
         event.getMappings().forEach(mapping -> {
             for (String name: renamesToHandle) {
-                if (mapping.key.equals(new ResourceLocation(Reference.MOD_ID, Reference.MOD_ID+".molten_"+name))) {
+                if (mapping.key.equals(new ResourceLocation(Tags.MOD_ID, Tags.MOD_ID +".molten_"+name))) {
                     Optional.ofNullable(FluidRegistry.getFluid(name))
                             .map(Fluid::getBlock)
                             .ifPresent(mapping::remap);
@@ -128,7 +127,7 @@ public class ShinColle {
     public static void missingItemMappings(RegistryEvent.MissingMappings<Item> event) {
         event.getMappings().forEach(mapping -> {
                     for (String name : renamesToHandle) {
-                        if (mapping.key.equals(new ResourceLocation(Reference.MOD_ID, Reference.MOD_ID + ".molten_" + name))) {
+                        if (mapping.key.equals(new ResourceLocation(Tags.MOD_ID, Tags.MOD_ID + ".molten_" + name))) {
                             Optional.ofNullable(FluidRegistry.getFluid(name))
                                     .map(Fluid::getBlock)
                                     .map(Item::getItemFromBlock)

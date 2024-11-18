@@ -1,5 +1,6 @@
 package com.lulan.shincolle.proxy;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.render.*;
 import com.lulan.shincolle.client.render.item.RenderBasicEntityItem;
 import com.lulan.shincolle.client.render.item.RenderTileEntityItem;
@@ -13,7 +14,6 @@ import com.lulan.shincolle.entity.other.*;
 import com.lulan.shincolle.entity.submarine.*;
 import com.lulan.shincolle.entity.transport.EntityTransportWa;
 import com.lulan.shincolle.item.BasicEntityItem;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.settings.GameSettings;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 public class ClientProxy extends CommonProxy {
 
     //textures
-    public static final ResourceLocation TextureGuiHUD = new ResourceLocation(Reference.TEXTURES_GUI + "GuiHUD.png");
+    public static final ResourceLocation TextureGuiHUD = new ResourceLocation(Tags.TEXTURES_GUI + "GuiHUD.png");
 
     //keys
     public static int keyGCD = 0;            //key global cooldown

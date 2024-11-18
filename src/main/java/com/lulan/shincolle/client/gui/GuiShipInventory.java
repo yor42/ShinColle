@@ -1,5 +1,6 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaShipInventory;
 import com.lulan.shincolle.client.gui.inventory.ContainerShipInventory;
 import com.lulan.shincolle.entity.BasicEntityShip;
@@ -12,7 +13,6 @@ import com.lulan.shincolle.network.C2SGUIPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.Enums;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.reference.unitclass.AttrsAdv;
 import com.lulan.shincolle.utility.*;
@@ -37,10 +37,10 @@ import java.util.List;
  */
 public class GuiShipInventory extends GuiContainer {
 
-    private static final ResourceLocation TEXTURE_BG = new ResourceLocation(Reference.TEXTURES_GUI + "GuiShipInventory.png");
-    private static final ResourceLocation TEXTURE_ICON0 = new ResourceLocation(Reference.TEXTURES_GUI + "GuiNameIcon0.png");
-    private static final ResourceLocation TEXTURE_ICON1 = new ResourceLocation(Reference.TEXTURES_GUI + "GuiNameIcon1.png");
-    private static final ResourceLocation TEXTURE_ICON2 = new ResourceLocation(Reference.TEXTURES_GUI + "GuiNameIcon2.png");
+    private static final ResourceLocation TEXTURE_BG = new ResourceLocation(Tags.TEXTURES_GUI + "GuiShipInventory.png");
+    private static final ResourceLocation TEXTURE_ICON0 = new ResourceLocation(Tags.TEXTURES_GUI + "GuiNameIcon0.png");
+    private static final ResourceLocation TEXTURE_ICON1 = new ResourceLocation(Tags.TEXTURES_GUI + "GuiNameIcon1.png");
+    private static final ResourceLocation TEXTURE_ICON2 = new ResourceLocation(Tags.TEXTURES_GUI + "GuiNameIcon2.png");
     private static final int[] btCols = new int[]{189, 205, 222};
     private static String lvMark, hpMark, strAttrATK, strAttrAIR, strAttrDEF, strAttrSPD, strAttrMOV,
             strAttrHIT, strAttrCri, strAttrDHIT, strAttrTHIT, strAttrAA, strAttrASM, strAttrMiss,

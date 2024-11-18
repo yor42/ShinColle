@@ -42,39 +42,37 @@ public class InventoryCraftingFake extends InventoryCrafting {
     }
 
     @Override
-    @Nullable
+
     public ItemStack getStackInSlot(int index) {
         return index >= this.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(index);
     }
 
     @Override
-    @Nullable
+
     public ItemStack getStackInRowAndColumn(int row, int column) {
         return row >= 0 && row < this.width && column >= 0 && column <= this.height ? this.getStackInSlot(row + column * this.width) : ItemStack.EMPTY;
     }
 
     @Override
-    @Nullable
+
     public ItemStack removeStackFromSlot(int index) {
         return ItemStackHelper.getAndRemove(this.stacks, index);
     }
 
     @Override
-    @Nullable
+
     public ItemStack decrStackSize(int index, int count) {
         return ItemStackHelper.getAndSplit(this.stacks, index, count);
     }
 
     @Override
-    public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
+    public void setInventorySlotContents(int index,  ItemStack stack) {
         this.stacks.set(index, stack);
     }
 
     @Override
     public void clear() {
-        for (int i = 0; i < this.stacks.size(); ++i) {
-            this.stacks.set(i, ItemStack.EMPTY);
-        }
+        this.stacks.replaceAll(ignored -> ItemStack.EMPTY);
     }
 
     @Override

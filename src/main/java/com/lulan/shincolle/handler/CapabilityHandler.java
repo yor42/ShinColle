@@ -1,8 +1,8 @@
 package com.lulan.shincolle.handler;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.capability.CapaTeitokuProvider;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class CapabilityHandler {
 
-    public static final ResourceLocation CAPA_TEITOKU_NAME = new ResourceLocation(Reference.MOD_ID, CapaTeitoku.CAPA_KEY);
+    public static final ResourceLocation CAPA_TEITOKU_NAME = new ResourceLocation(Tags.MOD_ID, CapaTeitoku.CAPA_KEY);
 
 
     /**

@@ -83,7 +83,6 @@ public class RecipeEnchantShell extends IForgeRegistryEntry.Impl<IRecipe> implem
     /**
      * apply potion effect to enchant shell, only first effect will be added
      */
-    @Nullable
     public ItemStack getCraftingResult(InventoryCrafting inv) {
         ItemStack ammo = inv.getStackInRowAndColumn(1, 1);
         ItemStack potion = inv.getStackInRowAndColumn(0, 0);
@@ -96,7 +95,7 @@ public class RecipeEnchantShell extends IForgeRegistryEntry.Impl<IRecipe> implem
             //get potion effect from potion
             List<PotionEffect> elist = PotionUtils.getEffectsFromStack(potion);
 
-            if (elist != null && elist.size() > 0) {
+            if (!elist.isEmpty()) {
                 PotionEffect effect = elist.get(0);
                 int pid = Potion.getIdFromPotion(effect.getPotion());
                 if (pid < 1) return ammoNew;
@@ -111,18 +110,16 @@ public class RecipeEnchantShell extends IForgeRegistryEntry.Impl<IRecipe> implem
                     NBTTagList listOld = nbtOld.getTagList(EquipAmmo.PLIST, Constants.NBT.TAG_COMPOUND);
                     NBTTagCompound nbt0 = listOld.getCompoundTagAt(0);
 
-                    if (nbt0 != null) {
-                        int pidOld = nbt0.getInteger(EquipAmmo.PID);
-                        int plvOld = nbt0.getInteger(EquipAmmo.PLEVEL);
-                        int ptimeOld = nbt0.getInteger(EquipAmmo.PTIME);
-                        int pchanceOld = nbt0.getInteger(EquipAmmo.PCHANCE);
+                    int pidOld = nbt0.getInteger(EquipAmmo.PID);
+                    int plvOld = nbt0.getInteger(EquipAmmo.PLEVEL);
+                    int ptimeOld = nbt0.getInteger(EquipAmmo.PTIME);
+                    int pchanceOld = nbt0.getInteger(EquipAmmo.PCHANCE);
 
-                        if (pid == pidOld && plv == plvOld) {
-                            ptime = ptimeOld + 20;
-                            pchance = pchanceOld + 10;
+                    if (pid == pidOld && plv == plvOld) {
+                        ptime = ptimeOld + 20;
+                        pchance = pchanceOld + 10;
 
-                            if (pchance > 100) pchance = 100;
-                        }
+                        if (pchance > 100) pchance = 100;
                     }
                 }
 
@@ -150,7 +147,6 @@ public class RecipeEnchantShell extends IForgeRegistryEntry.Impl<IRecipe> implem
         return width <= 3 && height <= 3;
     }
 
-    @Nullable
     public ItemStack getRecipeOutput() {
         return ItemStack.EMPTY;
     }

@@ -1,6 +1,6 @@
 package com.lulan.shincolle.intermod.tinkers.fluid;
 
-import com.lulan.shincolle.reference.Reference;
+import com.lulan.shincolle.Tags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,8 +9,8 @@ import slimeknights.tconstruct.library.fluid.FluidColored;
 //From plustic -yor42
 public class FluidMoltenMetal extends FluidColored {
 
-    public static ResourceLocation ICON_MetalStill = new ResourceLocation(Reference.MOD_ID, "blocks/fluids/molten_metal");
-    public static ResourceLocation ICON_MetalFlowing = new ResourceLocation(Reference.MOD_ID, "blocks/fluids/molten_metal_flow");
+    public static ResourceLocation ICON_MetalStill = new ResourceLocation(Tags.MOD_ID, "blocks/fluids/molten_metal");
+    public static ResourceLocation ICON_MetalFlowing = new ResourceLocation(Tags.MOD_ID, "blocks/fluids/molten_metal_flow");
 
     public FluidMoltenMetal(String fluidName, int color) {
         this(fluidName, color, ICON_MetalStill, ICON_MetalFlowing);

@@ -28,15 +28,15 @@ public class EquipCalc {
     private static final Random rand = new Random();
 
     //roll table
-    private static final List<int[]> EquipSmall = new ArrayList<int[]>();
-    private static final List<int[]> EquipLarge = new ArrayList<int[]>();
+    private static final List<int[]> EquipSmall = new ArrayList<>();
+    private static final List<int[]> EquipLarge = new ArrayList<>();
 
     //init roll table
     static {
-        /**roll table: 0:equip type, 1:material mean, 2:modified material type
-         * equip type: equip main type + low or high level
-         * material mean: material amount correspond to normal dist, high = need more materials
-         * modified material type: mat can increase build rate: -1:none 0:grudge 1:metal 2:ammo 3:poly
+        /*roll table: 0:equip type, 1:material mean, 2:modified material type
+          equip type: equip main type + low or high level
+          material mean: material amount correspond to normal dist, high = need more materials
+          modified material type: mat can increase build rate: -1:none 0:grudge 1:metal 2:ammo 3:poly
          */
         //small build
         EquipSmall.add(new int[]{ID.EquipType.ARMOR_LO, 80, 1});
@@ -97,15 +97,15 @@ public class EquipCalc {
         //apply attrs scale
         float[] equip = attrs.getAttrsEquip();
 
-        equip[ID.Attrs.HP] *= ConfigHandler.scaleShip[ID.AttrsBase.HP];
-        equip[ID.Attrs.ATK_L] *= ConfigHandler.scaleShip[ID.AttrsBase.ATK];
-        equip[ID.Attrs.ATK_H] *= ConfigHandler.scaleShip[ID.AttrsBase.ATK];
-        equip[ID.Attrs.ATK_AL] *= ConfigHandler.scaleShip[ID.AttrsBase.ATK];
-        equip[ID.Attrs.ATK_AH] *= ConfigHandler.scaleShip[ID.AttrsBase.ATK];
-        equip[ID.Attrs.DEF] *= ConfigHandler.scaleShip[ID.AttrsBase.DEF];
-        equip[ID.Attrs.SPD] *= ConfigHandler.scaleShip[ID.AttrsBase.SPD];
-        equip[ID.Attrs.MOV] *= ConfigHandler.scaleShip[ID.AttrsBase.MOV];
-        equip[ID.Attrs.HIT] *= ConfigHandler.scaleShip[ID.AttrsBase.HIT];
+        equip[ID.Attrs.HP] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.HP];
+        equip[ID.Attrs.ATK_L] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.ATK];
+        equip[ID.Attrs.ATK_H] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.ATK];
+        equip[ID.Attrs.ATK_AL] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.ATK];
+        equip[ID.Attrs.ATK_AH] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.ATK];
+        equip[ID.Attrs.DEF] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.DEF];
+        equip[ID.Attrs.SPD] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.SPD];
+        equip[ID.Attrs.MOV] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.MOV];
+        equip[ID.Attrs.HIT] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.HIT];
     }
 
     /**
@@ -135,15 +135,15 @@ public class EquipCalc {
         //apply attrs scale
         float[] equip = attrs.getAttrsEquip();
 
-        equip[ID.Attrs.HP] *= ConfigHandler.scaleShip[ID.AttrsBase.HP];
-        equip[ID.Attrs.ATK_L] *= ConfigHandler.scaleShip[ID.AttrsBase.ATK];
-        equip[ID.Attrs.ATK_H] *= ConfigHandler.scaleShip[ID.AttrsBase.ATK];
-        equip[ID.Attrs.ATK_AL] *= ConfigHandler.scaleShip[ID.AttrsBase.ATK];
-        equip[ID.Attrs.ATK_AH] *= ConfigHandler.scaleShip[ID.AttrsBase.ATK];
-        equip[ID.Attrs.DEF] *= ConfigHandler.scaleShip[ID.AttrsBase.DEF];
-        equip[ID.Attrs.SPD] *= ConfigHandler.scaleShip[ID.AttrsBase.SPD];
-        equip[ID.Attrs.MOV] *= ConfigHandler.scaleShip[ID.AttrsBase.MOV];
-        equip[ID.Attrs.HIT] *= ConfigHandler.scaleShip[ID.AttrsBase.HIT];
+        equip[ID.Attrs.HP] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.HP];
+        equip[ID.Attrs.ATK_L] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.ATK];
+        equip[ID.Attrs.ATK_H] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.ATK];
+        equip[ID.Attrs.ATK_AL] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.ATK];
+        equip[ID.Attrs.ATK_AH] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.ATK];
+        equip[ID.Attrs.DEF] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.DEF];
+        equip[ID.Attrs.SPD] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.SPD];
+        equip[ID.Attrs.MOV] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.MOV];
+        equip[ID.Attrs.HIT] *= (float) ConfigHandler.scaleShip[ID.AttrsBase.HIT];
     }
 
     /**
@@ -186,7 +186,7 @@ public class EquipCalc {
                 //apply effect on attack
                 Map<Integer, int[]> emap = eitem.getEffectOnAttack(meta);
 
-                if (emap != null && emap.size() > 0) {
+                if (emap != null && !emap.isEmpty()) {
                     BuffHelper.addEffectToAttackEffectMap(ship, emap);
                 }
 
@@ -403,14 +403,15 @@ public class EquipCalc {
             eqlistOrg = EquipLarge;
         }
 
-        /**roll equip type
-         * 0. tweak roll list by mats amount: specific material decrease the mean value
-         * 1. get prob of equips in roll list
-         * 2. roll 0~1 to get equip type
-         * 3. return equip type (key value in EquipSmall/EquipLarge)
+        /*
+          roll equip type
+          0. tweak roll list by mats amount: specific material decrease the mean value
+          1. get prob of equips in roll list
+          2. roll 0~1 to get equip type
+          3. return equip type (key value in EquipSmall/EquipLarge)
          */
         //prob list: map<equip ID, prob parameter>
-        Map<Integer, Float> probList = new HashMap<Integer, Float>();
+        Map<Integer, Float> probList = new HashMap<>();
         int meanNew = 0;
         int meanDist = 0;
         float prob = 0F;
@@ -446,9 +447,9 @@ public class EquipCalc {
         int rollresult = -1;
 
         //get total prob
-        Iterator iter = probList.entrySet().iterator();
+        Iterator<Map.Entry<Integer, Float>> iter = probList.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
+            Map.Entry<Integer, Float> entry = iter.next();
             totalProb += (Float) entry.getValue();
         }
 
@@ -458,7 +459,7 @@ public class EquipCalc {
         //roll equip
         iter = probList.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
+            Map.Entry<Integer, Float> entry = iter.next();
             sumProb += (Float) entry.getValue();
             LogHelper.debug("DEBUG: roll equip type: random: " + random + " sum.pr " + sumProb + " total.pr " + totalProb);
             if (sumProb > random) {    //get item
@@ -485,14 +486,12 @@ public class EquipCalc {
         if (type == -1) return ItemStack.EMPTY;
 
         //equip roll list: <equip id, float[0:mean value  1:prob parameter]>
-        Map<Integer, Float> equipList = new HashMap<Integer, Float>();
+        Map<Integer, Float> equipList = new HashMap<>();
 
         //get equip list, compare the equip type = input type
-        Iterator iter = Values.EquipAttrsMisc.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            int eid = (Integer) entry.getKey();
-            int[] val = (int[]) entry.getValue();
+        for (Map.Entry<Integer, int[]> entry : Values.EquipAttrsMisc.entrySet()) {
+            int eid = entry.getKey();
+            int[] val = entry.getValue();
 
             if (val[ID.EquipMisc.RARE_TYPE] == type) {
                 float prob = 0F;
@@ -525,20 +524,16 @@ public class EquipCalc {
         int rollResult = -1;
 
         //get total prob
-        iter = equipList.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            totalProb += (Float) entry.getValue();
+        for (Map.Entry<Integer, Float> entry : equipList.entrySet()) {
+            totalProb += entry.getValue();
         }
 
         //scale random number to totalProb
         random *= totalProb;
 
         //roll equip
-        iter = equipList.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            sumProb += (Float) entry.getValue();
+        for (Map.Entry<Integer, Float> entry : equipList.entrySet()) {
+            sumProb += entry.getValue();
             LogHelper.debug("DEBUG: roll equip: type: " + type + " random: " + random + " sum.pr " + sumProb + " total.pr " + totalProb);
             if (sumProb > random) {    //get item
                 rollResult = (Integer) entry.getKey();
@@ -592,19 +587,16 @@ public class EquipCalc {
             case ID.EquipType.CANNON_TW_HI:
             case ID.EquipType.CANNON_TR:
                 item = new ItemStack(ModItems.EquipCannon);
-                enchType = 0;
                 break;
             //machine gun
             case ID.EquipType.GUN_LO:
             case ID.EquipType.GUN_HI:
                 item = new ItemStack(ModItems.EquipMachinegun);
-                enchType = 0;
                 break;
             //torpedo
             case ID.EquipType.TORPEDO_LO:
             case ID.EquipType.TORPEDO_HI:
                 item = new ItemStack(ModItems.EquipTorpedo);
-                enchType = 0;
                 break;
             //aircraft
             case ID.EquipType.AIR_T_LO:
@@ -616,7 +608,6 @@ public class EquipCalc {
             case ID.EquipType.AIR_R_LO:
             case ID.EquipType.AIR_R_HI:
                 item = new ItemStack(ModItems.EquipAirplane);
-                enchType = 0;
                 break;
             //radar
             case ID.EquipType.RADAR_LO:
@@ -666,7 +657,6 @@ public class EquipCalc {
             case ID.EquipType.AMMO_LO:
             case ID.EquipType.AMMO_HI:
                 item = new ItemStack(ModItems.EquipAmmo);
-                enchType = 0;
                 break;
             default:
                 item = ItemStack.EMPTY;

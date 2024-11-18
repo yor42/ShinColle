@@ -1,7 +1,7 @@
 package com.lulan.shincolle.client.particle;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.proxy.ClientProxy;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 public class ParticleGradient extends Particle {
 
-    private static final ResourceLocation TEXTURE1 = new ResourceLocation(Reference.TEXTURES_PARTICLE + "ParticleGradient.png");
+    private static final ResourceLocation TEXTURE1 = new ResourceLocation(Tags.TEXTURES_PARTICLE + "ParticleGradient.png");
     private final int particleType;
     private int gradCurrent;
     private int gradSpace;

@@ -1,6 +1,6 @@
 package com.lulan.shincolle.client.particle;
 
-import com.lulan.shincolle.reference.Reference;
+import com.lulan.shincolle.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class ParticleLaser extends Particle {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Reference.TEXTURES_PARTICLE + "ParticleLaser.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Tags.TEXTURES_PARTICLE + "ParticleLaser.png");
     private final int particleType;
     private final double tarX;
     private final double tarY;

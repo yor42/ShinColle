@@ -1,8 +1,8 @@
 package com.lulan.shincolle.tileentity;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.network.S2CGUIPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -74,7 +74,7 @@ abstract public class BasicTileEntity extends TileEntity {
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TextComponentString("tile." + Reference.MOD_ID + ":" + getRegName());
+        return new TextComponentString("tile." + Tags.MOD_ID + ":" + getRegName());
     }
 
     /**

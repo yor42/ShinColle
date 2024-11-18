@@ -1,12 +1,12 @@
 package com.lulan.shincolle.proxy;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.capability.CapaTeitokuStorage;
 import com.lulan.shincolle.capability.ICapaTeitoku;
 import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.network.*;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.utility.LogHelper;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Loader;
@@ -57,20 +57,20 @@ public abstract class CommonProxy implements IProxy {
     //check mod is loaded
     public static void checkModLoaded() {
         //Baubles
-        if (Loader.isModLoaded(Reference.MOD_ID_Baubles)) {
-            LogHelper.info("INFO : Enable mod support: " + Reference.MOD_ID_Baubles);
+        if (Loader.isModLoaded(Tags.MOD_ID_Baubles)) {
+            LogHelper.info("INFO : Enable mod support: " + Tags.MOD_ID_Baubles);
             activeBaubles = true;
         }
 
         //IC2
-        if (Loader.isModLoaded(Reference.MOD_ID_IC2) && ConfigHandler.enableIC2) {
-            LogHelper.info("INFO : Enable mod support: " + Reference.MOD_ID_IC2);
+        if (Loader.isModLoaded(Tags.MOD_ID_IC2) && ConfigHandler.enableIC2) {
+            LogHelper.info("INFO : Enable mod support: " + Tags.MOD_ID_IC2);
             activeIC2 = true;
         }
 
         //Metamorph
-        if (Loader.isModLoaded(Reference.MOD_ID_Metamorph)) {
-            LogHelper.info("INFO : Enable mod support: " + Reference.MOD_ID_Metamorph);
+        if (Loader.isModLoaded(Tags.MOD_ID_Metamorph)) {
+            LogHelper.info("INFO : Enable mod support: " + Tags.MOD_ID_Metamorph);
             activeMetamorph = true;
         }
     }

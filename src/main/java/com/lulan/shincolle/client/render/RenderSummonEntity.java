@@ -1,8 +1,8 @@
 package com.lulan.shincolle.client.render;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.model.*;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -15,13 +15,13 @@ import javax.annotation.Nonnull;
 public class RenderSummonEntity extends RenderBasic {
 
     //textures
-    public static final ResourceLocation TEX_Airplane = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityAircraft.png");
-    public static final ResourceLocation TEX_AirplaneT = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityAirplaneT.png");
-    public static final ResourceLocation TEX_AirplaneTako = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityAircraftTakoyaki.png");
-    public static final ResourceLocation TEX_AirplaneZero = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityAirplaneZero.png");
-    public static final ResourceLocation TEX_FloatingFort = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityFloatingFort.png");
-    public static final ResourceLocation TEX_Rensouhou = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityRensouhou.png");
-    public static final ResourceLocation TEX_RensouhouS = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityRensouhouS.png");
+    public static final ResourceLocation TEX_Airplane = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityAircraft.png");
+    public static final ResourceLocation TEX_AirplaneT = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityAirplaneT.png");
+    public static final ResourceLocation TEX_AirplaneTako = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityAircraftTakoyaki.png");
+    public static final ResourceLocation TEX_AirplaneZero = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityAirplaneZero.png");
+    public static final ResourceLocation TEX_FloatingFort = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityFloatingFort.png");
+    public static final ResourceLocation TEX_Rensouhou = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityRensouhou.png");
+    public static final ResourceLocation TEX_RensouhouS = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityRensouhouS.png");
     //factory
     public static final FactoryDefault FACTORY_SUMMON = new FactoryDefault();
     public static ModelBase MD_Airplane = new ModelAirplane();

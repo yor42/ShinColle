@@ -1,11 +1,11 @@
 package com.lulan.shincolle.item;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaShipInventory;
 import com.lulan.shincolle.crafting.ShipCalc;
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.BasicEntityShipHostile;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.unitclass.Attrs;
 import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.LogHelper;
@@ -84,11 +84,11 @@ public class ShipSpawnEgg extends BasicItem {
 
         switch (metaid) {
             case 0:      //small ship
-                return String.format("item." + Reference.MOD_ID + ":smallegg");
+                return String.format("item." + Tags.MOD_ID + ":smallegg");
             case 1:   //large ship
-                return String.format("item." + Reference.MOD_ID + ":largeegg");
+                return String.format("item." + Tags.MOD_ID + ":largeegg");
             default:  //spec ship egg
-                return String.format("item." + Reference.MOD_ID + ":shipegg" + metaid);
+                return String.format("item." + Tags.MOD_ID + ":shipegg" + metaid);
         }
     }
 

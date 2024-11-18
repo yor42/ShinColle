@@ -1,7 +1,7 @@
 package com.lulan.shincolle.client.render.block;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.model.ModelBlockDesk;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.tileentity.BasicTileEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderDesk extends TileEntitySpecialRenderer<BasicTileEntity> {
 
     //貼圖檔路徑
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Reference.TEXTURES_BLOCKS + "BlockDesk.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Tags.TEXTURES_BLOCKS + "BlockDesk.png");
 
     private final ModelBlockDesk model;
 

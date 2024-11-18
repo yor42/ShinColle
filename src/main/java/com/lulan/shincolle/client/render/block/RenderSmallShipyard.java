@@ -1,7 +1,7 @@
 package com.lulan.shincolle.client.render.block;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.model.ModelSmallShipyard;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.tileentity.BasicTileEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -13,8 +13,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderSmallShipyard extends TileEntitySpecialRenderer<BasicTileEntity> {
 
     //貼圖檔路徑
-    private static final ResourceLocation textureOn = new ResourceLocation(Reference.TEXTURES_BLOCKS + "BlockSmallShipyardOn.png");
-    private static final ResourceLocation textureOff = new ResourceLocation(Reference.TEXTURES_BLOCKS + "BlockSmallShipyardOff.png");
+    private static final ResourceLocation textureOn = new ResourceLocation(Tags.TEXTURES_BLOCKS + "BlockSmallShipyardOn.png");
+    private static final ResourceLocation textureOff = new ResourceLocation(Tags.TEXTURES_BLOCKS + "BlockSmallShipyardOff.png");
 
     private final ModelSmallShipyard model;
 

@@ -2,11 +2,11 @@ package com.lulan.shincolle.item;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.TeamHelper;
 import net.minecraft.client.resources.I18n;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-@Optional.Interface(iface = "baubles.api.IBauble", modid = Reference.MOD_ID_Baubles)
+@Optional.Interface(iface = "baubles.api.IBauble", modid = Tags.MOD_ID_Baubles)
 public class MarriageRing extends BasicItem implements IBauble {
 
     private static final String NAME = "MarriageRing";
@@ -174,13 +174,13 @@ public class MarriageRing extends BasicItem implements IBauble {
     }
 
     @Override
-    @Optional.Method(modid = Reference.MOD_ID_Baubles)
+    @Optional.Method(modid = Tags.MOD_ID_Baubles)
     public BaubleType getBaubleType(ItemStack arg0) {
         return BaubleType.RING;
     }
 
     @Override
-    @Optional.Method(modid = Reference.MOD_ID_Baubles)
+    @Optional.Method(modid = Tags.MOD_ID_Baubles)
     public void onWornTick(ItemStack stack, EntityLivingBase player) {
         this.onUpdate(stack, player.world, player, 0, true);
     }

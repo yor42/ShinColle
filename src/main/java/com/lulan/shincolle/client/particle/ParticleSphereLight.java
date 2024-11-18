@@ -1,7 +1,7 @@
 package com.lulan.shincolle.client.particle;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.proxy.ClientProxy;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.utility.CalcHelper;
 import net.minecraft.client.Minecraft;
@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class ParticleSphereLight extends Particle {
 
-    private static final ResourceLocation TEXTURE1 = new ResourceLocation(Reference.TEXTURES_PARTICLE + "ParticleGradientLine.png");
+    private static final ResourceLocation TEXTURE1 = new ResourceLocation(Tags.TEXTURES_PARTICLE + "ParticleGradientLine.png");
     private static int NumBeam = 30;
     private final int particleType;
     private int beamCurrent;

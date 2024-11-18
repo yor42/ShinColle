@@ -25,16 +25,16 @@ public class TeamData {
         this.teamID = 0;
         this.teamName = "   ";
         this.leaderName = "   ";
-        this.teamBanID = new ArrayList();
-        this.teamAllyID = new ArrayList();
+        this.teamBanID = new ArrayList<>();
+        this.teamAllyID = new ArrayList<>();
     }
 
     public TeamData(int teamID, String teamName, String leaderName) {
         this.teamID = teamID;
         this.teamName = teamName;
         this.leaderName = leaderName;
-        this.teamBanID = new ArrayList();
-        this.teamAllyID = new ArrayList();
+        this.teamBanID = new ArrayList<>();
+        this.teamAllyID = new ArrayList<>();
     }
 
     /**
@@ -69,7 +69,7 @@ public class TeamData {
 
     public List<Integer> getTeamBannedList() {
         if (this.teamBanID == null) {
-            this.teamBanID = new ArrayList();
+            this.teamBanID = new ArrayList<>();
         }
 
         return this.teamBanID;
@@ -81,7 +81,7 @@ public class TeamData {
 
     public List<Integer> getTeamAllyList() {
         if (this.teamAllyID == null) {
-            this.teamAllyID = new ArrayList();
+            this.teamAllyID = new ArrayList<>();
         }
 
         return this.teamAllyID;

@@ -1,8 +1,8 @@
 package com.lulan.shincolle.client.render;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.model.ModelAbyssMissile;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 public class RenderMiscEntity extends Render<Entity> {
 
     //texture & model
-    public static final ResourceLocation TEX_AM = new ResourceLocation(Reference.TEXTURES_ENTITY + "EntityAbyssMissile.png");
+    public static final ResourceLocation TEX_AM = new ResourceLocation(Tags.TEXTURES_ENTITY + "EntityAbyssMissile.png");
     public static final ModelBase MD_AM = new ModelAbyssMissile();
 
     //factory

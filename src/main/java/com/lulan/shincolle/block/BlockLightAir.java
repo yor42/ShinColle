@@ -1,6 +1,6 @@
 package com.lulan.shincolle.block;
 
-import com.lulan.shincolle.reference.Reference;
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.tileentity.TileEntityLightBlock;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.ITileEntityProvider;
@@ -46,7 +46,7 @@ public class BlockLightAir extends BlockAir implements ITileEntityProvider, ICus
     //格式為tile.MOD名稱:方塊名稱.name
     @Override
     public String getTranslationKey() {
-        return String.format("tile.%s%s", Reference.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
+        return String.format("tile.%s%s", Tags.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
     }
 
     @Override

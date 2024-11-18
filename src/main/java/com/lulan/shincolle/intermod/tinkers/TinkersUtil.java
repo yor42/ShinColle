@@ -1,7 +1,7 @@
 package com.lulan.shincolle.intermod.tinkers;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.intermod.tinkers.proxy.TinkersClientInit;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -37,7 +37,7 @@ public class TinkersUtil {
     }
 
     public static <T extends Fluid> T registerFluid(T fluid) {
-        fluid.setUnlocalizedName(Reference.MOD_ID + "." + fluid.getName().toLowerCase(Locale.US));
+        fluid.setUnlocalizedName(Tags.MOD_ID + "." + fluid.getName().toLowerCase(Locale.US));
         FluidRegistry.registerFluid(fluid);
         return fluid;
     }
@@ -78,8 +78,8 @@ public class TinkersUtil {
     }
 
     public static <T extends Block> T registerBlock(T block, String name) {
-        block.setTranslationKey(Reference.MOD_ID + "." + name);
-        block.setRegistryName(Reference.MOD_ID + "." + name);
+        block.setTranslationKey(Tags.MOD_ID + "." + name);
+        block.setRegistryName(Tags.MOD_ID + "." + name);
         Item ib = new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(null);
         ForgeRegistries.BLOCKS.register(block);
         ForgeRegistries.ITEMS.register(ib);

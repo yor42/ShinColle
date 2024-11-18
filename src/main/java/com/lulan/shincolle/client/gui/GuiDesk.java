@@ -1,5 +1,6 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.client.gui.inventory.ContainerDesk;
 import com.lulan.shincolle.crafting.ShipCalc;
@@ -11,7 +12,6 @@ import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.Enums;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.team.TeamData;
 import com.lulan.shincolle.tileentity.TileEntityDesk;
@@ -62,18 +62,18 @@ import java.util.Set;
  */
 public class GuiDesk extends GuiContainer {
 
-    private static final ResourceLocation guiTexture = new ResourceLocation(Reference.TEXTURES_GUI + "GuiDesk.png");
-    private static final ResourceLocation guiRadar = new ResourceLocation(Reference.TEXTURES_GUI + "GuiDeskRadar.png");
-    private static final ResourceLocation guiBook = new ResourceLocation(Reference.TEXTURES_GUI + "GuiDeskBook.png");
-    private static final ResourceLocation guiBook2 = new ResourceLocation(Reference.TEXTURES_GUI + "GuiDeskBook2.png");
-    private static final ResourceLocation guiTeam = new ResourceLocation(Reference.TEXTURES_GUI + "GuiDeskTeam.png");
-    private static final ResourceLocation guiTarget = new ResourceLocation(Reference.TEXTURES_GUI + "GuiDeskTarget.png");
+    private static final ResourceLocation guiTexture = new ResourceLocation(Tags.TEXTURES_GUI + "GuiDesk.png");
+    private static final ResourceLocation guiRadar = new ResourceLocation(Tags.TEXTURES_GUI + "GuiDeskRadar.png");
+    private static final ResourceLocation guiBook = new ResourceLocation(Tags.TEXTURES_GUI + "GuiDeskBook.png");
+    private static final ResourceLocation guiBook2 = new ResourceLocation(Tags.TEXTURES_GUI + "GuiDeskBook2.png");
+    private static final ResourceLocation guiTeam = new ResourceLocation(Tags.TEXTURES_GUI + "GuiDeskTeam.png");
+    private static final ResourceLocation guiTarget = new ResourceLocation(Tags.TEXTURES_GUI + "GuiDeskTarget.png");
     private static final ResourceLocation guiNameIcon0 = new ResourceLocation(
-            Reference.TEXTURES_GUI + "GuiNameIcon0.png");
+            Tags.TEXTURES_GUI + "GuiNameIcon0.png");
     private static final ResourceLocation guiNameIcon1 = new ResourceLocation(
-            Reference.TEXTURES_GUI + "GuiNameIcon1.png");
+            Tags.TEXTURES_GUI + "GuiNameIcon1.png");
     private static final ResourceLocation guiNameIcon2 = new ResourceLocation(
-            Reference.TEXTURES_GUI + "GuiNameIcon2.png");
+            Tags.TEXTURES_GUI + "GuiNameIcon2.png");
     private static final int CLICKCD = 60;
     private static final int LISTCLICK_RADAR = 0;
     private static final int LISTCLICK_TEAM = 1;
@@ -1547,7 +1547,7 @@ public class GuiDesk extends GuiContainer {
                 entityMap.forEach((k) -> {
                     if (tarStr.equals(k.getPath())) {
                         this.targetEntity = EntityList
-                                .createEntityByIDFromName(new ResourceLocation(Reference.MOD_ID, k.getPath()), this.player.world);
+                                .createEntityByIDFromName(new ResourceLocation(Tags.MOD_ID, k.getPath()), this.player.world);
                     }
                 });
             }
@@ -1919,9 +1919,9 @@ public class GuiDesk extends GuiContainer {
         shipName = ShipCalc.getEntityToSpawnName(classID);
 
         // set ship model
-        ResourceLocation location = new ResourceLocation(Reference.MOD_ID, shipName);
+        ResourceLocation location = new ResourceLocation(Tags.MOD_ID, shipName);
         shipName = shipName.toLowerCase();
-        if (EntityList.getClassFromName(Reference.MOD_ID + ":" + shipName) != null) {
+        if (EntityList.getClassFromName(Tags.MOD_ID + ":" + shipName) != null) {
             this.shipModel = (BasicEntityShip) EntityList.createEntityByIDFromName(location, player.world);
 
             if (this.shipModel != null) {

@@ -1,7 +1,7 @@
 package com.lulan.shincolle.block;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.creativetab.CreativeTabSC;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -32,7 +32,7 @@ abstract public class BasicBlockFalling extends BlockFalling implements ICustomM
     //格式為tile.MOD名稱:方塊名稱.name
     @Override
     public String getTranslationKey() {
-        return String.format("tile.%s%s", Reference.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
+        return String.format("tile.%s%s", Tags.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
     }
 
     @SideOnly(Side.CLIENT)

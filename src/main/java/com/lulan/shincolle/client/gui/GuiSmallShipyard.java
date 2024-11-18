@@ -1,10 +1,10 @@
 package com.lulan.shincolle.client.gui;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.client.gui.inventory.ContainerSmallShipyard;
 import com.lulan.shincolle.network.C2SGUIPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.ID;
-import com.lulan.shincolle.reference.Reference;
 import com.lulan.shincolle.tileentity.TileEntitySmallShipyard;
 import com.lulan.shincolle.utility.GuiHelper;
 import com.lulan.shincolle.utility.LogHelper;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GuiSmallShipyard extends GuiContainer {
 
-    private static final ResourceLocation guiTexture = new ResourceLocation(Reference.TEXTURES_GUI + "GuiSmallShipyard.png");
+    private static final ResourceLocation guiTexture = new ResourceLocation(Tags.TEXTURES_GUI + "GuiSmallShipyard.png");
     private final TileEntitySmallShipyard tile;
     private int xClick, yClick, xMouse, yMouse;
     private float tickGUI;

@@ -1,6 +1,6 @@
 package com.lulan.shincolle.client.particle;
 
-import com.lulan.shincolle.reference.Reference;
+import com.lulan.shincolle.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class Particle91Type extends Particle {
 
-    private static final ResourceLocation TEXTURE1 = new ResourceLocation(Reference.TEXTURES_PARTICLE + "Particle91Type.png");
+    private static final ResourceLocation TEXTURE1 = new ResourceLocation(Tags.TEXTURES_PARTICLE + "Particle91Type.png");
     private int partAge;
     private final int fadeTime = 16;
     private final int middTime = 60;

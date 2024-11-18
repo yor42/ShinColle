@@ -1,7 +1,7 @@
 package com.lulan.shincolle.config;
 
+import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.handler.ConfigHandler;
-import com.lulan.shincolle.reference.Reference;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
@@ -22,7 +22,7 @@ public class ConfigGui extends GuiConfig {
      * this constructor is NECESSARY!! GuiModList::actionPerformed will use this constructor only
      */
     public ConfigGui(GuiScreen parent) {
-        this(parent, getAllCategoryList(), Reference.MOD_ID, false, false, "NOW EDITING: shincolle.cfg");
+        this(parent, getAllCategoryList(), Tags.MOD_ID, false, false, "NOW EDITING: shincolle.cfg");
     }
 
     public ConfigGui(GuiScreen parent, List<IConfigElement> configs, String modid, boolean worldRestart, boolean mcRestart, String title) {
@@ -32,7 +32,7 @@ public class ConfigGui extends GuiConfig {
 
     public static List<IConfigElement> getAllCategoryList() {
         //create a config element list instance
-        ArrayList<IConfigElement> cfgs = new ArrayList<IConfigElement>();
+        ArrayList<IConfigElement> cfgs = new ArrayList<>();
         cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_GENERAL)));
         cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_SHIP)));
         cfgs.add(new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATE_WORLD)));

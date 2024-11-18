@@ -1,6 +1,6 @@
 package com.lulan.shincolle.client.particle;
 
-import com.lulan.shincolle.reference.Reference;
+import com.lulan.shincolle.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class ParticleTexts extends Particle {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Reference.TEXTURES_PARTICLE + "ParticleTexts.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Tags.TEXTURES_PARTICLE + "ParticleTexts.png");
     private final int particleType;    //0:miss 1:critical 2:double hit 3:triple hit 4:dodge
 
 
