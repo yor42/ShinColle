@@ -75,7 +75,7 @@ import static com.lulan.shincolle.intermod.ic2.IC2EnergyUtil.tryDischargeContain
         iface = "ic2.api.tile.IEnergyStorage",
         modid = "ic2"
 )})
-public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint, ITickable, IEnergyEmitter, IEnergyStorage, IEnergySource, IEnergySink, IEnergyAcceptor {
+public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint, ITickable, IEnergyEmitter, IEnergyStorage, IEnergySource, IEnergySink {
 
     public static final int[] NOSLOT = new int[]{};
     //target
