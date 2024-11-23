@@ -2,6 +2,7 @@ package com.lulan.shincolle.tileentity;
 
 import com.lulan.shincolle.block.BlockCrane;
 import com.lulan.shincolle.block.ItemBlockWaypoint;
+import com.lulan.shincolle.capability.CapaEnergyStorage;
 import com.lulan.shincolle.capability.CapaInventory;
 import com.lulan.shincolle.capability.CapaShipInventory;
 import com.lulan.shincolle.client.gui.inventory.ContainerShipInventory;
@@ -29,6 +30,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
@@ -38,6 +41,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -54,6 +58,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
     public EntityPlayer owner;
     //fluid tank
     protected FluidTank tank;
+    protected CapaEnergyStorage battery;
     private int tick, partDelay, modeItem, modeRedstone, tickRedstone, craneTime, modeLiquid,
             modeEnergy, rateLiquid, rateEU;
     private boolean isActive, isPaired, checkMetadata, checkOredict, checkNbt, enabLoad, enabUnload;
@@ -107,7 +112,70 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
         this.tank = new FluidTank(ConfigHandler.tileCrane[0]);
         this.tank.setTileEntity(this);
 
+        //FE, 4FE == 1EU
+        this.battery = new CapaEnergyStorage(ConfigHandler.tileCrane[2]);
         //EU storage TODO NYI
+    }
+
+    //charge Items in container, return total amount of moved energy
+    private static int tryChargeContainer(BasicEntityShip ship, @Nonnull CapaEnergyStorage tank) {
+
+        CapaShipInventory inv = ship.getCapaShipInventory();
+        ItemStack stack;
+        int totalamount = 0;
+
+        //fill all container in inventory
+        for (int i = ContainerShipInventory.SLOTS_SHIPINV; i < inv.getSizeInventoryPaged(); i++) {
+            stack = inv.getStackInSlotWithPageCheck(i);
+            if (stack.isEmpty() || stack.getCount() > 1 || !stack.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP)) {
+                continue;
+            }
+            IEnergyStorage storage =  stack.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
+            assert storage != null;
+
+            int transfer = Math.min(tank.getEnergyStored(), tank.getMaxExtract());
+            int simresult = storage.receiveEnergy(transfer, true);
+
+            if(simresult <= 0){
+                continue;
+            }
+
+            int finaltransaction = storage.receiveEnergy(simresult, false);
+            tank.extractEnergy(finaltransaction, false);
+            totalamount += finaltransaction;
+        }//end for all slots
+
+        return totalamount;
+    }
+
+    //discharge Items in container, return total amount of moved energy
+    private static int tryExtractContainer(BasicEntityShip ship, @Nonnull CapaEnergyStorage battery) {
+        CapaShipInventory inv = ship.getCapaShipInventory();
+        int maxExtract = Math.min(battery.getMaxReceive(), battery.getMaxEnergyStored()-battery.getEnergyStored());
+        int totalamount = 0;
+        ItemStack stack;
+
+        //fill all container in inventory
+        for (int i = ContainerShipInventory.SLOTS_SHIPINV; i < inv.getSizeInventoryPaged(); i++) {
+            stack = inv.getStackInSlotWithPageCheck(i);
+            if (stack.isEmpty() || stack.getCount() > 1 || !stack.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP)) {
+                continue;
+            }
+            IEnergyStorage storage =  stack.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
+            assert storage != null;
+
+            int transfer = storage.extractEnergy(maxExtract, true);
+
+            if(transfer<=0){
+                continue;
+            }
+
+            int finaltransaction = storage.extractEnergy(transfer, false);
+            battery.receiveEnergy(finaltransaction, false);
+            totalamount += finaltransaction;
+        }//end for all slots
+
+        return totalamount;
     }
 
     //fill container, return remaining fluid
@@ -274,17 +342,20 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
         //load tank
         this.tank.readFromNBT(nbt);
 
+        //load battery
+        this.battery.readFromNBT(nbt);
+
         //load pos
         int[] pos = nbt.getIntArray("chestPos");
-        if (pos == null || pos.length != 3) this.chestPos = BlockPos.ORIGIN;
+        if (pos.length != 3) this.chestPos = BlockPos.ORIGIN;
         else this.chestPos = new BlockPos(pos[0], pos[1], pos[2]);
 
         pos = nbt.getIntArray("lastPos");
-        if (pos == null || pos.length != 3) this.lastPos = BlockPos.ORIGIN;
+        if (pos.length != 3) this.lastPos = BlockPos.ORIGIN;
         else this.lastPos = new BlockPos(pos[0], pos[1], pos[2]);
 
         pos = nbt.getIntArray("nextPos");
-        if (pos == null || pos.length != 3) this.nextPos = BlockPos.ORIGIN;
+        if (pos.length != 3) this.nextPos = BlockPos.ORIGIN;
         else this.nextPos = new BlockPos(pos[0], pos[1], pos[2]);
     }
 
@@ -309,6 +380,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
 
         //save tank
         this.tank.writeToNBT(nbt);
+        this.battery.writeToNBT(nbt);
 
         //save pos
         if (this.lastPos != null)
@@ -329,14 +401,15 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return false;
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, facing);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return null;
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing != EnumFacing.DOWN) return (T) tank;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return (T) tank;
+        if (capability == CapabilityEnergy.ENERGY) return (T) battery;
         return super.getCapability(capability, facing);
     }
 
@@ -454,8 +527,8 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
                     this.applyPreLiquidTransfer(this.modeLiquid);
 
                     if (this.chest != null && this.ship != null && this.ship.getStateMinor(ID.M.CraneState) == 2) {
-                        //work: 0:load item, 1:unload item, 2:liquid, 3:EU
-                        boolean[] workList = new boolean[4];
+                        //work: 0:load item, 1:unload item, 2:liquid, 3:EU, 4: FE
+                        boolean[] workList = new boolean[5];
 
                         try {
                             //check item loading
@@ -482,9 +555,16 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
                                 workList[3] = false;
                             }
 
+                            //check EU transport
+                            if (this.modeEnergy != 0 && this.battery.getMaxExtract() > 0) {
+                                workList[4] = applyForgeEnergyTransfer(this.modeEnergy);
+                            } else {
+                                workList[4] = false;
+                            }
+
                             //add exp to transport ship, every work +X exp to ship
                             if (this.ship != null && this.ship.getShipType() == ID.ShipType.TRANSPORT) {
-                                for (boolean b : workList) {
+                                for (boolean ignored : workList) {
                                     this.ship.addShipExp(ConfigHandler.expGain[6]);
                                 }
                             }
@@ -669,7 +749,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
      * return: TRUE = is full
      */
     private boolean isInventoryFull() {
-        boolean[] fullList = new boolean[6];
+        boolean[] fullList = new boolean[8];
 
         //loading item: check ship full
         if (this.enabLoad && this.ship != null)
@@ -705,6 +785,23 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
         //unloading EU: check chest full TODO
         fullList[5] = true;
 
+        //loading energy: check ship full
+        if (this.modeEnergy == 1 && this.battery != null) {
+            if (this.ship != null)
+                fullList[6] = InventoryHelper.checkEnergyFillingFinished(this.ship.getCapaShipInventory(), this.battery, true);
+            else fullList[6] = true;
+        } else {
+            fullList[6] = true;
+        }
+
+        //unloading fluid: check chest full
+        if (this.modeEnergy == 2 && this.battery != null) {
+            if (this.chest != null) fullList[7] = InventoryHelper.checkEnergyFillingFinished(this.chest, this.battery, true);
+            else fullList[7] = true;
+        } else {
+            fullList[7] = true;
+        }
+
         //check all target is full
         for (boolean isFull : fullList) {
             if (!isFull) return false;
@@ -721,7 +818,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
      * fluid/EU unloading: all container in ship is empty or no container
      */
     private boolean isInventoryEmpty() {
-        boolean[] emptyList = new boolean[6];
+        boolean[] emptyList = new boolean[8];
 
         //loading item: check chest empty
         if (this.enabLoad && this.chest != null)
@@ -757,6 +854,23 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
 
         //unloading EU: check ship empty TODO
         emptyList[5] = true;
+
+        //loading energy: check ship full
+        if (this.modeEnergy == 1 && this.battery != null) {
+            if (this.ship != null)
+                emptyList[6] = InventoryHelper.checkEnergyFillingFinished(this.ship.getCapaShipInventory(), this.battery, false);
+            else emptyList[6] = true;
+        } else {
+            emptyList[6] = true;
+        }
+
+        //unloading fluid: check chest full
+        if (this.modeEnergy == 2 && this.battery != null) {
+            if (this.chest != null) emptyList[7] = InventoryHelper.checkEnergyFillingFinished(this.chest, this.battery, false);
+            else emptyList[7] = true;
+        } else {
+            emptyList[7] = true;
+        }
 
         //check all target is empty
         for (boolean isEmpty : emptyList) {
@@ -912,6 +1026,20 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
     /**
      * liquid transport method, return true if some liquid is moved
      */
+    private boolean applyForgeEnergyTransfer(int mode) {
+        //crane tank to ship inventory
+        if (mode == 1) {
+            return tryChargeContainer(this.ship, this.battery)>0;
+        }
+        else if (mode == 2){
+            return tryExtractContainer(this.ship, this.battery)>0;
+        }
+        return false;
+    }
+
+    /**
+     * liquid transport method, return true if some liquid is moved
+     */
     private boolean applyLiquidTransfer(int mode) {
         //get fluid by simulatly drain
         FluidStack f1;
@@ -939,12 +1067,12 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             f1 = tryFillContainer(this.ship, f1);
 
             //liquid moved: X liquid -> null or amount changed
-            if (f1 == null || f1.amount != f2.amount) {
+            if (f1.amount != f2.amount) {
                 //set moved
                 moved = true;
 
                 //calc trans amount
-                if (f1 != null) f2.amount = f2.amount - f1.amount;
+                f2.amount = f2.amount - f1.amount;
 
                 //drain liquid from tank
                 this.tank.drainInternal(f2, true);
@@ -1102,7 +1230,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
 
                         if (chest2 != null) {
                             invFrom = chest2;
-                            slotid = matchAnyItemExceptNotModeItem(invFrom, isLoading);
+                            slotid = matchAnyItemExceptNotModeItem(invFrom, true);
                         }
                     }
 
@@ -1317,10 +1445,10 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
     //check ship under crane waiting for craning
     private void checkCraningShip() {
         AxisAlignedBB box = new AxisAlignedBB(pos.getX() - 7D, pos.getY() - 8D, pos.getZ() - 7D,
-                pos.getX() + 7D, pos.getY(), pos.getZ() + 7D);
+                pos.getX() + 7D, pos.getY()+8, pos.getZ() + 7D);
         List<BasicEntityShip> slist = this.world.getEntitiesWithinAABB(BasicEntityShip.class, box);
 
-        if (slist != null && !slist.isEmpty()) {
+          if (!slist.isEmpty()) {
             //get craning ship
             for (BasicEntityShip s : slist) {
                 if (s.getStateMinor(ID.M.CraneState) == 2 &&
@@ -1332,7 +1460,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
                 }
             }
 
-            //no craning ship, get waiting ship
+            //no craning ship, get waiting shipe
             for (BasicEntityShip s : slist) {
                 if (s.getStateMinor(ID.M.CraneState) == 1 &&
                         s.getGuardedPos(0) == pos.getX() &&
@@ -1371,11 +1499,15 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             this.rateEU = this.rateEU * 16 * ((int) ((float) ship.getLevel() * 0.1F) + 1);
         }
 
+        drumNum = calcDrumLevel(ship, 2);
+        int rateRF = drumNum[1] * ConfigHandler.drumFE[1] + drumNum[0] * ConfigHandler.drumFE[0];
+        this.battery.setMaxTransfer(rateRF * 16 * ((int) ((float) ship.getLevel() * 0.1F) + 1));
+
         //sync to client
         this.sendSyncPacket();
     }
 
-    //type: 0:fluid, 1:EU, return int[2]: 0:#equips, 1:#enchantments
+    //type: 0:fluid, 1:EU, 2: RF return int[2]: 0:#equips, 1:#enchantments
     protected int[] calcDrumLevel(BasicEntityShip ship, int type) {
         int[] num = new int[]{0, 0};
         CapaShipInventory inv = ship.getCapaShipInventory();
@@ -1391,7 +1523,8 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             if (!stack.isEmpty() && stack.getItem() == ModItems.EquipDrum) {
                 //check liquid drum
                 if ((type == 0 && stack.getItemDamage() == 1) ||
-                        (type == 1 && stack.getItemDamage() == 2)) {
+                        (type == 1 && stack.getItemDamage() == 2) ||
+                        (type == 2 && stack.getItemDamage() == 3)) {
                     num[0]++;
                     num[1] += EnchantHelper.calcEnchantNumber(stack);
                 }

@@ -20,6 +20,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -109,36 +111,20 @@ public class InventoryHelper {
         if (inv == null) return true;
 
         //inventory is ship inv
-        if (inv instanceof CapaShipInventory) {
-            CapaShipInventory shipInv = (CapaShipInventory) inv;
+        if (inv instanceof CapaShipInventory shipInv) {
 
             for (int i = ContainerShipInventory.SLOTS_SHIPINV; i < shipInv.getSizeInventoryPaged(); i++) {
                 //check all slots are full
-                if (checkFull) {
-                    if (!checkFluidContainer(shipInv.getStackInSlotWithPageCheck(i), targetFluid, true))
-                        return false;
-                }
-                //check all slots are empty
-                else {
-                    if (!checkFluidContainer(shipInv.getStackInSlotWithPageCheck(i), targetFluid, false))
-                        return false;
-                }
+                if (!checkFluidContainer(shipInv.getStackInSlotWithPageCheck(i), targetFluid, checkFull))
+                    return false;
             }
         }
         //inventory is vanilla chest
         else if (inv instanceof TileEntityChest) {
             //check main chest
             for (int i = 0; i < inv.getSizeInventory(); i++) {
-                //check all slots are full
-                if (checkFull) {
-                    if (!checkFluidContainer(inv.getStackInSlot(i), targetFluid, true))
-                        return false;
-                }
-                //check all slots are empty
-                else {
-                    if (!checkFluidContainer(inv.getStackInSlot(i), targetFluid, false))
-                        return false;
-                }
+                if (!checkFluidContainer(inv.getStackInSlot(i), targetFluid, checkFull))
+                    return false;
             }
 
             //check adj chest
@@ -146,16 +132,8 @@ public class InventoryHelper {
 
             if (chest2 != null) {
                 for (int i = 0; i < chest2.getSizeInventory(); i++) {
-                    //check all slots are full
-                    if (checkFull) {
-                        if (!checkFluidContainer(chest2.getStackInSlot(i), targetFluid, true))
-                            return false;
-                    }
-                    //check all slots are empty
-                    else {
-                        if (!checkFluidContainer(chest2.getStackInSlot(i), targetFluid, false))
-                            return false;
-                    }
+                    if (!checkFluidContainer(chest2.getStackInSlot(i), targetFluid, checkFull))
+                        return false;
                 }
             }
         }
@@ -163,15 +141,8 @@ public class InventoryHelper {
         else {
             for (int i = 0; i < inv.getSizeInventory(); i++) {
                 //check all slots are full
-                if (checkFull) {
-                    if (!checkFluidContainer(inv.getStackInSlot(i), targetFluid, true))
-                        return false;
-                }
-                //check all slots are empty
-                else {
-                    if (!checkFluidContainer(inv.getStackInSlot(i), targetFluid, false))
-                        return false;
-                }
+                if (!checkFluidContainer(inv.getStackInSlot(i), targetFluid, checkFull))
+                    return false;
             }
         }
 
@@ -216,6 +187,75 @@ public class InventoryHelper {
         }
 
         return true;
+    }
+
+    public static boolean checkEnergyFillingFinished(IInventory inv, IEnergyStorage storage, boolean checkFull) {
+        if (inv == null) return true;
+
+        //inventory is ship inv
+        if (inv instanceof CapaShipInventory shipInv) {
+
+            for (int i = ContainerShipInventory.SLOTS_SHIPINV; i < shipInv.getSizeInventoryPaged(); i++) {
+
+                if (checkFE(shipInv.getStackInSlotWithPageCheck(i), storage, checkFull)) {
+                    return false;
+                }
+            }
+        }
+        //inventory is vanilla chest
+        else if (inv instanceof TileEntityChest) {
+            //check main chest
+            for (int i = 0; i < inv.getSizeInventory(); i++) {
+                //check all slots are full
+                if (checkFE(inv.getStackInSlot(i), storage, checkFull)) {
+                    return false;
+                }
+
+            }
+
+            //check adj chest
+            TileEntityChest chest2 = TileEntityHelper.getAdjChest((TileEntityChest) inv);
+
+            if (chest2 != null) {
+                for (int i = 0; i < chest2.getSizeInventory(); i++) {
+                    if (checkFE(chest2.getStackInSlot(i), storage, checkFull)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        //other inventory
+        else {
+            for (int i = 0; i < inv.getSizeInventory(); i++) {
+                //check all slots are full
+                if (checkFE(inv.getStackInSlot(i), storage, checkFull)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    public static boolean checkFE(ItemStack stack, IEnergyStorage storage, boolean checkFull) {
+        if (!stack.isEmpty()) {
+            //if item has fluid capability
+            if (stack.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP)) {
+                IEnergyStorage energyStorage = stack.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
+
+                if(energyStorage == null){
+                    return false;
+                }
+
+                if(checkFull){
+                    return energyStorage.canReceive() || energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored();
+                }
+                return energyStorage.canExtract() && energyStorage.getEnergyStored() == 0;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -474,7 +514,7 @@ public class InventoryHelper {
 
         //if vanilla chest
         if (inv instanceof TileEntityChest) {
-            while (searchItem) {
+            while (true) {
                 slotid = matchTargetItemExceptSlots(inv, temp, checkMetadata, checkNbt, checkOredict, exceptSlots);
 
                 //item not found, search adj chest
@@ -494,18 +534,14 @@ public class InventoryHelper {
 
                         //got something before, check stack size
                         if (!getItem.isEmpty()) {
-                            if (number > 0) {
-                                int minsize = Math.min(getTemp.getCount(), number);
-                                number -= minsize;
-                                getTemp.shrink(minsize);
-                                getItem.grow(minsize);
+                            int minsize = Math.min(getTemp.getCount(), number);
+                            number -= minsize;
+                            getTemp.shrink(minsize);
+                            getItem.grow(minsize);
 
-                                //clear slot if size <= 0
-                                if (getTemp.getCount() <= 0) {
-                                    adjChest.setInventorySlotContents(slotid, ItemStack.EMPTY);
-                                }
-                            } else {
-                                return getItem;
+                            //clear slot if size <= 0
+                            if (getTemp.getCount() <= 0) {
+                                adjChest.setInventorySlotContents(slotid, ItemStack.EMPTY);
                             }
                         }
                         //get new item
@@ -517,19 +553,15 @@ public class InventoryHelper {
                             checkOredict = true;
 
                             //take item from chest
-                            if (number > 0) {
-                                int minsize = Math.min(getTemp.getCount(), number);
-                                number -= minsize;
-                                getTemp.shrink(minsize);
-                                getItem = getTemp.copy();
-                                getItem.setCount(minsize);
+                            int minsize = Math.min(getTemp.getCount(), number);
+                            number -= minsize;
+                            getTemp.shrink(minsize);
+                            getItem = getTemp.copy();
+                            getItem.setCount(minsize);
 
-                                //clear slot if size <= 0
-                                if (getTemp.getCount() <= 0) {
-                                    adjChest.setInventorySlotContents(slotid, ItemStack.EMPTY);
-                                }
-                            } else {
-                                return getItem;
+                            //clear slot if size <= 0
+                            if (getTemp.getCount() <= 0) {
+                                adjChest.setInventorySlotContents(slotid, ItemStack.EMPTY);
                             }
                         }
                     }//end get adj chest
@@ -543,18 +575,14 @@ public class InventoryHelper {
 
                     //got something before, check stack size
                     if (!getItem.isEmpty()) {
-                        if (number > 0) {
-                            int minsize = Math.min(getTemp.getCount(), number);
-                            number -= minsize;
-                            getTemp.shrink(minsize);
-                            getItem.grow(minsize);
+                        int minsize = Math.min(getTemp.getCount(), number);
+                        number -= minsize;
+                        getTemp.shrink(minsize);
+                        getItem.grow(minsize);
 
-                            //clear slot if size <= 0
-                            if (getTemp.getCount() <= 0) {
-                                inv.setInventorySlotContents(slotid, ItemStack.EMPTY);
-                            }
-                        } else {
-                            return getItem;
+                        //clear slot if size <= 0
+                        if (getTemp.getCount() <= 0) {
+                            inv.setInventorySlotContents(slotid, ItemStack.EMPTY);
                         }
                     }
                     //get new item
@@ -566,19 +594,15 @@ public class InventoryHelper {
                         checkOredict = true;
 
                         //take item from chest
-                        if (number > 0) {
-                            int minsize = Math.min(getTemp.getCount(), number);
-                            number -= minsize;
-                            getTemp.shrink(minsize);
-                            getItem = getTemp.copy();
-                            getItem.grow(minsize);
+                        int minsize = Math.min(getTemp.getCount(), number);
+                        number -= minsize;
+                        getTemp.shrink(minsize);
+                        getItem = getTemp.copy();
+                        getItem.grow(minsize);
 
-                            //clear slot if size <= 0
-                            if (getTemp.getCount() <= 0) {
-                                inv.setInventorySlotContents(slotid, ItemStack.EMPTY);
-                            }
-                        } else {
-                            return getItem;
+                        //clear slot if size <= 0
+                        if (getTemp.getCount() <= 0) {
+                            inv.setInventorySlotContents(slotid, ItemStack.EMPTY);
                         }
                     }//end is new item
                 }//end get item from inv
@@ -588,7 +612,7 @@ public class InventoryHelper {
         }
         //other inventory
         else {
-            while (searchItem) {
+            while (true) {
                 slotid = matchTargetItemExceptSlots(inv, temp, checkMetadata, checkNbt, checkOredict, exceptSlots);
 
                 //item not found, return
@@ -599,18 +623,14 @@ public class InventoryHelper {
 
                     //got something before, check stack size
                     if (!getItem.isEmpty()) {
-                        if (number > 0) {
-                            int minsize = Math.min(getTemp.getCount(), number);
-                            number -= minsize;
-                            getTemp.shrink(minsize);
-                            getItem.grow(minsize);
+                        int minsize = Math.min(getTemp.getCount(), number);
+                        number -= minsize;
+                        getTemp.shrink(minsize);
+                        getItem.grow(minsize);
 
-                            //clear slot if size <= 0
-                            if (getTemp.getCount() <= 0) {
-                                inv.setInventorySlotContents(slotid, ItemStack.EMPTY);
-                            }
-                        } else {
-                            return getItem;
+                        //clear slot if size <= 0
+                        if (getTemp.getCount() <= 0) {
+                            inv.setInventorySlotContents(slotid, ItemStack.EMPTY);
                         }
                     }
                     //get new item
@@ -622,19 +642,15 @@ public class InventoryHelper {
                         checkOredict = true;
 
                         //take item from chest
-                        if (number > 0) {
-                            int minsize = Math.min(getTemp.getCount(), number);
-                            number -= minsize;
-                            getTemp.shrink(minsize);
-                            getItem = getTemp.copy();
-                            getItem.grow(minsize);
+                        int minsize = Math.min(getTemp.getCount(), number);
+                        number -= minsize;
+                        getTemp.shrink(minsize);
+                        getItem = getTemp.copy();
+                        getItem.grow(minsize);
 
-                            //clear slot if size <= 0
-                            if (getTemp.getCount() <= 0) {
-                                inv.setInventorySlotContents(slotid, ItemStack.EMPTY);
-                            }
-                        } else {
-                            return getItem;
+                        //clear slot if size <= 0
+                        if (getTemp.getCount() <= 0) {
+                            inv.setInventorySlotContents(slotid, ItemStack.EMPTY);
                         }
                     }//end is new item
                 }//end get item from inv
@@ -643,7 +659,6 @@ public class InventoryHelper {
             }//end while search item
         }
 
-        return getItem;
     }
 
     /**
@@ -750,7 +765,7 @@ public class InventoryHelper {
                 slotstemp = te.getSlotsForFace(face);
 
                 //no slot for that side, skip
-                if (slotstemp == null || slotstemp.length <= 0) continue;
+                if (slotstemp.length <= 0) continue;
 
                 //get slots, check stack can be inserted into slot
                 for (int j = 0; j < slotstemp.length; j++) {

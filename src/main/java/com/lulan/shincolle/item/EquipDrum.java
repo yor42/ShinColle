@@ -40,12 +40,12 @@ public class EquipDrum extends BasicEquip {
 
     @Override
     public int getTypes() {
-        return 3;
+        return 4;
     }
 
     @Override
     public int getIconTypes() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -57,6 +57,8 @@ public class EquipDrum extends BasicEquip {
                 return EnumEquipEffectSP.DRUM_LIQUID;
             case 2:        //EU storage
                 return EnumEquipEffectSP.DRUM_EU;
+            case 3:
+                return EnumEquipEffectSP.DRUM_FE;
             default:    //item storage
                 return EnumEquipEffectSP.DRUM;
         }
@@ -68,6 +70,7 @@ public class EquipDrum extends BasicEquip {
             case 0:
             case 1:
             case 2:
+            case 3:
                 return meta;
             default:
                 return 0;
@@ -80,6 +83,7 @@ public class EquipDrum extends BasicEquip {
             case 0:
             case 1:
             case 2:
+            case 3:
                 return ID.EquipType.DRUM_LO;
             default:
                 return 0;
@@ -117,6 +121,15 @@ public class EquipDrum extends BasicEquip {
                 int num = EnchantHelper.calcEnchantNumber(stack) * ConfigHandler.drumEU[1] + ConfigHandler.drumEU[0];
                 if (num > 0)
                     list.add(TextFormatting.YELLOW + I18n.format("gui.shincolle:equip.rateeu") + " " + num + " EU/t (NYI)");
+            }
+            break;
+            case 3: {
+                list.add(TextFormatting.GRAY + I18n.format("gui.shincolle:drum3"));
+
+                //show EU rate
+                int num = EnchantHelper.calcEnchantNumber(stack) * ConfigHandler.drumFE[1] + ConfigHandler.drumFE[0];
+                if (num > 0)
+                    list.add(TextFormatting.YELLOW + I18n.format("gui.shincolle:equip.ratefe") + " " + num + " FE/t");
             }
             break;
             default:

@@ -87,6 +87,7 @@ public class Enums {
         DRUM,
         DRUM_LIQUID,
         DRUM_EU,
+        DRUM_FE,
         COMPASS,
         FLARE,
         SEARCHLIGHT

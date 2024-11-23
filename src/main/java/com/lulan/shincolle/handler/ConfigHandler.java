@@ -61,8 +61,8 @@ public class ConfigHandler {
     public static double[] tileShipyardSmall = new double[]{460800D, 48D, 1D};
     public static double[] tileShipyardLarge = new double[]{1382400D, 48D, 1D};
     public static double[] tileVolCore = new double[]{9600D, 16D, 240D};
-    // crane setting liquid tank capa, EU capa
-    public static int[] tileCrane = new int[]{2048000, 160000000};
+    // crane setting liquid tank capa, EU capa, FE Capa
+    public static int[] tileCrane = new int[]{2048000, 160000000, 640000000};
     /********************* INTER-MOD **********************/
     public static boolean enableIC2 = true;
     public static boolean enableMetamorphSkill = true;
@@ -121,6 +121,8 @@ public class ConfigHandler {
     public static int[] drumLiquid = new int[]{40, 5};
     // EU drum setting base, enchant
     public static int[] drumEU = new int[]{400, 100};
+    // EU drum setting base, enchant
+    public static int[] drumFE = new int[]{100, 25};
     // can ship pump infinite liquid min water depth, min lava depth
     public static int[] infLiquid = new int[]{12, 8};
     // ship teleport AI setting cooldown(ticks), distance(blocks^2)

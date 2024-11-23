@@ -329,18 +329,18 @@ public class GuiCrane extends GuiContainer {
                 break;
         }
 
-//        switch (this.btnEnergyMode) TODO
-//        {
-//        case 0:
-//        	drawTexturedModalRect(guiLeft+39, guiTop+36, 202, 114, 13, 13);
-//        break;
-//        case 1:
-//        	drawTexturedModalRect(guiLeft+39, guiTop+36, 176, 114, 13, 13);
-//        break;
-//        case 2:
-//        	drawTexturedModalRect(guiLeft+39, guiTop+36, 189, 114, 13, 13);
-//        break;
-//        }
+        switch (this.btnEnergyMode)
+        {
+            case 0:
+                drawTexturedModalRect(guiLeft+39, guiTop+36, 202, 114, 13, 13);
+            break;
+            case 1:
+                drawTexturedModalRect(guiLeft+39, guiTop+36, 176, 114, 13, 13);
+            break;
+            case 2:
+                drawTexturedModalRect(guiLeft+39, guiTop+36, 189, 114, 13, 13);
+            break;
+        }
 
         //check loading slot mode
         for (int i = 0; i < 18; i++) {

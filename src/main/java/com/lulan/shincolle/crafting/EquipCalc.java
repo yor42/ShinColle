@@ -275,6 +275,7 @@ public class EquipCalc {
                 case DRUM:            //drum inventory page
                 case DRUM_LIQUID:    //drum liquid tank
                 case DRUM_EU:        //drum EU storage
+                case DRUM_FE:
                     itemStat[0] = 1;
                     break;
                 case COMPASS:        //compass
