@@ -189,7 +189,7 @@ public class InventoryHelper {
         return true;
     }
 
-    public static boolean checkEnergyFillingFinished(IInventory inv, IEnergyStorage storage, boolean checkFull) {
+    public static boolean checkEnergyFillingFinished(IInventory inv, boolean checkFull) {
         if (inv == null) return true;
 
         //inventory is ship inv
@@ -197,7 +197,7 @@ public class InventoryHelper {
 
             for (int i = ContainerShipInventory.SLOTS_SHIPINV; i < shipInv.getSizeInventoryPaged(); i++) {
 
-                if (checkFE(shipInv.getStackInSlotWithPageCheck(i), storage, checkFull)) {
+                if (checkFE(shipInv.getStackInSlotWithPageCheck(i), checkFull)) {
                     return false;
                 }
             }
@@ -207,7 +207,7 @@ public class InventoryHelper {
             //check main chest
             for (int i = 0; i < inv.getSizeInventory(); i++) {
                 //check all slots are full
-                if (checkFE(inv.getStackInSlot(i), storage, checkFull)) {
+                if (checkFE(inv.getStackInSlot(i), checkFull)) {
                     return false;
                 }
 
@@ -218,7 +218,7 @@ public class InventoryHelper {
 
             if (chest2 != null) {
                 for (int i = 0; i < chest2.getSizeInventory(); i++) {
-                    if (checkFE(chest2.getStackInSlot(i), storage, checkFull)) {
+                    if (checkFE(chest2.getStackInSlot(i), checkFull)) {
                         return false;
                     }
                 }
@@ -228,7 +228,7 @@ public class InventoryHelper {
         else {
             for (int i = 0; i < inv.getSizeInventory(); i++) {
                 //check all slots are full
-                if (checkFE(inv.getStackInSlot(i), storage, checkFull)) {
+                if (checkFE(inv.getStackInSlot(i), checkFull)) {
                     return false;
                 }
             }
@@ -238,7 +238,7 @@ public class InventoryHelper {
     }
 
 
-    public static boolean checkFE(ItemStack stack, IEnergyStorage storage, boolean checkFull) {
+    public static boolean checkFE(ItemStack stack, boolean checkFull) {
         if (!stack.isEmpty()) {
             //if item has fluid capability
             if (stack.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP)) {

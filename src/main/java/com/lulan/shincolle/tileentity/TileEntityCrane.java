@@ -2,7 +2,7 @@ package com.lulan.shincolle.tileentity;
 
 import com.lulan.shincolle.block.BlockCrane;
 import com.lulan.shincolle.block.ItemBlockWaypoint;
-import com.lulan.shincolle.capability.CapaEnergyStorage;
+import com.lulan.shincolle.capability.CapaForgeEnergyStorage;
 import com.lulan.shincolle.capability.CapaInventory;
 import com.lulan.shincolle.capability.CapaShipInventory;
 import com.lulan.shincolle.client.gui.inventory.ContainerShipInventory;
@@ -11,6 +11,7 @@ import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.init.ModBlocks;
 import com.lulan.shincolle.init.ModItems;
 import com.lulan.shincolle.init.ModSounds;
+import com.lulan.shincolle.intermod.ic2.IC2EnergyUtil;
 import com.lulan.shincolle.item.PointerItem;
 import com.lulan.shincolle.network.S2CGUIPackets;
 import com.lulan.shincolle.network.S2CSpawnParticle;
@@ -18,6 +19,12 @@ import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.utility.*;
+import ic2.api.energy.EnergyNet;
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergySink;
+import ic2.api.energy.tile.IEnergySource;
+import ic2.api.tile.IEnergyStorage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -31,12 +38,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -44,21 +51,39 @@ import net.minecraftforge.oredict.OreDictionary;
 import javax.annotation.Nonnull;
 import java.util.List;
 
+import static com.lulan.shincolle.intermod.ic2.IC2EnergyUtil.tryChargeContainerIC2;
+import static com.lulan.shincolle.intermod.ic2.IC2EnergyUtil.tryDischargeContainerIC2;
+
 /**
  * crane function
  * <p>
  * mode redstone: 0:no signal, 1:emit one pulse on ending, 2:NYI
  * mode liquid: 0:none, 1:load liquid to ship, 2:unload liquid from ship
  * mode EU: 0:none, 1:load, 2:unload
+ *
  */
-public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint, ITickable {
+@Optional.InterfaceList({@Optional.Interface(
+        iface = "ic2.api.energy.tile.IEnergySink",
+        modid = "ic2"
+), @Optional.Interface(
+        iface = "ic2.api.energy.tile.IEnergySource",
+        modid = "ic2"
+), @Optional.Interface(
+        iface = "ic2.api.energy.tile.IEnergyEmitter",
+        modid = "ic2"
+), @Optional.Interface(
+        iface = "ic2.api.tile.IEnergyStorage",
+        modid = "ic2"
+)})
+public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint, ITickable, IEnergyEmitter, IEnergyStorage, IEnergySource, IEnergySink, IEnergyAcceptor {
 
     public static final int[] NOSLOT = new int[]{};
     //target
     public EntityPlayer owner;
     //fluid tank
     protected FluidTank tank;
-    protected CapaEnergyStorage battery;
+    protected CapaForgeEnergyStorage battery;
+    private double EUCapacity, EUEnergy, EUIC2TransferRate;
     private int tick, partDelay, modeItem, modeRedstone, tickRedstone, craneTime, modeLiquid,
             modeEnergy, rateLiquid, rateEU;
     private boolean isActive, isPaired, checkMetadata, checkOredict, checkNbt, enabLoad, enabUnload;
@@ -113,12 +138,15 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
         this.tank.setTileEntity(this);
 
         //FE, 4FE == 1EU
-        this.battery = new CapaEnergyStorage(ConfigHandler.tileCrane[2]);
-        //EU storage TODO NYI
+        this.battery = new CapaForgeEnergyStorage(ConfigHandler.tileCrane[2],ConfigHandler.tileCrane[4]);
+        //EU storage
+        this.EUCapacity = ConfigHandler.tileCrane[1];
+        this.EUIC2TransferRate = ConfigHandler.tileCrane[3];
+        this.EUEnergy = 0;
     }
 
     //charge Items in container, return total amount of moved energy
-    private static int tryChargeContainer(BasicEntityShip ship, @Nonnull CapaEnergyStorage tank) {
+    private static int tryChargeContainer(BasicEntityShip ship, @Nonnull CapaForgeEnergyStorage tank) {
 
         CapaShipInventory inv = ship.getCapaShipInventory();
         ItemStack stack;
@@ -130,10 +158,10 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             if (stack.isEmpty() || stack.getCount() > 1 || !stack.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP)) {
                 continue;
             }
-            IEnergyStorage storage =  stack.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
+            net.minecraftforge.energy.IEnergyStorage storage =  stack.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
             assert storage != null;
 
-            int transfer = Math.min(tank.getEnergyStored(), tank.getMaxExtract());
+            int transfer = Math.min(tank.getEnergyStored(), tank.getMaxCraneTransferRate());
             int simresult = storage.receiveEnergy(transfer, true);
 
             if(simresult <= 0){
@@ -141,7 +169,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             }
 
             int finaltransaction = storage.receiveEnergy(simresult, false);
-            tank.extractEnergy(finaltransaction, false);
+            tank.extractEnergyShip(finaltransaction, false);
             totalamount += finaltransaction;
         }//end for all slots
 
@@ -149,9 +177,9 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
     }
 
     //discharge Items in container, return total amount of moved energy
-    private static int tryExtractContainer(BasicEntityShip ship, @Nonnull CapaEnergyStorage battery) {
+    private static int tryDischargeContainer(BasicEntityShip ship, @Nonnull CapaForgeEnergyStorage battery) {
         CapaShipInventory inv = ship.getCapaShipInventory();
-        int maxExtract = Math.min(battery.getMaxReceive(), battery.getMaxEnergyStored()-battery.getEnergyStored());
+        int maxExtract = Math.min(battery.getMaxCraneTransferRate(), battery.getRemainingStorage());
         int totalamount = 0;
         ItemStack stack;
 
@@ -161,7 +189,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             if (stack.isEmpty() || stack.getCount() > 1 || !stack.hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP)) {
                 continue;
             }
-            IEnergyStorage storage =  stack.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
+            net.minecraftforge.energy.IEnergyStorage storage =  stack.getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP);
             assert storage != null;
 
             int transfer = storage.extractEnergy(maxExtract, true);
@@ -171,7 +199,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             }
 
             int finaltransaction = storage.extractEnergy(transfer, false);
-            battery.receiveEnergy(finaltransaction, false);
+            battery.receiveEnergyShip(finaltransaction, false);
             totalamount += finaltransaction;
         }//end for all slots
 
@@ -345,6 +373,9 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
         //load battery
         this.battery.readFromNBT(nbt);
 
+        this.EUCapacity = nbt.getDouble("energy_EUCapacity");
+        this.EUEnergy = Math.min(this.EUCapacity, nbt.getDouble("energy_EUEnergy"));
+
         //load pos
         int[] pos = nbt.getIntArray("chestPos");
         if (pos.length != 3) this.chestPos = BlockPos.ORIGIN;
@@ -377,6 +408,8 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
         nbt.setInteger("rmode", this.modeRedstone);
         nbt.setInteger("lmode", this.modeLiquid);
         nbt.setInteger("emode", this.modeEnergy);
+        nbt.setDouble("energy_EUCapacity", this.EUCapacity);
+        nbt.setDouble("energy_EUEnergy", this.EUEnergy);
 
         //save tank
         this.tank.writeToNBT(nbt);
@@ -400,6 +433,10 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if(this.isFacingBlocked(facing)){
+            return false;
+        }
+
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return false;
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, facing);
     }
@@ -407,6 +444,11 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+
+        if(this.isFacingBlocked(facing)){
+            return null;
+        }
+
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return null;
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return (T) tank;
         if (capability == CapabilityEnergy.ENERGY) return (T) battery;
@@ -556,7 +598,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
                             }
 
                             //check EU transport
-                            if (this.modeEnergy != 0 && this.battery.getMaxExtract() > 0) {
+                            if (this.modeEnergy != 0 && this.battery.getMaxCraneTransferRate() > 0) {
                                 workList[4] = applyForgeEnergyTransfer(this.modeEnergy);
                             } else {
                                 workList[4] = false;
@@ -719,24 +761,25 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
      * FALSE = continue craning
      */
     private boolean checkCraneEnding(boolean[] workList) {
-        switch (this.craneMode) {
-            case 0:  //no wait
+        return switch (this.craneMode) {
+            case 0 -> {
                 for (boolean b : workList) {
-                    if (b) return false;
+                    if (b) yield false;
                 }
 
-                return true;
-            case 1:  //until full
-                return isInventoryFull();
-            case 2:  //until empty
-                return isInventoryEmpty();
-            case 3:  //excess
-                return !workList[2] && !workList[3] && isInventoryExcess();
-            case 4:  //remain
-                return !workList[2] && !workList[3] && isInventoryRemain();
-            default: //wait
-                return this.ship.getStateTimer(ID.T.CraneTime) >= getWaitTime(this.craneMode);
-        }
+                yield true;
+            }
+            case 1 ->  //until full
+                    isInventoryFull();
+            case 2 ->  //until empty
+                    isInventoryEmpty();
+            case 3 ->  //excess
+                    !workList[2] && !workList[3] && isInventoryExcess();
+            case 4 ->  //remain
+                    !workList[2] && !workList[3] && isInventoryRemain();
+            default -> //wait
+                    this.ship.getStateTimer(ID.T.CraneTime) >= getWaitTime(this.craneMode);
+        };
     }
 
     /**
@@ -779,16 +822,27 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             fullList[3] = true;
         }
 
-        //loading EU: check ship full TODO
-        fullList[4] = true;
+        //loading EU: check ship full
+        if (this.modeEnergy == 1 && CommonProxy.activeIC2) {
+            if (this.ship != null)
+                fullList[4] = IC2EnergyUtil.checkEnergyFillingFinishedEU(this.ship.getCapaShipInventory(), true);
+            else fullList[4] = true;
+        } else {
+            fullList[4] = true;
+        }
 
         //unloading EU: check chest full TODO
-        fullList[5] = true;
+        if (this.modeEnergy == 2 && CommonProxy.activeIC2) {
+            if (this.chest != null) fullList[7] = IC2EnergyUtil.checkEnergyFillingFinishedEU(this.chest, true);
+            else fullList[7] = true;
+        } else {
+            fullList[7] = true;
+        }
 
         //loading energy: check ship full
         if (this.modeEnergy == 1 && this.battery != null) {
             if (this.ship != null)
-                fullList[6] = InventoryHelper.checkEnergyFillingFinished(this.ship.getCapaShipInventory(), this.battery, true);
+                fullList[6] = InventoryHelper.checkEnergyFillingFinished(this.ship.getCapaShipInventory(), true);
             else fullList[6] = true;
         } else {
             fullList[6] = true;
@@ -796,7 +850,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
 
         //unloading fluid: check chest full
         if (this.modeEnergy == 2 && this.battery != null) {
-            if (this.chest != null) fullList[7] = InventoryHelper.checkEnergyFillingFinished(this.chest, this.battery, true);
+            if (this.chest != null) fullList[7] = InventoryHelper.checkEnergyFillingFinished(this.chest, true);
             else fullList[7] = true;
         } else {
             fullList[7] = true;
@@ -849,16 +903,28 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             emptyList[3] = true;
         }
 
-        //loading EU: check chest empty TODO
-        emptyList[4] = true;
+        //loading EU: check chest empty
+        if (CommonProxy.activeIC2 &&this.modeEnergy == 1) {
+            if (this.ship != null)
+                emptyList[4] = IC2EnergyUtil.checkEnergyFillingFinishedEU(this.ship.getCapaShipInventory(), false);
+            else emptyList[4] = true;
+        } else {
+            emptyList[4] = true;
+        }
 
-        //unloading EU: check ship empty TODO
-        emptyList[5] = true;
+        //unloading EU: check ship empty
+
+        if (CommonProxy.activeIC2 && this.modeEnergy == 2) {
+            if (this.chest != null) emptyList[7] = IC2EnergyUtil.checkEnergyFillingFinishedEU(this.chest, false);
+            else emptyList[5] = true;
+        } else {
+            emptyList[5] = true;
+        }
 
         //loading energy: check ship full
         if (this.modeEnergy == 1 && this.battery != null) {
             if (this.ship != null)
-                emptyList[6] = InventoryHelper.checkEnergyFillingFinished(this.ship.getCapaShipInventory(), this.battery, false);
+                emptyList[6] = InventoryHelper.checkEnergyFillingFinished(this.ship.getCapaShipInventory(), false);
             else emptyList[6] = true;
         } else {
             emptyList[6] = true;
@@ -866,7 +932,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
 
         //unloading fluid: check chest full
         if (this.modeEnergy == 2 && this.battery != null) {
-            if (this.chest != null) emptyList[7] = InventoryHelper.checkEnergyFillingFinished(this.chest, this.battery, false);
+            if (this.chest != null) emptyList[7] = InventoryHelper.checkEnergyFillingFinished(this.chest, false);
             else emptyList[7] = true;
         } else {
             emptyList[7] = true;
@@ -1032,7 +1098,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
             return tryChargeContainer(this.ship, this.battery)>0;
         }
         else if (mode == 2){
-            return tryExtractContainer(this.ship, this.battery)>0;
+            return tryDischargeContainer(this.ship, this.battery)>0;
         }
         return false;
     }
@@ -1118,7 +1184,13 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
      * EU transport method, return true if some energy is moved
      */
     private boolean applyEnergyTransfer(int mode) {
-        //TODO NYI
+        //crane tank to ship inventory
+        if (mode == 1) {
+            return tryChargeContainerIC2(this.ship, this)>0;
+        }
+        else if (mode == 2){
+            return tryDischargeContainerIC2(this.ship, this)>0;
+        }
         return false;
     }
 
@@ -1445,7 +1517,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
     //check ship under crane waiting for craning
     private void checkCraningShip() {
         AxisAlignedBB box = new AxisAlignedBB(pos.getX() - 7D, pos.getY() - 8D, pos.getZ() - 7D,
-                pos.getX() + 7D, pos.getY()+8, pos.getZ() + 7D);
+                pos.getX() + 7D, pos.getY(), pos.getZ() + 7D);
         List<BasicEntityShip> slist = this.world.getEntitiesWithinAABB(BasicEntityShip.class, box);
 
           if (!slist.isEmpty()) {
@@ -1501,7 +1573,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
 
         drumNum = calcDrumLevel(ship, 2);
         int rateRF = drumNum[1] * ConfigHandler.drumFE[1] + drumNum[0] * ConfigHandler.drumFE[0];
-        this.battery.setMaxTransfer(rateRF * 16 * ((int) ((float) ship.getLevel() * 0.1F) + 1));
+        this.battery.setMaxShipTransfer(rateRF * 16 * ((int) ((float) ship.getLevel() * 0.1F) + 1));
 
         //sync to client
         this.sendSyncPacket();
@@ -1726,5 +1798,133 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
         }
     }
 
+    public boolean isFacingBlocked(EnumFacing facing){
+        return facing == EnumFacing.DOWN;
+    }
 
+    private double acceptEU(double amount, boolean simulate){
+        double toUse = Math.min(this.EUCapacity - this.EUEnergy, amount);
+        if (!(toUse < 1.0E-4)) {
+            if (!simulate) {
+                this.setEUEnergy(this.EUEnergy+toUse);
+            }
+
+            return toUse;
+        } else {
+            return 0.0;
+        }
+    }
+
+    private void setEUEnergy(double value){
+        this.EUEnergy = Math.max(Math.min(value, this.EUCapacity), 0.0);
+    }
+
+    @Optional.Method(modid = "ic2")
+    public int getEUTransferExtract() {
+        return Math.min(this.getStored(), this.rateEU);
+    }
+
+    @Optional.Method(modid = "ic2")
+    public int getEUTransferInsert() {
+        return (int) Math.min(this.getDemandedEnergy(), this.rateEU);
+    }
+
+    @Override
+    @Optional.Method(modid = "ic2")
+    public void onLoad() {
+        super.onLoad();
+        if(!this.world.isRemote) {
+            EnergyNet.instance.addTile(this);
+        }
+    }
+
+    @Override
+    @Optional.Method(modid = "ic2")
+    public void invalidate() {
+        super.invalidate();
+        if(!this.world.isRemote) {
+            EnergyNet.instance.removeTile(this);
+        }
+    }
+
+    //IC2 Start
+    @Optional.Method(modid = "ic2")
+    @Override
+    public double getDemandedEnergy() {
+        return this.getCapacity()-this.getStored();
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public int getSinkTier() {
+        return 4;
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public double injectEnergy(EnumFacing pushDirection, double amount, double voltage) {
+        if(this.isFacingBlocked(pushDirection.getOpposite())){
+            return amount;
+        }
+        return amount-acceptEU(amount, false);
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public boolean acceptsEnergyFrom(IEnergyEmitter iEnergyEmitter, EnumFacing enumFacing) {
+        return !this.isFacingBlocked(enumFacing);
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public double getOfferedEnergy() {
+        return Math.min(this.EUIC2TransferRate, this.getStored());
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public void drawEnergy(double amount) {
+        this.setEUEnergy(Math.max(this.getStored() - amount, 0.0));
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public int getSourceTier() {
+        return 4;
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public boolean emitsEnergyTo(IEnergyAcceptor iEnergyAcceptor, EnumFacing enumFacing) {
+        return true;
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public int getStored() {
+        return (int) this.EUEnergy;
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public void setStored(int energy) {
+        this.setEUEnergy(energy);
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public int addEnergy(int i) {
+        this.setEUEnergy(this.getStored() + i);
+        return this.getStored();
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public int getCapacity() {
+        return (int) this.EUCapacity;
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public int getOutput() {
+        return (int) this.EUIC2TransferRate;
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public double getOutputEnergyUnitsPerTick() {
+        return this.EUIC2TransferRate;
+    }
+    @Optional.Method(modid = "ic2")
+    @Override
+    public boolean isTeleporterCompatible(EnumFacing enumFacing) {
+        return true;
+    }
 }

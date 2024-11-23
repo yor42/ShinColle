@@ -61,8 +61,8 @@ public class ConfigHandler {
     public static double[] tileShipyardSmall = new double[]{460800D, 48D, 1D};
     public static double[] tileShipyardLarge = new double[]{1382400D, 48D, 1D};
     public static double[] tileVolCore = new double[]{9600D, 16D, 240D};
-    // crane setting liquid tank capa, EU capa, FE Capa
-    public static int[] tileCrane = new int[]{2048000, 160000000, 640000000};
+    // crane setting liquid tank capa, EU capa, FE Capa, EU Transfer rate, FE Transfer Rate
+    public static int[] tileCrane = new int[]{2048000, 160000000, 640000000, 500, 2000};
     /********************* INTER-MOD **********************/
     public static boolean enableIC2 = true;
     public static boolean enableMetamorphSkill = true;
@@ -358,7 +358,7 @@ public class ConfigHandler {
         propVolCore = config.get(CATE_GENERAL, "Tile_VolCore", tileVolCore,
                 "Volcano Core: max fuel storage, fuel consume speed, fuel value per grudge item");
         propCrane = config.get(CATE_GENERAL, "Tile_Crane", tileCrane,
-                "Crane: internal fluid tank capacity (mB), internal energy capacity (EU)");
+                "Crane: internal fluid tank capacity (mB), internal energy capacity (EU), internal energy capacity (FE), EU Transfer Rate to other machines, FE Transfer Rate to other machines");
         propRingAbility = config.get(CATE_GENERAL, "Ring_Ability", ringAbility,
                 "Ring ability related married number, -1 = disable, 0~N = active or max limit number: water breath (active number), fly in water (active number), dig speed boost (max limit number), fog in liquid (max limit number), immune to fire (active number)");
         propInfLiquid = config.get(CATE_GENERAL, "Infinite_Pump", infLiquid,
