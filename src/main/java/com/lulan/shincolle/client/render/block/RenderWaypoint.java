@@ -7,6 +7,7 @@ import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.init.ModBlocks;
 import com.lulan.shincolle.init.ModItems;
 import com.lulan.shincolle.tileentity.TileEntityWaypoint;
+import com.lulan.shincolle.utility.EntityHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -39,6 +40,10 @@ public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint
             return;
         }
 
+        if (!player.isCreative() && !EntityHelper.checkOP(player) && te.owner != player) {
+            return;
+        }
+
         BlockPos pos = te.getPos();
         double distX = pos.getX() + 0.5D - player.posX;
         double distY = pos.getY() - 0.5D - player.posY;
@@ -52,7 +57,7 @@ public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint
         GlStateManager.depthMask(true);
         GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
         GlStateManager.rotate(RadianToDegrees(yaw), 0F, 1F, 0F);
-        GlStateManager.rotate(RadianToDegrees(pitch)+90, 1F, 0F, 0F);
+        GlStateManager.rotate(RadianToDegrees(pitch) + 90, 1F, 0F, 0F);
         this.model_waypoint.render(0.05F);
         GlStateManager.depthMask(true);
         GlStateManager.popMatrix();

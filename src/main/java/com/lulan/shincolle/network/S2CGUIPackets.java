@@ -143,8 +143,7 @@ public class S2CGUIPackets implements IMessage {
                         msg.valueInt1[0], msg.valueInt1[1], msg.valueInt1[2]));
 
                 //set tile
-                if (tile instanceof TileEntitySmallShipyard) {
-                    TileEntitySmallShipyard tile2 = (TileEntitySmallShipyard) tile;
+                if (tile instanceof TileEntitySmallShipyard tile2) {
                     tile2.setPowerConsumed(msg.valueInt1[3]);
                     tile2.setPowerRemained(msg.valueInt1[4]);
                     tile2.setPowerGoal(msg.valueInt1[5]);
@@ -159,8 +158,7 @@ public class S2CGUIPackets implements IMessage {
                         msg.valueInt1[0], msg.valueInt1[1], msg.valueInt1[2]));
 
                 //set tile
-                if (tile instanceof TileMultiGrudgeHeavy) {
-                    TileMultiGrudgeHeavy tile2 = (TileMultiGrudgeHeavy) tile;
+                if (tile instanceof TileMultiGrudgeHeavy tile2) {
                     tile2.setPowerConsumed(msg.valueInt1[3]);
                     tile2.setPowerRemained(msg.valueInt1[4]);
                     tile2.setPowerGoal(msg.valueInt1[5]);
@@ -181,8 +179,7 @@ public class S2CGUIPackets implements IMessage {
                 TileEntity tile = world.getTileEntity(new BlockPos(
                         msg.valueInt1[0], msg.valueInt1[1], msg.valueInt1[2]));
 
-                if (tile instanceof TileEntityDesk) {
-                    TileEntityDesk tile2 = (TileEntityDesk) tile;
+                if (tile instanceof TileEntityDesk tile2) {
 
                     tile2.setField(0, msg.valueInt1[3]);
                     tile2.setField(1, msg.valueInt1[4]);
@@ -197,8 +194,7 @@ public class S2CGUIPackets implements IMessage {
                 TileEntity tile = world.getTileEntity(new BlockPos(
                         msg.valueInt1[0], msg.valueInt1[1], msg.valueInt1[2]));
 
-                if (tile instanceof TileEntityVolCore) {
-                    TileEntityVolCore tile2 = (TileEntityVolCore) tile;
+                if (tile instanceof TileEntityVolCore tile2) {
 
                     tile2.setPowerRemained(msg.valueInt1[3]);
                     tile2.setField(0, msg.valueInt1[4]);
@@ -212,8 +208,7 @@ public class S2CGUIPackets implements IMessage {
                 TileEntity tile = world.getTileEntity(new BlockPos(
                         msg.valueInt1[0], msg.valueInt1[1], msg.valueInt1[2]));
 
-                if (tile instanceof TileEntityWaypoint) {
-                    TileEntityWaypoint tile2 = (TileEntityWaypoint) tile;
+                if (tile instanceof TileEntityWaypoint tile2) {
 
                     tile2.setLastWaypoint(new BlockPos(msg.valueInt1[3], msg.valueInt1[4], msg.valueInt1[5]));
                     tile2.setNextWaypoint(new BlockPos(msg.valueInt1[6], msg.valueInt1[7], msg.valueInt1[8]));
@@ -232,8 +227,7 @@ public class S2CGUIPackets implements IMessage {
                 //get entity
                 Entity entity = EntityHelper.getEntityByID(msg.valueInt1[12], 0, true);
 
-                if (tile instanceof TileEntityCrane) {
-                    TileEntityCrane tile2 = (TileEntityCrane) tile;
+                if (tile instanceof TileEntityCrane tile2) {
 
                     tile2.setLastWaypoint(new BlockPos(msg.valueInt1[3], msg.valueInt1[4], msg.valueInt1[5]));
                     tile2.setNextWaypoint(new BlockPos(msg.valueInt1[6], msg.valueInt1[7], msg.valueInt1[8]));
