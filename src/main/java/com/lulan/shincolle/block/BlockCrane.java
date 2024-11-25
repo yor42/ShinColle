@@ -55,6 +55,16 @@ public class BlockCrane extends BasicBlockContainer {
         return false;
     }
 
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
     //true = 可跟紅石線連接
     @Override
     public boolean canProvidePower(IBlockState state) {

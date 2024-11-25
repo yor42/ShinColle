@@ -142,7 +142,8 @@ public class BlockFrame extends BasicBlockFacing {
     public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
         IBlockState sideState = world.getBlockState(pos.offset(face));
 
-        if (sideState != null && sideState.getMaterial() != null && sideState.getMaterial().isLiquid()) {
+        sideState.getMaterial();
+        if (sideState.getMaterial().isLiquid()) {
             return true;
         }
 
