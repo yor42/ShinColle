@@ -50,6 +50,8 @@ public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint
         GlStateManager.pushMatrix();
         GlStateManager.depthMask(ConfigHandler.vortexDepth);
         GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+        GlStateManager.rotate(yaw * 57.2957F, 0F, 1F, 0F);
+        GlStateManager.rotate(pitch * 57.2957F, 1F, 0F, 0F);
         this.model_waypoint.render(0.03125F);
         GlStateManager.depthMask(true);
         GlStateManager.popMatrix();

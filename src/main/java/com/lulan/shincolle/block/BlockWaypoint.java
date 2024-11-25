@@ -218,7 +218,7 @@ public class BlockWaypoint extends BasicBlockContainer {
         //check owner
         if (EntityHelper.checkOP(player) || BlockHelper.checkTileOwner(player, world.getTileEntity(pos))) {
             //server side
-            if (!world.isRemote) {
+            if (!world.isRemote && !player.isCreative()) {
                 ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
 
                 //inventory is full, drop item onto ground
