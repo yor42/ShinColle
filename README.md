@@ -12,7 +12,10 @@ Thank all the above personnel for their outstanding contributions!
 This is yor42's unofficial fork of unofficial fork of unofficial fork for shinkeiseikan collection.
 Goal of this fork is:<br>
 - Migrate workspace to RFG using [Cleanroom Template Dev Env](https://github.com/CleanroomMC/TemplateDevEnv), allowing build of this mod on later gradle.<br>
-- Completely fix Cascading Worldgens<br>
+- Completely fix Cascading Worldgens
+- Implemented IC2 compatibility that was left NYI, along with RF compatibility
+- Removed slow TESR and migrated them to vanilla JSON model if possible
+- Added Korean
 - Add compatibility with Mekanism
 
 as always, you can grab build jar on [Github Actions](https://github.com/yor42/ShinColle/actions)<br>
