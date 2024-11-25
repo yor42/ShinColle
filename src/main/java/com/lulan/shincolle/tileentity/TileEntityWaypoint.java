@@ -97,16 +97,7 @@ public class TileEntityWaypoint extends BasicTileEntity implements ITileWaypoint
         this.tick++;
 
         //client side
-        if (this.world.isRemote) {
-            //valid tile
-            this.world.getBlockState(this.pos).getBlock();
-            this.invalidate();
-            return;
-
-            //show client particle: player hold waypoint or target wrench
-        }//end client side
-        //server side
-        else {
+        if (!this.world.isRemote) {
             //get owner entity
             if ((this.tick & 15) == 0 && this.owner == null && this.playerUID > 0) {
                 this.owner = EntityHelper.getEntityPlayerByUID(this.playerUID);

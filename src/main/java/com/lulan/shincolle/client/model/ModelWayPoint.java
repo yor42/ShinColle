@@ -11,7 +11,7 @@ public class ModelWayPoint extends ModelBase {
     public final ModelRenderer waypoint;
 
     public ModelWayPoint(){
-        this.textureWidth = 16;
+        this.textureWidth = 32;
         this.textureHeight = 16;
         this.waypoint = new ModelRenderer(this, 0, 0);
         this.waypoint.setRotationPoint(0.0F, 0.0F, 0.0F);

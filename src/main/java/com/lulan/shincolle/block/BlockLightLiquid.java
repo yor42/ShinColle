@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -62,6 +63,13 @@ public class BlockLightLiquid extends BlockStaticLiquid implements ITileEntityPr
     @Override
     public String getTranslationKey() {
         return String.format("tile.%s%s", Tags.MOD_ID + ":", getUnwrappedUnlocalizedName(super.getTranslationKey()));
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        Material mat = world.getBlockState(pos.offset(face)).getMaterial();
+
+        return !mat.isLiquid();
     }
 
     @Override

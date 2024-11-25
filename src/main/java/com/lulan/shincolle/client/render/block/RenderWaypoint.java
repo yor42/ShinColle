@@ -17,11 +17,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import static com.lulan.shincolle.utility.MathHelper.RadianToDegrees;
+
 public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint> {
 
     private final ModelWayPoint model_waypoint;
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Tags.TEXTURES_BLOCKS + "blockwaypoint.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Tags.TEXTURES_BLOCKS + "blockwaypointrender.png");
 
     public RenderWaypoint(){
         this.model_waypoint = new ModelWayPoint();
@@ -37,10 +39,9 @@ public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint
             return;
         }
 
-
         BlockPos pos = te.getPos();
         double distX = pos.getX() + 0.5D - player.posX;
-        double distY = pos.getY() - 0.75D - player.posY;
+        double distY = pos.getY() - 0.5D - player.posY;
         double distZ = pos.getZ() + 0.5D - player.posZ;
         float f1 = MathHelper.sqrt(distX * distX + distZ * distZ);
         float pitch = (float) (Math.atan2(f1, distY));
@@ -48,11 +49,11 @@ public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
         GlStateManager.pushMatrix();
-        GlStateManager.depthMask(ConfigHandler.vortexDepth);
+        GlStateManager.depthMask(true);
         GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-        GlStateManager.rotate(yaw * 57.2957F, 0F, 1F, 0F);
-        GlStateManager.rotate(pitch * 57.2957F, 1F, 0F, 0F);
-        this.model_waypoint.render(0.03125F);
+        GlStateManager.rotate(RadianToDegrees(yaw), 0F, 1F, 0F);
+        GlStateManager.rotate(RadianToDegrees(pitch)+90, 1F, 0F, 0F);
+        this.model_waypoint.render(0.05F);
         GlStateManager.depthMask(true);
         GlStateManager.popMatrix();
     }
