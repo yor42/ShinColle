@@ -1,11 +1,13 @@
 {
   "forge_marker": 1,
-  
+
   "defaults": {
-    "model": "shincolle:BlockVolCore"
+    "model": "shincolle:blockdesk"
   },
-  
   "variants": {
-    "normal": [{}]
+    "facing=north": { "model": "shincolle:blockdesk" },
+    "facing=south": { "model": "shincolle:blockdesk", "y": 180 },
+    "facing=west":  { "model": "shincolle:blockdesk", "y": 270 },
+    "facing=east":  { "model": "shincolle:blockdesk", "y": 90 }
   }
 }

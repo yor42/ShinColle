@@ -61,7 +61,7 @@ public class RenderLargeShipyard extends TileEntitySpecialRenderer<BasicTileEnti
 //        }
 //        else
 //        {
-        pitch += Math.PI * 0.5F;
+        pitch += (float) (Math.PI * 0.5F);
 //        }
 
         //render base

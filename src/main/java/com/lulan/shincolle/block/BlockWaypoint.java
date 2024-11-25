@@ -1,6 +1,7 @@
 package com.lulan.shincolle.block;
 
 import com.lulan.shincolle.capability.CapaTeitoku;
+import com.lulan.shincolle.client.render.block.RenderWaypoint;
 import com.lulan.shincolle.entity.IShipOwner;
 import com.lulan.shincolle.item.TargetWrench;
 import com.lulan.shincolle.tileentity.TileEntityWaypoint;
@@ -28,6 +29,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -58,11 +61,6 @@ public class BlockWaypoint extends BasicBlockContainer {
     @Override
     public boolean canDropInventory(IBlockState state) {
         return false;
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override
@@ -139,7 +137,20 @@ public class BlockWaypoint extends BasicBlockContainer {
     public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
         Material mat = world.getBlockState(pos.offset(face)).getMaterial();
 
-        return mat != null && mat.isLiquid();
+        return mat.isLiquid();
+    }
+
+    @Override
+    public void initModel() {
+        super.initModel();
+        //register tile entity render
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaypoint.class, new RenderWaypoint());
+
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     //right click on block
@@ -155,7 +166,7 @@ public class BlockWaypoint extends BasicBlockContainer {
         }
 
         //server side
-        if (!world.isRemote && player != null && !player.isSneaking()) {
+        if (!world.isRemote && !player.isSneaking()) {
             ItemStack item = player.getHeldItemMainhand();
 
             //change stay time if holding target wrench
@@ -193,7 +204,7 @@ public class BlockWaypoint extends BasicBlockContainer {
 
     @Override
     public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
-        if (world != null && entity instanceof EntityPlayer) {
+        if (entity instanceof EntityPlayer) {
             if (EntityHelper.checkOP((EntityPlayer) entity)) return true;
 
             return BlockHelper.checkTileOwner(entity, world.getTileEntity(pos));

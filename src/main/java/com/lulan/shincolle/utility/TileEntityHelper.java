@@ -145,24 +145,13 @@ public class TileEntityHelper {
         boolean stockToBuild = true;    //false = build -> stock , true = stock -> build
 
         //value轉換為數量
-        switch (value) {
-            case 0:
-            case 4:
-                num = 1000;
-                break;
-            case 1:
-            case 5:
-                num = 100;
-                break;
-            case 2:
-            case 6:
-                num = 10;
-                break;
-            case 3:
-            case 7:
-                num = 1;
-                break;
-        }
+        num = switch (value) {
+            case 0, 4 -> 1000;
+            case 1, 5 -> 100;
+            case 2, 6 -> 10;
+            case 3, 7 -> 1;
+            default -> num;
+        };
 
         if (value > 3) stockToBuild = false;
 

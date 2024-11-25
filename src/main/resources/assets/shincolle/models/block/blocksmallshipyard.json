@@ -1,0 +1,6 @@
+{
+	"parent": "shincolle:block/blocksmallshipyard_on",
+	"textures": {
+		"1": "blocks/obsidian"
+	}
+}

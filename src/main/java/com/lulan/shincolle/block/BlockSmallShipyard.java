@@ -1,13 +1,13 @@
 package com.lulan.shincolle.block;
 
 import com.lulan.shincolle.capability.CapaTeitoku;
-import com.lulan.shincolle.client.render.block.RenderSmallShipyard;
 import com.lulan.shincolle.entity.IShipOwner;
 import com.lulan.shincolle.tileentity.TileEntitySmallShipyard;
 import com.lulan.shincolle.utility.BlockHelper;
 import com.lulan.shincolle.utility.CalcHelper;
 import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.PacketHelper;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -66,23 +66,6 @@ public class BlockSmallShipyard extends BasicBlockFacingContainer {
         return new TileEntitySmallShipyard();
     }
 
-    @SideOnly(Side.CLIENT)
-    public void initModel() {
-        super.initModel();
-
-        //prevent property mapping to blockstate
-        ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(FACING, ACTIVE).build());
-
-        //register tile entity render
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmallShipyard.class, new RenderSmallShipyard());
-
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-    }
-
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, ACTIVE);
@@ -93,9 +76,16 @@ public class BlockSmallShipyard extends BasicBlockFacingContainer {
      */
     @Override
     public IBlockState getStateFromMeta(int meta) {
+
+        EnumFacing enumfacing = EnumFacing.byIndex(meta & 7);
+
+        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+        {
+            enumfacing = EnumFacing.NORTH;
+        }
+
         //all direction: 3 bits for FACING, 1 bit for ACTIVE
-        return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7))
-                .withProperty(ACTIVE, (meta & 8) > 0);
+        return getDefaultState().withProperty(FACING, enumfacing).withProperty(ACTIVE, (meta & 8) > 0);
     }
 
     /**
@@ -106,6 +96,7 @@ public class BlockSmallShipyard extends BasicBlockFacingContainer {
         //bits: 0:facing 1:facing 2:facing 3:active
         //ex: meta = 2  = north(2) + inactive(0)
         //    meta = 11 = south(3) + active(8)
+
         return state.getValue(FACING).getIndex() + (state.getValue(ACTIVE) ? 8 : 0);
     }
 
@@ -114,7 +105,7 @@ public class BlockSmallShipyard extends BasicBlockFacingContainer {
     public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
         Material mat = world.getBlockState(pos.offset(face)).getMaterial();
 
-        return mat != null && mat.isLiquid();
+        return mat.isLiquid();
     }
 
     @Override

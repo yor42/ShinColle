@@ -1,11 +1,17 @@
 {
   "forge_marker": 1,
-  
+
   "defaults": {
-    "model": "shincolle:BlockVolCore"
+    "model": "shincolle:blocksmallshipyard"
   },
-  
   "variants": {
-    "normal": [{}]
+    "active=false,facing=north": { "model": "shincolle:blocksmallshipyard" },
+    "active=false,facing=south": { "model": "shincolle:blocksmallshipyard", "y": 180 },
+    "active=false,facing=west":  { "model": "shincolle:blocksmallshipyard", "y": 270 },
+    "active=false,facing=east":  { "model": "shincolle:blocksmallshipyard", "y": 90 },
+    "active=true,facing=north": { "model": "shincolle:blocksmallshipyard_on" },
+    "active=true,facing=south": { "model": "shincolle:blocksmallshipyard_on", "y": 180 },
+    "active=true,facing=west":  { "model": "shincolle:blocksmallshipyard_on", "y": 270 },
+    "active=true,facing=east":  { "model": "shincolle:blocksmallshipyard_on", "y": 90 }
   }
 }

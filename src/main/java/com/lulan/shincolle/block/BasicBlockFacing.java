@@ -1,5 +1,6 @@
 package com.lulan.shincolle.block;
 
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
  */
 abstract public class BasicBlockFacing extends BasicBlock {
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final PropertyDirection FACING =  BlockHorizontal.FACING;
 
 
     public BasicBlockFacing() {
@@ -60,7 +61,14 @@ abstract public class BasicBlockFacing extends BasicBlock {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         // all direction: 3 bits for 6 direction
-        return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7));
+        EnumFacing enumfacing = EnumFacing.byIndex(meta);
+
+        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+        {
+            enumfacing = EnumFacing.NORTH;
+        }
+
+        return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
     /**

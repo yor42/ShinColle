@@ -1,10 +1,11 @@
 package com.lulan.shincolle.block;
 
-import com.lulan.shincolle.client.render.block.RenderDesk;
 import com.lulan.shincolle.tileentity.TileEntityDesk;
+import net.minecraft.block.BlockGlass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -38,20 +39,9 @@ public class BlockDesk extends BasicBlockFacingContainer {
     }
 
     @SideOnly(Side.CLIENT)
-    public void initModel() {
-        super.initModel();
-
-        //prevent property mapping to blockstate
-        ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(FACING).build());
-
-        //register tile entity render
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDesk.class, new RenderDesk());
-
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
