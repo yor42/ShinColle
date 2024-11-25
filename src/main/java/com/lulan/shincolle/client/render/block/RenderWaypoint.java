@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-import static com.lulan.shincolle.utility.MathHelper.RadianToDegrees;
 
 public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint> {
 
@@ -61,5 +60,9 @@ public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint
         this.model_waypoint.render(0.05F);
         GlStateManager.depthMask(true);
         GlStateManager.popMatrix();
+    }
+
+    public static float RadianToDegrees(float radian){
+        return radian * 180 / (float)Math.PI;
     }
 }
