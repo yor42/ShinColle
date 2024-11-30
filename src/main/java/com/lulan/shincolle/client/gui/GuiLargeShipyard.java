@@ -126,7 +126,7 @@ public class GuiLargeShipyard extends GuiContainer {
         this.fontRenderer.drawString(matStock2, 125 - this.fontRenderer.getStringWidth(matStock2) / 2, 58, EnumColors.YELLOW.getValue());
         this.fontRenderer.drawString(matStock3, 125 - this.fontRenderer.getStringWidth(matStock3) / 2, 77, EnumColors.YELLOW.getValue());
 
-        handleHoveringText();
+        handleHoveringText(i,j);
 
     }
 
@@ -215,14 +215,14 @@ public class GuiLargeShipyard extends GuiContainer {
     }
 
     //draw tooltip
-    private void handleHoveringText() {
+    private void handleHoveringText(int mouseX, int mouseY) {
         //畫出fuel存量 (8,19,22,84)
         if (xMouse > 8 + guiLeft && xMouse < 22 + guiLeft && yMouse > 19 + guiTop && yMouse < 84 + guiTop) {
-            List list = new ArrayList();
-            String strFuel = String.valueOf(tile.getPowerRemained());
-            int strLen = this.fontRenderer.getStringWidth(strFuel) / 2;
+            List<String> list = new ArrayList<>();
+            list.add("Energy Reserve");
+            String strFuel = tile.getPowerRemained()+"AE / "+tile.getPowerMax()+"AE";
             list.add(strFuel);
-            this.drawHoveringText(list, 3 - strLen, 58, this.fontRenderer);
+            this.drawHoveringText(list, mouseX, mouseY, this.fontRenderer);
         }
     }
 

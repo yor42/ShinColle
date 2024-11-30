@@ -7,6 +7,7 @@ import com.lulan.shincolle.handler.GuiHandler;
 import com.lulan.shincolle.init.*;
 import com.lulan.shincolle.intermod.mekanism.MekanismHelper;
 import com.lulan.shincolle.intermod.tinkers.TinkersInit;
+import com.lulan.shincolle.intermod.top.TOPInit;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.proxy.ServerProxy;
 import com.lulan.shincolle.utility.LogHelper;
@@ -78,6 +79,9 @@ public class ShinColle {
 
         if(Loader.isModLoaded("tconstruct")){
             TinkersInit.preinit();
+        }
+        if (Loader.isModLoaded("theoneprobe")) {
+            TOPInit.register();
         }
 
         LogHelper.info("INFO: Pre-Init completed.");

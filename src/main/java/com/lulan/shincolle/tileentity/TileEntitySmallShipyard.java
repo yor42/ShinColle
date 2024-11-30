@@ -519,6 +519,10 @@ public class TileEntitySmallShipyard extends BasicTileInventory implements ITile
         return this.tank.getFluidAmount();
     }
 
+    public int getFluidFuelCapacity(){
+        return this.tank.getCapacity();
+    }
+
     //getter for fuel handler
     @Override
     public int consumeFluidFuel(int amount) {

@@ -52,7 +52,7 @@ public class TileEntityVolCore extends BasicTileInventory implements ITickable {
 
     public TileEntityVolCore() {
         //0~8: fuel slots
-        this.itemHandler = new CapaInventory(9, this);
+        this.itemHandler = new CapaInventory<>(9, this);
         this.canWork = false;
         this.btnActive = false;
         this.syncTime = 0;

@@ -5,6 +5,8 @@ import com.lulan.shincolle.capability.CapaInventory;
 import com.lulan.shincolle.entity.IShipOwner;
 import com.lulan.shincolle.utility.PacketHelper;
 import com.lulan.shincolle.utility.TeamHelper;
+import net.minecraft.block.BlockAnvil;
+import net.minecraft.block.BlockFence;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,7 +18,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 abstract public class BasicTileInventory extends BasicTileEntity implements ISidedInventory, IShipOwner {
 
-    protected CapaInventory itemHandler;
+    protected CapaInventory<BasicTileInventory> itemHandler;
     protected int syncTime = 0;        //for sync (optional)
     protected int playerUID = 0;
 
@@ -35,6 +37,7 @@ abstract public class BasicTileInventory extends BasicTileEntity implements ISid
             itemHandler.deserializeNBT((NBTTagCompound) nbt.getTag(CapaInventory.InvName));
         }
     }
+
 
     //save item data
     @Override

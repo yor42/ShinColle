@@ -28,7 +28,6 @@ public class GuiSmallShipyard extends GuiContainer {
     private final String errorMsg2;
     private final String conName;
 
-
     public GuiSmallShipyard(InventoryPlayer par1, TileEntitySmallShipyard par2) {
         super(new ContainerSmallShipyard(par1, par2));
 
@@ -57,20 +56,20 @@ public class GuiSmallShipyard extends GuiContainer {
     }
 
     //draw tooltip
-    private void handleHoveringText() {
+    private void handleHoveringText(int mousex, int mousey) {
         //畫出fuel存量 (8,19,22,84)
         if (xMouse > 9 + guiLeft && xMouse < 23 + guiLeft && yMouse > 17 + guiTop && yMouse < 49 + guiTop) {
-            List list = new ArrayList();
-            String strFuel = String.valueOf(tile.getPowerRemained());
-            int strLen = this.fontRenderer.getStringWidth(strFuel) / 2;
+            List<String> list = new ArrayList<>();
+            list.add("Energy Reserve");
+            String strFuel = tile.getPowerRemained()+"AE / "+tile.getPowerMax()+"AE";
             list.add(strFuel);
-            this.drawHoveringText(list, 4 - strLen, 40, this.fontRenderer);
+            this.drawHoveringText(list, mousex, mousey, this.fontRenderer);
         }
     }
 
     //GUI前景: 文字
     @Override
-    protected void drawGuiContainerForegroundLayer(int i, int j) {
+    protected void drawGuiContainerForegroundLayer(int mousex, int mousey) {
         //取得gui顯示名稱
         String time = this.tile.getBuildTimeString();
 
@@ -89,7 +88,7 @@ public class GuiSmallShipyard extends GuiContainer {
         }
 
         //畫出tooltip
-        handleHoveringText();
+        handleHoveringText(mousex-this.guiLeft, mousey-this.guiTop);
     }
 
     //GUI背景: 背景圖片
@@ -181,18 +180,11 @@ public class GuiSmallShipyard extends GuiContainer {
         switch (GuiHelper.getButton(ID.Gui.SMALLSHIPYARD, 0, xClick, yClick)) {
             case 0:
                 //change button value
-                switch (buttonValue) {
-                    default:
-                    case ID.Build.NONE:
-                        buttonValue = ID.Build.SHIP;
-                        break;
-                    case ID.Build.SHIP:
-                        buttonValue = ID.Build.SHIP_LOOP;
-                        break;
-                    case ID.Build.SHIP_LOOP:
-                        buttonValue = ID.Build.NONE;
-                        break;
-                }
+                buttonValue = switch (buttonValue) {
+                    case ID.Build.SHIP -> ID.Build.SHIP_LOOP;
+                    case ID.Build.SHIP_LOOP -> ID.Build.NONE;
+                    default -> ID.Build.SHIP;
+                };
 
                 //send packet
                 LogHelper.debug("DEBUG: GUI click: build small ship: ship " + buttonValue);
@@ -200,18 +192,11 @@ public class GuiSmallShipyard extends GuiContainer {
                 break;
             case 1:
                 //change button value
-                switch (buttonValue) {
-                    default:
-                    case ID.Build.NONE:
-                        buttonValue = ID.Build.EQUIP;
-                        break;
-                    case ID.Build.EQUIP:
-                        buttonValue = ID.Build.EQUIP_LOOP;
-                        break;
-                    case ID.Build.EQUIP_LOOP:
-                        buttonValue = ID.Build.NONE;
-                        break;
-                }
+                buttonValue = switch (buttonValue) {
+                    case ID.Build.EQUIP -> ID.Build.EQUIP_LOOP;
+                    case ID.Build.EQUIP_LOOP -> ID.Build.NONE;
+                    default -> ID.Build.EQUIP;
+                };
 
                 //send packet
                 LogHelper.debug("DEBUG: GUI click: build small ship: equip " + buttonValue);

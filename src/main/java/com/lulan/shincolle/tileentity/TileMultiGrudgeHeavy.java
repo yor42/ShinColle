@@ -566,6 +566,10 @@ public class TileMultiGrudgeHeavy extends BasicTileMulti implements ITileLiquidF
         return this.tank.getFluidAmount();
     }
 
+    public int getFluidFuelCapacity(){
+        return this.tank.getCapacity();
+    }
+
     //getter for fuel handler
     @Override
     public int consumeFluidFuel(int amount) {
