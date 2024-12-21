@@ -2,9 +2,11 @@ package com.lulan.shincolle.block;
 
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.client.render.block.RenderLargeShipyard;
+import com.lulan.shincolle.client.render.block.RenderWaypoint;
 import com.lulan.shincolle.entity.IShipOwner;
 import com.lulan.shincolle.init.ModBlocks;
 import com.lulan.shincolle.item.BasicEntityItem;
+import com.lulan.shincolle.tileentity.TileEntityWaypoint;
 import com.lulan.shincolle.tileentity.TileMultiGrudgeHeavy;
 import com.lulan.shincolle.utility.BlockHelper;
 import com.lulan.shincolle.utility.EntityHelper;
@@ -93,6 +95,7 @@ public class BlockGrudgeHeavy extends BasicBlockMulti {
 
         //register tile entity render
         ClientRegistry.bindTileEntitySpecialRenderer(TileMultiGrudgeHeavy.class, new RenderLargeShipyard());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaypoint.class, new RenderWaypoint());
 
     }
 

@@ -1,7 +1,6 @@
 package com.lulan.shincolle.block;
 
 import com.lulan.shincolle.capability.CapaTeitoku;
-import com.lulan.shincolle.client.render.block.RenderWaypoint;
 import com.lulan.shincolle.entity.IShipOwner;
 import com.lulan.shincolle.item.TargetWrench;
 import com.lulan.shincolle.tileentity.TileEntityWaypoint;
@@ -29,8 +28,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -138,14 +135,6 @@ public class BlockWaypoint extends BasicBlockContainer {
         Material mat = world.getBlockState(pos.offset(face)).getMaterial();
 
         return mat.isLiquid();
-    }
-
-    @Override
-    public void initModel() {
-        super.initModel();
-        //register tile entity render
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaypoint.class, new RenderWaypoint());
-
     }
 
     @Override
