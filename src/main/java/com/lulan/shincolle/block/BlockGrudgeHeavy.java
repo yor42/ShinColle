@@ -42,7 +42,7 @@ public class BlockGrudgeHeavy extends BasicBlockMulti {
 
 
     public BlockGrudgeHeavy() {
-        super(Material.WATER);
+        super(Material.SAND);
         this.setTranslationKey(NAME);
         this.setHarvestLevel("shovel", 0);
         this.setHardness(3F);

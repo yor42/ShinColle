@@ -34,7 +34,7 @@ public class ShipSkillHandler {
      */
     public static int getShipSkillHostType(EntityPlayer player) {
         if (player.getRidingEntity() instanceof BasicEntityMount) return 0;
-        else if (player.getPassengers().size() > 0 && player.getPassengers().get(0) instanceof BasicEntityShip)
+        else if (!player.getPassengers().isEmpty() && player.getPassengers().get(0) instanceof BasicEntityShip)
             return 2;
 
         //client side
@@ -267,47 +267,49 @@ public class ShipSkillHandler {
 
             //fire only 1 key at a time
             //light attack
-            if (getKey == 0) {
-                //hit entity only
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 0, target.getEntityId(), -1, -1));
+            switch (getKey) {
+                case 0 -> {
+                    //hit entity only
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 0, target.getEntityId(), -1, -1));
+                    }
                 }
-            }
-            //heavy attack
-            else if (getKey == 1) {
-                //hit entity
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 1, target.getEntityId(), -1, -1));
+                //heavy attack
+                case 1 -> {
+                    //hit entity
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 1, target.getEntityId(), -1, -1));
+                    }
+                    //hit block
+                    else if (targetPos != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 1, targetPos[0], targetPos[1], targetPos[2]));
+                    }
                 }
-                //hit block
-                else if (targetPos != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 1, targetPos[0], targetPos[1], targetPos[2]));
+                //air light attack
+                case 2 -> {
+                    //hit entity only
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 2, target.getEntityId(), -1, -1));
+                    }
                 }
-            }
-            //air light attack
-            else if (getKey == 2) {
-                //hit entity only
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 2, target.getEntityId(), -1, -1));
-                }
-            }
-            //air heavy attack
-            else if (getKey == 3) {
-                //hit entity
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 3, target.getEntityId(), -1, -1));
-                }
+                //air heavy attack
+                case 3 -> {
+                    //hit entity
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 3, target.getEntityId(), -1, -1));
+                    }
 //				//hit block
 //				else if (targetPos != null)
 //				{
 //					CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.MountSkill, 3, targetPos[0], targetPos[1], targetPos[2]));
 //				}
-            }
-            //melee attack
-            else if (getKey == 4) {
-                //hit entity only
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 4, target.getEntityId(), -1, -1));
+                }
+                //melee attack
+                case 4 -> {
+                    //hit entity only
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 4, target.getEntityId(), -1, -1));
+                    }
                 }
             }
         }//end key for skill
@@ -321,7 +323,7 @@ public class ShipSkillHandler {
         EntityPlayer player = ClientProxy.getClientPlayer();
         BasicEntityShip ship = null;
 
-        if (player.getPassengers().size() > 0 && player.getPassengers().get(0) instanceof BasicEntityShip) {
+        if (!player.getPassengers().isEmpty() && player.getPassengers().get(0) instanceof BasicEntityShip) {
             ship = (BasicEntityShip) player.getPassengers().get(0);
         } else {
             return;
@@ -386,29 +388,34 @@ public class ShipSkillHandler {
             }
 
             //fire only 1 key at a time
-            if (getKey == 0) {
-                //hit entity only
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 0, target.getEntityId(), -1, -1));
+            switch (getKey) {
+                case 0 -> {
+                    //hit entity only
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 0, target.getEntityId(), -1, -1));
+                    }
                 }
-            } else if (getKey == 1) {
-                //hit entity
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 1, target.getEntityId(), -1, -1));
+                case 1 -> {
+                    //hit entity
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 1, target.getEntityId(), -1, -1));
+                    }
+                    //hit block
+                    else if (targetPos != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 1, targetPos[0], targetPos[1], targetPos[2]));
+                    }
                 }
-                //hit block
-                else if (targetPos != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 1, targetPos[0], targetPos[1], targetPos[2]));
+                case 2 -> {
+                    //hit entity only
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 2, target.getEntityId(), -1, -1));
+                    }
                 }
-            } else if (getKey == 2) {
-                //hit entity only
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 2, target.getEntityId(), -1, -1));
-                }
-            } else if (getKey == 3) {
-                //hit entity
-                if (target != null) {
-                    CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 3, target.getEntityId(), -1, -1));
+                case 3 -> {
+                    //hit entity
+                    if (target != null) {
+                        CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.PlayerSkill, 3, target.getEntityId(), -1, -1));
+                    }
                 }
 //				//hit block
 //				else if (targetPos != null)
@@ -435,7 +442,7 @@ public class ShipSkillHandler {
             castPlayerSkill(ship, player, data);
         }
         //if ship riding player
-        else if (player.getPassengers().size() > 0 && player.getPassengers().get(0) instanceof BasicEntityShip) {
+        else if (!player.getPassengers().isEmpty() && player.getPassengers().get(0) instanceof BasicEntityShip) {
             ship = (BasicEntityShip) player.getPassengers().get(0);
             castPlayerSkill(ship, player, data);
         }

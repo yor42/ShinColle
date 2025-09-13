@@ -50,48 +50,36 @@ public class EquipAmmo extends BasicEquip implements IShipEffectItem {
 
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
-        switch (meta) {
-            case 1:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                return ID.EquipType.AMMO_HI;
-            default:
-                return ID.EquipType.AMMO_LO;
-        }
+        return switch (meta) {
+            case 1, 3, 4, 5, 6, 7, 8 -> ID.EquipType.AMMO_HI;
+            default -> ID.EquipType.AMMO_LO;
+        };
     }
 
     @Override
     public int getItemEnchantability(ItemStack stack) {
-        switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
-            case ID.EquipType.AMMO_LO:
-                return 12;
-            case ID.EquipType.AMMO_HI:
-                return 25;
-            default:
-                return 12;
-        }
+        return switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
+            case ID.EquipType.AMMO_LO -> 12;
+            case ID.EquipType.AMMO_HI -> 25;
+            default -> 12;
+        };
     }
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.AMMO_LO:  //120
-                return new int[]{itemRand.nextInt(3) + 4,
-                        itemRand.nextInt(4) + 7,
-                        itemRand.nextInt(5) + 9,
-                        itemRand.nextInt(2) + 4};
-            case ID.EquipType.AMMO_HI:  //1000
-                return new int[]{itemRand.nextInt(25) + 35,
-                        itemRand.nextInt(30) + 45,
-                        itemRand.nextInt(40) + 70,
-                        itemRand.nextInt(20) + 40};
-            default:
-                return new int[]{0, 0, 0, 0};
-        }
+        return switch (this.getEquipTypeIDFromMeta(meta)) {
+            case ID.EquipType.AMMO_LO ->  //120
+                    new int[]{itemRand.nextInt(3) + 4,
+                            itemRand.nextInt(4) + 7,
+                            itemRand.nextInt(5) + 9,
+                            itemRand.nextInt(2) + 4};
+            case ID.EquipType.AMMO_HI ->  //1000
+                    new int[]{itemRand.nextInt(25) + 35,
+                            itemRand.nextInt(30) + 45,
+                            itemRand.nextInt(40) + 70,
+                            itemRand.nextInt(20) + 40};
+            default -> new int[]{0, 0, 0, 0};
+        };
     }
 
     @Override
@@ -121,14 +109,13 @@ public class EquipAmmo extends BasicEquip implements IShipEffectItem {
 
     @Override
     public int getMissileType(int meta) {
-        switch (meta) {
-            case 5:  //black hole
-                return 5;
-            case 8:  //cluster bomb
-                return 3;
-            default:
-                return 0;
-        }
+        return switch (meta) {
+            case 5 ->  //black hole
+                    5;
+            case 8 ->  //cluster bomb
+                    3;
+            default -> 0;
+        };
     }
 
     @Override
@@ -160,12 +147,11 @@ public class EquipAmmo extends BasicEquip implements IShipEffectItem {
                     NBTTagCompound nbt = stack.getTagCompound();
                     assert nbt != null;
                     NBTTagList nbtlist = nbt.getTagList(EquipAmmo.PLIST, Constants.NBT.TAG_COMPOUND);
-                    int pid = 0;
-                    int plv = 0;
-                    int ptime = 0;
-                    int pchance = 0;
-                    NBTTagCompound nbtX = null;
-                    String name = null;
+                    int pid;
+                    int plv;
+                    int ptime;
+                    int pchance;
+                    NBTTagCompound nbtX;
 
                     for (int i = 0; i < nbtlist.tagCount(); i++) {
                         nbtX = nbtlist.getCompoundTagAt(i);

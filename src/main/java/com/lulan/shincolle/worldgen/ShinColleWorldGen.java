@@ -34,7 +34,7 @@ public class ShinColleWorldGen implements IWorldGenerator {
         //NYI: 依照生態系id生成不同數量的礦
         //以起點blockX,blockZ隨機加上0~15(即一個chunk範圍內)  生成高度則為minY~maxY之間
         //每個chunk執行spawnChance次生成動作
-        int x, y, z = 0;
+        int x, y, z;
         int spawnN = spawnNum;
 
         Biome biome = world.getBiomeForCoordsBody(new BlockPos(blockX, 0, blockZ));

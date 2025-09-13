@@ -35,49 +35,48 @@ public class RecipeEnchantShell extends IForgeRegistryEntry.Impl<IRecipe> implem
      * Used to check if a recipe matches current crafting inventory
      */
     public boolean matches(InventoryCrafting inv, World worldIn) {
-        if (inv.getWidth() == 3 && inv.getHeight() == 3) {
-            //check item in first slot
-            ItemStack stack0 = inv.getStackInRowAndColumn(0, 0);
-
-            if (stack0.isEmpty()) return false;
-            else if (stack0.getItem() != Items.POTIONITEM) return false;
-
-            //check other slots
-            for (int i = 0; i < inv.getWidth(); ++i) {
-                for (int j = 0; j < inv.getHeight(); ++j) {
-                    if (i == 0 && j == 0) continue;
-
-                    ItemStack stackX = inv.getStackInRowAndColumn(i, j);
-
-                    if (stackX.isEmpty()) {
-                        return false;
-                    }
-
-                    Item item = stackX.getItem();
-
-                    //中間必為EquipAmmo
-                    if (i == 1 && j == 1) {
-                        if (item != ModItems.EquipAmmo) {
-                            return false;
-                        } else if (stackX.getMetadata() != 7) {
-                            return false;
-                        }
-                    }
-                    //其他位置必為藥水
-                    else if (item == Items.POTIONITEM) {
-                        if (!ItemStack.areItemStackTagsEqual(stack0, stackX)) {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                }//end for j
-            }//end for i
-
-            return true;
-        } else {
+        if (inv.getWidth() != 3 || inv.getHeight() != 3) {
             return false;
         }
+        //check item in first slot
+        ItemStack stack0 = inv.getStackInRowAndColumn(0, 0);
+
+        if (stack0.isEmpty()) return false;
+        else if (stack0.getItem() != Items.POTIONITEM) return false;
+
+        //check other slots
+        for (int i = 0; i < inv.getWidth(); ++i) {
+            for (int j = 0; j < inv.getHeight(); ++j) {
+                if (i == 0 && j == 0) continue;
+
+                ItemStack stackX = inv.getStackInRowAndColumn(i, j);
+
+                if (stackX.isEmpty()) {
+                    return false;
+                }
+
+                Item item = stackX.getItem();
+
+                //中間必為EquipAmmo
+                if (i == 1 && j == 1) {
+                    if (item != ModItems.EquipAmmo) {
+                        return false;
+                    } else if (stackX.getMetadata() != 7) {
+                        return false;
+                    }
+                }
+                //其他位置必為藥水
+                else if (item == Items.POTIONITEM) {
+                    if (!ItemStack.areItemStackTagsEqual(stack0, stackX)) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }//end for j
+        }//end for i
+
+        return true;
     }
 
     /**

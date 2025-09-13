@@ -3,6 +3,7 @@ package com.lulan.shincolle.handler;
 import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaShipSavedValues;
 import com.lulan.shincolle.capability.CapaTeitoku;
+import com.lulan.shincolle.command.ShipCmdEmotes;
 import com.lulan.shincolle.entity.*;
 import com.lulan.shincolle.init.ModItems;
 import com.lulan.shincolle.intermod.metamorph.MetamorphHelper;
@@ -50,6 +51,7 @@ import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityEvent.EnteringChunk;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -78,6 +80,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Map;
+
+import static com.lulan.shincolle.utility.AutoEmoteHelper.AUTO_EMOTE_MANAGER;
 
 /**
  * after mc1.9:
@@ -661,8 +665,7 @@ public class EventHandler {
             if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
                 ctrl = 0.09F;
             }
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+            else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
                 lalt = true;
             }
 
@@ -764,6 +767,13 @@ public class EventHandler {
                 }
             }
         }//end debug keys
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+    public void onPlayerChat(ServerChatEvent event) {
+        EntityPlayerMP playerMP = event.getPlayer();
+        String msg = event.getMessage();
+        AUTO_EMOTE_MANAGER.tryShowAutoEmote(playerMP, playerMP.getServerWorld(), msg);
     }
 
     /**

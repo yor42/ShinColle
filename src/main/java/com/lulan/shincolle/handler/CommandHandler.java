@@ -16,6 +16,7 @@ public class CommandHandler {
     public static void init(FMLServerStartingEvent event) {
         event.registerServerCommand(new ShipCmdChangeShipOwner());
         event.registerServerCommand(new ShipCmdEmotes());
+        event.registerServerCommand(new CmdAutoEmote());
         event.registerServerCommand(new ShipCmdGetShip());
         event.registerServerCommand(new ShipCmdKill());
         event.registerServerCommand(new ShipCmdShipAttrs());

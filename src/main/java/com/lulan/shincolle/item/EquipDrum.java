@@ -52,42 +52,31 @@ public class EquipDrum extends BasicEquip {
     public EnumEquipEffectSP getSpecialEffect(ItemStack stack) {
         int meta = stack.getItemDamage();
 
-        switch (meta) {
-            case 1:        //liquid tank
-                return EnumEquipEffectSP.DRUM_LIQUID;
-            case 2:        //EU storage
-                return EnumEquipEffectSP.DRUM_EU;
-            case 3:
-                return EnumEquipEffectSP.DRUM_FE;
-            default:    //item storage
-                return EnumEquipEffectSP.DRUM;
-        }
+        return switch (meta) {
+            case 1 ->        //liquid tank
+                    EnumEquipEffectSP.DRUM_LIQUID;
+            case 2 ->        //EU storage
+                    EnumEquipEffectSP.DRUM_EU;
+            case 3 -> EnumEquipEffectSP.DRUM_FE;
+            default ->    //item storage
+                    EnumEquipEffectSP.DRUM;
+        };
     }
 
     @Override
     public int getIconFromDamage(int meta) {
-        switch (meta) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                return meta;
-            default:
-                return 0;
-        }
+        return switch (meta) {
+            case 0, 1, 2, 3 -> meta;
+            default -> 0;
+        };
     }
 
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
-        switch (meta) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                return ID.EquipType.DRUM_LO;
-            default:
-                return 0;
-        }
+        return switch (meta) {
+            case 0, 1, 2, 3 -> ID.EquipType.DRUM_LO;
+            default -> 0;
+        };
     }
 
     @Override

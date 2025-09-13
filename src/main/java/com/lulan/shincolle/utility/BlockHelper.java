@@ -61,8 +61,8 @@ public class BlockHelper {
         int ylimit = ranY * 2;
         int zlimit = ranZ * 2;
         int x2 = 0;
-        int y2 = 0;
-        int z2 = 0;
+        int y2;
+        int z2;
         int x3, y3, z3;
         int addx;
         int addy;
@@ -578,7 +578,7 @@ public class BlockHelper {
     public static boolean checkTileOwner(Entity target, TileEntity tile) {
         if (tile != null && target != null) {
             int uid = EntityHelper.getPlayerUID(target);
-            int uidTile = -1;
+            int uidTile;
 
             if (tile instanceof IShipOwner) {
                 uidTile = ((IShipOwner) tile).getPlayerUID();
@@ -600,8 +600,8 @@ public class BlockHelper {
     public static BlockPos getNearbyLiquid(Entity host, boolean checkHostPos, boolean getRandom, int rad, int depth) {
         if (host == null) return null;
 
-        BlockPos pos = null;
-        IBlockState state = null;
+        BlockPos pos;
+        IBlockState state;
 
         //check around
         for (int y = 1; y > -3; y--) {

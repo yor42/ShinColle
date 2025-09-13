@@ -148,6 +148,7 @@ item.shincolle:EquipArmor6.name=심해 보호격벽
 item.shincolle:EquipDrum.name=심해 드럼통
 item.shincolle:EquipDrum1.name=심해 양수장비
 item.shincolle:EquipDrum2.name=심해 초고압 변압기
+item.shincolle:EquipDrum3.name=Abyssal Redstone Charging Coil
 item.shincolle:EquipCompass.name=심해 나침반
 item.shincolle:EquipFlare.name=심해 신호탄
 item.shincolle:EquipSearchlight.name=심해 탐조등
@@ -304,9 +305,6 @@ entity.shincolle.EntitySubmU511.name=잠수 U-511
 entity.shincolle.EntitySubmU511Mob.name=잠수 U-511
 entity.shincolle.EntityTransportWa.name=수송 와급
 
-# formatting codes:
-# new line: <br>, <BR>, <br/> or <BR/> can set next line manually. (String will wrap to next line automatically to fit gui width.)
-# other code: §0, §1 ...etc. check: http://minecraft.gamepedia.com/Formatting_codes
 
 # GUI: Book Text Chap 0
 gui.shincolle:book.chap0.title=소개
@@ -385,7 +383,7 @@ gui.shincolle:book.chap1.text21d0=<br><br><br><br><br><br><br><br><br>Twisted ab
 gui.shincolle:book.chap1.text21d1=
 gui.shincolle:book.chap1.title22=Abyssal Waypoint
 gui.shincolle:book.chap1.text22d0=<br><br><br><br><br><br><br><br><br>Waypoint block, player can link waypoints with a §dTarget Wrench§0.<br><br>If a ship moves to a waypoint, she will continue on to the next waypoint.
-gui.shincolle:book.chap1.text22d1=§9Right Click§0 with §dTarget Wrench§0 to show the waypoint info.<br>§9Sneak + Right Click§0 to link two waypoints.<br><br>A waypoint can save 1 NEXT and 1 LAST waypoint, and the max distance is 48 blocks.<br><br>If a waypoint links back to it's last waypoint (next = last), when the ship moves to the waypoint, the ship will begin to move backwards.
+gui.shincolle:book.chap1.text22d1=§9Right Click§0 with §dTarget Wrench§0 to show the waypoint info.<br>§9Sneak + Right Click§0 to link two waypoints.<br><br>A waypoint can save 1 NEXT and 1 LAST waypoint, and the max distance is 48 blocks.<br><br>If a waypoint links back to it's last waypoint (next 
 gui.shincolle:book.chap1.title23=Abyssal Crane
 gui.shincolle:book.chap1.text23d0=<br><br><br><br><br><br><br><br><br>A machine block for loading and unloading items to/from a ship. Owner can link the §dAbyssal Crane§0 to §9any chest§0 or other §9Abyssal Waypoint§0 with a §dTarget Wrench§0.  A ship will start to load/unload items when she gets to the crane and will go to the next waypoint after the job done.
 gui.shincolle:book.chap1.text23d1=§9Top Left§0 button is §9Power Switch§0.<br><br>§9The Top Largest§0 button is §9Waiting Mode§0.<br><br>§9Middle§0 buttons with M/D/N are item matching condition.<br><br>§9Center 9x2 Slots§0 are loading/unloading target, left all empty means §9ANY§0 item.<br><br>Loading/Unloading can disable separately, and ships will not attack and move while loading/unloading.
@@ -459,7 +457,7 @@ gui.shincolle:book.chap3.title8=
 gui.shincolle:book.chap3.text8d0=§911. Onsight?§0: Only attack target on sight.<br><br>§912. PVP Mode§0: Attack §cPVP§0 target first.<br><br>§913. Anti-Air§0: Attack §cAircraft§0 first.<br><br>§914. Anti-SS§0: Attack §cSubmarine§0 first.<br>§9Priority§0: §dAnti-Air§0 > §3Anti-SS§0 > §cPVP§0 > Other<br><br>§915. PickItem§0: Some ship will pick item when out of combat.
 gui.shincolle:book.chap3.text8d1=§916. Auto Pump§0: Ship can pump liquid by Abyssal Pumps Station (equip) to Abyssal Fluid Drum. If a ship gets some glass bottles, she can collect xp orbs too. 
 gui.shincolle:book.chap3.title9=PVP Mode
-gui.shincolle:book.chap3.text9d0=§91.§0 Enable PVP Mode by §cCreating a Fleet§0 in an §3Abyssal Admiral's Desk§0.<br><br>§92.§0 Default PVP state is §7Neutral§0 to other fleets.<br><br>§93.§0 You can §cAlly/Declare War§0 against other fleets in §3Abyssal Admiral's Desk§0.<br><br>§94.§0 Ships will attack other hostile fleets §cPVP Mode§0 in AI options is enabled.<br><br>§95.§0 If §cFriendlyFire§0 = §3false§0, AoE attack will not damage to allies.
+gui.shincolle:book.chap3.text9d0=§91.§0 Enable PVP Mode by §cCreating a Fleet§0 in an §3Abyssal Admiral's Desk§0.<br><br>§92.§0 Default PVP state is §7Neutral§0 to other fleets.<br><br>§93.§0 You can §cAlly/Declare War§0 against other fleets in §3Abyssal Admiral's Desk§0.<br><br>§94.§0 Ships will attack other hostile fleets §cPVP Mode§0 in AI options is enabled.<br><br>§95.§0 If §cFriendlyFire§0 
 gui.shincolle:book.chap3.text9d1=§96. §cAlly§0 is §3UNILATERAL§0, other side can still be hostile, friendly or neutral.<br><br>§97. §cDeclaration of War§0 is §3BILATERAL§0, other side will be hostile too.<br><br>§98.§0 Other side will become neutral to you when §cBreaking Alliance§0.<br><br>§99.§0 Other side will remain hostile when §cCalling a Truce§0.<br><br>§910.§0 You cannot declare war against a fleet in the ally list, and vice versa.
 gui.shincolle:book.chap3.title10=함급
 gui.shincolle:book.chap3.text10d0=There are restraint relations between ships, check: §9https://goo.gl/jmR3Wd§0<br><br>§9Destroyer (DD):§c HIGH speed / LOW HP§0, against SS and Aircraft.<br>§9Cruiser:§0 Including heavy cruiser (CA), light cruiser (CL) and torpedo cruiser (CLT), average attributes.<br>§9Aircraft Carrier (CV): §cLONGEST attack range§0, against all ships except SS.
@@ -483,7 +481,7 @@ gui.shincolle:book.chap3.title16=Cooking
 gui.shincolle:book.chap3.text16d0=Ship can help the owner to cook item:<br><br>§91.§0 Click the raw beef icon in AI options<br>§92.§0 Put the item to be cooked to mainhand slot (the most middle and lower slot in the first page)<br>§93.§0 Put the fuel item to offhand slot. (option)<br>§94.§0 Check metadata/forge ore dict/nbt tag in the same AI page. (option)<br>§95.§0 Move ship to an Abyssal Waypoint.<br>§96.§0 Link the waypoint and a furnace block by Target Wrench. 
 gui.shincolle:book.chap3.text16d1=§97.§0 Set the input/output/fuel side of the furnace in AI option. (B:Bottom T:Top N:North S:South W:West E:East)<br>§98.§0 Ship will start cooking the target item except main/offhand slot.<br><br>Cooking is a difficult job, less experienced ships sometimes produce some dark matter in cooking.  
 gui.shincolle:book.chap3.title17=Fishing
-gui.shincolle:book.chap3.text17d0=Ship can go fishing to feed the owner:<br><br>§91.§0 Click the fishing rod icon in AI options.<br>§92.§0 Put the fishing rod to mainhand slot.<br>§93.§0 Move the ship to the pool with depth >= 3 blocks.
+gui.shincolle:book.chap3.text17d0=Ship can go fishing to feed the owner:<br><br>§91.§0 Click the fishing rod icon in AI options.<br>§92.§0 Put the fishing rod to mainhand slot.<br>§93.§0 Move the ship to the pool with depth >
 gui.shincolle:book.chap3.text17d1=§9"Luck of the Sea"§0 enchantment on the fishing rod and luck potion can increase the rate of rare drop from fishing. 
 gui.shincolle:book.chap3.title18=Mining
 gui.shincolle:book.chap3.text18d0=Ships can go mining for the lazy owner:<br><br>§91.§0 Click the pickaxe icon in AI options.<br>§92.§0 Put the pickaxe to mainhand slot.<br>§93.§0 Move the ship to the mine with a lot of solid blocks.
@@ -493,13 +491,13 @@ gui.shincolle:book.chap3.text19d0=Ships can craft items for their owner:<br><br>
 gui.shincolle:book.chap3.text19d1=Ship level will affect the number of items can be crafted at a time.<br><br>NOTE: Ship will drop crafting items if chest is full. 
 gui.shincolle:book.chap3.title20=Metamorph
 gui.shincolle:book.chap3.text20d0=§cReq: Metamorph mod§0<br><br>Features:<br><br>§91.§0 Left click with §cTarget Wrench§0 on own ship to get morph.<br><br>§92.§0 Kill friendly ship will not drop ghost morph.<br><br>§93.§0 Kill mob ship still drop ghost morph.<br><br>§94.§0 Press §cSneaking + Morph Action§0 key to open Morph GUI. (Own ship morph only)<br><br>§95.§0 You can't open Morph GUI in mob ship morph.
-gui.shincolle:book.chap3.text20d1=§96.§0 Player can use ship attack skill in morph, and can add grudge and ammo in Morph GUI.<br><br>§97.§0 Player can level up morph by casting ship attack skill.<br><br>§98.§0 Player can equip ship equipments in Morph GUI, equip slot is shared between all morph ship.<br><br>§99.§0 Press §cMorph Action§0 to toggle skill hotbar.<br><br>NOTE: Move speed will not apply to player (for now).<br>Player can §9Right Click§0 to use Repair Bucket, Combat Ration, Modernization Toolkit and Maintenance Personnel Training Book.<br><br>Please set "B:disable_health = true" for auto HP calculation or tweak ship HP in Metamorph config.
+gui.shincolle:book.chap3.text20d1=§96.§0 Player can use ship attack skill in morph, and can add grudge and ammo in Morph GUI.<br><br>§97.§0 Player can level up morph by casting ship attack skill.<br><br>§98.§0 Player can equip ship equipments in Morph GUI, equip slot is shared between all morph ship.<br><br>§99.§0 Press §cMorph Action§0 to toggle skill hotbar.<br><br>NOTE: Move speed will not apply to player (for now).<br>Player can §9Right Click§0 to use Repair Bucket, Combat Ration, Modernization Toolkit and Maintenance Personnel Training Book.<br><br>Please set "B:disable_health 
 
 # GUI: Book Text Chap 4
 gui.shincolle:book.chap4.title=함선 목록
 gui.shincolle:book.chap4.title0=심해서함
 gui.shincolle:book.chap4.text0d0=The ship will be registered to list when the owner opens the ship inventory GUI.<br><br>§9Name:§0 Ship name.<br>§9Class:§0 Ship class, there are damage modifiers between ship classes.<br>§9공장:§0 Construction location. Certain materials can increase the probs of construction.
-gui.shincolle:book.chap4.text0d1=The number represents the total amount of materials. §4EX: §dGrudge (4000):§0 The default highest probability is 4000 materials. If you set up 1000 Grudge, you just need 4000 - 1000 = 3000 materials to get the highest probability.<br>§9오라 효과:§0<br>Special ability for married ships that owner can enable/disable in AI options.<br>§9기타 효과:§0<br>Other abilities like critical passive ability.
+gui.shincolle:book.chap4.text0d1=The number represents the total amount of materials. §4EX: §dGrudge (4000):§0 The default highest probability is 4000 materials. If you set up 1000 Grudge, you just need 4000 - 1000 
 gui.shincolle:book.chap4.title1=
 gui.shincolle:book.chap4.text1d0=
 gui.shincolle:book.chap4.text1d1=§9이름:§0 이급 <br>§9함급:§0 DD<br>§9공장:§0 심해 분출공 / Grudge (80)<br>§9오라 효과:§0<br>소유자에게 Speed 효과 부여<br>§9기타 효과:§0<br>Pick up items<br><br>The most popular abyssal mascot!
@@ -649,13 +647,13 @@ gui.shincolle:book.chap6.text0d0=§9/shipinfo§c<br>§dAuthority:§0 All Player<
 gui.shincolle:book.chap6.text0d1=§9/shipchangeowner§c <Player Name><br>§dAuthority:§0 OP only<br>§dPurpose:§0 change ship's owner<br><br>OP, Ship and Player A must be online and in the same dimension (world).<br><br>The owner of the ship the OP's cursor is on will be changed to Player A.
 gui.shincolle:book.chap6.title1=
 gui.shincolle:book.chap6.text1d0=§9/shipupdateowneruid§3 [Player Name]<br>§dAuthority:§0 All Player<br>§dPurpose:§0 update ship's owner UID<br><br>If the ship does not respond, try this command to fix the bug. OP can specify a player to update the UID.<br><br>This command only affects the ships in the loaded chunk and the target player must be online.<br>If the command does not work, try /shipchangeowner to change ship's owner 1 by 1.
-gui.shincolle:book.chap6.text1d1=§9/shipattrs <Ship LV> [<HP LV> <ATK LV> <DEF LV> <A.SPD LV> <M.SPD LV> <Range LV>]<br>§dAuthority:§0 OP only<br>§dPurpose:§0 change ship attributes<br><br>Change the level and six main attributes of the ship which the cursor is on. Valid value: Ship LV = 1~150, Attrs LV = 0~100.
+gui.shincolle:book.chap6.text1d1=§9/shipattrs <Ship LV> [<HP LV> <ATK LV> <DEF LV> <A.SPD LV> <M.SPD LV> <Range LV>]<br>§dAuthority:§0 OP only<br>§dPurpose:§0 change ship attributes<br><br>Change the level and six main attributes of the ship which the cursor is on. Valid value: Ship LV 
 gui.shincolle:book.chap6.title2=
-gui.shincolle:book.chap6.text2d0=§9/shipcleardrop [range]<br>§dAuthority:§0 OP only<br>§dPurpose:§0 remove drop item (grudge entity)<br><br>Remove drop item entity within range, default range = 128 blocks.
+gui.shincolle:book.chap6.text2d0=§9/shipcleardrop [range]<br>§dAuthority:§0 OP only<br>§dPurpose:§0 remove drop item (grudge entity)<br><br>Remove drop item entity within range, default range 
 gui.shincolle:book.chap6.text2d1=§9/shipemotes [emo]<br>§dAuthority:§0 All Player<br>§dPurpose:§0 Show emotes<br>§dAlias:§9/em, /emo, /emote, /emotes§0<br><br>Use the "tab" key to show the emotes list when typing.
 gui.shincolle:book.chap6.title3=
 gui.shincolle:book.chap6.text3d0=§9/shipstopai<br>§dAuthority:§0 OP only<br>§dPurpose:§0 stop ship AI<br><br>Stop all ship, hostile ship, ship mounts AI and update methods for emergencies like an entity dupe bug. 
-gui.shincolle:book.chap6.text3d1=§9/shipkill <Ship ID> [range]<br>§dAuthority:§0 OP only<br>§dPurpose:§0 remove a ship<br><br>Remove specific class ship within range (default range = 128 blocks) for emergency like an entity dupe bug.<br><br>The ship ID is same as the metavalue of ship spawn egg.
+gui.shincolle:book.chap6.text3d1=§9/shipkill <Ship ID> [range]<br>§dAuthority:§0 OP only<br>§dPurpose:§0 remove a ship<br><br>Remove specific class ship within range (default range 
 gui.shincolle:book.chap6.title4=
 gui.shincolle:book.chap6.text4d0=§9/ship <list> | <get> <Ship ID> | <del> <Ship ID><br>§dAuthority:§0 OP only: get, del<br>§dPurpose:§0 list or respawn ship<br><br>§9list:§0<br>list all ship cache data, D/E means Dead/Exist in the world.<br>§9get:§0<br>summon or respawn ship, the user must be within 64 blocks of the ship.<br>§9del:§0<br>delete the specific ship cache.<br><br>OP can use this command to summon/respawn missing ships. Non-OP users can search ship cache only.
 gui.shincolle:book.chap6.text4d1=
@@ -892,6 +890,9 @@ chat.shincolle:command.wrongrange=명령어 적용 실패: 범위가 잘못되�
 chat.shincolle:command.wrongcid=명령어 적용 실패: 함선 클래스 ID가 잘못되었습니다:
 chat.shincolle:command.wrongparanum=명령어 적용 실패: 매개변수 숫자가 잘못되었습니다:
 chat.shincolle:command.wrongpararange=명령어 적용 실패: 매개변수 범위가 잘못되었습니다:
+chat.shincolle:command.wrongemote=명령어 적용 실패: 감정 이름이 올바르지 않습니다(%s)
+chat.shincolle:autoemote.enabled=자동 감정표현 활성화됨
+chat.shincolle:autoemote.disabled=자동 감정표현 비활성화됨
 
 # Inter-mod
 gui.shincolle:morph.nofuel=연료 없음
@@ -920,4 +921,3 @@ gendustry.bees.species.abysswaterdemon=심해 수귀
 gendustry.bees.species.abysswaterdemon.description="아... 땅바닥에서 아무거나 주워 먹지 마, 북빵아!"|항만서희
 gendustry.honeycomb.shincolle.name=심해 벌집
 gendustry.allele.flowers.grudge=원한 덩어리
-gendustry.allele.flowers.grudgeHeavy=무거운 원한 덩어리

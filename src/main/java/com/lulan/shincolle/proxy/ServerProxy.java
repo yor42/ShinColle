@@ -67,7 +67,7 @@ public class ServerProxy extends CommonProxy {
     private static HashMap<Integer, String> unattackableTargetClass = null;
     /**
      * team data
-     * for team data display, owner check, etc
+     * for team data display, owner check, etc.
      * team ID = player UID (1 player = 1 team), team keeps 1 ally and 1 banned team
      * list
      * if player UID exist in team data map, the player has team (enable PVP mode)

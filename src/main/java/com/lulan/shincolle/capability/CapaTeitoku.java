@@ -100,13 +100,13 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         this.formatID = new int[9];
         this.saveId = 0;
         this.teamId = 0;
-        this.listShipEID = new ArrayList<Integer>();
-        this.listColleShip = new ArrayList<Integer>();
-        this.listColleEquip = new ArrayList<Integer>();
+        this.listShipEID = new ArrayList<>();
+        this.listColleShip = new ArrayList<>();
+        this.listColleEquip = new ArrayList<>();
         this.playerUID = -1;
-        this.mapTeamData = new HashMap<Integer, TeamData>();
-        this.listTeamData = new ArrayList<TeamData>();
-        this.targetClassMap = new HashMap<Integer, String>();
+        this.mapTeamData = new HashMap<>();
+        this.listTeamData = new ArrayList<>();
+        this.targetClassMap = new HashMap<>();
 
         // inter-mod
         this.morphEntity = null;
@@ -331,16 +331,6 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
          * sometimes the input nbt data has content but no tag name
          * nbtExt will be null because find no data with the tag name
          */
-        if (nbtExt == null) {
-            // check player UID tag in 'nbt', not 'nbtExt'
-            if (!nbt.hasKey("PlayerUID")) {
-                LogHelper.debug("DEBUG: player loadNBTData: fail, data is null " + nbt + " " + nbtExt);
-                return;
-            } else {
-                LogHelper.debug("DEBUG: player loadNBTData: get data without tag name");
-                nbtExt = nbt;
-            }
-        }
 
         // load data
         LogHelper.debug("DEBUG: player loadNBTData: get data " + nbt + " " + nbtExt);
@@ -365,7 +355,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
                 byte[] byteSelect = nbtExt.getByteArray("SelectState" + i);
                 int[] sid = nbtExt.getIntArray("TeamList" + i);
 
-                if (sid != null && sid.length > 5) { // null check for new player
+                if (sid.length > 5) { // null check for new player
                     for (int j = 0; j < 6; ++j) {
                         // set select state
                         this.selectState[i][j] = byteSelect[j] == 1;
@@ -494,7 +484,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
     }
 
     public ArrayList<BasicEntityShip> getShipEntityAllList(int tid) {
-        ArrayList<BasicEntityShip> list = new ArrayList<BasicEntityShip>();
+        ArrayList<BasicEntityShip> list = new ArrayList<>();
 
         if (teamList != null && teamList[tid] != null) {
             Collections.addAll(list, teamList[tid]);
@@ -518,7 +508,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
      */
     public ArrayList<BasicEntityShip> getShipEntityByMode(int mode) {
         // meta為pointer的item damage
-        ArrayList<BasicEntityShip> ships = new ArrayList<BasicEntityShip>();
+        ArrayList<BasicEntityShip> ships = new ArrayList<>();
         boolean shouldSync = false;
 
         switch (mode) {
@@ -1408,7 +1398,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         if (this.teamList[tid][posB] != null)
             this.teamList[tid][posB].setUpdateFlag(ID.FlagUpdate.FormationBuff, true);
 
-        ArrayList<BasicEntityShip> ships = new ArrayList<BasicEntityShip>();
+        ArrayList<BasicEntityShip> ships = new ArrayList<>();
 
         for (int i = 0; i < this.teamList[tid].length; i++) {
             if (this.teamList[tid][i] != null)
@@ -1424,7 +1414,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
 
     // get ship team id, ship can exist in multiple teams
     public ArrayList<Integer> getShipTeamIDArray(int shipUID) {
-        ArrayList<Integer> tid = new ArrayList<Integer>();
+        ArrayList<Integer> tid = new ArrayList<>();
 
         if (this.sidList != null) {
             for (int i = 0; i < 9; i++) {

@@ -105,16 +105,14 @@ public class S2CEntitySync implements IMessage {
             case PID.SyncShip_Scale:
             case PID.SyncShip_UnitName:
             case PID.SyncShip_Buffmap:
-                if (entity instanceof BasicEntityShip ||
-                        entity instanceof IShipEmotion ||
+                if (entity instanceof IShipEmotion ||
                         entity instanceof EntityLivingBase) {
                     getTarget = true;
                 }
                 break;
             case PID.SyncShip_Emo:
             case PID.SyncEntity_Emo:
-                if (entity instanceof BasicEntityShip ||
-                        entity instanceof IShipEmotion ||
+                if (entity instanceof IShipEmotion ||
                         entity instanceof EntityLivingBase) {
                     getTarget = true;
                 }
@@ -472,7 +470,7 @@ public class S2CEntitySync implements IMessage {
                     }
 
                     //sync rider rotate
-                    if (entity.getPassengers().size() > 0) {
+                    if (!entity.getPassengers().isEmpty()) {
                         for (Entity rider : entity.getPassengers()) {
                             rider.rotationYaw = msg.valueFloat1[0];
                             rider.rotationPitch = msg.valueFloat1[2];

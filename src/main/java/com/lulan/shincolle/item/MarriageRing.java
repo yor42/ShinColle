@@ -99,8 +99,7 @@ public class MarriageRing extends BasicItem implements IBauble {
     @Override
     public void onUpdate(@Nonnull ItemStack item, @Nonnull World world, @Nonnull Entity entity, int slot, boolean inUse) {
         //BOTH SIDE
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer owner = (EntityPlayer) entity;
+        if (entity instanceof EntityPlayer owner) {
             CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(owner);
 
             //ring effects

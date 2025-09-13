@@ -168,7 +168,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:tinkers-construct-74072:2902483")
     compileOnly rfg.deobf("curse.maven:industrial-craft-242638:2746892")
     implementation rfg.deobf("curse.maven:mantle-74924:2713386")
-    implementation rfg.deobf("mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.+")
+    implementation rfg.deobf("curse.maven:the-one-probe-community-edition-885670:6934576")
 }
 
 apply from: 'gradle/scripts/dependencies.gradle'

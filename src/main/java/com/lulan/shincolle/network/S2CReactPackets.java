@@ -157,11 +157,9 @@ public class S2CReactPackets implements IMessage {
             case PID.CmdShipList:    //cmd: show/get/del ship list
             {
                 if (this.valueInt != null) {
-                    switch (this.valueInt[0]) {
-                        case 0:        //cmd: /ship list X
-                            //send ship list
-                            CommandHelper.processSendShipList(buf, this.valueInt[1]);
-                            break;
+                    if (this.valueInt[0] == 0) {        //cmd: /ship list X
+                        //send ship list
+                        CommandHelper.processSendShipList(buf, this.valueInt[1]);
                     }
                 }
             }

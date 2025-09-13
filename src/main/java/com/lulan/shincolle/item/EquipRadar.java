@@ -57,51 +57,37 @@ public class EquipRadar extends BasicEquip {
 
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
-        switch (meta) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-                return ID.EquipType.RADAR_LO;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                return ID.EquipType.RADAR_HI;
-            default:
-                return 0;
-        }
+        return switch (meta) {
+            case 0, 1, 2, 3, 4 -> ID.EquipType.RADAR_LO;
+            case 5, 6, 7, 8 -> ID.EquipType.RADAR_HI;
+            default -> 0;
+        };
     }
 
     @Override
     public int getItemEnchantability(ItemStack stack) {
-        switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
-            case ID.EquipType.RADAR_LO:
-                return 12;
-            case ID.EquipType.RADAR_HI:
-                return 15;
-            default:
-                return 9;
-        }
+        return switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
+            case ID.EquipType.RADAR_LO -> 12;
+            case ID.EquipType.RADAR_HI -> 15;
+            default -> 9;
+        };
     }
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.RADAR_LO:  //200
-                return new int[]{itemRand.nextInt(7) + 12,
-                        itemRand.nextInt(6) + 10,
-                        itemRand.nextInt(5) + 9,
-                        itemRand.nextInt(4) + 7};
-            case ID.EquipType.RADAR_HI:  //2000
-                return new int[]{itemRand.nextInt(40) + 110,
-                        itemRand.nextInt(35) + 90,
-                        itemRand.nextInt(30) + 70,
-                        itemRand.nextInt(25) + 50};
-            default:
-                return new int[]{0, 0, 0, 0};
-        }
+        return switch (this.getEquipTypeIDFromMeta(meta)) {
+            case ID.EquipType.RADAR_LO ->  //200
+                    new int[]{itemRand.nextInt(7) + 12,
+                            itemRand.nextInt(6) + 10,
+                            itemRand.nextInt(5) + 9,
+                            itemRand.nextInt(4) + 7};
+            case ID.EquipType.RADAR_HI ->  //2000
+                    new int[]{itemRand.nextInt(40) + 110,
+                            itemRand.nextInt(35) + 90,
+                            itemRand.nextInt(30) + 70,
+                            itemRand.nextInt(25) + 50};
+            default -> new int[]{0, 0, 0, 0};
+        };
     }
 
 

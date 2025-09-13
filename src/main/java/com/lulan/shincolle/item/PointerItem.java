@@ -153,8 +153,7 @@ public class PointerItem extends BasicItem {
 //		LogHelper.debug("DEBUG: pointer swing (left click) "+entityLiving);
         int meta = item.getItemDamage();
 
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
+        if (entity instanceof EntityPlayer player) {
 
             //玩家左鍵使用此武器時 (client side only)
             if (entity.world.isRemote) {
@@ -285,19 +284,11 @@ public class PointerItem extends BasicItem {
                     //sneak only: change pointer mode
                     else {
                         //meta++ and cancel caress head mode
-                        switch (meta) {
-                            case 1:
-                            case 4:
-                                meta = 2;
-                                break;
-                            case 2:
-                            case 5:
-                                meta = 0;
-                                break;
-                            default:
-                                meta = 1;
-                                break;
-                        }
+                        meta = switch (meta) {
+                            case 1, 4 -> 2;
+                            case 2, 5 -> 0;
+                            default -> 1;
+                        };
 
                         item.setItemDamage(meta);
 
@@ -585,8 +576,7 @@ public class PointerItem extends BasicItem {
                         ParticleHelper.spawnAttackParticleAtEntity(hitObj.entityHit, hith * 0.01F * hitObj.entityHit.height, 0D, 0D, (byte) 18);
 
                         //if target is ship, show body cube indicator
-                        if (hitObj.entityHit instanceof BasicEntityShip) {
-                            BasicEntityShip ship = (BasicEntityShip) hitObj.entityHit;
+                        if (hitObj.entityHit instanceof BasicEntityShip ship) {
                             int hitBodyID = EntityHelper.getBodyArrayIDFromHeight(hith, ship);
                             int[] cubeRange = EntityHelper.getBodyRangeFromHeight(hith, ship);
                             byte parType = 19;
@@ -678,31 +668,20 @@ public class PointerItem extends BasicItem {
 
                                 //若是控制目標, 則顯示為pointer顏色
                                 if (select) {
-                                    switch (meta) {
-                                        case 1:        //group mode
-                                        case 4:
-                                            type = 2;
-                                            break;
-                                        case 2:        //formation mode
-                                        case 5:
-                                            type = 3;
-                                            break;
-                                        default:    //default mode
-                                            type = 1;
-                                            break;
-                                    }
+                                    type = switch (meta) {        //group mode
+                                        case 1, 4 -> 2;        //formation mode
+                                        case 2, 5 -> 3;
+                                        default ->    //default mode
+                                                1;
+                                    };
                                 }
                                 //非控制目標, 都顯示為綠色, formation mode保持黃色
                                 else {
-                                    switch (meta) {
-                                        case 2:        //formation mode
-                                        case 5:
-                                            type = 3;
-                                            break;
-                                        default:    //default mode
-                                            type = 0;
-                                            break;
-                                    }
+                                    type = switch (meta) {        //formation mode
+                                        case 2, 5 -> 3;
+                                        default ->    //default mode
+                                                0;
+                                    };
                                 }
 
                                 //在該ship上顯示隊伍圈圈
@@ -733,20 +712,20 @@ public class PointerItem extends BasicItem {
                 str3 = TextFormatting.GOLD + I18n.format("gui.shincolle:formation.format" + fid);
             }
 
-            switch (itemstack.getItemDamage()) {
-                case 1:
+            str2 = switch (itemstack.getItemDamage()) {
+                case 1 -> {
                     str1 = TextFormatting.RED + I18n.format("gui.shincolle:pointer1") + " : " + str3;
-                    str2 = TextFormatting.GRAY + I18n.format("gui.shincolle:pointer3");
-                    break;
-                case 2:
+                    yield TextFormatting.GRAY + I18n.format("gui.shincolle:pointer3");
+                }
+                case 2 -> {
                     str1 = TextFormatting.GOLD + I18n.format("gui.shincolle:pointer2") + " : " + str3;
-                    str2 = TextFormatting.GRAY + I18n.format("gui.shincolle:pointer3");
-                    break;
-                default:
+                    yield TextFormatting.GRAY + I18n.format("gui.shincolle:pointer3");
+                }
+                default -> {
                     str1 = TextFormatting.AQUA + I18n.format("gui.shincolle:pointer0") + " : " + str3;
-                    str2 = TextFormatting.GRAY + I18n.format("gui.shincolle:pointer3");
-                    break;
-            }
+                    yield TextFormatting.GRAY + I18n.format("gui.shincolle:pointer3");
+                }
+            };
 
             list.add(str1);
             list.add(str2);

@@ -49,7 +49,7 @@ public class EquipCompass extends BasicEquip {
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, World world, List list, ITooltipFlag par4) {
+    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag par4) {
         list.add(TextFormatting.GRAY + I18n.format("gui.shincolle:compass"));
         super.addInformation(itemstack, world, list, par4);
     }

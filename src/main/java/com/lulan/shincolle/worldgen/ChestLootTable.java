@@ -127,11 +127,11 @@ public class ChestLootTable {
 
         //add pool
         if (!lootList.isEmpty()) {
-            table.addPool(new LootPool(lootList.toArray(new LootEntry[lootList.size()]),
+            table.addPool(new LootPool(lootList.toArray(new LootEntry[0]),
                     //always can roll
                     new LootCondition[0],
                     //roll 1 ~ N/2 + 1 times
-                    new RandomValueRange(1, lootList.size() / 2 + 1),
+                    new RandomValueRange(1, (float) lootList.size() / 2 + 1),
                     //bonus roll +1 per luck level
                     new RandomValueRange(1),
                     poolName));

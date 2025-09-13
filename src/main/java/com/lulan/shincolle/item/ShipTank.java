@@ -51,16 +51,12 @@ public class ShipTank extends BasicItem {
 
     //get tank capacity
     public static int getCapacity(int meta) {
-        switch (meta) {
-            case 1:
-                return 128000;
-            case 2:
-                return 512000;
-            case 3:
-                return 2048000;
-            default:
-                return 32000;
-        }
+        return switch (meta) {
+            case 1 -> 128000;
+            case 2 -> 512000;
+            case 3 -> 2048000;
+            default -> 32000;
+        };
     }
 
     //get 1 block in front of player

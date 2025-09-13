@@ -24,8 +24,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -84,7 +82,7 @@ public class BasicEntityItem extends Entity {
 
     //can not damage this item
     @Override
-    public boolean attackEntityFrom(@Nonnull DamageSource attacker, float dmg) {
+    public boolean attackEntityFrom( DamageSource attacker, float dmg) {
         return false;
     }
 
@@ -176,7 +174,7 @@ public class BasicEntityItem extends Entity {
     }
 
     @Override
-    public void move(@Nonnull MoverType type, double x, double y, double z) {
+    public void move( MoverType type, double x, double y, double z) {
         this.world.profiler.startSection("move");
         double d0 = this.posX;
         double d1 = this.posY;
@@ -371,7 +369,7 @@ public class BasicEntityItem extends Entity {
     }
 
     @Override
-    protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
+    protected void updateFallState(double y, boolean onGroundIn,  IBlockState state,  BlockPos pos) {
     }
 
     @Override
@@ -415,7 +413,7 @@ public class BasicEntityItem extends Entity {
     /**
      * Sets the ItemStack for this entity
      */
-    public void setEntityItemStack(@Nullable ItemStack stack) {
+    public void setEntityItemStack(ItemStack stack) {
         if(stack == null){
             stack = ItemStack.EMPTY;
         }
@@ -427,7 +425,7 @@ public class BasicEntityItem extends Entity {
      * Called by a player entity when they collide with an entity
      */
     @Override
-    public void onCollideWithPlayer(@Nonnull EntityPlayer player) {
+    public void onCollideWithPlayer( EntityPlayer player) {
         if (!this.world.isRemote && !this.isDead) {
             //check delay
             if (this.delayBeforeCanPickup > 0) return;
@@ -524,7 +522,7 @@ public class BasicEntityItem extends Entity {
     }
 
     @Override
-    protected void writeEntityToNBT(@Nonnull NBTTagCompound nbt) {
+    protected void writeEntityToNBT( NBTTagCompound nbt) {
         if (!this.getEntityItem().isEmpty()) {
             nbt.setTag("Item", this.getEntityItem().writeToNBT(new NBTTagCompound()));
         }

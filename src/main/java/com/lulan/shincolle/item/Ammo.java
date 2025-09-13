@@ -25,18 +25,13 @@ public class Ammo extends BasicItem implements IShipResourceItem, IShipFoodItem 
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (meta) {
-            case 0:
-                return new int[]{0, 0, 1, 0};
-            case 1:
-                return new int[]{0, 0, 9, 0};
-            case 2:
-                return new int[]{0, 0, 4, 0};
-            case 3:
-                return new int[]{0, 0, 36, 0};
-            default:
-                return new int[]{0, 0, 0, 0};
-        }
+        return switch (meta) {
+            case 0 -> new int[]{0, 0, 1, 0};
+            case 1 -> new int[]{0, 0, 9, 0};
+            case 2 -> new int[]{0, 0, 4, 0};
+            case 3 -> new int[]{0, 0, 36, 0};
+            default -> new int[]{0, 0, 0, 0};
+        };
     }
 
     @Override

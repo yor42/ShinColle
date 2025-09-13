@@ -38,49 +38,37 @@ public class EquipTorpedo extends BasicEquip implements IShipEffectItem {
 
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
-        switch (meta) {
-            case 0:
-            case 1:
-            case 2:
-                return ID.EquipType.TORPEDO_LO;
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                return ID.EquipType.TORPEDO_HI;
-            default:
-                return 0;
-        }
+        return switch (meta) {
+            case 0, 1, 2 -> ID.EquipType.TORPEDO_LO;
+            case 3, 4, 5, 6 -> ID.EquipType.TORPEDO_HI;
+            default -> 0;
+        };
     }
 
     @Override
     public int getItemEnchantability(ItemStack stack) {
-        switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
-            case ID.EquipType.TORPEDO_LO:
-                return 16;
-            case ID.EquipType.TORPEDO_HI:
-                return 22;
-            default:
-                return 9;
-        }
+        return switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
+            case ID.EquipType.TORPEDO_LO -> 16;
+            case ID.EquipType.TORPEDO_HI -> 22;
+            default -> 9;
+        };
     }
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.TORPEDO_LO:  //160
-                return new int[]{itemRand.nextInt(4) + 8,
-                        itemRand.nextInt(5) + 8,
-                        itemRand.nextInt(6) + 12,
-                        itemRand.nextInt(4) + 5};
-            case ID.EquipType.TORPEDO_HI:  //1200
-                return new int[]{itemRand.nextInt(20) + 60,
-                        itemRand.nextInt(25) + 70,
-                        itemRand.nextInt(30) + 80,
-                        itemRand.nextInt(15) + 45};
-            default:
-                return new int[]{0, 0, 0, 0};
-        }
+        return switch (this.getEquipTypeIDFromMeta(meta)) {
+            case ID.EquipType.TORPEDO_LO ->  //160
+                    new int[]{itemRand.nextInt(4) + 8,
+                            itemRand.nextInt(5) + 8,
+                            itemRand.nextInt(6) + 12,
+                            itemRand.nextInt(4) + 5};
+            case ID.EquipType.TORPEDO_HI ->  //1200
+                    new int[]{itemRand.nextInt(20) + 60,
+                            itemRand.nextInt(25) + 70,
+                            itemRand.nextInt(30) + 80,
+                            itemRand.nextInt(15) + 45};
+            default -> new int[]{0, 0, 0, 0};
+        };
     }
 
     @Override
@@ -102,17 +90,12 @@ public class EquipTorpedo extends BasicEquip implements IShipEffectItem {
 
     @Override
     public int getMissileSpeedLevel(int meta) {
-        switch (meta) {
-            case 3:
-            case 4:
-                return 1;
-            case 5:
-                return 2;
-            case 6:
-                return 3;
-            default:
-                return 0;
-        }
+        return switch (meta) {
+            case 3, 4 -> 1;
+            case 5 -> 2;
+            case 6 -> 3;
+            default -> 0;
+        };
     }
 
     @Override

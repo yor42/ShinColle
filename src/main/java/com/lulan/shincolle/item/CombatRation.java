@@ -20,7 +20,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,20 +43,14 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
 
     @Override
     public float getFoodValue(int meta) {
-        switch (meta) {
-            case 1:
-                return 3600F;
-            case 2:
-                return 1200F;
-            case 3:
-                return 3900F;
-            case 4:
-                return 100F;
-            case 5:
-                return 900F;
-            default:
-                return 900F;
-        }
+        return switch (meta) {
+            case 1 -> 3600F;
+            case 2 -> 1200F;
+            case 3 -> 3900F;
+            case 4 -> 100F;
+            case 5 -> 900F;
+            default -> 900F;
+        };
     }
 
     @Override
@@ -72,26 +65,20 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
 
     @Override
     public int getMoraleValue(int meta) {
-        switch (meta) {
-            case 1:
-                return 1800;
-            case 2:
-                return 1600;
-            case 3:
-                return 2000;
-            case 4:
-                return 3000;
-            case 5:
-                return 4000;
-            default:
-                return 1400;
-        }
+        return switch (meta) {
+            case 1 -> 1800;
+            case 2 -> 1600;
+            case 3 -> 2000;
+            case 4 -> 3000;
+            case 5 -> 4000;
+            default -> 1400;
+        };
     }
 
     //start use item
     @Override
-    @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+
+    public ActionResult<ItemStack> onItemRightClick( World world,  EntityPlayer player,  EnumHand hand) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill && hand == EnumHand.MAIN_HAND) {
             player.setActiveHand(hand);
             return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
@@ -101,13 +88,13 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
     }
 
     @Override
-    @Nonnull
-    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
+
+    public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.EAT;
     }
 
     @Override
-    public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
+    public int getMaxItemUseDuration(ItemStack stack) {
         if (CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             return 60;
         } else {
@@ -116,8 +103,8 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
     }
 
     @Override
-    @Nonnull
-    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase host) {
+
+    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase host) {
         if (host instanceof EntityPlayer && !world.isRemote && CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             CapaTeitoku capa = CapaTeitoku.getTeitokuCapability((EntityPlayer) host);
 
@@ -130,7 +117,7 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
     }
 
     @Override
-    public void onUpdate(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull Entity entity, int slot, boolean inUse) {
+    public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean inUse) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
 
@@ -172,7 +159,7 @@ public class CombatRation extends BasicItem implements IShipCombatRation {
 
     //display equip information
     @Override
-    public void addInformation(ItemStack itemstack, World world, @Nonnull List<String> list, @Nonnull ITooltipFlag par4) {
+    public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag par4) {
         if (!itemstack.isEmpty()) {
             int meta = itemstack.getItemDamage();
             String str = I18n.format("gui.shincolle:combatration" + meta);

@@ -81,87 +81,59 @@ public class EquipCannon extends BasicEquip {
 
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
-        switch (meta) {
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 13:
-                return ID.EquipType.CANNON_TW_LO;
-            case 6:
-            case 7:
-            case 8:
-                return ID.EquipType.CANNON_TW_HI;
-            case 9:
-            case 10:
-            case 11:
-            case 14:
-            case 15:
-            case 16:
-                return ID.EquipType.CANNON_TR;
-            case 0:
-            case 1:
-            case 12:
-            default:
-                return ID.EquipType.CANNON_SI;
-        }
+        return switch (meta) {
+            case 2, 3, 4, 5, 13 -> ID.EquipType.CANNON_TW_LO;
+            case 6, 7, 8 -> ID.EquipType.CANNON_TW_HI;
+            case 9, 10, 11, 14, 15, 16 -> ID.EquipType.CANNON_TR;
+            default -> ID.EquipType.CANNON_SI;
+        };
     }
 
     @Override
     public int getIconFromDamage(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.CANNON_SI:
-                return 0;    //single cannon
-            case ID.EquipType.CANNON_TW_LO:
-            case ID.EquipType.CANNON_TW_HI:
-                return 1;    //twin cannon
-            case ID.EquipType.CANNON_TR:
-                return 2;    //triple cannon
-            default:
-                return 3;
-        }
+        return switch (this.getEquipTypeIDFromMeta(meta)) {
+            case ID.EquipType.CANNON_SI -> 0;    //single cannon
+            case ID.EquipType.CANNON_TW_LO, ID.EquipType.CANNON_TW_HI -> 1;    //twin cannon
+            case ID.EquipType.CANNON_TR -> 2;    //triple cannon
+            default -> 3;
+        };
     }
 
     @Override
     public int getItemEnchantability(ItemStack stack) {
-        switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
-            case ID.EquipType.CANNON_TW_LO:
-                return 12;
-            case ID.EquipType.CANNON_TW_HI:
-                return 18;
-            case ID.EquipType.CANNON_TR:
-                return 25;
-            default:
-                return 9;
-        }
+        return switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
+            case ID.EquipType.CANNON_TW_LO -> 12;
+            case ID.EquipType.CANNON_TW_HI -> 18;
+            case ID.EquipType.CANNON_TR -> 25;
+            default -> 9;
+        };
     }
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.CANNON_SI:     //128
-                return new int[]{itemRand.nextInt(4) + 5,
-                        itemRand.nextInt(4) + 5,
-                        itemRand.nextInt(5) + 11,
-                        itemRand.nextInt(3) + 3};
-            case ID.EquipType.CANNON_TW_LO:  //320
-                return new int[]{itemRand.nextInt(7) + 10,
-                        itemRand.nextInt(7) + 10,
-                        itemRand.nextInt(8) + 16,
-                        itemRand.nextInt(6) + 6};
-            case ID.EquipType.CANNON_TW_HI:  //1600
-                return new int[]{itemRand.nextInt(10) + 50,
-                        itemRand.nextInt(15) + 70,
-                        itemRand.nextInt(35) + 90,
-                        itemRand.nextInt(20) + 80};
-            case ID.EquipType.CANNON_TR:     //4400
-                return new int[]{itemRand.nextInt(60) + 170,
-                        itemRand.nextInt(70) + 210,
-                        itemRand.nextInt(80) + 250,
-                        itemRand.nextInt(50) + 130};
-            default:
-                return new int[]{0, 0, 0, 0};
-        }
+        return switch (this.getEquipTypeIDFromMeta(meta)) {
+            case ID.EquipType.CANNON_SI ->     //128
+                    new int[]{itemRand.nextInt(4) + 5,
+                            itemRand.nextInt(4) + 5,
+                            itemRand.nextInt(5) + 11,
+                            itemRand.nextInt(3) + 3};
+            case ID.EquipType.CANNON_TW_LO ->  //320
+                    new int[]{itemRand.nextInt(7) + 10,
+                            itemRand.nextInt(7) + 10,
+                            itemRand.nextInt(8) + 16,
+                            itemRand.nextInt(6) + 6};
+            case ID.EquipType.CANNON_TW_HI ->  //1600
+                    new int[]{itemRand.nextInt(10) + 50,
+                            itemRand.nextInt(15) + 70,
+                            itemRand.nextInt(35) + 90,
+                            itemRand.nextInt(20) + 80};
+            case ID.EquipType.CANNON_TR ->     //4400
+                    new int[]{itemRand.nextInt(60) + 170,
+                            itemRand.nextInt(70) + 210,
+                            itemRand.nextInt(80) + 250,
+                            itemRand.nextInt(50) + 130};
+            default -> new int[]{0, 0, 0, 0};
+        };
     }
 
 

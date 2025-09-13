@@ -54,49 +54,37 @@ public class EquipArmor extends BasicEquip {
 
     @Override
     public int getEquipTypeIDFromMeta(int meta) {
-        switch (meta) {
-            case 0:
-            case 2:
-            case 3:
-            case 5:
-                return ID.EquipType.ARMOR_LO;
-            case 1:
-            case 4:
-            case 6:
-                return ID.EquipType.ARMOR_HI;
-            default:
-                return 0;
-        }
+        return switch (meta) {
+            case 0, 2, 3, 5 -> ID.EquipType.ARMOR_LO;
+            case 1, 4, 6 -> ID.EquipType.ARMOR_HI;
+            default -> 0;
+        };
     }
 
     @Override
     public int getItemEnchantability(ItemStack stack) {
-        switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
-            case ID.EquipType.ARMOR_LO:
-                return 9;
-            case ID.EquipType.ARMOR_HI:
-                return 20;
-            default:
-                return 9;
-        }
+        return switch (this.getEquipTypeIDFromMeta(stack.getMetadata())) {
+            case ID.EquipType.ARMOR_LO -> 9;
+            case ID.EquipType.ARMOR_HI -> 20;
+            default -> 9;
+        };
     }
 
     @Override
     public int[] getResourceValue(int meta) {
-        switch (this.getEquipTypeIDFromMeta(meta)) {
-            case ID.EquipType.ARMOR_LO:  //80
-                return new int[]{itemRand.nextInt(3) + 3,
-                        itemRand.nextInt(4) + 4,
-                        itemRand.nextInt(2) + 2,
-                        itemRand.nextInt(2) + 2};
-            case ID.EquipType.ARMOR_HI:  //500
-                return new int[]{itemRand.nextInt(15) + 35,
-                        itemRand.nextInt(20) + 45,
-                        itemRand.nextInt(10) + 25,
-                        itemRand.nextInt(5) + 15};
-            default:
-                return new int[]{0, 0, 0, 0};
-        }
+        return switch (this.getEquipTypeIDFromMeta(meta)) {
+            case ID.EquipType.ARMOR_LO ->  //80
+                    new int[]{itemRand.nextInt(3) + 3,
+                            itemRand.nextInt(4) + 4,
+                            itemRand.nextInt(2) + 2,
+                            itemRand.nextInt(2) + 2};
+            case ID.EquipType.ARMOR_HI ->  //500
+                    new int[]{itemRand.nextInt(15) + 35,
+                            itemRand.nextInt(20) + 45,
+                            itemRand.nextInt(10) + 25,
+                            itemRand.nextInt(5) + 15};
+            default -> new int[]{0, 0, 0, 0};
+        };
     }
 
 

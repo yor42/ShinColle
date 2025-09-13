@@ -43,7 +43,7 @@ public class CalcHelper {
      */
     //convert wp stay time to string
     public static String tick2SecOrMin(int ticks) {
-        int t = (int) (ticks * 0.05F);
+        float t = (int) (ticks * 0.05F);
 
         if (t >= 60) {
             t *= 0.016666667F;
@@ -143,8 +143,7 @@ public class CalcHelper {
      * new line symbol: <BR><BR/><br><br/>
      */
     public static String[] stringConvNewlineToArray(String str) {
-        String[] strSplit = str.split("<BR>|<BR/>|<br>|<br/>");
-        return strSplit;
+        return str.split("<BR>|<BR/>|<br>|<br/>");
     }
 
     /**
@@ -152,7 +151,7 @@ public class CalcHelper {
      * new line symbol: <BR><BR/><br><br/>
      */
     public static List<String> stringConvNewlineToList(String str) {
-        List<String> result = new ArrayList();
+        List<String> result = new ArrayList<>();
         String[] strSplit = stringConvNewlineToArray(str);
 
         Collections.addAll(result, strSplit);
@@ -164,7 +163,7 @@ public class CalcHelper {
      * Set<Integer> to int[]
      */
     public static int[] intSetToArray(Set<Integer> iset) {
-        if (iset != null && iset.size() > 0) {
+        if (iset != null && !iset.isEmpty()) {
             int[] iarray = new int[iset.size()];
             int id = 0;
 
@@ -184,16 +183,16 @@ public class CalcHelper {
      */
     public static ArrayList<Integer> intArrayToList(int[] iarray) {
         if (iarray != null && iarray.length > 0) {
-            ArrayList<Integer> ilist = new ArrayList();
+            ArrayList<Integer> ilist = new ArrayList<>();
 
-            for (int i = 0; i < iarray.length; ++i) {
-                ilist.add(iarray[i]);
+            for (int j : iarray) {
+                ilist.add(j);
             }
 
             return ilist;
         }
 
-        return new ArrayList();
+        return new ArrayList<>();
     }
 
     /**
@@ -216,15 +215,13 @@ public class CalcHelper {
     /**
      * union list
      */
-    public static ArrayList listUnion(ArrayList list1, ArrayList list2) {
-        Set set1 = new HashSet();
+    public static <T> ArrayList<T> listUnion(ArrayList<T> list1, ArrayList<T> list2) {
+        Set<T> set1 = new HashSet<>();
 
-        set1.addAll(list1);  //將list1加入set
-        set1.addAll(list2);  //將list2加入set, 因為是hashset, 所以重複項不會加入
+        set1.addAll(list1);
+        set1.addAll(list2);
 
-        ArrayList retlist = new ArrayList(set1);  //set轉為list
-
-        return retlist;
+        return new ArrayList<>(set1);
     }
 
     /**

@@ -66,12 +66,10 @@ public class TrainingBook extends BasicItem {
     @Override
     @Nonnull
     public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase host) {
-        if (host instanceof EntityPlayer && !world.isRemote && CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
-            EntityPlayer player = (EntityPlayer) host;
+        if (host instanceof EntityPlayer player && !world.isRemote && CommonProxy.activeMetamorph && ConfigHandler.enableMetamorphSkill) {
             CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(player);
 
-            if (capa != null && capa.morphEntity instanceof BasicEntityShip) {
-                BasicEntityShip ship = (BasicEntityShip) capa.morphEntity;
+            if (capa != null && capa.morphEntity instanceof BasicEntityShip ship) {
 
                 //level up when use finish
                 if (ship.getLevel() < 150) {

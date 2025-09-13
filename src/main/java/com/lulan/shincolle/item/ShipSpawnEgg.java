@@ -82,14 +82,14 @@ public class ShipSpawnEgg extends BasicItem {
     public String getTranslationKey(ItemStack itemstack) {
         int metaid = itemstack.getItemDamage();        //get metadata
 
-        switch (metaid) {
-            case 0:      //small ship
-                return String.format("item." + Tags.MOD_ID + ":smallegg");
-            case 1:   //large ship
-                return String.format("item." + Tags.MOD_ID + ":largeegg");
-            default:  //spec ship egg
-                return String.format("item." + Tags.MOD_ID + ":shipegg" + metaid);
-        }
+        return switch (metaid) {
+            case 0 ->      //small ship
+                    String.format("item." + Tags.MOD_ID + ":smallegg");
+            case 1 ->   //large ship
+                    String.format("item." + Tags.MOD_ID + ":largeegg");
+            default ->  //spec ship egg
+                    String.format("item." + Tags.MOD_ID + ":shipegg" + metaid);
+        };
     }
 
     /**
@@ -115,86 +115,37 @@ public class ShipSpawnEgg extends BasicItem {
     }
 
     public int getIconFromDamage(int meta) {
-        switch (meta) {
-            case ID.ShipClass.DDI + 2:                //DD
-            case ID.ShipClass.DDRO + 2:
-            case ID.ShipClass.DDHA + 2:
-            case ID.ShipClass.DDNI + 2:
-            case ID.ShipClass.DDAkatsuki + 2:
-            case ID.ShipClass.DDAkatsuki + 2002:
-            case ID.ShipClass.DDHibiki + 2:
-            case ID.ShipClass.DDHibiki + 2002:
-            case ID.ShipClass.DDIkazuchi + 2:
-            case ID.ShipClass.DDIkazuchi + 2002:
-            case ID.ShipClass.DDInazuma + 2:
-            case ID.ShipClass.DDInazuma + 2002:
-            case ID.ShipClass.DDShimakaze + 2:
-            case ID.ShipClass.DDShimakaze + 2002:
-                return 2;
-            case ID.ShipClass.CLTenryuu + 2:        //CL
-            case ID.ShipClass.CLTenryuu + 2002:
-            case ID.ShipClass.CLTatsuta + 2:
-            case ID.ShipClass.CLTatsuta + 2002:
-                return 3;
-            case ID.ShipClass.CAAtago + 2:        //CA
-            case ID.ShipClass.CAAtago + 2002:
-            case ID.ShipClass.CATakao + 2:
-            case ID.ShipClass.CATakao + 2002:
-            case ID.ShipClass.CARI + 2:
-            case ID.ShipClass.CANE + 2:
-                return 4;
-            case ID.ShipClass.BBRU + 2:            //BB
-            case ID.ShipClass.BBTA + 2:
-            case ID.ShipClass.BBRE + 2:
-            case ID.ShipClass.BBNagato + 2:
-            case ID.ShipClass.BBNagato + 2002:
-            case ID.ShipClass.BBYamato + 2:
-            case ID.ShipClass.BBYamato + 2002:
-            case ID.ShipClass.BBKongou + 2:
-            case ID.ShipClass.BBKongou + 2002:
-            case ID.ShipClass.BBHiei + 2:
-            case ID.ShipClass.BBHiei + 2002:
-            case ID.ShipClass.BBHaruna + 2:
-            case ID.ShipClass.BBHaruna + 2002:
-            case ID.ShipClass.BBKirishima + 2:
-            case ID.ShipClass.BBKirishima + 2002:
-                return 5;
-            case ID.ShipClass.APWA + 2:                //AO, AR
-                return 6;
-            case ID.ShipClass.SSKA + 2:                //SS
-            case ID.ShipClass.SSYO + 2:
-            case ID.ShipClass.SSSO + 2:
-            case ID.ShipClass.SSU511 + 2:
-            case ID.ShipClass.SSU511 + 2002:
-            case ID.ShipClass.SSRo500 + 2:
-            case ID.ShipClass.SSRo500 + 2002:
-                return 7;
-            case ID.ShipClass.CVWD + 2:                //DE, demon, water demon
-                return 8;
-            case ID.ShipClass.CVHime + 2:                //PR
-            case ID.ShipClass.DDHime + 2:
-            case ID.ShipClass.CAHime + 2:
-            case ID.ShipClass.AirfieldHime + 2:
-            case ID.ShipClass.BBHime + 2:
-            case ID.ShipClass.HarbourHime + 2:
-            case ID.ShipClass.IsolatedHime + 2:
-            case ID.ShipClass.MidwayHime + 2:
-            case ID.ShipClass.NorthernHime + 2:
-            case ID.ShipClass.SSHime + 2:
-            case ID.ShipClass.SSNH + 2:
-                return 9;
-            case ID.ShipClass.CVWO + 2:                //CV
-            case ID.ShipClass.CVKaga + 2:
-            case ID.ShipClass.CVKaga + 2002:
-            case ID.ShipClass.CVAkagi + 2:
-            case ID.ShipClass.CVAkagi + 2002:
-                return 10;
-            case 1:        //large egg
-                return 1;
-            case 0:        //small egg
-            default:
-                return 0;
-        }
+        return switch (meta) {                //DD
+            case ID.ShipClass.DDI + 2, ID.ShipClass.DDRO + 2, ID.ShipClass.DDHA + 2, ID.ShipClass.DDNI + 2,
+                 ID.ShipClass.DDAkatsuki + 2, ID.ShipClass.DDAkatsuki + 2002, ID.ShipClass.DDHibiki + 2,
+                 ID.ShipClass.DDHibiki + 2002, ID.ShipClass.DDIkazuchi + 2, ID.ShipClass.DDIkazuchi + 2002,
+                 ID.ShipClass.DDInazuma + 2, ID.ShipClass.DDInazuma + 2002, ID.ShipClass.DDShimakaze + 2,
+                 ID.ShipClass.DDShimakaze + 2002 -> 2;        //CL
+            case ID.ShipClass.CLTenryuu + 2, ID.ShipClass.CLTenryuu + 2002, ID.ShipClass.CLTatsuta + 2,
+                 ID.ShipClass.CLTatsuta + 2002 -> 3;        //CA
+            case ID.ShipClass.CAAtago + 2, ID.ShipClass.CAAtago + 2002, ID.ShipClass.CATakao + 2,
+                 ID.ShipClass.CATakao + 2002, ID.ShipClass.CARI + 2, ID.ShipClass.CANE + 2 -> 4;            //BB
+            case ID.ShipClass.BBRU + 2, ID.ShipClass.BBTA + 2, ID.ShipClass.BBRE + 2, ID.ShipClass.BBNagato + 2,
+                 ID.ShipClass.BBNagato + 2002, ID.ShipClass.BBYamato + 2, ID.ShipClass.BBYamato + 2002,
+                 ID.ShipClass.BBKongou + 2, ID.ShipClass.BBKongou + 2002, ID.ShipClass.BBHiei + 2,
+                 ID.ShipClass.BBHiei + 2002, ID.ShipClass.BBHaruna + 2, ID.ShipClass.BBHaruna + 2002,
+                 ID.ShipClass.BBKirishima + 2, ID.ShipClass.BBKirishima + 2002 -> 5;
+            case ID.ShipClass.APWA + 2 ->                //AO, AR
+                    6;                //SS
+            case ID.ShipClass.SSKA + 2, ID.ShipClass.SSYO + 2, ID.ShipClass.SSSO + 2, ID.ShipClass.SSU511 + 2,
+                 ID.ShipClass.SSU511 + 2002, ID.ShipClass.SSRo500 + 2, ID.ShipClass.SSRo500 + 2002 -> 7;
+            case ID.ShipClass.CVWD + 2 ->                //DE, demon, water demon
+                    8;                //PR
+            case ID.ShipClass.CVHime + 2, ID.ShipClass.DDHime + 2, ID.ShipClass.CAHime + 2,
+                 ID.ShipClass.AirfieldHime + 2, ID.ShipClass.BBHime + 2, ID.ShipClass.HarbourHime + 2,
+                 ID.ShipClass.IsolatedHime + 2, ID.ShipClass.MidwayHime + 2, ID.ShipClass.NorthernHime + 2,
+                 ID.ShipClass.SSHime + 2, ID.ShipClass.SSNH + 2 -> 9;                //CV
+            case ID.ShipClass.CVWO + 2, ID.ShipClass.CVKaga + 2, ID.ShipClass.CVKaga + 2002, ID.ShipClass.CVAkagi + 2,
+                 ID.ShipClass.CVAkagi + 2002 -> 10;
+            case 1 ->        //large egg
+                    1;        //small egg
+            default -> 0;
+        };
     }
 
     /**

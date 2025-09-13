@@ -151,8 +151,7 @@ public class C2SGUIPackets implements IMessage {
                 if (world != null) {
                     TileEntity tile = world.getTileEntity(new BlockPos(msg.valueInt[1], msg.valueInt[2], msg.valueInt[3]));
 
-                    if (tile instanceof TileEntityDesk) {
-                        TileEntityDesk tile2 = (TileEntityDesk) tile;
+                    if (tile instanceof TileEntityDesk tile2) {
 
                         tile2.setField(0, msg.valueByte[0]);
                         tile2.setField(1, msg.valueByte[1]);

@@ -189,138 +189,73 @@ public class ShipCalc {
      * specific egg: specific ship
      */
     public static String getEntityToSpawnName(int type) {
-        switch (type) {
-            case ID.ShipClass.DDI:
-                return "EntityDestroyerI";
-            case ID.ShipClass.DDRO:
-                return "EntityDestroyerRo";
-            case ID.ShipClass.DDHA:
-                return "EntityDestroyerHa";
-            case ID.ShipClass.DDNI:
-                return "EntityDestroyerNi";
-            case ID.ShipClass.CARI:
-                return "EntityHeavyCruiserRi";
-            case ID.ShipClass.CANE:
-                return "EntityHeavyCruiserNe";
-            case ID.ShipClass.CVWO:
-                return "EntityCarrierWo";
-            case ID.ShipClass.BBRU:
-                return "EntityBattleshipRu";
-            case ID.ShipClass.BBTA:
-                return "EntityBattleshipTa";
-            case ID.ShipClass.BBRE:
-                return "EntityBattleshipRe";
-            case ID.ShipClass.APWA:
-                return "EntityTransportWa";
-            case ID.ShipClass.SSKA:
-                return "EntitySubmKa";
-            case ID.ShipClass.SSYO:
-                return "EntitySubmYo";
-            case ID.ShipClass.SSSO:
-                return "EntitySubmSo";
-            case ID.ShipClass.AirfieldHime:
-                return "EntityAirfieldHime";
-            case ID.ShipClass.CVHime:
-                return "EntityCarrierHime";
-            case ID.ShipClass.BBHime:
-                return "EntityBattleshipHime";
-            case ID.ShipClass.DDHime:
-                return "EntityDestroyerHime";
-            case ID.ShipClass.HarbourHime:
-                return "EntityHarbourHime";
-            case ID.ShipClass.IsolatedHime:
-                return "EntityIsolatedHime";
-            case ID.ShipClass.MidwayHime:
-                return "EntityMidwayHime";
-            case ID.ShipClass.NorthernHime:
-                return "EntityNorthernHime";
-            case ID.ShipClass.SSHime:
-                return "EntitySubmHime";
-            case ID.ShipClass.SSNH:
-                return "EntitySubmNewHime";
-            case ID.ShipClass.CVWD:
-                return "EntityCarrierWD";
-            case ID.ShipClass.DDShimakaze:
-                return "EntityDestroyerShimakaze";
-            case ID.ShipClass.DDShimakaze + 2000:
-                return "EntityDestroyerShimakazeMob";
-            case ID.ShipClass.BBKongou:
-                return "EntityBattleshipKongou";
-            case ID.ShipClass.BBKongou + 2000:
-                return "EntityBattleshipKongouMob";
-            case ID.ShipClass.BBHiei:
-                return "EntityBattleshipHiei";
-            case ID.ShipClass.BBHiei + 2000:
-                return "EntityBattleshipHieiMob";
-            case ID.ShipClass.BBHaruna:
-                return "EntityBattleshipHaruna";
-            case ID.ShipClass.BBHaruna + 2000:
-                return "EntityBattleshipHarunaMob";
-            case ID.ShipClass.BBKirishima:
-                return "EntityBattleshipKirishima";
-            case ID.ShipClass.BBKirishima + 2000:
-                return "EntityBattleshipKirishimaMob";
-            case ID.ShipClass.BBNagato:
-                return "EntityBattleshipNGT";
-            case ID.ShipClass.BBNagato + 2000:
-                return "EntityBattleshipNGTMob";
-            case ID.ShipClass.BBYamato:
-                return "EntityBattleshipYMT";
-            case ID.ShipClass.BBYamato + 2000:
-                return "EntityBattleshipYMTMob";
-            case ID.ShipClass.SSU511:
-                return "EntitySubmU511";
-            case ID.ShipClass.SSU511 + 2000:
-                return "EntitySubmU511Mob";
-            case ID.ShipClass.SSRo500:
-                return "EntitySubmRo500";
-            case ID.ShipClass.SSRo500 + 2000:
-                return "EntitySubmRo500Mob";
-            case ID.ShipClass.CVKaga:
-                return "EntityCarrierKaga";
-            case ID.ShipClass.CVKaga + 2000:
-                return "EntityCarrierKagaMob";
-            case ID.ShipClass.CVAkagi:
-                return "EntityCarrierAkagi";
-            case ID.ShipClass.CVAkagi + 2000:
-                return "EntityCarrierAkagiMob";
-            case ID.ShipClass.DDAkatsuki:
-                return "EntityDestroyerAkatsuki";
-            case ID.ShipClass.DDAkatsuki + 2000:
-                return "EntityDestroyerAkatsukiMob";
-            case ID.ShipClass.DDHibiki:
-                return "EntityDestroyerHibiki";
-            case ID.ShipClass.DDHibiki + 2000:
-                return "EntityDestroyerHibikiMob";
-            case ID.ShipClass.DDIkazuchi:
-                return "EntityDestroyerIkazuchi";
-            case ID.ShipClass.DDIkazuchi + 2000:
-                return "EntityDestroyerIkazuchiMob";
-            case ID.ShipClass.DDInazuma:
-                return "EntityDestroyerInazuma";
-            case ID.ShipClass.DDInazuma + 2000:
-                return "EntityDestroyerInazumaMob";
-            case ID.ShipClass.CLTenryuu:
-                return "EntityCruiserTenryuu";
-            case ID.ShipClass.CLTenryuu + 2000:
-                return "EntityCruiserTenryuuMob";
-            case ID.ShipClass.CLTatsuta:
-                return "EntityCruiserTatsuta";
-            case ID.ShipClass.CLTatsuta + 2000:
-                return "EntityCruiserTatsutaMob";
-            case ID.ShipClass.CAAtago:
-                return "EntityCruiserAtago";
-            case ID.ShipClass.CAAtago + 2000:
-                return "EntityCruiserAtagoMob";
-            case ID.ShipClass.CATakao:
-                return "EntityCruiserTakao";
-            case ID.ShipClass.CATakao + 2000:
-                return "EntityCruiserTakaoMob";
-            case ID.ShipClass.CAHime:
-                return "EntityCAHime";
-            default:
-                return "EntityDestroyerI";
-        }
+        return switch (type) {
+            case ID.ShipClass.DDI -> "EntityDestroyerI";
+            case ID.ShipClass.DDRO -> "EntityDestroyerRo";
+            case ID.ShipClass.DDHA -> "EntityDestroyerHa";
+            case ID.ShipClass.DDNI -> "EntityDestroyerNi";
+            case ID.ShipClass.CARI -> "EntityHeavyCruiserRi";
+            case ID.ShipClass.CANE -> "EntityHeavyCruiserNe";
+            case ID.ShipClass.CVWO -> "EntityCarrierWo";
+            case ID.ShipClass.BBRU -> "EntityBattleshipRu";
+            case ID.ShipClass.BBTA -> "EntityBattleshipTa";
+            case ID.ShipClass.BBRE -> "EntityBattleshipRe";
+            case ID.ShipClass.APWA -> "EntityTransportWa";
+            case ID.ShipClass.SSKA -> "EntitySubmKa";
+            case ID.ShipClass.SSYO -> "EntitySubmYo";
+            case ID.ShipClass.SSSO -> "EntitySubmSo";
+            case ID.ShipClass.AirfieldHime -> "EntityAirfieldHime";
+            case ID.ShipClass.CVHime -> "EntityCarrierHime";
+            case ID.ShipClass.BBHime -> "EntityBattleshipHime";
+            case ID.ShipClass.DDHime -> "EntityDestroyerHime";
+            case ID.ShipClass.HarbourHime -> "EntityHarbourHime";
+            case ID.ShipClass.IsolatedHime -> "EntityIsolatedHime";
+            case ID.ShipClass.MidwayHime -> "EntityMidwayHime";
+            case ID.ShipClass.NorthernHime -> "EntityNorthernHime";
+            case ID.ShipClass.SSHime -> "EntitySubmHime";
+            case ID.ShipClass.SSNH -> "EntitySubmNewHime";
+            case ID.ShipClass.CVWD -> "EntityCarrierWD";
+            case ID.ShipClass.DDShimakaze -> "EntityDestroyerShimakaze";
+            case ID.ShipClass.DDShimakaze + 2000 -> "EntityDestroyerShimakazeMob";
+            case ID.ShipClass.BBKongou -> "EntityBattleshipKongou";
+            case ID.ShipClass.BBKongou + 2000 -> "EntityBattleshipKongouMob";
+            case ID.ShipClass.BBHiei -> "EntityBattleshipHiei";
+            case ID.ShipClass.BBHiei + 2000 -> "EntityBattleshipHieiMob";
+            case ID.ShipClass.BBHaruna -> "EntityBattleshipHaruna";
+            case ID.ShipClass.BBHaruna + 2000 -> "EntityBattleshipHarunaMob";
+            case ID.ShipClass.BBKirishima -> "EntityBattleshipKirishima";
+            case ID.ShipClass.BBKirishima + 2000 -> "EntityBattleshipKirishimaMob";
+            case ID.ShipClass.BBNagato -> "EntityBattleshipNGT";
+            case ID.ShipClass.BBNagato + 2000 -> "EntityBattleshipNGTMob";
+            case ID.ShipClass.BBYamato -> "EntityBattleshipYMT";
+            case ID.ShipClass.BBYamato + 2000 -> "EntityBattleshipYMTMob";
+            case ID.ShipClass.SSU511 -> "EntitySubmU511";
+            case ID.ShipClass.SSU511 + 2000 -> "EntitySubmU511Mob";
+            case ID.ShipClass.SSRo500 -> "EntitySubmRo500";
+            case ID.ShipClass.SSRo500 + 2000 -> "EntitySubmRo500Mob";
+            case ID.ShipClass.CVKaga -> "EntityCarrierKaga";
+            case ID.ShipClass.CVKaga + 2000 -> "EntityCarrierKagaMob";
+            case ID.ShipClass.CVAkagi -> "EntityCarrierAkagi";
+            case ID.ShipClass.CVAkagi + 2000 -> "EntityCarrierAkagiMob";
+            case ID.ShipClass.DDAkatsuki -> "EntityDestroyerAkatsuki";
+            case ID.ShipClass.DDAkatsuki + 2000 -> "EntityDestroyerAkatsukiMob";
+            case ID.ShipClass.DDHibiki -> "EntityDestroyerHibiki";
+            case ID.ShipClass.DDHibiki + 2000 -> "EntityDestroyerHibikiMob";
+            case ID.ShipClass.DDIkazuchi -> "EntityDestroyerIkazuchi";
+            case ID.ShipClass.DDIkazuchi + 2000 -> "EntityDestroyerIkazuchiMob";
+            case ID.ShipClass.DDInazuma -> "EntityDestroyerInazuma";
+            case ID.ShipClass.DDInazuma + 2000 -> "EntityDestroyerInazumaMob";
+            case ID.ShipClass.CLTenryuu -> "EntityCruiserTenryuu";
+            case ID.ShipClass.CLTenryuu + 2000 -> "EntityCruiserTenryuuMob";
+            case ID.ShipClass.CLTatsuta -> "EntityCruiserTatsuta";
+            case ID.ShipClass.CLTatsuta + 2000 -> "EntityCruiserTatsutaMob";
+            case ID.ShipClass.CAAtago -> "EntityCruiserAtago";
+            case ID.ShipClass.CAAtago + 2000 -> "EntityCruiserAtagoMob";
+            case ID.ShipClass.CATakao -> "EntityCruiserTakao";
+            case ID.ShipClass.CATakao + 2000 -> "EntityCruiserTakaoMob";
+            case ID.ShipClass.CAHime -> "EntityCAHime";
+            default -> "EntityDestroyerI";
+        };
     }
 
     /**
@@ -336,66 +271,45 @@ public class ShipCalc {
 
         //25% for super rare level
         if (ran1 > 75) {
-            switch (rand.nextInt(3)) {
-                case 1:
-                    return getEntityToSpawnName(ID.ShipClass.BBYamato + 2000);
-                case 2:
-                    switch (rand.nextInt(4)) {
-                        case 1:
-                            return getEntityToSpawnName(ID.ShipClass.BBHiei + 2000);
-                        case 2:
-                            return getEntityToSpawnName(ID.ShipClass.BBHaruna + 2000);
-                        case 3:
-                            return getEntityToSpawnName(ID.ShipClass.BBKirishima + 2000);
-                        default:
-                            return getEntityToSpawnName(ID.ShipClass.BBKongou + 2000);
-                    }
-                default:
-                    return getEntityToSpawnName(ID.ShipClass.BBNagato + 2000);
-            }
+            return switch (rand.nextInt(3)) {
+                case 1 -> getEntityToSpawnName(ID.ShipClass.BBYamato + 2000);
+                case 2 -> switch (rand.nextInt(4)) {
+                    case 1 -> getEntityToSpawnName(ID.ShipClass.BBHiei + 2000);
+                    case 2 -> getEntityToSpawnName(ID.ShipClass.BBHaruna + 2000);
+                    case 3 -> getEntityToSpawnName(ID.ShipClass.BBKirishima + 2000);
+                    default -> getEntityToSpawnName(ID.ShipClass.BBKongou + 2000);
+                };
+                default -> getEntityToSpawnName(ID.ShipClass.BBNagato + 2000);
+            };
         }
         //30% for rare level
         else if (ran1 > 45) {
-            switch (rand.nextInt(3)) {
-                case 1:
-                case 2:  //66%
-                    switch (rand.nextInt(4)) {
-                        case 1:
-                            return getEntityToSpawnName(ID.ShipClass.CLTenryuu + 2000);
-                        case 2:
-                            return getEntityToSpawnName(ID.ShipClass.CLTatsuta + 2000);
-                        case 3:
-                            return getEntityToSpawnName(ID.ShipClass.CAAtago + 2000);
-                        default:
-                            return getEntityToSpawnName(ID.ShipClass.CATakao + 2000);
-                    }
-                default: //33%
-                    switch (rand.nextInt(2)) {
-                        case 1:
-                            return getEntityToSpawnName(ID.ShipClass.CVKaga + 2000);
-                        default:
-                            return getEntityToSpawnName(ID.ShipClass.CVAkagi + 2000);
-                    }
-            }
+            return switch (rand.nextInt(3)) {
+                case 1, 2 ->  //66%
+                        switch (rand.nextInt(4)) {
+                            case 1 -> getEntityToSpawnName(ID.ShipClass.CLTenryuu + 2000);
+                            case 2 -> getEntityToSpawnName(ID.ShipClass.CLTatsuta + 2000);
+                            case 3 -> getEntityToSpawnName(ID.ShipClass.CAAtago + 2000);
+                            default -> getEntityToSpawnName(ID.ShipClass.CATakao + 2000);
+                        };
+                default -> //33%
+                        switch (rand.nextInt(2)) {
+                            case 1 -> getEntityToSpawnName(ID.ShipClass.CVKaga + 2000);
+                            default -> getEntityToSpawnName(ID.ShipClass.CVAkagi + 2000);
+                        };
+            };
         }
         //45% for common level
         else {
-            switch (rand.nextInt(7)) {
-                case 1:
-                    return getEntityToSpawnName(ID.ShipClass.DDHibiki + 2000);
-                case 2:
-                    return getEntityToSpawnName(ID.ShipClass.DDIkazuchi + 2000);
-                case 3:
-                    return getEntityToSpawnName(ID.ShipClass.DDInazuma + 2000);
-                case 4:
-                    return getEntityToSpawnName(ID.ShipClass.DDShimakaze + 2000);
-                case 5:
-                    return getEntityToSpawnName(ID.ShipClass.SSU511 + 2000);
-                case 6:
-                    return getEntityToSpawnName(ID.ShipClass.SSRo500 + 2000);
-                default:
-                    return getEntityToSpawnName(ID.ShipClass.DDAkatsuki + 2000);
-            }
+            return switch (rand.nextInt(7)) {
+                case 1 -> getEntityToSpawnName(ID.ShipClass.DDHibiki + 2000);
+                case 2 -> getEntityToSpawnName(ID.ShipClass.DDIkazuchi + 2000);
+                case 3 -> getEntityToSpawnName(ID.ShipClass.DDInazuma + 2000);
+                case 4 -> getEntityToSpawnName(ID.ShipClass.DDShimakaze + 2000);
+                case 5 -> getEntityToSpawnName(ID.ShipClass.SSU511 + 2000);
+                case 6 -> getEntityToSpawnName(ID.ShipClass.SSRo500 + 2000);
+                default -> getEntityToSpawnName(ID.ShipClass.DDAkatsuki + 2000);
+            };
         }
     }
 

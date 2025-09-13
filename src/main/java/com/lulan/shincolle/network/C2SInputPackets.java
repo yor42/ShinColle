@@ -70,8 +70,7 @@ public class C2SInputPackets implements IMessage {
             switch (msg.packetID) {
                 case PID.MountMove:    //mounts key input packet
                     //set player's mount movement
-                    if (player.isRiding() && player.getRidingEntity() instanceof BasicEntityMount) {
-                        BasicEntityMount mount = (BasicEntityMount) player.getRidingEntity();
+                    if (player.isRiding() && player.getRidingEntity() instanceof BasicEntityMount mount) {
                         BasicEntityShip ship = (BasicEntityShip) mount.getHostEntity();
 
                         //check ship owner is player
@@ -84,8 +83,7 @@ public class C2SInputPackets implements IMessage {
                     break;
                 case PID.MountGUI:    //mounts open GUI
                     //set player's mount movement
-                    if (player.isRiding() && player.getRidingEntity() instanceof BasicEntityMount) {
-                        BasicEntityMount mount = (BasicEntityMount) player.getRidingEntity();
+                    if (player.isRiding() && player.getRidingEntity() instanceof BasicEntityMount mount) {
                         BasicEntityShip ship = (BasicEntityShip) mount.getHostEntity();
 
                         //check ship owner is player
@@ -93,8 +91,7 @@ public class C2SInputPackets implements IMessage {
                             //open ship GUI
                             FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.SHIPINVENTORY, player.world, mount.getHostEntity().getEntityId(), 0, 0);
                         }
-                    } else if (player.getPassengers().size() > 0 && player.getPassengers().get(0) instanceof BasicEntityShip) {
-                        BasicEntityShip ship = (BasicEntityShip) player.getPassengers().get(0);
+                    } else if (player.getPassengers().size() > 0 && player.getPassengers().get(0) instanceof BasicEntityShip ship) {
 
                         //check ship owner is player
                         if (TeamHelper.checkSameOwner(player, ship)) {
@@ -108,7 +105,6 @@ public class C2SInputPackets implements IMessage {
                     CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(player);
 
                     if (capa != null && capa.morphEntity instanceof BasicEntityShip) {
-                        BasicEntityShip ship = (BasicEntityShip) capa.morphEntity;
                         FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.MORPHINVENTORY, player.world, 0, 0, 0);
                     }
                 }
@@ -120,13 +116,13 @@ public class C2SInputPackets implements IMessage {
                     player.inventory.currentItem = msg.value3[0];
                     break;
                 case PID.CmdChOwner:    //command: change owner
-                    /** ship change owner
-                     *    1. (done) check command sender is OP (server)
-                     *    2. (done) check owner exists (server)
-                     *    3. (done) send sender eid to client (s to c)
-                     *    4. (done) check sender mouse over target is ship (client)
-                     *    5. (done) send ship eid to server (c to s)
-                     *    6. change ship's owner UUID and PlayerUID (server)
+                    /* ship change owner
+                         1. (done) check command sender is OP (server)
+                         2. (done) check owner exists (server)
+                         3. (done) send sender eid to client (s to c)
+                         4. (done) check sender mouse over target is ship (client)
+                         5. (done) send ship eid to server (c to s)
+                         6. change ship's owner UUID and PlayerUID (server)
                      */
                     //value3: 0:owner eid, 1:ship eid, 2:world id
                     player = (EntityPlayerMP) EntityHelper.getEntityPlayerByID(msg.value3[0], msg.value3[2], false);
@@ -143,17 +139,16 @@ public class C2SInputPackets implements IMessage {
                     }
                     break;
                 case PID.CmdShipAttr:   //command: set ship attrs
-                    /**
-                     *	  1.(done) check command sender is OP (server)
-                     *    2.(done) send sender eid to client (s to c)
-                     *    3.(done) check sender mouse over target is ship (client)
-                     *    4.(done) send ship eid to server (c to s)
-                     *    5. change ship's attributes (server)
+                    /*
+                     	  1.(done) check command sender is OP (server)
+                         2.(done) send sender eid to client (s to c)
+                         3.(done) check sender mouse over target is ship (client)
+                         4.(done) send ship eid to server (c to s)
+                         5. change ship's attributes (server)
                      */
                     entity = EntityHelper.getEntityByID(msg.value3[0], msg.value3[1], false);
 
-                    if (entity instanceof BasicEntityShip) {
-                        BasicEntityShip ship = (BasicEntityShip) entity;
+                    if (entity instanceof BasicEntityShip ship) {
 
                         if (msg.value3.length == 9) {
                             Attrs shipattrs = ship.getAttrs();
@@ -193,8 +188,7 @@ public class C2SInputPackets implements IMessage {
                 case PID.Request_Riding: {
                     entity = EntityHelper.getEntityByID(msg.value3[0], msg.value3[1], false);
 
-                    if (entity instanceof BasicEntityShip) {
-                        BasicEntityShip ship = (BasicEntityShip) entity;
+                    if (entity instanceof BasicEntityShip ship) {
 
                         if (TeamHelper.checkSameOwner(player, ship)) {
                             ship.setEntitySit(false);
@@ -207,9 +201,9 @@ public class C2SInputPackets implements IMessage {
                 break;
                 case PID.Request_WpSet:        //waypoint pairing packet
                 {
-                    /**
-                     * waypoint pairing packet:
-                     * data: 0:playerUID, 1~3:from xyz, 4~6:to xyz
+                    /*
+                      waypoint pairing packet:
+                      data: 0:playerUID, 1~3:from xyz, 4~6:to xyz
                      */
                     EntityPlayer p = ctx.getServerHandler().player;
                     World w = null;
@@ -236,9 +230,9 @@ public class C2SInputPackets implements IMessage {
                 break;
                 case PID.Request_ChestSet:    //chest and waypoint pairing packet
                 {
-                    /**
-                     * chest and waypoint pairing packet:
-                     * data: 0:playerUID, 1~3:waypoint xyz, 4~6:chest xyz
+                    /*
+                      chest and waypoint pairing packet:
+                      data: 0:playerUID, 1~3:waypoint xyz, 4~6:chest xyz
                      */
                     EntityPlayer p = ctx.getServerHandler().player;
                     World w = null;
@@ -298,8 +292,7 @@ public class C2SInputPackets implements IMessage {
                 {
                     entity = EntityHelper.getEntityByID(msg.value3[0], msg.value3[1], false);
 
-                    if (entity instanceof BasicEntityShip) {
-                        BasicEntityShip ship = (BasicEntityShip) entity;
+                    if (entity instanceof BasicEntityShip ship) {
                         if (!ship.isMorph()) ship.sendSyncPacketBuffMap();
                     }
                 }
@@ -420,10 +413,10 @@ public class C2SInputPackets implements IMessage {
         //收到封包時顯示debug訊息
         @Override
         public IMessage onMessage(C2SInputPackets message, MessageContext ctx) {
-            /**
-             * 1.8之後minecraft主程式分為minecraft server/clinet跟networking兩個thread執行
-             * 因此handler這邊必須使用addScheduledTask將封包處理方法加入到並行控制佇列中處理
-             * 以避免多執行緒下各種並行處理問題
+            /*
+              1.8之後minecraft主程式分為minecraft server/clinet跟networking兩個thread執行
+              因此handler這邊必須使用addScheduledTask將封包處理方法加入到並行控制佇列中處理
+              以避免多執行緒下各種並行處理問題
              */
             FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> C2SInputPackets.handle(message, ctx));
             return null;
