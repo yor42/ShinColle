@@ -1521,6 +1521,10 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
         }
     }
 
+    public int getLVCap(){
+        return this.getStateFlag(ID.F.IsMarried) ? 150 : 100;
+    }
+
     /**
      * 1.9.4:
      * EnumActionResult:
@@ -1578,9 +1582,9 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
                 }
                 //use book
                 else if (stack.getItem() == ModItems.TrainingBook) {
-                    if (this.getLevel() < 150) {
+                    if (this.getLevel() < this.getLVCap()) {
                         int lv = this.getLevel() + 5 + this.rand.nextInt(6);
-                        int lvcap = this.getStateFlag(ID.F.IsMarried) ? 150 : 100;
+                        int lvcap = this.getLVCap();
                         if (lv > lvcap) lv = lvcap;
 
                         this.setShipLevel(lv, true);
@@ -1590,7 +1594,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
                         this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_LEVELUP, this.getSoundCategory(), 0.75F, 1F);
 
                         //item--
-                        if (player != null && !player.capabilities.isCreativeMode) {
+                        if (!player.capabilities.isCreativeMode) {
                             stack.shrink(1);
                         }
                     }

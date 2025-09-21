@@ -56,28 +56,30 @@ public class TargetHelper {
      * check target is in player's attack target class list
      */
     public static boolean checkAttackTargetList(Entity host, Entity target) {
-        if (target != null && host instanceof IShipAttackBase) {
-            int pid = ((IShipAttackBase) host).getPlayerUID();
-            HashMap<Integer, String> tarList = ServerProxy.getPlayerTargetClass(pid);
+        if (target == null || !(host instanceof IShipAttackBase)) {
+            return false;
+        }
+        int pid = ((IShipAttackBase) host).getPlayerUID();
+        HashMap<Integer, String> tarList = ServerProxy.getPlayerTargetClass(pid);
 
-            if (tarList != null) {
-                String tarClass = target.getClass().getSimpleName();
+        if (tarList == null) {
+            return false;
+        }
+        String tarClass = target.getClass().getSimpleName();
 
-                //target class is in list
-                if (tarList.containsKey(tarClass.hashCode())) {
-                    //if tameable entity, check owner
-                    if (target instanceof IEntityOwnable) {
-                        if (!TeamHelper.checkSameOwner(host, target)) {
-                            return true;
-                        }
-                    }
-
-                    return true;
-                }
+        //target class is in list
+        if (!tarList.containsKey(tarClass.hashCode())) {
+            return false;
+        }
+        //if tameable entity, check owner
+        if (target instanceof IEntityOwnable) {
+            if (!TeamHelper.checkSameOwner(host, target)) {
+                return true;
             }
         }
 
-        return false;
+        return true;
+
     }
 
     /**

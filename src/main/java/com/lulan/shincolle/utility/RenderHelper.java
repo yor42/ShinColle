@@ -82,59 +82,60 @@ public class RenderHelper {
     public static void renderItemInFirstPerson(AbstractClientPlayer player, float ptick, float pitch, EnumHand hand, float swing, @Nullable ItemStack stack, float equip) {
         EnumHandSide enumhandside = player.getPrimaryHand();
 
-        if (!player.isInvisible()) {
-            boolean flag = enumhandside != EnumHandSide.LEFT;
-            float f = flag ? 1.0F : -1.0F;
-
-            //get player skin
-            ClientProxy.getMineraft().getTextureManager().bindTexture(player.getLocationSkin());
-
-            //draw hand
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(f * 0.64000005F, -0.6F, -0.71999997F);
-            GlStateManager.rotate(f * 45.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.translate(f * -1.0F, 3.6F, 3.5F);
-            GlStateManager.rotate(f * 120.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotate(200.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(f * -135.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.translate(f * 5.6F, 0.0F, 0.0F);
-
-            if (ClientProxy.getGameSetting().keyBindUseItem.isKeyDown()) {
-                switch (stack.getMetadata()) {
-                    case 3:
-                        GlStateManager.translate(1.3F, 4F, 0.0F);
-                        GlStateManager.scale(3F, 3F, 3F);
-                        GlStateManager.rotate(MathHelper.cos((player.ticksExisted + ptick) * 0.125F) * -20F - 60F, 0F, 0F, 1F);
-                        break;
-                    case 4:
-                        GlStateManager.rotate(70F, 0F, 1F, 0F);
-                        GlStateManager.rotate(-20F, 0F, 0F, 1F);
-                        GlStateManager.translate(-2F, 16F, 10F);
-                        GlStateManager.scale(12F, 12F, 12F);
-                        GlStateManager.rotate(MathHelper.cos((player.ticksExisted + ptick) * 0.1F) * -15F + 20F, 1F, 0F, 0F);
-                        break;
-                    default:
-                        GlStateManager.translate(13.5F, 12.5F, 2.5F);
-                        GlStateManager.scale(9F, 9F, 9F);
-                        GlStateManager.rotate(MathHelper.cos((player.ticksExisted + ptick) * 0.2F) * -15F - 20F, 1F, 1F, 0F);
-                        break;
-                }
-            }
-
-            Render render = ClientProxy.getMineraft().getRenderManager().getEntityRenderObject(player); // This *might* crash in some cases, we'll have to see
-            RenderPlayer renderplayer = (RenderPlayer) render;
-
-            GlStateManager.disableCull();
-
-            if (flag) {
-                renderplayer.renderRightArm(player);
-            } else {
-                renderplayer.renderLeftArm(player);
-            }
-
-            GlStateManager.enableCull();
-            GlStateManager.popMatrix();
+        if (player.isInvisible()) {
+            return;
         }
+        boolean flag = enumhandside != EnumHandSide.LEFT;
+        float f = flag ? 1.0F : -1.0F;
+
+        //get player skin
+        ClientProxy.getMineraft().getTextureManager().bindTexture(player.getLocationSkin());
+
+        //draw hand
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(f * 0.64000005F, -0.6F, -0.71999997F);
+        GlStateManager.rotate(f * 45.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(f * -1.0F, 3.6F, 3.5F);
+        GlStateManager.rotate(f * 120.0F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(200.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(f * -135.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(f * 5.6F, 0.0F, 0.0F);
+
+        if (ClientProxy.getGameSetting().keyBindUseItem.isKeyDown()) {
+            switch (stack.getMetadata()) {
+                case 3:
+                    GlStateManager.translate(1.3F, 4F, 0.0F);
+                    GlStateManager.scale(3F, 3F, 3F);
+                    GlStateManager.rotate(MathHelper.cos((player.ticksExisted + ptick) * 0.125F) * -20F - 60F, 0F, 0F, 1F);
+                    break;
+                case 4:
+                    GlStateManager.rotate(70F, 0F, 1F, 0F);
+                    GlStateManager.rotate(-20F, 0F, 0F, 1F);
+                    GlStateManager.translate(-2F, 16F, 10F);
+                    GlStateManager.scale(12F, 12F, 12F);
+                    GlStateManager.rotate(MathHelper.cos((player.ticksExisted + ptick) * 0.1F) * -15F + 20F, 1F, 0F, 0F);
+                    break;
+                default:
+                    GlStateManager.translate(13.5F, 12.5F, 2.5F);
+                    GlStateManager.scale(9F, 9F, 9F);
+                    GlStateManager.rotate(MathHelper.cos((player.ticksExisted + ptick) * 0.2F) * -15F - 20F, 1F, 1F, 0F);
+                    break;
+            }
+        }
+
+        Render render = ClientProxy.getMineraft().getRenderManager().getEntityRenderObject(player); // This *might* crash in some cases, we'll have to see
+        RenderPlayer renderplayer = (RenderPlayer) render;
+
+        GlStateManager.disableCull();
+
+        if (flag) {
+            renderplayer.renderRightArm(player);
+        } else {
+            renderplayer.renderLeftArm(player);
+        }
+
+        GlStateManager.enableCull();
+        GlStateManager.popMatrix();
     }
 
     /**
@@ -143,7 +144,7 @@ public class RenderHelper {
     public static void drawPlayerSkillIcon(RenderGameOverlayEvent event) {
         //get mc
         Minecraft mc = ClientProxy.getMineraft();
-        if (mc == null || mc.skipRenderWorld) return;
+        if (mc.skipRenderWorld) return;
         FontRenderer fr = mc.fontRenderer;
 
         //get player
@@ -162,7 +163,7 @@ public class RenderHelper {
         if (player.getRidingEntity() instanceof BasicEntityMount &&
                 ((BasicEntityMount) player.getRidingEntity()).getHostEntity() instanceof BasicEntityShip) {
             ship = (BasicEntityShip) ((BasicEntityMount) player.getRidingEntity()).getHostEntity();
-        } else if (player.getPassengers().size() > 0 && player.getPassengers().get(0) instanceof BasicEntityShip) {
+        } else if (!player.getPassengers().isEmpty() && player.getPassengers().get(0) instanceof BasicEntityShip) {
             ship = (BasicEntityShip) player.getPassengers().get(0);
         }
         //if player is in morphing (req: Metamorph mod)

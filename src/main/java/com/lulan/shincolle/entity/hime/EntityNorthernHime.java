@@ -266,7 +266,7 @@ public class EntityNorthernHime extends BasicEntityShipCV {
         float launchPos = (float) posY + height;
         Dist4d distVec = CalcHelper.getDistanceFromA2B(this, target);
 
-        if (getShipDepth() > 0D) launchPos += 0.2D;
+        if (getShipDepth() > 0D) launchPos += 0.2F;
 
         //experience++
         addShipExp(ConfigHandler.expGain[2]);

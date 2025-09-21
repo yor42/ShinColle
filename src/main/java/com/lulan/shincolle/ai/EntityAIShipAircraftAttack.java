@@ -29,7 +29,7 @@ public class EntityAIShipAircraftAttack extends EntityAIBase {
 
 
     public EntityAIShipAircraftAttack(BasicEntityAirplane host) {
-        if (!(host instanceof BasicEntityAirplane)) {
+        if (host == null) {
             throw new IllegalArgumentException("AircraftAttack AI requires BasicEntityAirplane");
         } else {
             this.host = host;

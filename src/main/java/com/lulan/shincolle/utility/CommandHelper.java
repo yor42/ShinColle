@@ -48,22 +48,23 @@ public class CommandHelper {
         //get sender entity
         EntityPlayer sender = EntityHelper.getEntityPlayerByID(senderEID, 0, true);
 
-        if (sender != null) {
-            //get sender's mouse over target
-            RayTraceResult hitObj = EntityHelper.getPlayerMouseOverEntity(32D, 1F);
+        if (sender == null) {
+            return;
+        }
+        //get sender's mouse over target
+        RayTraceResult hitObj = EntityHelper.getPlayerMouseOverEntity(32D, 1F);
 
-            if (hitObj != null && hitObj.entityHit instanceof BasicEntityShip) {
-                //send change owner packet to server
-                sender.sendMessage
-                        (
-                                new TextComponentTranslation("chat.shincolle:command.command")
-                                        .appendSibling(new TextComponentString(" shipchangeowner: ship: " + TextFormatting.AQUA + hitObj.entityHit))
-                        );
-                CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.CmdChOwner, ownerEID, hitObj.entityHit.getEntityId(), hitObj.entityHit.world.provider.getDimension()));
-            }//end get target ship
-            else {
-                sender.sendMessage(new TextComponentTranslation("chat.shincolle:command.notship"));
-            }
+        if (hitObj != null && hitObj.entityHit instanceof BasicEntityShip) {
+            //send change owner packet to server
+            sender.sendMessage
+                    (
+                            new TextComponentTranslation("chat.shincolle:command.command")
+                                    .appendSibling(new TextComponentString(" shipchangeowner: ship: " + TextFormatting.AQUA + hitObj.entityHit))
+                    );
+            CommonProxy.channelI.sendToServer(new C2SInputPackets(C2SInputPackets.PID.CmdChOwner, ownerEID, hitObj.entityHit.getEntityId(), hitObj.entityHit.world.provider.getDimension()));
+        }//end get target ship
+        else {
+            sender.sendMessage(new TextComponentTranslation("chat.shincolle:command.notship"));
         }
     }
 

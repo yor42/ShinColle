@@ -70,9 +70,7 @@ public class ContainerCrane extends Container {
         super.detectAndSendChanges();
 
         //對所有開啟gui的人發送更新, 若數值有改變則發送更新封包
-        for (int i = 0; i < this.listeners.size(); ++i) {
-            IContainerListener listener = this.listeners.get(i);
-
+        for (IContainerListener listener : this.listeners) {
             //檢查所有數值是否有改變
             int temp = 0;
             boolean update = false;
