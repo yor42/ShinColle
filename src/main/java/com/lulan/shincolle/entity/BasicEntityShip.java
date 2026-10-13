@@ -584,6 +584,13 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
         //load ship attributes
         CapaShipSavedValues.loadNBTData(nbt, this);
 
+        //no vanilla Health tag (ex: /summon): start at full HP instead of the constructor's 4.0. Saved ships always have the tag,
+        //so their saved HP is kept. loadNBTData skips the attribute calc when there is no ship data, so do it here first.
+        if (!nbt.hasKey("Health", Constants.NBT.TAG_ANY_NUMERIC)) {
+            this.calcShipAttributes(31, true);
+            this.setHealth(this.getMaxHealth());
+        }
+
         //load ship inventory
         if (nbt.hasKey(CapaShipInventory.InvName)) {
             itemHandler.deserializeNBT((NBTTagCompound) nbt.getTag(CapaShipInventory.InvName));

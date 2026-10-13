@@ -61,6 +61,7 @@ public final class GameTestServerHooks {
     public void onWorldTick(net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent event) {
         if (event.phase != net.minecraftforge.fml.common.gameevent.TickEvent.Phase.END || event.world.isRemote
                 || event.world.provider.getDimension() != 0) return;
+        if (SHIPLOAD) shipLoadTick((net.minecraft.world.WorldServer) event.world);
         for (java.util.Iterator<java.util.Map.Entry<BasicEntityShip, Integer>> it = watched.entrySet().iterator(); it.hasNext(); ) {
             java.util.Map.Entry<BasicEntityShip, Integer> en = it.next();
             BasicEntityShip w = en.getKey();
@@ -84,6 +85,100 @@ public final class GameTestServerHooks {
                 LOG.info("[GAMETEST-SRV] ship {} no longer in loadedEntityList; last seen: {}", en.getKey(), en.getValue());
                 it.remove();
             }
+        }
+    }
+
+    /* ---------------- issue #11 / #7: ships loaded without (or with partial) ShipExtProps ----------------
+     * Headless self-test, no client and no RCON. Only with -Dshincolle.gametest.shipload=true.
+     * Summons ships the way /summon does (AnvilChunkLoader.readWorldEntityPos) at the world spawn, which stays
+     * loaded and ticking on a dedicated server without players, then reads the state after the slow update
+     * (BasicEntityShip calls calcShipAttributes every 128 ticks) and shuts the server down.
+     */
+    private static final boolean SHIPLOAD = Boolean.getBoolean("shincolle.gametest.shipload");
+    private static final int SHIPLOAD_SPAWN_TICK = 40;
+    private static final int SHIPLOAD_WAIT_TICKS = 300;    //> 2 slow updates
+    private final java.util.Map<String, BasicEntityShip> loadShips = new java.util.LinkedHashMap<>();
+    private final java.util.Map<String, String> loadBefore = new java.util.HashMap<>();
+    private final java.util.List<String> loadResults = new java.util.ArrayList<>();
+    private final java.util.Set<String> spawnFull = new java.util.HashSet<>();
+    private int loadTick;
+    private boolean loadDone;
+
+    private static net.minecraft.nbt.NBTTagCompound stubExt(String... sections) {
+        net.minecraft.nbt.NBTTagCompound ext = new net.minecraft.nbt.NBTTagCompound();
+        for (String sec : sections) ext.setTag(sec, new net.minecraft.nbt.NBTTagCompound());
+        return ext;
+    }
+
+    private void spawnLoadCase(net.minecraft.world.WorldServer w, String name, double x, double y, double z, net.minecraft.nbt.NBTTagCompound ext) {
+        net.minecraft.nbt.NBTTagCompound tag = new net.minecraft.nbt.NBTTagCompound();
+        tag.setString("id", "shincolle:EntityDestroyerI");
+        tag.setString("CustomName", name);
+        if (ext != null) tag.setTag("ShipExtProps", ext);
+        try {
+            net.minecraft.entity.Entity e = net.minecraft.world.chunk.storage.AnvilChunkLoader.readWorldEntityPos(tag, w, x, y, z, true);
+            if (e instanceof BasicEntityShip) {
+                BasicEntityShip s = (BasicEntityShip) e;
+                loadShips.put(name, s);
+                loadBefore.put(name, describe(s));
+                if (Math.abs(s.getHealth() - s.getMaxHealth()) < 0.01F) spawnFull.add(name);
+                loadResults.add("INFO " + name + " spawned: " + describe(s));
+            } else {
+                loadResults.add("FAIL " + name + ": summon returned " + e);
+            }
+        } catch (Throwable t) {
+            LOG.error("[GAMETEST-SRV] shipload spawn threw for {}", name, t);
+            loadResults.add("FAIL " + name + ": spawn threw " + t);
+        }
+    }
+
+    private static String describe(BasicEntityShip s) {
+        return String.format("ticks=%d level=%d hp=%.2f maxHp=%.2f baseMaxHp=%.2f isDead=%s pos=%.1f/%.1f/%.1f", s.ticksExisted, s.getLevel(),
+                s.getHealth(), s.getMaxHealth(), s.getEntityAttribute(net.minecraft.entity.SharedMonsterAttributes.MAX_HEALTH).getBaseValue(),
+                s.isDead, s.posX, s.posY, s.posZ);
+    }
+
+    private void shipLoadTick(net.minecraft.world.WorldServer w) {
+        if (loadDone) return;
+        loadTick++;
+        if (loadTick == SHIPLOAD_SPAWN_TICK) {
+            net.minecraft.util.math.BlockPos sp = w.getTopSolidOrLiquidBlock(w.getSpawnPoint());
+            double y = sp.getY();
+            spawnLoadCase(w, "GTLOAD-bare", sp.getX() + 0.5, y, sp.getZ() + 0.5, null);
+            spawnLoadCase(w, "GTLOAD-stub5", sp.getX() + 3.5, y, sp.getZ() + 0.5, stubExt("Minor", "Display", "Point", "ShipFlags", "Timer"));
+            spawnLoadCase(w, "GTLOAD-minor", sp.getX() + 6.5, y, sp.getZ() + 0.5, stubExt("Minor"));
+            LOG.info("[GAMETEST-SRV] shipload spawned {} ships at spawn {}", loadShips.size(), sp);
+        }
+        if (loadTick == SHIPLOAD_SPAWN_TICK + SHIPLOAD_WAIT_TICKS) {
+            int fails = 0;
+            for (java.util.Map.Entry<String, BasicEntityShip> en : loadShips.entrySet()) {
+                BasicEntityShip s = en.getValue();
+                String name = en.getKey();
+                String after = describe(s);
+                boolean inWorld = w.loadedEntityList.contains(s);
+                boolean ticked = s.ticksExisted >= 2 * 128 - 20;    //two slow updates (every 128 ticks) have run
+                boolean alive = !s.isDead && s.isEntityAlive();
+                boolean levelOk = s.getLevel() == 1;
+                //no Health tag in the summon NBT: the ship must start at full HP, both right after the summon and after the slow updates
+                boolean hpOk = s.getMaxHealth() > 4.0F && Math.abs(s.getHealth() - s.getMaxHealth()) < 0.01F && spawnFull.contains(name);
+                String detail = "before[" + loadBefore.get(name) + "] after[" + after + "] inLoadedList=" + inWorld + " ticked=" + ticked;
+                if (alive && inWorld && ticked && levelOk && hpOk) loadResults.add("PASS " + name + ": " + detail);
+                else {
+                    fails++;
+                    loadResults.add("FAIL " + name + " (alive=" + alive + " inWorld=" + inWorld + " ticked=" + ticked + " level1=" + levelOk
+                            + " hpEqualsMax=" + hpOk + "): " + detail);
+                }
+            }
+            if (loadShips.size() != 3) fails++;
+            loadResults.add("SUMMARY cases=" + loadShips.size() + " failed=" + fails);
+            for (String line : loadResults) LOG.info("[GAMETEST-SRV] shipload {}", line);
+            try {
+                java.nio.file.Files.write(java.nio.file.Paths.get("gametest-shipload-results.txt"), loadResults, java.nio.charset.StandardCharsets.UTF_8);
+            } catch (java.io.IOException e) {
+                LOG.error("[GAMETEST-SRV] cannot write shipload results", e);
+            }
+            loadDone = true;
+            w.getMinecraftServer().initiateShutdown();
         }
     }
 

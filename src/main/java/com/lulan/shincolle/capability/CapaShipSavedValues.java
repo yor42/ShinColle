@@ -8,6 +8,7 @@ import com.lulan.shincolle.utility.NBTHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.Constants;
 
 
 /**
@@ -122,13 +123,61 @@ public class CapaShipSavedValues {
 
     //load extend entity prop
     public static void loadNBTData(NBTTagCompound nbt, BasicEntityShip ship) {
-        NBTTagCompound nbt_tag = (NBTTagCompound) nbt.getTag(SHIP_EXTPROP_NAME);
-        NBTTagCompound nbt_load = new NBTTagCompound();
+        NBTTagCompound nbt_tag = getSection(nbt, SHIP_EXTPROP_NAME);
 
-        //load minor state
-        nbt_load = (NBTTagCompound) nbt_tag.getTag("Minor");
+        //no saved ship data (ex: bare /summon): keep constructor defaults, nothing to recalc
+        if (nbt_tag == null) {
+            LogHelper.debug("DEBUG : no ExtNBT data, keep defaults on id: " + ship.getEntityId());
+            return;
+        }
 
-        ship.setStateMinor(ID.M.ShipLevel, nbt_load.getInteger("Level"));
+        //each section is optional: a missing one keeps the current (default) values
+        loadMinor(getSection(nbt_tag, "Minor"), ship);
+        loadDisplay(getSection(nbt_tag, "Display"), ship);
+        loadPoint(getSection(nbt_tag, "Point"), ship);
+        loadFlags(getSection(nbt_tag, "ShipFlags"), ship);
+        loadTimer(getSection(nbt_tag, "Timer"), ship);
+
+        //load owner name
+        String name = nbt_tag.getString("Owner");
+
+        if (!name.isEmpty()) {
+            ship.ownerName = name;
+        } else {
+            //load owner name fail, get owner again
+            Entity owner = ship.getHostEntity();
+
+            if (owner instanceof EntityPlayer) {
+                ship.ownerName = owner.getName();
+            }
+        }
+
+        //load unit name
+        ship.unitNames = NBTHelper.loadStringTagArrayList(nbt_tag, "uname");
+
+        //calc equip and attribute
+        ship.setExpNext();    //for gui display
+        ship.calcShipAttributes(31, true);    //re-calc attributes and send sync packet
+
+        LogHelper.debug("DEBUG : load entity ExtNBT data on id: " + ship.getEntityId());
+    }
+
+    /** return the compound child, or null if the key is absent or not a compound */
+    static NBTTagCompound getSection(NBTTagCompound parent, String key) {
+        if (parent == null || !parent.hasKey(key, Constants.NBT.TAG_COMPOUND)) return null;
+        return parent.getCompoundTag(key);
+    }
+
+    /** saved Level if the key exists, else 1 (issue #7: a stub Minor section must not give Level 0) */
+    static int defaultedLevel(NBTTagCompound minor) {
+        return minor.hasKey("Level") ? minor.getInteger("Level") : 1;
+    }
+
+    private static void loadMinor(NBTTagCompound nbt_load, BasicEntityShip ship) {
+        if (nbt_load == null) return;
+
+        //a missing Level must not read as 0; a saved Level is never altered
+        ship.setStateMinor(ID.M.ShipLevel, defaultedLevel(nbt_load));
         ship.setStateMinor(ID.M.Kills, nbt_load.getInteger("Kills"));
         ship.setStateMinor(ID.M.ExpCurrent, nbt_load.getInteger("Exp"));
         ship.setStateMinor(ID.M.NumAmmoLight, nbt_load.getInteger("NumAmmoL"));
@@ -158,16 +207,24 @@ public class CapaShipSavedValues {
         ship.setStateMinor(ID.M.TaskSide, nbt_load.getInteger("Side"));
         ship.setNameTag(nbt_load.getString("tagName"));
 
+    }
+
+    private static void loadDisplay(NBTTagCompound nbt_load, BasicEntityShip ship) {
+        if (nbt_load == null) return;
+
         //load display state
-        nbt_load = (NBTTagCompound) nbt_tag.getTag("Display");
 
         ship.setStateEmotion(ID.S.State, nbt_load.getInteger("State"), false);
         ship.setStateEmotion(ID.S.Emotion, nbt_load.getInteger("Emotion"), false);
         ship.setStateEmotion(ID.S.Emotion2, nbt_load.getInteger("Emotion2"), false);
         ship.setStateEmotion(ID.S.Phase, nbt_load.getInteger("Phase"), false);
 
+    }
+
+    private static void loadPoint(NBTTagCompound nbt_load, BasicEntityShip ship) {
+        if (nbt_load == null) return;
+
         //load bonus point
-        nbt_load = (NBTTagCompound) nbt_tag.getTag("Point");
 
         Attrs attrs = ship.getAttrs();
         attrs.setAttrsBonus(ID.AttrsBase.HP, nbt_load.getByte("HP"));
@@ -177,8 +234,12 @@ public class CapaShipSavedValues {
         attrs.setAttrsBonus(ID.AttrsBase.MOV, nbt_load.getByte("MOV"));
         attrs.setAttrsBonus(ID.AttrsBase.HIT, nbt_load.getByte("HIT"));
 
+    }
+
+    private static void loadFlags(NBTTagCompound nbt_load, BasicEntityShip ship) {
+        if (nbt_load == null) return;
+
         //load flags
-        nbt_load = (NBTTagCompound) nbt_tag.getTag("ShipFlags");
 
         ship.setStateFlag(ID.F.CanFloatUp, nbt_load.getBoolean("CanFloat"));
         ship.setStateFlag(ID.F.IsMarried, nbt_load.getBoolean("IsMarried"));
@@ -202,34 +263,13 @@ public class CapaShipSavedValues {
         ship.setStateFlag(ID.F.AutoPump, nbt_load.getBoolean("AutoPump"));
         ship.setIsMorph(nbt_load.getBoolean("IsMorph"));
 
-        //load timer
-        nbt_load = (NBTTagCompound) nbt_tag.getTag("Timer");
-
-        ship.setStateTimer(ID.T.CraneTime, nbt_load.getInteger("Crane"));
-
-        //load owner name
-        String name = nbt_tag.getString("Owner");
-
-        if (!name.isEmpty()) {
-            ship.ownerName = name;
-        } else {
-            //load owner name fail, get owner again
-            Entity owner = ship.getHostEntity();
-
-            if (owner instanceof EntityPlayer) {
-                ship.ownerName = owner.getName();
-            }
-        }
-
-        //load unit name
-        ship.unitNames = NBTHelper.loadStringTagArrayList(nbt_tag, "uname");
-
-        //calc equip and attribute
-        ship.setExpNext();    //for gui display
-        ship.calcShipAttributes(31, true);    //re-calc attributes and send sync packet
-
-        LogHelper.debug("DEBUG : load entity ExtNBT data on id: " + ship.getEntityId());
     }
 
+    private static void loadTimer(NBTTagCompound nbt_load, BasicEntityShip ship) {
+        if (nbt_load == null) return;
+
+        //load timer
+        ship.setStateTimer(ID.T.CraneTime, nbt_load.getInteger("Crane"));
+    }
 
 }
