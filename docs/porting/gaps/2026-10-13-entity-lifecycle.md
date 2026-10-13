@@ -75,10 +75,38 @@ Result of the normalized diff: apart from 1.12 API renames, the lifecycle logic 
 2. Maintainer decisions: ENT-04 (ring gate), ENT-07 (revive position), ENT-11 (portals), ENT-12 (old-world migration).
 
 ## Phase 3 updates
-- 2026-10-13 ENT-13 added. **All ships are deleted when spawning is off.** With `server.properties` `spawn-animals=false` or `spawn-npcs=false`, vanilla `WorldServer.updateEntityWithOptionalForce` (`WorldServer.java:847`) calls `setDead` on every `EntityAnimal` on its first tick. Ships extend `EntityAnimal`, so all ships are deleted.
-  - Evidence: stack trace and a one-variable flip (harness, dedicated server). Confidence HIGH.
-  - Historical (8bca563): not checked; likely pre-existing.
-  - Status: CONFIRMED_BUG (current behavior). Fix not proposed or approved. The harness needs both flags set to true.
+- 2026-10-13 ENT-13 added. **Friendly ships are deleted when animal spawning is off.** With `server.properties` `spawn-animals=false` or `spawn-npcs=false`, vanilla `WorldServer.updateEntityWithOptionalForce` (`WorldServer.java:847`, Cleanroom 0.6.10 mapped source; the repo builds with 0.6.13, so line numbers may differ) calls `setDead` on `EntityAnimal` entities on their first tick. `BasicEntityShip` extends `EntityTameable`, which extends vanilla `EntityAnimal` (vanilla hierarchy, MEDIUM-HIGH), so ships are deleted.
+  - **Fix state: verified, uncommitted.** Mixin exemption on `WorldServer` (`@WrapWithCondition` on the sweep's `setDead` call), with `use_mixins=true`. Final regression-verifier check (HEAD `7b91e2d` plus working tree): unit tests 21/0, build exit 0, dedicated harness red 3/2 (no server log kept for the red run), green 5/0, normal 8/0. Verified in the dev environment only; the reobfuscated jar has not been run on a server. Report: `docs/porting/reports/2026-10-13-issue-10-spawn-sweep.md`. Status is unchanged; see below.
+  - **Confirmed (current 1.12.2, HEAD)**
+    - Stack trace and a one-variable flip on the dedicated-server harness (`runClient -Pgametest` flow). Confidence HIGH. The harness needs both flags set to true (as recorded in the Phase 3 run).
+    - `DedicatedServer.java:162-163` reads `spawn-animals` and `spawn-npcs` with a default of `true`. `IntegratedServer.java:170-171` forces both to `true`, so single-player and LAN are not affected.
+    - Scope: only `BasicEntityShip` and its subclasses, about 47 friendly ships (count as supplied; counting method not recorded). Hostile, mount, airplane and summon classes are not in this chain.
+    - Supplied evidence (not re-checked here): the Forge 1.12.x WorldServer patch does not touch `updateEntityWithOptionalForce`.
+    - Persistence: `BasicEntityShip.setDead` (`BasicEntityShip.java:4342-4350`) writes a `CacheDataShip` with `isDead=true` and the full NBT through `ServerProxy.setShipWorldData`. Whether that copy is saved to disk or can be recovered is **Unknown** (see Unknowns).
+    - Status: CONFIRMED_BUG (current behavior). Confidence HIGH.
+  - **Historical (upstream and vanilla; the 8bca563 "not checked" note is superseded)**
+    - Superclasses, upstream PinkaLulan/ShinColle `mc-1.7.10` (head 9312511) and `mc-1.10.2` (head 4546ff5): `BasicEntityShip extends EntityTameable` in both. `BasicEntityShipHostile extends EntityMob`, `BasicEntityMount extends EntityCreature`, and `BasicEntitySummon extends EntityLiving` (1.10.2 and later). Confidence HIGH.
+    - The repo's own history has the same `BasicEntityShip` superclass from 7c48a1e (2016-11-24) through 0aad501 (the 1.12.2 init commit) to HEAD (`BasicEntityShip.java:73`). It never changed. Confidence HIGH.
+    - Vanilla: `WorldServer.updateEntityWithOptionalForce` already deleted `EntityAnimal`, `EntityWaterMob` and `INpc` entities when the matching spawn setting was off, in 1.7.2 and 1.9. These are third-party MCP dumps (secondary sources): https://github.com/xgraza/nebula-1.7.2/blob/1c010901ce9733fc73a70d34c7a1a67a356d2851/src/main/java/net/minecraft/world/WorldServer.java (lines 632-645) and https://github.com/CircuitLord/Minecraft-1.9-MCP/blob/bc89baf1fd0b5d422478619e7aba01c0b23bd405/src/minecraft/net/minecraft/world/WorldServer.java (lines 833-845). Confidence MEDIUM-HIGH.
+    - Upstream never had a workaround: no mixin, no coremod, and no spawn-animals handling.
+    - Upstream issues #26, #30 and #40 report ships vanishing on servers, with no diagnosis. Their link to this bug is **Unknown**.
+    - Inference (no runtime test of old versions): servers running 1.7.10 or 1.10.2 with `spawn-animals=false` would also have lost friendly ships. Confidence not assigned; this is an inference only.
+  - **Desired (human decision, 2026-10-13)**
+    - Protect ships from this sweep. This departs from upstream, which did not protect them.
+    - Approach: a Mixin exemption on `WorldServer`. The human approved enabling Mixin in the build.
+    - Rejected alternatives: (1) a `setDead` guard in ship code, which is fragile because ship code cannot tell this call from a real death; (2) a superclass change, which is a large refactor with a risk to saved data; (3) documentation only.
+  - **Assumptions**
+    - A-ENT13-1: The vanilla sweep above is the deletion path for ships in this report. Not checked against other despawn or removal paths.
+    - A-ENT13-2: Mounts (`EntityCreature`), summons (`EntityLiving`) and hostile ships (`EntityMob`) are not `EntityAnimal` and so are not hit by this check. Derived from the superclass chain; not tested.
+  - **Unknowns**
+    - U-ENT13-1: Whether the `CacheDataShip` copy written by `setDead` is saved to disk or can be recovered.
+    - U-ENT13-2: Whether the NPC check (`spawn-npcs`) affects any ship class; ships are known only to be `EntityAnimal`.
+    - U-ENT13-3: Whether upstream issues #26, #30 and #40 are this bug.
+    - U-ENT13-4: Whether the 1.7.10 and 1.10.2 servers actually lost ships (no runtime test).
+    - U-ENT13-5: Partly resolved. The Mixin exemption is verified in the dev environment (dedicated harness: spawn-off red 3/2, green 5/0, normal 8/0 on the `@WrapWithCondition` version). Still open: the reobfuscated jar has not been run on a real server; no explicit "mixin applied" log line exists; coexistence with another mod wrapping the same call is untested.
+  - **Next actions**
+    - Run the reobfuscated jar once on a real dedicated server with both spawn flags false and record the log path. Not run; needs human go-ahead. The dev harness red and green runs are recorded in the report.
+    - Route the Unknowns above to the parent for review.
 - 2026-10-13 ENT-14 added (low impact). **Double spawn from the egg.** `EntityHelper.createShipEntity` (`EntityHelper.java:1676`) already spawns the entity, and `ShipSpawnEgg.java:473` spawns it again. The second spawn is rejected with the "Keeping entity ... already exists" warning. The join event fires before `initEntityAttribute`, so HP is 4.0 at join; this explains the task-0 "Health 4.0" oddity.
   - Historical (8bca563): not checked.
   - Status: not assigned. Observed on the harness; impact described as low. Confidence not stated in the supplied evidence; not separately checked.

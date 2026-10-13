@@ -1,0 +1,18 @@
+PASS dedi-connect: joined 127.0.0.1:25621 as Developer, 18 mods
+INFO rcon: list -> There are 1/20 players online:Developer
+INFO rcon: deop Developer -> Could not de-op Developer
+INFO rcon: gamemode survival Developer -> 
+PASS dedi-rcon-setup: RCON 127.0.0.1:25631 ok; There are 1/20 players online:Developer
+INFO client: chat> /gtprobe state
+INFO dedi-spawn-ship-with-egg: precondition op=false gm=SURVIVAL ships=0
+INFO client: chat> /gtprobe egg
+INFO dedi-spawn-ship-with-egg: client processRightClick -> SUCCESS
+INFO client: chat> /gtprobe fakeowner
+INFO client: chat> /gtprobe state
+FAIL dedi-spawn-ship-with-egg: ship not found or fakeowner failed: ships=0 fake=[GT] fakeowner ships=0
+INFO client: chat> /gtprobe state
+FAIL dedi-spawnoff-ship-survives: ship is gone right after spawn: ships=0
+INFO rcon: deop Developer -> Could not de-op Developer
+INFO client: chat> /gtprobe stop
+PASS dedi-stop-server: stop requested through the server-thread /gtprobe stop
+SUMMARY passed=3 failed=2

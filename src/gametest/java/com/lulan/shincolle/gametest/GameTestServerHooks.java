@@ -163,6 +163,7 @@ public final class GameTestServerHooks {
                         sb.append(" uuid=").append(s.getUniqueID())
                                 .append(" shipPos=").append(String.format("%.1f/%.1f/%.1f", s.posX, s.posY, s.posZ))
                                 .append(" eid=").append(s.getEntityId())
+                                .append(" shipUID=").append(s.getShipUID())
                                 .append(" ownerUID=").append(s.getPlayerUID())
                                 .append(" ownerUUID=").append(s.getOwnerId())
                                 .append(" level=").append(s.getLevel())

@@ -723,6 +723,7 @@ public class GameTestRunner {
     /* ---------------- dedicated server mode (issue #2 / NET-02) ---------------- */
 
     /** host:port of the dedicated server to join; empty = normal single-player run */
+    private static final boolean SPAWN_OFF = Boolean.getBoolean("shincolle.gametest.spawnoff");
     private static final String CONNECT = System.getProperty("shincolle.gametest.connect", "");
     private final List<String[]> chat = new ArrayList<>();    //{json, plain text} of every chat line received
     private RconClient rcon;
@@ -1080,6 +1081,55 @@ public class GameTestRunner {
                 return true;
             }
         });
+        //issue #10 (ENT-13): server runs with spawn-animals=false / spawn-npcs=false (-Pgametest_spawnoff=true);
+        //vanilla would setDead() the friendly ship on its first tick. Only this case runs after the egg step in that mode.
+        final Step spawnOff = new Step("dedi-spawnoff-ship-survives", 300) {
+            private int m1, m2;
+            private String uuid1;
+
+            @Override
+            boolean tick(int t) throws Exception {
+                if (t == 1) {
+                    m1 = chat.size();
+                    sendChat("/gtprobe state");
+                    return false;
+                }
+                if (t == 10) {
+                    Map<String, String> s = parseState(m1);
+                    if (s == null || !"1".equals(s.get("ships"))) {
+                        fail(name, "ship is gone right after spawn: ships=" + (s == null ? "no reply" : s.get("ships")));
+                        return true;
+                    }
+                    uuid1 = s.get("uuid");
+                    info(name, "ship present at start: uuid=" + uuid1 + " shipUID=" + s.get("shipUID"));
+                    return false;
+                }
+                if (t == 50) {
+                    m2 = chat.size();
+                    sendChat("/gtprobe state");
+                    return false;
+                }
+                if (t == 60) {
+                    Map<String, String> s = parseState(m2);
+                    if (s == null || !"1".equals(s.get("ships")) || !Objects.equals(uuid1, s.get("uuid"))) {
+                        fail(name, "ship was removed with spawn-animals=false: ships=" + (s == null ? "no reply" : s.get("ships")));
+                        return true;
+                    }
+                    int uid = Integer.parseInt(s.get("shipUID"));
+                    if (uid <= 0) {
+                        fail(name, "ship alive but has no shipUID: " + uid);
+                        return true;
+                    }
+                    pass(name, "ship still alive after ~50 ticks with spawn-animals=false/spawn-npcs=false: uuid=" + uuid1 + " shipUID=" + uid);
+                    return true;
+                }
+                return false;
+            }
+        };
+        if (SPAWN_OFF) {
+            steps.removeIf(st -> st.name.startsWith("dedi-nonop") || st.name.startsWith("dedi-op"));
+            steps.add(steps.size() - 1, spawnOff);    //before dedi-stop-server
+        }
     }
 
     /* ---------------- helpers ---------------- */
