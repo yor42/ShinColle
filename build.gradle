@@ -141,6 +141,20 @@ sourceSets {
         compileClasspath += main.compileClasspath
         runtimeClasspath += main.runtimeClasspath
     }
+    // Dev-only in-game test harness (src/gametest); never part of the mod jar
+    gametest {
+        compileClasspath += main.compileClasspath + main.output
+    }
+}
+
+// ./gradlew runClient -Pgametest runs the scripted in-game checks (docs/porting/reports/2026-10-13-gametest-harness.md)
+if (project.hasProperty('gametest')) {
+    dependencies {
+        runtimeOnly sourceSets.gametest.output
+    }
+    tasks.matching { it.name == 'runClient' }.configureEach {
+        systemProperty 'shincolle.gametest', 'true'
+    }
 }
 
 idea {

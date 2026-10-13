@@ -1,0 +1,8 @@
+[{
+  "modid": "shincolle_gametest",
+  "name": "ShinColle Game Test Harness",
+  "description": "Dev-only scripted in-game checks. Not shipped.",
+  "version": "dev",
+  "mcversion": "1.12.2",
+  "dependencies": ["shincolle"]
+}]
