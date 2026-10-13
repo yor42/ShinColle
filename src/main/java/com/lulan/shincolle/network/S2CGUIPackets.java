@@ -9,6 +9,7 @@ import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.team.TeamData;
 import com.lulan.shincolle.tileentity.*;
 import com.lulan.shincolle.utility.EntityHelper;
+import com.lulan.shincolle.utility.EntityIdGuard;
 import com.lulan.shincolle.utility.LogHelper;
 import com.lulan.shincolle.utility.PacketHelper;
 import io.netty.buffer.ByteBuf;
@@ -731,11 +732,7 @@ public class S2CGUIPackets implements IMessage {
                 buf.writeInt(tile2.getField(5));
                 buf.writeInt(tile2.getPlayerUID());
 
-                if (tile2.owner != null) {
-                    buf.writeInt(tile2.owner.getEntityId());
-                } else {
-                    buf.writeInt(0);
-                }
+                buf.writeInt(EntityIdGuard.encodeOptional(tile2.owner, EntityPlayer::getEntityId));
 
                 buf.writeByte(tile2.getField(2));
                 buf.writeByte(tile2.getField(3));
@@ -761,11 +758,7 @@ public class S2CGUIPackets implements IMessage {
                 buf.writeInt(tile2.getPairedChest().getZ());
                 buf.writeInt(tile2.getPlayerUID());
 
-                if (tile2.owner != null) {
-                    buf.writeInt(tile2.owner.getEntityId());
-                } else {
-                    buf.writeInt(0);
-                }
+                buf.writeInt(EntityIdGuard.encodeOptional(tile2.owner, EntityPlayer::getEntityId));
             }
             break;
             case PID.SyncPlayerProp:    //sync player props

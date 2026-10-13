@@ -9,6 +9,7 @@ import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.reference.unitclass.Attrs;
 import com.lulan.shincolle.reference.unitclass.AttrsAdv;
 import com.lulan.shincolle.utility.EntityHelper;
+import com.lulan.shincolle.utility.EntityIdGuard;
 import com.lulan.shincolle.utility.LogHelper;
 import com.lulan.shincolle.utility.PacketHelper;
 import io.netty.buffer.ByteBuf;
@@ -88,7 +89,7 @@ public class S2CEntitySync implements IMessage {
         BasicEntityShip ship = null;
         CapaTeitoku capa = null;
 
-        if (msg.entityID > 0) {
+        if (EntityIdGuard.isLookupable(msg.entityID)) {
             entity = EntityHelper.getEntityByID(msg.entityID, 0, true);
         }
 

@@ -28,10 +28,6 @@ public class ShinColleGameTest {
         if (Boolean.getBoolean("shincolle.gametest.server")) {
             event.registerServerCommand(new GameTestServerHooks.ProbeCommand());
             MinecraftForge.EVENT_BUS.register(new GameTestServerHooks());
-            // WORKAROUND for a legacy defect (EntityHelper.getEntityPlayerByID/getEntityByID reject entity id 0): the first
-            // entity created on a fresh dedicated server is the first player, which gets id 0 and breaks /shipchangeowner and
-            // /shipattrs. Constructing entities advances the id counter so the harness player gets a positive id.
-            for (int i = 0; i < 8; i++) new net.minecraft.entity.item.EntityItem(event.getServer().getWorld(0));
         }
     }
 

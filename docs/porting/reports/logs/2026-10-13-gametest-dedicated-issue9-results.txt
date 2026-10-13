@@ -1,0 +1,46 @@
+PASS dedi-connect: joined 127.0.0.1:25621 as Developer, 18 mods
+INFO rcon: list -> There are 1/20 players online:Developer
+INFO rcon: deop Developer -> Could not de-op Developer
+INFO rcon: gamemode survival Developer -> 
+PASS dedi-rcon-setup: RCON 127.0.0.1:25631 ok; There are 1/20 players online:Developer
+INFO client: chat> /gtprobe state
+INFO dedi-spawn-ship-with-egg: precondition op=false gm=SURVIVAL ships=0
+INFO client: chat> /gtprobe egg
+INFO dedi-spawn-ship-with-egg: client processRightClick -> SUCCESS
+INFO client: chat> /gtprobe fakeowner
+INFO client: chat> /gtprobe state
+PASS dedi-spawn-ship-with-egg: egg ship owned by player UID 100 at spawn, then set to foreign owner 9999 (shortcut); ownerUID=9999 level=1 bonus=0,0,0,0,0,0
+INFO client: chat> /gtprobe state
+INFO dedi-nonop-survival-forged-packets: baseline ownerUID=9999 level=1 bonus=0,0,0,0,0,0 op=false gm=SURVIVAL
+INFO dedi-nonop-survival-forged-packets: forging CmdChOwner(owner eid 0, ship eid 8631) and CmdShipAttr(level 77, bonus 9 x6)
+INFO client: chat> /gtprobe state
+INFO dedi-nonop-survival-forged-packets: final ownerUID=9999 level=1 bonus=0,0,0,0,0,0 op=false gm=SURVIVAL
+PASS dedi-nonop-survival-forged-packets: server state ownerUID=9999 level=1 bonus=0,0,0,0,0,0 -> ownerUID=9999 level=1 bonus=0,0,0,0,0,0 (op=false gm=SURVIVAL)
+INFO client: chat> /gtprobe state
+INFO dedi-nonop-creative-commands: baseline ownerUID=9999 level=1 bonus=0,0,0,0,0,0 op=false gm=SURVIVAL
+INFO rcon: gamemode creative Developer -> 
+INFO client: chat> /shipchangeowner Developer
+INFO client: chat> /shipattrs 42 10 11 12 13 14 15
+INFO client: chat> /gtprobe state
+INFO dedi-nonop-creative-commands: final ownerUID=9999 level=1 bonus=0,0,0,0,0,0 op=false gm=CREATIVE
+PASS dedi-nonop-creative-commands: server state ownerUID=9999 level=1 bonus=0,0,0,0,0,0 -> ownerUID=9999 level=1 bonus=0,0,0,0,0,0 (op=false gm=CREATIVE)
+INFO client: chat> /gtprobe state
+INFO dedi-op-commands: baseline ownerUID=9999 level=1 bonus=0,0,0,0,0,0 op=false gm=CREATIVE
+INFO rcon: op Developer -> Opped Developer
+INFO rcon: gamemode survival Developer -> 
+INFO client: chat> /shipchangeowner Developer
+INFO client: chat> /shipattrs 42 10 11 12 13 14 15
+INFO client: chat> /gtprobe state
+INFO dedi-op-commands: final ownerUID=100 level=42 bonus=10,11,12,13,14,15 op=true gm=SURVIVAL
+PASS dedi-op-commands: server state ownerUID=9999 level=1 bonus=0,0,0,0,0,0 -> ownerUID=100 level=42 bonus=10,11,12,13,14,15 (op=true gm=SURVIVAL)
+INFO client: chat> /gtprobe fakeowner
+INFO client: chat> /gtprobe reset
+INFO client: chat> /gtprobe state
+INFO dedi-op-forged-packets-control: baseline ownerUID=9999 level=1 bonus=0,0,0,0,0,0 op=true gm=SURVIVAL
+INFO client: chat> /gtprobe state
+INFO dedi-op-forged-packets-control: final ownerUID=100 level=77 bonus=9,9,9,9,9,9 op=true gm=SURVIVAL
+PASS dedi-op-forged-packets-control: server state ownerUID=9999 level=1 bonus=0,0,0,0,0,0 -> ownerUID=100 level=77 bonus=9,9,9,9,9,9 (op=true gm=SURVIVAL)
+INFO rcon: deop Developer -> De-opped Developer
+INFO client: chat> /gtprobe stop
+PASS dedi-stop-server: stop requested through the server-thread /gtprobe stop
+SUMMARY passed=8 failed=0

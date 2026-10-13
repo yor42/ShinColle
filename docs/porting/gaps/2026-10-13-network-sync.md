@@ -100,3 +100,17 @@ Paths: `N/` = `src/main/java/com/lulan/shincolle/network/`, `U/` = `.../utility/
   - Proposed fix: `>= 0`. Not applied or tested. Other `entityID > 0` sites need review.
   - Historical (8bca563): not checked.
   - Status: CONFIRMED_BUG (current behavior; reproduced on the dedicated server). Fix needs approval.
+  - 2026-10-13 fix line (issue #9): `EntityHelper.getEntityByID` and `getEntityPlayerByID` now use `EntityIdGuard.isLookupable(id)` (`id >= 0`) at `EntityHelper.java:263` and `:303`. Report: `../reports/2026-10-13-issue-9-entity-id-zero.md`. Status: **verified, uncommitted** (regression-verifier, final snapshot at HEAD `2403673` plus the working tree: `test --rerun-tasks` BUILD SUCCESSFUL, 16 tests, 0 failures; `build` BUILD SUCCESSFUL; see the report's "Final verification"). Post-fix dedicated run: player at entity id 0, OP forged-packet control changed owner 9999 → 100 and level → 77 (`logs/2026-10-13-gametest-dedicated-issue9-results.txt`, 8/8 PASS). Pre-fix failure at id 0 is from code reading and this entry; no saved pre-fix run at id 0 (confidence MEDIUM in the report; this entry's HIGH is unchanged pending human decision).
+  - 2026-10-13 #9b: the regression this created (crane and waypoint owner sent as 0 for "no owner", now resolved to the first player) is fixed by `EntityIdGuard.encodeOptional` at `S2CGUIPackets.java:735` and `:761` (writes -1 for null). Call-site audit done by the implementer (about 40 sites); R1 was the only 0-sentinel sender. Residual: mount/rider writers (see NET-14). Status: verified, uncommitted.
+
+### NET-14 (2026-10-13): `S2CEntitySync` drops packets for entity id 0
+
+- Status: fixed in #9, verified, uncommitted. Was UNKNOWN_INTENT, confidence LOW, when first recorded.
+- Evidence: `src/main/java/com/lulan/shincolle/network/S2CEntitySync.java:91` reads `if (msg.entityID > 0) { entity = EntityHelper.getEntityByID(msg.entityID, 0, true); }`. The same `> 0` pattern as NET-13, on the client side. Static reading only.
+- Why it matters (hypothesis): a Minecraft entity with id 0 (the first player on a fresh dedicated server was id 0 in the issue #9 run, `logs/2026-10-13-gametest-dedicated-issue9-results.txt:15`) would have its sync packets skip the entity lookup. Whether any sender places 0 in `entityID` to mean "none" (which would make `> 0` correct here) is not established. Whether a ship spawned first can hold id 0 is not tested.
+- Historical (8bca563): not checked.
+- Current (HEAD / working tree): `S2CEntitySync.java:91` unchanged by the #9 fix (out of scope for it).
+- Desired: Unknown; needs a human decision on the intended meaning of 0 in this packet, after the sender audit.
+- 2026-10-13 fix (#9b, R2): `S2CEntitySync.java:92` now uses `EntityIdGuard.isLookupable(msg.entityID)`; the writer at `:732-733` sends `-1` (`EntityIdGuard.NO_ENTITY`) for a null entity. Approved by the human as part of #9. Verified, uncommitted. Report: `../reports/2026-10-13-issue-9-entity-id-zero.md` (Follow-up #9b).
+- Still open (from #9b): the mount and rider writers at `S2CEntitySync.java:403,411,427` send 0 for "no mount"; their receivers keep their own `> 0` checks. A vehicle with entity id 0 is ignored there. Needs a human decision before any change.
+- Historical (8bca563) for this check: not checked.

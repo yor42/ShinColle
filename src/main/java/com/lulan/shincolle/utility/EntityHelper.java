@@ -260,7 +260,7 @@ public class EntityHelper {
             world = ServerProxy.getServerWorld(worldID);
         }
 
-        if (world != null && entityID > 0) {
+        if (world != null && EntityIdGuard.isLookupable(entityID)) {
             return world.getEntityByID(entityID);
         }
 
@@ -300,7 +300,7 @@ public class EntityHelper {
             world = ServerProxy.getServerWorld(worldID);
         }
 
-        if (world != null && entityID > 0) {
+        if (world != null && EntityIdGuard.isLookupable(entityID)) {
             for (EntityPlayer p : world.playerEntities) {
                 if (p != null && p.getEntityId() == entityID) {
                     return p;

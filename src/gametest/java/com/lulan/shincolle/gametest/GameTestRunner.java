@@ -306,11 +306,11 @@ public class GameTestRunner {
 
         //Task B diagnosis: baseline (same conditions as run 3), then variations that each change one thing
         //morale NORMAL_MORALE (2100 < m <= 3900, BuffHelper.updateBuffMorale) so the tier gives no HIT penalty
-        steps.add(combatStep("ship-attacks-husk", 400, true, 6D, NORMAL_MORALE, true));
+        steps.add(combatStep("ship-attacks-husk", 800, true, 6D, NORMAL_MORALE, true));
         steps.add(feedGrudgeStep());
-        steps.add(combatStep("ship-attacks-husk-after-grudge", 400, true, 6D, NORMAL_MORALE, true));
-        steps.add(combatStep("ship-attacks-husk-close-no-teleport", 400, false, 3D, NORMAL_MORALE, true));
-        steps.add(combatStep("ship-attacks-husk-inside-range", 400, true, 1.2D, NORMAL_MORALE, true));
+        steps.add(combatStep("ship-attacks-husk-after-grudge", 800, true, 6D, NORMAL_MORALE, true));
+        steps.add(combatStep("ship-attacks-husk-close-no-teleport", 800, false, 3D, NORMAL_MORALE, true));
+        steps.add(combatStep("ship-attacks-husk-inside-range", 800, true, 1.2D, NORMAL_MORALE, true));
         //AI-10 characterization: at morale 0 (Exhausted tier, HIT -4) a husk 6 blocks away is expected to be ignored
         steps.add(combatStep("ai10-morale0-ignores-far-husk", 200, true, 6D, 0, false));
 
@@ -322,6 +322,7 @@ public class GameTestRunner {
 
         steps.add(new Step("save-quit-reload", 1200) {
             private int rejoinTick = -1;
+            private int expectedLevel;
 
             @Override
             boolean tick(int t) throws Exception {
@@ -330,6 +331,8 @@ public class GameTestRunner {
                     return true;
                 }
                 if (t == 1) {
+                    //the ship can level up during the combat steps (run 9d: level 2); compare against the level at quit time
+                    expectedLevel = callServer(() -> serverShip().getLevel());
                     mc.world.sendQuittingDisconnectingPacket();
                     mc.loadWorld(null);
                     mc.displayGuiScreen(new GuiMainMenu());
@@ -350,8 +353,8 @@ public class GameTestRunner {
                     return "level=" + s.getLevel() + " ownerUID=" + s.getPlayerUID() + " hp=" + s.getHealth() + "/" + s.getMaxHealth();
                 });
                 if (detail == null) fail(name, "ship " + shipId + " not found after reload");
-                else if (detail.startsWith("level=" + shipLevel + " ownerUID=" + shipUid + " ")) pass(name, detail);
-                else fail(name, "ship changed: expected level=" + shipLevel + " ownerUID=" + shipUid + ", got " + detail);
+                else if (detail.startsWith("level=" + expectedLevel + " ownerUID=" + shipUid + " ")) pass(name, detail);
+                else fail(name, "ship changed: expected level=" + expectedLevel + " ownerUID=" + shipUid + ", got " + detail);
                 screenshot("reloaded");
                 return true;
             }
@@ -373,7 +376,15 @@ public class GameTestRunner {
      * measure the starvation rule instead of the behaviour under test (the run 6 diagnosis).
      */
     private static void refuel(BasicEntityShip s) {
-        if (s.getGrudge() < 100) s.addGrudge(300 - s.getGrudge());
+        //Unconditional reset so every step starts from the same ship state (runs 7-8 diagnosis): a threshold such as
+        //"grudge < 100" let a run start a fight at ~150 and starve mid-fight, and HP/ammo carried over between steps
+        //until the husk killed the ship ("ship not loaded on server").
+        s.addGrudge(1000 - s.getGrudge());
+        s.setHealth(s.getMaxHealth());
+        s.deathTime = 0;
+        s.extinguish();
+        s.hurtResistantTime = 0;
+        s.setAmmoLight(60);
         s.decrGrudgeNum(0);    //recompute NoFuel and re-add the AI tasks, as the game does
     }
 
@@ -408,9 +419,12 @@ public class GameTestRunner {
                         EntityHusk h = new EntityHusk(s.world);
                         h.setLocationAndAngles(s.posX + huskDx, s.posY, s.posZ, 0F, 0F);
                         h.enablePersistence();
-                        //control case (expectEngage=false): keep the husk where it was placed. A husk that walks into aiRange
-                        //is legitimately engaged, which would test the husk's pathing instead of the far-target rule.
-                        if (!expectEngage) h.setNoAI(true);
+                        //Keep the husk where it was placed in every combat step. A moving husk walks into the ship and
+                        //melees it, and the ship's shots miss with up to 50% chance (CombatHelper.calcMissRate), so a few misses
+                        //left the husk undamaged while the ship was killed (runs 8, attempts 1 and 3). The steps test whether the
+                        //ship ENGAGES (target set, shots fired), not husk pathing. Also, for the control case, a husk that
+                        //walks into aiRange is legitimately engaged.
+                        h.setNoAI(true);
                         s.world.spawnEntity(h);
                         return h.getUniqueID();
                     });

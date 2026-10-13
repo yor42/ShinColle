@@ -149,3 +149,49 @@ Source: coordinator follow-up, supplied to the porting-doc-writer. The code cita
 2a. Issue #1 was closed on 2026-10-13, citing the run 4 evidence (scripted crafting-task check, Run 4 section above).
 3. Adjust the harness combat steps to set a normal morale (or place the husk within 2 blocks), so the baseline reflects intended combat setup. Then add steps as later fixes land: #4 morph supplies (with `-Pdev_runtime_morph_baubles=true`), #7/INV-12 load paths, AI-01 guard mode.
 4. Keep the harness dev-only. Commit only on request.
+
+## Note: dedicated-server runs need fresh state (issue #9, 2026-10-13)
+- Each dedicated run should start with `run/server-gametest` and its `world-gametest` level deleted (`build.gradle:192` sets the server directory; the level name is `world-gametest`, per `logs/2026-10-13-gametest-dedicated-final-server.log:227`).
+- Reported by the parent (not reproduced in a saved log): a ship from a previous run persisted in the world and broke the `expected exactly 1 ship` precondition. The saved failing run `logs/2026-10-13-gametest-dedicated-results.txt` shows `ships=0` at the precondition and after the egg step, so that saved file does not show the persisted-ship cause. Unknown until the failing run's log is saved or a fresh rerun is recorded.
+- The eight-entity pre-join workaround used in the issue #2 run (see `2026-10-13-issue-2-op-check.md`, Harness workarounds) was removed with the #9 fix. In `logs/2026-10-13-gametest-dedicated-issue9-results.txt:15` the player has entity id 0 and the run passes 8/8 with no padding entities. No padding code remains in `src/gametest` (grep, no matches).
+- Single-player runs are not affected by this note.
+- Fix status: the #9 fix and the #9b follow-up are verified (regression-verifier, final snapshot at HEAD `2403673` plus the working tree) and uncommitted. See `2026-10-13-issue-9-entity-id-zero.md`.
+
+## Single-player harness flakiness (run 8 and the run 9 fixes, 2026-10-13)
+
+### Symptom
+- `logs/2026-10-13-gametest-run8-results.txt`: `SUMMARY passed=5 failed=9`. Failures include `feed-grudge` and the combat steps with `ship ... not loaded on server` (lines 61-64), and `save-quit-reload: ship ... not found after reload` (line 68).
+- `logs/2026-10-13-gametest-run8-attempt1-results.txt`: `SUMMARY passed=5 failed=9` (`save-quit-reload` not found, line 68).
+- `logs/2026-10-13-gametest-run8-attempt3-results.txt`: `SUMMARY passed=10 failed=4` (`save-quit-reload` not found, line 158).
+
+### Root cause (as analysed by the coordinator from the run 8 logs; not re-verified by the porting-doc-writer)
+- Combat miss rate: up to 50% (`BasicEntityShip.java:2228` and `:2282`; `CombatHelper.java:120-145`). Combined with a husk that melee-killed the ship inside the 400-tick engage limit. One example ran from HP 7 to 0 between t=280 and t=376.
+- `refuel()` only topped up when grudge was below 100. One run started at grudge 152, ran out of fuel and reached morale 0.
+- HP, ammo and level carried over from one step to the next.
+- The fresh-dev-world hypothesis was refuted: each run creates a new world, `gametest-<timestamp>` (for example run 8, `enter-world`, line 2).
+
+### Fix (harness only; `src/gametest/`)
+- `refuel()` (`GameTestRunner.java:378`) now resets grudge to 1000, HP to max, `deathTime`, fire, `hurtResistantTime` and light ammo to 60, on every call (`:384-386`).
+- All combat husks are set `setNoAI(true)` (`GameTestRunner.java:427`).
+- The engage timeout went from 400 to 800 ticks (`GameTestRunner.java:309-313`), because the first hit took 56 to 392 ticks.
+- `save-quit-reload` compares the level against the level from before quitting, not against a fixed level 1.
+
+### Results
+- `logs/2026-10-13-gametest-run9a-results.txt`, `run9b-results.txt`, `run9c-results.txt`: 14/14 each, with the #9 edits in (`SUMMARY passed=14 failed=0`). `run9b` `save-quit-reload` reads `level=2` (the pre-quit level).
+- `logs/2026-10-13-gametest-run9d-stashed-network-results.txt`: network files stashed. `SUMMARY passed=13 failed=1`; the only failure is `save-quit-reload: ship changed: expected level=1 ownerUID=100, got level=2` (line 192). This was before the level-comparison fix.
+- `logs/2026-10-13-gametest-run9a-prelevelfix-results.txt`, `run9b-prelevelfix-results.txt`, `run9c-prelevelfix-results.txt`: 14/14 each, before the level fix.
+
+### Limits
+- Three green runs are evidence of stability in this setup, not proof.
+- The husks no longer move or attack (`setNoAI(true)`), so melee survival is not measured by these steps.
+
+### Observation (not changed)
+- A ship fires only a few shots and misses up to 50%. This is the original combat tuning. It was not compared with 1.10.
+
+### Run 7 count (reconciled)
+- `logs/2026-10-13-gametest-run7-results.txt`: 14 `PASS` lines (`^PASS` count = 14), 0 `FAIL`, `SUMMARY passed=14 failed=0`. The list is in `2026-10-13-issue-9-entity-id-zero.md` (Evidence 10). No document in `docs/` gives a count of 15 for run 7 that could be located; the 15 may come from an unsaved message.
+
+### Coverage lost by the harness fix
+Recorded as known harness gaps. Neither is fixed by this section.
+- **C1: no test of a ship reacting to a mobile hostile that attacks it.** Nothing now checks the revenge-target path or HP loss from a hostile that moves and attacks the ship. This coverage ran incidentally before the combat husks got `setNoAI(true)`; the fix removed it.
+- **C2: `ship-attacks-husk-after-grudge` no longer proves that feeding grudge restores engagement.** `refuel` sets grudge to 1000 at the start of every combat step, so the grudge value at that step is not the value the feed produced. The separate `feed-grudge` step still asserts that NoFuel clears (`GameTestRunner.java:539-577`), but it does not show that engagement is restored.
