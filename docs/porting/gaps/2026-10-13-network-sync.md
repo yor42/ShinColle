@@ -92,3 +92,11 @@ Paths: `N/` = `src/main/java/com/lulan/shincolle/network/`, `U/` = `.../utility/
 1. Stabilization candidates: NET-04 (smallest, verified), NET-02, then NET-01/NET-07 with a shared authorization predicate. Each needs a characterization test first.
 2. Maintainer decision on NET-09 (keep polling vs. tracking-start sync on the Modern track).
 3. A dedicated-server, no-optional-mods smoke run (NET-11, MOD-01).
+
+## Phase 3 updates
+- 2026-10-13 NET-02 fix (issue #2; see `../reports/2026-10-13-issue-2-op-check.md`). Shared OP predicate `PacketAuthorization`; the two packets and two `/ship` commands use it. Creative non-OP players are now blocked (behavior change). Other `EntityHelper.checkOP` callers keep the creative shortcut (follow-up under NET-01 / NET-07).
+- 2026-10-13 NET-13 added. **Entity id 0 is rejected.** `EntityHelper.getEntityPlayerByID` (`EntityHelper.java:294-303`) and `getEntityByID` (`:254-268`) require `entityID > 0`. The first entity on a fresh server, typically the first player to join, has id 0. So `C2SInputPackets.java:130`, `CommandHelper.processShipChangeOwner` (line 49) and `processSetShipAttrs` (line 119) fail silently for that player.
+  - Evidence: confirmed on the dedicated server (harness workaround: eight throwaway entities before the player joins). Confidence HIGH.
+  - Proposed fix: `>= 0`. Not applied or tested. Other `entityID > 0` sites need review.
+  - Historical (8bca563): not checked.
+  - Status: CONFIRMED_BUG (current behavior; reproduced on the dedicated server). Fix needs approval.
