@@ -1,0 +1,670 @@
+
+> Configure project :
+[Unimined] Plugin Version: 1.4.43-kappa
+[Unimined/MinecraftDownloader] retrieving version metadata
+[Unimined/Forge] Using FG3 transformer
+[Unimined/Minecraft ::main] Applying minecraft config for source set 'main'
+[Unimined/Minecraft ::main] Applying CleanroomFG3
+[Unimined/ForgeTransformer] Attempting inject forge userdev into minecraft jar
+[Unimined/Minecraft ::main] Applying run configs
+Merging client and server jars...
+[Unimined/Forge] transforming minecraft jar for FG3
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class ain$22, {official=ain$22, searge=net/minecraft/item/Item$22, mcp=net/minecraft/item/Item$22}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class anh$FlowerEntry, {official=anh$FlowerEntry, searge=net/minecraft/world/biome/Biome$FlowerEntry, mcp=net/minecraft/world/biome/Biome$FlowerEntry}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class anp$EmeraldGenerator, {official=anp$EmeraldGenerator, searge=net/minecraft/world/biome/BiomeHills$EmeraldGenerator, mcp=net/minecraft/world/biome/BiomeHills$EmeraldGenerator}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class awu$Builder, {official=awu$Builder, searge=net/minecraft/block/state/BlockStateContainer$Builder, mcp=net/minecraft/block/state/BlockStateContainer$Builder}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class aym$WorldSleepResult, {official=aym$WorldSleepResult, searge=net/minecraft/world/WorldProvider$WorldSleepResult, mcp=net/minecraft/world/WorldProvider$WorldSleepResult}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class c$4, {official=c$4, searge=net/minecraft/crash/CrashReportCategory$4, mcp=net/minecraft/crash/CrashReportCategory$4}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class c$5, {official=c$5, searge=net/minecraft/crash/CrashReportCategory$5, mcp=net/minecraft/crash/CrashReportCategory$5}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class ot$1, {official=ot$1, searge=net/minecraft/server/management/PlayerChunkMapEntry$1, mcp=net/minecraft/server/management/PlayerChunkMapEntry$1}
+[Unimined/ForgeTransformer] Applying ATs [forge_at.cfg]
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] Found 2 mods for remapping
+Merging client and server jars...
+[Unimined/Forge] transforming minecraft jar for FG3
+[Unimined/Forge] Applying ASM transforms to fix additional issues...
+[Unimined/Forge] Patching IObjectIntIterable...
+[Unimined/Forge] Patching KeyBinding...
+[Unimined/ForgeTransformer] Applying ATs [forge_at.cfg]
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] Found 2 mods for remapping
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] No mods found for remapping
+
+> Task :processTestResources NO-SOURCE
+> Task :generateJavaTemplates
+> Task :generateResourceTemplates
+
+> Task :compileJava
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:20: error: package mchorse.metamorph.api.events does not exist
+import mchorse.metamorph.api.events.MorphActionEvent;
+                                   ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:21: error: package mchorse.metamorph.api.events does not exist
+import mchorse.metamorph.api.events.MorphEvent;
+                                   ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:22: error: package mchorse.metamorph.api.events does not exist
+import mchorse.metamorph.api.events.SpawnGhostEvent;
+                                   ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:23: error: package mchorse.metamorph.api.morphs does not exist
+import mchorse.metamorph.api.morphs.EntityMorph;
+                                   ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1005: error: package MorphEvent does not exist
+    public void onMorphPre(MorphEvent.Pre event) {
+                                     ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1065: error: package MorphEvent does not exist
+    public void onMorphPost(MorphEvent.Post event) {
+                                      ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1107: error: package SpawnGhostEvent does not exist
+    public void onSpawnMorphPre(SpawnGhostEvent.Pre event) {
+                                               ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1144: error: cannot find symbol
+    public void onMorphAction(MorphActionEvent event) {
+                              ^
+  symbol:   class MorphActionEvent
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\mekanism\MekanismHelper.java:5: error: package mekanism.common.recipe does not exist
+import mekanism.common.recipe.RecipeHandler;
+                             ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:19: error: package mchorse.metamorph.api does not exist
+import mchorse.metamorph.api.EntityUtils;
+                            ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:20: error: package mchorse.metamorph.api does not exist
+import mchorse.metamorph.api.MorphAPI;
+                            ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:21: error: package mchorse.metamorph.api does not exist
+import mchorse.metamorph.api.MorphManager;
+                            ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:22: error: package mchorse.metamorph.api.events does not exist
+import mchorse.metamorph.api.events.MorphActionEvent;
+                                   ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:23: error: package mchorse.metamorph.api.morphs does not exist
+import mchorse.metamorph.api.morphs.AbstractMorph;
+                                   ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:24: error: package mchorse.metamorph.api.morphs does not exist
+import mchorse.metamorph.api.morphs.EntityMorph;
+                                   ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:25: error: package mchorse.metamorph.capabilities.morphing does not exist
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+                                              ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:26: error: package mchorse.metamorph.capabilities.morphing does not exist
+import mchorse.metamorph.capabilities.morphing.Morphing;
+                                              ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:282: error: cannot find symbol
+    public static void onMorphActionHelper(MorphActionEvent event) {
+                                           ^
+  symbol:   class MorphActionEvent
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:3: error: package baubles.api does not exist
+import baubles.api.BaubleType;
+                  ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:4: error: package baubles.api does not exist
+import baubles.api.IBauble;
+                  ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:32: error: cannot find symbol
+public class MarriageRing extends BasicItem implements IBauble {
+                                                       ^
+  symbol: class IBauble
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:177: error: cannot find symbol
+    public BaubleType getBaubleType(ItemStack arg0) {
+           ^
+  symbol:   class BaubleType
+  location: class MarriageRing
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\utility\InventoryHelper.java:3: error: package baubles.api.cap does not exist
+import baubles.api.cap.BaublesCapabilities;
+                      ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\utility\InventoryHelper.java:4: error: package baubles.api.cap does not exist
+import baubles.api.cap.IBaublesItemHandler;
+                      ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1026: error: cannot find symbol
+        if (event.player != null && !event.player.world.isRemote && event.morph instanceof EntityMorph) {
+                                                                                           ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1027: error: cannot find symbol
+            EntityMorph em = (EntityMorph) event.morph;
+            ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1027: error: cannot find symbol
+            EntityMorph em = (EntityMorph) event.morph;
+                              ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1072: error: cannot find symbol
+        if (event.player != null && !event.player.world.isRemote && event.morph instanceof EntityMorph) {
+                                                                                           ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1073: error: cannot find symbol
+            EntityMorph em = (EntityMorph) event.morph;
+            ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1073: error: cannot find symbol
+            EntityMorph em = (EntityMorph) event.morph;
+                              ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1108: error: cannot find symbol
+        if (event.player != null && !event.player.world.isRemote && event.morph instanceof EntityMorph) {
+                                                                                           ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1109: error: cannot find symbol
+            EntityMorph em = (EntityMorph) event.morph;
+            ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1109: error: cannot find symbol
+            EntityMorph em = (EntityMorph) event.morph;
+                              ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1146: error: cannot find symbol
+                event.morph instanceof EntityMorph) {
+                                       ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1147: error: cannot find symbol
+            EntityMorph em = (EntityMorph) event.morph;
+            ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1147: error: cannot find symbol
+            EntityMorph em = (EntityMorph) event.morph;
+                              ^
+  symbol:   class EntityMorph
+  location: class EventHandler
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\mekanism\MekanismHelper.java:13: error: cannot find symbol
+        RecipeHandler.addEnrichmentChamberRecipe(new ItemStack(ModBlocks.BlockPolymetalOre), new ItemStack(ModItems.AbyssMetal, 6, 1));
+        ^
+  symbol:   variable RecipeHandler
+  location: class MekanismHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\mekanism\MekanismHelper.java:14: error: cannot find symbol
+        RecipeHandler.addEnrichmentChamberRecipe(new ItemStack(ModBlocks.BlockPolymetalGravel), new ItemStack(ModItems.AbyssMetal, 12, 1));
+        ^
+  symbol:   variable RecipeHandler
+  location: class MekanismHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:54: error: cannot find symbol
+        IMorphing im = Morphing.get(player);
+        ^
+  symbol:   class IMorphing
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:54: error: cannot find symbol
+        IMorphing im = Morphing.get(player);
+                       ^
+  symbol:   variable Morphing
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:56: error: cannot find symbol
+        if (im != null && im.getCurrentMorph() instanceof EntityMorph) {
+                                                          ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:57: error: cannot find symbol
+            EntityMorph em = (EntityMorph) im.getCurrentMorph();
+            ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:57: error: cannot find symbol
+            EntityMorph em = (EntityMorph) im.getCurrentMorph();
+                              ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:101: error: cannot find symbol
+        MorphAPI.demorph(player);
+        ^
+  symbol:   variable MorphAPI
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:108: error: cannot find symbol
+        IMorphing im = Morphing.get(player);
+        ^
+  symbol:   class IMorphing
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:108: error: cannot find symbol
+        IMorphing im = Morphing.get(player);
+                       ^
+  symbol:   variable Morphing
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:127: error: cannot find symbol
+        IMorphing im = Morphing.get(player);
+        ^
+  symbol:   class IMorphing
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:127: error: cannot find symbol
+        IMorphing im = Morphing.get(player);
+                       ^
+  symbol:   variable Morphing
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:129: error: cannot find symbol
+        if (im != null && im.getCurrentMorph() instanceof EntityMorph) {
+                                                          ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:130: error: cannot find symbol
+            EntityMorph em = (EntityMorph) im.getCurrentMorph();
+            ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:130: error: cannot find symbol
+            EntityMorph em = (EntityMorph) im.getCurrentMorph();
+                              ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:330: error: package MorphManager does not exist
+            String name = MorphManager.INSTANCE.morphNameFromEntity(target);
+                                      ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:331: error: package MorphManager does not exist
+            if (!MorphManager.INSTANCE.hasMorph(name)) return;
+                             ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:335: error: cannot find symbol
+            NBTTagCompound tagData = EntityUtils.stripEntityNBT(target.serializeNBT());
+                                     ^
+  symbol:   variable EntityUtils
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:421: error: cannot find symbol
+            AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
+            ^
+  symbol:   class AbstractMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:421: error: package MorphManager does not exist
+            AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
+                                              ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:422: error: cannot find symbol
+            MorphAPI.acquire(player, morph);
+            ^
+  symbol:   variable MorphAPI
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:725: error: cannot find symbol
+        IMorphing im = Morphing.get(player);
+        ^
+  symbol:   class IMorphing
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:725: error: cannot find symbol
+        IMorphing im = Morphing.get(player);
+                       ^
+  symbol:   variable Morphing
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:728: error: cannot find symbol
+            AbstractMorph am = im.getCurrentMorph();
+            ^
+  symbol:   class AbstractMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:732: error: cannot find symbol
+            if (am instanceof EntityMorph && ((EntityMorph) am).getEntity() instanceof BasicEntityShip) {
+                              ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:732: error: cannot find symbol
+            if (am instanceof EntityMorph && ((EntityMorph) am).getEntity() instanceof BasicEntityShip) {
+                                               ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:734: error: cannot find symbol
+                morph = (BasicEntityShip) ((EntityMorph) am).getEntity();
+                                            ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:739: error: cannot find symbol
+                NBTTagCompound tagData = ((EntityMorph) am).getEntityData();
+                                           ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:742: error: cannot find symbol
+                    ((EntityMorph) am).setEntityData(tagData);
+                      ^
+  symbol:   class EntityMorph
+  location: class MetamorphHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:175: error: method does not override or implement a method from a supertype
+    @Override
+    ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:178: error: cannot find symbol
+        return BaubleType.RING;
+               ^
+  symbol:   variable BaubleType
+  location: class MarriageRing
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:181: error: method does not override or implement a method from a supertype
+    @Override
+    ^
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\utility\InventoryHelper.java:938: error: cannot find symbol
+        IBaublesItemHandler bb = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, null);
+        ^
+  symbol:   class IBaublesItemHandler
+  location: class InventoryHelper
+C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\utility\InventoryHelper.java:938: error: cannot find symbol
+        IBaublesItemHandler bb = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, null);
+                                                      ^
+  symbol:   variable BaublesCapabilities
+  location: class InventoryHelper
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+70 errors
+
+> Task :compileJava FAILED
+
+[Incubating] Problems report is available at: file:///C:/Projects/ShinColle/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
+> Compilation failed; see the compiler output below.
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:20: error: package mchorse.metamorph.api.events does not exist
+  import mchorse.metamorph.api.events.MorphActionEvent;
+                                     ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:21: error: package mchorse.metamorph.api.events does not exist
+  import mchorse.metamorph.api.events.MorphEvent;
+                                     ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:22: error: package mchorse.metamorph.api.events does not exist
+  import mchorse.metamorph.api.events.SpawnGhostEvent;
+                                     ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:23: error: package mchorse.metamorph.api.morphs does not exist
+  import mchorse.metamorph.api.morphs.EntityMorph;
+                                     ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1005: error: package MorphEvent does not exist
+      public void onMorphPre(MorphEvent.Pre event) {
+                                       ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1065: error: package MorphEvent does not exist
+      public void onMorphPost(MorphEvent.Post event) {
+                                        ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1107: error: package SpawnGhostEvent does not exist
+      public void onSpawnMorphPre(SpawnGhostEvent.Pre event) {
+                                                 ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\mekanism\MekanismHelper.java:5: error: package mekanism.common.recipe does not exist
+  import mekanism.common.recipe.RecipeHandler;
+                               ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:19: error: package mchorse.metamorph.api does not exist
+  import mchorse.metamorph.api.EntityUtils;
+                              ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:20: error: package mchorse.metamorph.api does not exist
+  import mchorse.metamorph.api.MorphAPI;
+                              ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:21: error: package mchorse.metamorph.api does not exist
+  import mchorse.metamorph.api.MorphManager;
+                              ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:22: error: package mchorse.metamorph.api.events does not exist
+  import mchorse.metamorph.api.events.MorphActionEvent;
+                                     ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:23: error: package mchorse.metamorph.api.morphs does not exist
+  import mchorse.metamorph.api.morphs.AbstractMorph;
+                                     ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:24: error: package mchorse.metamorph.api.morphs does not exist
+  import mchorse.metamorph.api.morphs.EntityMorph;
+                                     ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:25: error: package mchorse.metamorph.capabilities.morphing does not exist
+  import mchorse.metamorph.capabilities.morphing.IMorphing;
+                                                ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:26: error: package mchorse.metamorph.capabilities.morphing does not exist
+  import mchorse.metamorph.capabilities.morphing.Morphing;
+                                                ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:3: error: package baubles.api does not exist
+  import baubles.api.BaubleType;
+                    ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:4: error: package baubles.api does not exist
+  import baubles.api.IBauble;
+                    ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\utility\InventoryHelper.java:3: error: package baubles.api.cap does not exist
+  import baubles.api.cap.BaublesCapabilities;
+                        ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\utility\InventoryHelper.java:4: error: package baubles.api.cap does not exist
+  import baubles.api.cap.IBaublesItemHandler;
+                        ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:330: error: package MorphManager does not exist
+              String name = MorphManager.INSTANCE.morphNameFromEntity(target);
+                                        ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:331: error: package MorphManager does not exist
+              if (!MorphManager.INSTANCE.hasMorph(name)) return;
+                               ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:421: error: package MorphManager does not exist
+              AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
+                                                ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1144: error: cannot find symbol
+      public void onMorphAction(MorphActionEvent event) {
+                                ^
+    symbol:   class MorphActionEvent
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:282: error: cannot find symbol
+      public static void onMorphActionHelper(MorphActionEvent event) {
+                                             ^
+    symbol:   class MorphActionEvent
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:177: error: cannot find symbol
+      public BaubleType getBaubleType(ItemStack arg0) {
+             ^
+    symbol:   class BaubleType
+    location: class MarriageRing
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1026: error: cannot find symbol
+          if (event.player != null && !event.player.world.isRemote && event.morph instanceof EntityMorph) {
+                                                                                             ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1027: error: cannot find symbol
+              EntityMorph em = (EntityMorph) event.morph;
+              ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1027: error: cannot find symbol
+              EntityMorph em = (EntityMorph) event.morph;
+                                ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1072: error: cannot find symbol
+          if (event.player != null && !event.player.world.isRemote && event.morph instanceof EntityMorph) {
+                                                                                             ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1073: error: cannot find symbol
+              EntityMorph em = (EntityMorph) event.morph;
+              ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1073: error: cannot find symbol
+              EntityMorph em = (EntityMorph) event.morph;
+                                ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1108: error: cannot find symbol
+          if (event.player != null && !event.player.world.isRemote && event.morph instanceof EntityMorph) {
+                                                                                             ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1109: error: cannot find symbol
+              EntityMorph em = (EntityMorph) event.morph;
+              ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1109: error: cannot find symbol
+              EntityMorph em = (EntityMorph) event.morph;
+                                ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1146: error: cannot find symbol
+                  event.morph instanceof EntityMorph) {
+                                         ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1147: error: cannot find symbol
+              EntityMorph em = (EntityMorph) event.morph;
+              ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\handler\EventHandler.java:1147: error: cannot find symbol
+              EntityMorph em = (EntityMorph) event.morph;
+                                ^
+    symbol:   class EntityMorph
+    location: class EventHandler
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\mekanism\MekanismHelper.java:13: error: cannot find symbol
+          RecipeHandler.addEnrichmentChamberRecipe(new ItemStack(ModBlocks.BlockPolymetalOre), new ItemStack(ModItems.AbyssMetal, 6, 1));
+          ^
+    symbol:   variable RecipeHandler
+    location: class MekanismHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\mekanism\MekanismHelper.java:14: error: cannot find symbol
+          RecipeHandler.addEnrichmentChamberRecipe(new ItemStack(ModBlocks.BlockPolymetalGravel), new ItemStack(ModItems.AbyssMetal, 12, 1));
+          ^
+    symbol:   variable RecipeHandler
+    location: class MekanismHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:54: error: cannot find symbol
+          IMorphing im = Morphing.get(player);
+          ^
+    symbol:   class IMorphing
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:54: error: cannot find symbol
+          IMorphing im = Morphing.get(player);
+                         ^
+    symbol:   variable Morphing
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:56: error: cannot find symbol
+          if (im != null && im.getCurrentMorph() instanceof EntityMorph) {
+                                                            ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:57: error: cannot find symbol
+              EntityMorph em = (EntityMorph) im.getCurrentMorph();
+              ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:57: error: cannot find symbol
+              EntityMorph em = (EntityMorph) im.getCurrentMorph();
+                                ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:101: error: cannot find symbol
+          MorphAPI.demorph(player);
+          ^
+    symbol:   variable MorphAPI
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:108: error: cannot find symbol
+          IMorphing im = Morphing.get(player);
+          ^
+    symbol:   class IMorphing
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:108: error: cannot find symbol
+          IMorphing im = Morphing.get(player);
+                         ^
+    symbol:   variable Morphing
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:127: error: cannot find symbol
+          IMorphing im = Morphing.get(player);
+          ^
+    symbol:   class IMorphing
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:127: error: cannot find symbol
+          IMorphing im = Morphing.get(player);
+                         ^
+    symbol:   variable Morphing
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:129: error: cannot find symbol
+          if (im != null && im.getCurrentMorph() instanceof EntityMorph) {
+                                                            ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:130: error: cannot find symbol
+              EntityMorph em = (EntityMorph) im.getCurrentMorph();
+              ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:130: error: cannot find symbol
+              EntityMorph em = (EntityMorph) im.getCurrentMorph();
+                                ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:335: error: cannot find symbol
+              NBTTagCompound tagData = EntityUtils.stripEntityNBT(target.serializeNBT());
+                                       ^
+    symbol:   variable EntityUtils
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:421: error: cannot find symbol
+              AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
+              ^
+    symbol:   class AbstractMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:422: error: cannot find symbol
+              MorphAPI.acquire(player, morph);
+              ^
+    symbol:   variable MorphAPI
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:725: error: cannot find symbol
+          IMorphing im = Morphing.get(player);
+          ^
+    symbol:   class IMorphing
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:725: error: cannot find symbol
+          IMorphing im = Morphing.get(player);
+                         ^
+    symbol:   variable Morphing
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:728: error: cannot find symbol
+              AbstractMorph am = im.getCurrentMorph();
+              ^
+    symbol:   class AbstractMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:732: error: cannot find symbol
+              if (am instanceof EntityMorph && ((EntityMorph) am).getEntity() instanceof BasicEntityShip) {
+                                ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:732: error: cannot find symbol
+              if (am instanceof EntityMorph && ((EntityMorph) am).getEntity() instanceof BasicEntityShip) {
+                                                 ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:734: error: cannot find symbol
+                  morph = (BasicEntityShip) ((EntityMorph) am).getEntity();
+                                              ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:739: error: cannot find symbol
+                  NBTTagCompound tagData = ((EntityMorph) am).getEntityData();
+                                             ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\intermod\metamorph\MetamorphHelper.java:742: error: cannot find symbol
+                      ((EntityMorph) am).setEntityData(tagData);
+                        ^
+    symbol:   class EntityMorph
+    location: class MetamorphHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:178: error: cannot find symbol
+          return BaubleType.RING;
+                 ^
+    symbol:   variable BaubleType
+    location: class MarriageRing
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\utility\InventoryHelper.java:938: error: cannot find symbol
+          IBaublesItemHandler bb = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, null);
+          ^
+    symbol:   class IBaublesItemHandler
+    location: class InventoryHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\utility\InventoryHelper.java:938: error: cannot find symbol
+          IBaublesItemHandler bb = player.getCapability(BaublesCapabilities.CAPABILITY_BAUBLES, null);
+                                                        ^
+    symbol:   variable BaublesCapabilities
+    location: class InventoryHelper
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:32: error: cannot find symbol
+  public class MarriageRing extends BasicItem implements IBauble {
+                                                         ^
+    symbol: class IBauble
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:175: error: method does not override or implement a method from a supertype
+      @Override
+      ^
+  C:\Projects\ShinColle\src\main\java\com\lulan\shincolle\item\MarriageRing.java:181: error: method does not override or implement a method from a supertype
+      @Override
+      ^
+  Note: Some input files use or override a deprecated API.
+  Note: Recompile with -Xlint:deprecation for details.
+  Note: Some input files use unchecked or unsafe operations.
+  Note: Recompile with -Xlint:unchecked for details.
+  70 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.8.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 40s
+3 actionable tasks: 3 executed
+exit=1
