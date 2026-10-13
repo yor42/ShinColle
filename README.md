@@ -21,7 +21,7 @@ Goal of this fork is:<br>
 as always, you can grab build jar on [Github Actions](https://github.com/yor42/ShinColle/actions)<br>
 this mod uses part of code and texture of PlusTic by Landmaster; which uses Apache License Version 2.0.
 
-** AI Disclosure: This fork used Large language model Generative AI for bug hunting, triage and bugfixes. ** 
+**AI Disclosure: This fork used Large language model Generative AI for bug hunting, triage and bugfixes.** 
 
 # Shin Colle(Mikasa10843)
 
