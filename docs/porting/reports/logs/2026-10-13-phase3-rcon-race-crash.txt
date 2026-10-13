@@ -1,0 +1,291 @@
+---- Minecraft Crash Report ----
+
+WARNING: coremods are present:
+  MekanismCoremod (Mekanism-Community-Edition-1.12.2-9.12.8-ALL.jar)
+Contact their authors BEFORE contacting forge
+
+// Uh... Did I do that?
+
+Time: 26. 10. 13. 오후 4:51
+Description: Watching Server
+
+java.lang.Error: ServerHangWatchdog detected that a single server tick took 77.90 seconds (should be max 0.05)
+	at java.base@25.0.4/java.lang.Thread.sleepNanos0(Native Method)
+	at java.base@25.0.4/java.lang.Thread.sleepNanos(Thread.java:509)
+	at java.base@25.0.4/java.lang.Thread.sleep(Thread.java:540)
+	at net.minecraft.world.storage.ThreadedFileIOBase.waitForFinish(ThreadedFileIOBase.java:69)
+	at net.minecraft.world.chunk.storage.AnvilSaveHandler.flush(AnvilSaveHandler.java:50)
+	at net.minecraft.world.WorldServer.flush(WorldServer.java:1292)
+	at net.minecraft.world.WorldServerMulti.flush(WorldServerMulti.java:96)
+	at net.minecraftforge.common.DimensionManager.unloadWorlds(DimensionManager.java:404)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:818)
+	at net.minecraft.server.dedicated.DedicatedServer.updateTimeLightAndEntities(DedicatedServer.java:422)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:698)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:554)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+
+No Mixin Metadata is found in the Stacktrace.
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server Watchdog
+Stacktrace:
+	at java.base@25.0.4/java.lang.Thread.sleepNanos0(Native Method)
+	at java.base@25.0.4/java.lang.Thread.sleepNanos(Thread.java:509)
+	at java.base@25.0.4/java.lang.Thread.sleep(Thread.java:540)
+	at net.minecraft.world.storage.ThreadedFileIOBase.waitForFinish(ThreadedFileIOBase.java:69)
+	at net.minecraft.world.chunk.storage.AnvilSaveHandler.flush(AnvilSaveHandler.java:50)
+	at net.minecraft.world.WorldServer.flush(WorldServer.java:1292)
+	at net.minecraft.world.WorldServerMulti.flush(WorldServerMulti.java:96)
+	at net.minecraftforge.common.DimensionManager.unloadWorlds(DimensionManager.java:404)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:818)
+	at net.minecraft.server.dedicated.DedicatedServer.updateTimeLightAndEntities(DedicatedServer.java:422)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:698)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:554)
+
+-- Thread Dump --
+Details:
+	Threads: "Reference Handler" daemon prio=10 Id=16 RUNNABLE
+	at java.base@25.0.4/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+	at java.base@25.0.4/java.lang.ref.Reference.processPendingReferences(Reference.java:246)
+	at java.base@25.0.4/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:208)
+
+
+"Finalizer" daemon prio=8 Id=17 WAITING on java.lang.ref.ReferenceQueue$Lock@22586c45
+	at java.base@25.0.4/java.lang.Object.wait0(Native Method)
+	-  waiting on java.lang.ref.ReferenceQueue$Lock@22586c45
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:389)
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:351)
+	at java.base@25.0.4/java.lang.ref.ReferenceQueue.remove0(ReferenceQueue.java:137)
+	at java.base@25.0.4/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:215)
+	at java.base@25.0.4/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:165)
+
+
+"Signal Dispatcher" daemon prio=9 Id=18 RUNNABLE
+
+
+"Attach Listener" daemon prio=5 Id=19 RUNNABLE
+
+
+"Common-Cleaner" daemon prio=8 Id=37 TIMED_WAITING on java.lang.ref.ReferenceQueue$Lock@5ab7beaf
+	at java.base@25.0.4/java.lang.Object.wait0(Native Method)
+	-  waiting on java.lang.ref.ReferenceQueue$Lock@5ab7beaf
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:389)
+	at java.base@25.0.4/java.lang.ref.ReferenceQueue.remove0(ReferenceQueue.java:123)
+	at java.base@25.0.4/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:201)
+	at java.base@25.0.4/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:146)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+	at java.base@25.0.4/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:148)
+
+
+"Notification Thread" daemon prio=9 Id=40 RUNNABLE
+
+
+"Snooper Timer" daemon prio=5 Id=72 WAITING on java.util.TaskQueue@13455919
+	at java.base@25.0.4/java.lang.Object.wait0(Native Method)
+	-  waiting on java.util.TaskQueue@13455919
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:389)
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:351)
+	at java.base@25.0.4/java.util.TimerThread.mainLoop(Timer.java:543)
+	at java.base@25.0.4/java.util.TimerThread.run(Timer.java:522)
+
+
+"Server Infinisleeper" daemon prio=1 Id=73 TIMED_WAITING
+	at java.base@25.0.4/java.lang.Thread.sleepNanos0(Native Method)
+	at java.base@25.0.4/java.lang.Thread.sleepNanos(Thread.java:509)
+	at java.base@25.0.4/java.lang.Thread.sleep(Thread.java:540)
+	at net.minecraft.server.dedicated.DedicatedServer$1.run(DedicatedServer.java:92)
+
+
+"Java2D Disposer" daemon prio=10 Id=74 WAITING on java.lang.ref.ReferenceQueue$Lock@588766e2
+	at java.base@25.0.4/java.lang.Object.wait0(Native Method)
+	-  waiting on java.lang.ref.ReferenceQueue$Lock@588766e2
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:389)
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:351)
+	at java.base@25.0.4/java.lang.ref.ReferenceQueue.remove0(ReferenceQueue.java:137)
+	at java.base@25.0.4/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:215)
+	at java.desktop@25.0.4/sun.java2d.Disposer.run(Disposer.java:133)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+
+
+"AWT-Shutdown" prio=5 Id=75 WAITING on java.lang.Object@395c03f3
+	at java.base@25.0.4/java.lang.Object.wait0(Native Method)
+	-  waiting on java.lang.Object@395c03f3
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:389)
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:351)
+	at java.desktop@25.0.4/sun.awt.AWTAutoShutdown.run(AWTAutoShutdown.java:289)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+
+
+"AWT-Windows" daemon prio=6 Id=76 RUNNABLE (in native)
+	at java.desktop@25.0.4/sun.awt.windows.WToolkit.eventLoop(Native Method)
+	at java.desktop@25.0.4/sun.awt.windows.WToolkit.run(WToolkit.java:272)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+
+
+"AWT-EventQueue-0" prio=6 Id=78 WAITING on java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject@5ef980b1
+	at java.base@25.0.4/jdk.internal.misc.Unsafe.park(Native Method)
+	-  waiting on java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject@5ef980b1
+	at java.base@25.0.4/java.util.concurrent.locks.LockSupport.park(LockSupport.java:369)
+	at java.base@25.0.4/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionNode.block(AbstractQueuedSynchronizer.java:520)
+	at java.base@25.0.4/java.util.concurrent.ForkJoinPool.unmanagedBlock(ForkJoinPool.java:4364)
+	at java.base@25.0.4/java.util.concurrent.ForkJoinPool.managedBlock(ForkJoinPool.java:4310)
+	at java.base@25.0.4/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1752)
+	at java.desktop@25.0.4/java.awt.EventQueue.getNextEvent(EventQueue.java:552)
+	at java.desktop@25.0.4/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:190)
+	...
+
+
+"TimerQueue" daemon prio=5 Id=80 TIMED_WAITING on java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject@49e4d8b
+	at java.base@25.0.4/jdk.internal.misc.Unsafe.park(Native Method)
+	-  waiting on java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject@49e4d8b
+	at java.base@25.0.4/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:271)
+	at java.base@25.0.4/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1803)
+	at java.base@25.0.4/java.util.concurrent.DelayQueue.take(DelayQueue.java:255)
+	at java.desktop@25.0.4/javax.swing.TimerQueue.run(TimerQueue.java:158)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+
+	Number of locked synchronizers = 1
+	- java.util.concurrent.locks.ReentrantLock$NonfairSync@67cd87e6
+
+
+"Server thread" prio=5 Id=82 TIMED_WAITING
+	at java.base@25.0.4/java.lang.Thread.sleepNanos0(Native Method)
+	at java.base@25.0.4/java.lang.Thread.sleepNanos(Thread.java:509)
+	at java.base@25.0.4/java.lang.Thread.sleep(Thread.java:540)
+	at net.minecraft.world.storage.ThreadedFileIOBase.waitForFinish(ThreadedFileIOBase.java:69)
+	at net.minecraft.world.chunk.storage.AnvilSaveHandler.flush(AnvilSaveHandler.java:50)
+	at net.minecraft.world.WorldServer.flush(WorldServer.java:1292)
+	at net.minecraft.world.WorldServerMulti.flush(WorldServerMulti.java:96)
+	at net.minecraftforge.common.DimensionManager.unloadWorlds(DimensionManager.java:404)
+	...
+
+
+"DestroyJavaVM" prio=5 Id=85 RUNNABLE
+
+
+"D3D Screen Updater" daemon prio=7 Id=86 TIMED_WAITING on java.lang.Object@5d048570
+	at java.base@25.0.4/java.lang.Object.wait0(Native Method)
+	-  waiting on java.lang.Object@5d048570
+	at java.base@25.0.4/java.lang.Object.wait(Object.java:389)
+	at java.desktop@25.0.4/sun.java2d.d3d.D3DScreenUpdateManager.run(D3DScreenUpdateManager.java:416)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+
+
+"Netty Server IO #0" daemon prio=5 Id=92 RUNNABLE
+	at java.base@25.0.4/sun.nio.ch.WEPoll.wait(Native Method)
+	at java.base@25.0.4/sun.nio.ch.WEPollSelectorImpl.doSelect(WEPollSelectorImpl.java:108)
+	at java.base@25.0.4/sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:130)
+	-  locked sun.nio.ch.Util$2@4fea7a69
+	-  locked sun.nio.ch.WEPollSelectorImpl@180b4df7
+	at java.base@25.0.4/sun.nio.ch.SelectorImpl.select(SelectorImpl.java:142)
+	at app//io.netty.channel.nio.NioIoHandler.select(NioIoHandler.java:668)
+	at app//io.netty.channel.nio.NioIoHandler.run(NioIoHandler.java:434)
+	at app//io.netty.channel.SingleThreadIoEventLoop.runIo(SingleThreadIoEventLoop.java:225)
+	at app//io.netty.channel.SingleThreadIoEventLoop.run(SingleThreadIoEventLoop.java:196)
+	...
+
+	Number of locked synchronizers = 1
+	- java.util.concurrent.locks.ReentrantLock$NonfairSync@3297d9d9
+
+
+"RCON Listener #1" prio=5 Id=93 RUNNABLE
+	at java.base@25.0.4/sun.nio.ch.Net.poll(Native Method)
+	at java.base@25.0.4/sun.nio.ch.NioSocketImpl.park(NioSocketImpl.java:190)
+	at java.base@25.0.4/sun.nio.ch.NioSocketImpl.timedAccept(NioSocketImpl.java:706)
+	at java.base@25.0.4/sun.nio.ch.NioSocketImpl.accept(NioSocketImpl.java:748)
+	at java.base@25.0.4/java.net.ServerSocket.implAccept(ServerSocket.java:593)
+	at java.base@25.0.4/java.net.ServerSocket.platformImplAccept(ServerSocket.java:560)
+	at java.base@25.0.4/java.net.ServerSocket.implAccept(ServerSocket.java:536)
+	at java.base@25.0.4/java.net.ServerSocket.implAccept(ServerSocket.java:482)
+	...
+
+	Number of locked synchronizers = 1
+	- java.util.concurrent.locks.ReentrantLock$NonfairSync@4bc1f5fe
+
+
+"Server Watchdog" daemon prio=5 Id=94 RUNNABLE
+	at java.management@25.0.4/sun.management.ThreadImpl.dumpThreads0(Native Method)
+	at java.management@25.0.4/sun.management.ThreadImpl.dumpAllThreads(ThreadImpl.java:505)
+	at java.management@25.0.4/sun.management.ThreadImpl.dumpAllThreads(ThreadImpl.java:493)
+	at net.minecraft.server.dedicated.ServerHangWatchdog.run(ServerHangWatchdog.java:48)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+
+
+"File IO Thread" prio=1 Id=95 RUNNABLE
+	at java.base@25.0.4/java.lang.Thread.afterSleep(Thread.java:497)
+	at java.base@25.0.4/java.lang.Thread.sleepNanos(Thread.java:512)
+	at java.base@25.0.4/java.lang.Thread.sleep(Thread.java:540)
+	at net.minecraft.world.storage.ThreadedFileIOBase.processQueue(ThreadedFileIOBase.java:44)
+	at net.minecraft.world.storage.ThreadedFileIOBase.run(ThreadedFileIOBase.java:30)
+	at java.base@25.0.4/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.4/java.lang.Thread.run(Thread.java:1474)
+
+
+"RCON Client #2" prio=5 Id=96 RUNNABLE
+	at java.base@25.0.4/java.util.concurrent.ConcurrentHashMap.putVal(ConcurrentHashMap.java:1024)
+	at java.base@25.0.4/java.util.concurrent.ConcurrentHashMap.put(ConcurrentHashMap.java:1018)
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.addChunkToPending(AnvilChunkLoader.java:199)
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.saveChunk(AnvilChunkLoader.java:187)
+	at net.minecraft.world.gen.ChunkProviderServer.saveChunkData(ChunkProviderServer.java:202)
+	at net.minecraft.world.gen.ChunkProviderServer.saveChunks(ChunkProviderServer.java:230)
+	at net.minecraft.world.WorldServer.saveAllChunks(WorldServer.java:1031)
+	at net.minecraft.command.server.CommandSaveAll.execute(CommandSaveAll.java:41)
+	...
+
+
+
+Stacktrace:
+	at net.minecraft.server.dedicated.ServerHangWatchdog.run(ServerHangWatchdog.java:65)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 11 (amd64) version 10.0
+	Java Version: 25.0.4, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 316360928 bytes (301 MB) / 645922816 bytes (616 MB) up to 17121148928 bytes (16328 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 13, tallocated: 95
+	FML: MCP 9.42 Cleanroom 0.6.13-alpha 17 mods loaded, 17 mods active
+States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+	| State  | ID                 | Version       | Source                                             |
+	|:------ |:------------------ |:------------- |:-------------------------------------------------- |
+	| LCHIJA | minecraft          | 1.12.2        | minecraft.jar                                      |
+	| LCHIJA | mcp                | 9.42          | minecraft.jar                                      |
+	| LCHIJA | cleanroom          | 0.6.13-alpha  | minecraft-cleanroom-0.6.13-alpha-1.12.2.jar        |
+	| LCHIJA | cleanmix           | 0.7.2         | cleanmix-0.7.2.jar                                 |
+	| LCHIJA | mixinbooter        | 11.8          | minecraft-cleanroom-0.6.13-alpha-1.12.2.jar        |
+	| LCHIJA | configanytime      | 3.0           | minecraft-cleanroom-0.6.13-alpha-1.12.2.jar        |
+	| LCHIJA | kirino_engine      | epoch-1.a5    | minecraft-cleanroom-0.6.13-alpha-1.12.2.jar        |
+	| LCHIJA | kirino_ecs         | epoch-1.a3    | minecraft-cleanroom-0.6.13-alpha-1.12.2.jar        |
+	| LCHIJA | kirino_gl          | epoch-1.a2    | minecraft-cleanroom-0.6.13-alpha-1.12.2.jar        |
+	| LCHIJA | FML                | 8.0.99.99     | minecraft-cleanroom-0.6.13-alpha-1.12.2.jar        |
+	| LCHIJA | forge              | 14.23.5.2864  | minecraft-cleanroom-0.6.13-alpha-1.12.2.jar        |
+	| LCHIJA | mantle             | 1.12-1.3.3.55 | mantle-74924-2713386.jar                           |
+	| LCHIJA | theoneprobe        | 1.4.29        | the-one-probe-community-edition-885670-6934576.jar |
+	| LCHIJA | shincolle          | 1.12.2.1.11   | main                                               |
+	| LCHIJA | mekanism           | 9.12.8        | Mekanism-Community-Edition-1.12.2-9.12.8-ALL.jar   |
+	| LCHIJA | mekanismgenerators | 9.12.8        | Mekanism-Community-Edition-1.12.2-9.12.8-ALL.jar   |
+	| LCHIJA | mekanismtools      | 9.12.8        | Mekanism-Community-Edition-1.12.2-9.12.8-ALL.jar   |
+
+	Cleanroom Version: 0.6.13-alpha
+	Loaded coremods (and transformers): 
+MekanismCoremod (Mekanism-Community-Edition-1.12.2-9.12.8-ALL.jar)
+  mekanism.coremod.KeybindingMigrationHelper
+	Profiler Position: N/A (disabled)
+	Player Count: 0 / 20; []
+	Is Modded: Definitely; Server brand changed to 'fml,forge,cleanroom'
+	Type: Dedicated Server (map_server.txt)

@@ -33,6 +33,7 @@ Note on the baseline: the subagent wrote that `8bca563` "sits after the 1.12.2 i
 | INV-09 | World data caches full ship NBT, including inventory | UNKNOWN_INTENT | MEDIUM | Same | `shipData[].sNBT` = full `writeToNBT` (`ServerProxy.java:644-648`). `/shipget` can recreate from a stale cache, giving rollback or a duplicate window until `checkShipIsDupe` (both entities > 200 ticks). Static `ShinWorldData.nbtData` is never cleared (`:55-62`). | Policy decision | static |
 | INV-10 | `CapaTeitoku` player capability | UNKNOWN_INTENT | MEDIUM | Same layout | `TODO: remove this capa, move to ServerProxy world data` (`CapaTeitoku.java:32`). Load errors are swallowed (`:326-392`). | Decide: capability or world data | static |
 | INV-11 | Dead code and stubs near persistence | UNKNOWN_INTENT | HIGH (dead) | n/a | `MC_HostileMob_IFF` only logs; its list block is `if (false)` and contains the typo `"EntitySketelon"` (`ServerProxy.java:196-208`, 0ec3a8c/b2286f6). `CapaInventory.getStacksInSlots` uses `items[i]` instead of `items[i - slotStart]` (latent; callers pass 0). Hopper capability is disabled. Crane item-handler capability returns false. | Record; no action | static |
+| INV-12 | Bare `/summon` of an owned ship or Hime (added in Phase 3 task 0) | CONFIRMED_BUG (inherited; runtime-reproduced) | HIGH | Top-level `ShipExtProps` tag not null-checked (8bca563 `CapaShipSavedValues.java:131-135`) | `/summon shincolle:EntityDestroyerAkatsuki` throws an NPE (`nbt_tag` is null) at `CapaShipSavedValues.java:129`; "Unable to summon object". Abyssal mobs are unaffected | A missing `ShipExtProps` or missing key keeps defaults (ADR-0002) | `../reports/2026-10-13-phase3-task0.md`, smoke log lines 302-349 |
 
 ### Per-record details
 
@@ -40,7 +41,7 @@ Note on the baseline: the subagent wrote that `8bca563` "sits after the 1.12.2 i
 |---|---|---|---|---|---|
 | INV-01 | Load a Crane saved before 914f4b9/364b282; read FE/EU capacity in the GUI | MEDIUM | config | yes (persistence contract) | `CapaForgeEnergyStorage` NBT round trip; legacy-NBT load with a seam |
 | INV-02 | Launch with an old 2-value `Tile_Crane` config | LOW | none | no | Config-array helper test |
-| INV-03 | `/summon` a ship with NBT lacking `ShipExtProps.Display` | MEDIUM (crash on entity load) | none | yes (cheap; blocks safe migration) | Missing-section load test via a ship-state DTO |
+| INV-03 | `/summon` a ship with NBT lacking `ShipExtProps.Display` (runtime-reproduced 2026-10-13: `{ShipExtProps:{Minor:{}}}` gives an NPE on `nbt_load`) | MEDIUM (crash on entity load) | none | yes (cheap; blocks safe migration) | Missing-section load test via a ship-state DTO |
 | INV-04 | Modified client sends a page change on a ship without drums | MEDIUM | NET-01 | no (policy) | `isSlotAvailable`, `clampPage` |
 | INV-05 | Equip 3 drums (if possible), pair the ship with a Crane | HIGH if reachable | Crane | yes if reachable | `pagedSize(drums)` |
 | INV-06 | Two players near a ship picking up items; dedicated server | LOW-MEDIUM | AI | verify before port | Insert and merge math |
@@ -49,6 +50,7 @@ Note on the baseline: the subagent wrote that `8bca563` "sits after the 1.12.2 i
 | INV-09 | Kill a ship's chunk, `/shipget`, reload the old chunk | MEDIUM | ENT-07 | decide before porting persistence | World-data round trip |
 | INV-10 | Die, respawn, return from the End; check ring, team, morph supplies | LOW-MEDIUM | none | decide before port | Capability round trip |
 | INV-11 | n/a | LOW | none | no | none |
+| INV-12 | `/summon shincolle:EntityDestroyerAkatsuki ~ ~ ~` on a server console | MEDIUM (admins and test setups cannot spawn owned ships by command) | fix with INV-03 (#7) | yes, with INV-03 | Load test with no `ShipExtProps` and with absent keys |
 
 ### NBT and save-format inventory (all unchanged since 8bca563 unless marked)
 
@@ -109,3 +111,6 @@ Slot and page arithmetic; stack merge math (behind a stack interface); NBT layou
 1. Build an NBT round-trip seam (ship-state DTO, egg arrays, `CapaForgeEnergyStorage`, world data) with legacy fixtures. This is a prerequisite for safe persistence fixes.
 2. Stabilization candidates: INV-03 (restore guards), INV-01 (defaults on absent keys). Both change load behavior, not format.
 3. Maintainer policy: INV-04, INV-05, INV-08, INV-09, INV-10.
+
+## Phase 3 updates
+- 2026-10-13 INV-03 reproduced at runtime; INV-12 added (bare `/summon` crash, inherited). See `../reports/2026-10-13-phase3-task0.md`.
