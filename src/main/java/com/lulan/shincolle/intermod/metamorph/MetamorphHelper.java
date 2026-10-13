@@ -712,8 +712,16 @@ public class MetamorphHelper {
         //search item in ship inventory
         ItemStack itemGet = InventoryHelper.getAndRemoveItem(inv, itemType, 1, true, false, false, null);
 
-        //item not found
-        return itemGet.isEmpty();
+        //true only if an item was actually removed
+        return wasItemConsumed(itemGet);
+    }
+
+    /**
+     * InventoryHelper.getAndRemoveItem returns ItemStack.EMPTY when nothing was found,
+     * so supplies are consumed only if the returned stack is NOT empty.
+     */
+    static boolean wasItemConsumed(ItemStack itemGet) {
+        return itemGet != null && !itemGet.isEmpty();
     }
 
     /**

@@ -65,11 +65,36 @@ public class EntityAIShipGuarding extends EntityAIBase {
     private final int[] delayTime; // attack delay time: 0:light 1:heavy 2:aircraft
     private final int[] maxDelayTime; // attack max delay time
     private int onSightTime; // target on sight time
+    private int lastDelayTick = NEVER; // tick of the last attack delay update
+    private int lastFindTick = NEVER; // tick of the last target search
     private int aimTime; // time before fire
     private float range, rangeSq; // attack range
     private boolean launchType; // airplane type, true = light
     private boolean isMoving; // is moving
     private double tarDist, tarDistSqrt, tarDistX, tarDistY, tarDistZ; // 跟目標的直線距離
+
+    /** marker: no update happened yet */
+    private static final int NEVER = Integer.MIN_VALUE;
+
+    /** target search interval in ticks */
+    private static final int FIND_INTERVAL = 32;
+
+    /**
+     * Search box of a guarding ship: the ship box extended by 0.9 x range (x, z) and 0.6 x range (y),
+     * symmetric on all sides (1.10.2 behavior).
+     */
+    public static AxisAlignedBB getSearchBox(AxisAlignedBB shipBox, double range) {
+        return shipBox.grow(range * 0.9D, range * 0.6D, range * 0.9D);
+    }
+
+    /**
+     * Ticks elapsed since the last attack delay update. The first update counts as one tick.
+     * Attack delays are decremented by this amount, so the cadence does not depend on how often
+     * the AI is polled (a stationary guard is only polled by the task scheduler).
+     */
+    public static int elapsedTicks(int lastTick, int nowTick) {
+        return lastTick == NEVER ? 1 : Math.max(0, nowTick - lastTick);
+    }
 
     public EntityAIShipGuarding(IShipGuardian entity) {
         this.host = entity;
@@ -112,9 +137,11 @@ public class EntityAIShipGuarding extends EntityAIBase {
         if (host != null && !host.getIsRiding() && !host.getIsSitting() &&
                 !host.getStateFlag(ID.F.CanFollow) && host.getStateMinor(ID.M.CraneState) < 1 &&
                 host.getStateMinor(ID.M.NumGrudge) > 0) {
+            // stationary guard fire control; runs on every poll, delays are decremented by elapsed ticks
+            fireControl();
+
             // get guard target
             if (host2.ticksExisted % 32 == 0) {
-                fireControl();
                 return true;
             }
             return checkGuardTarget();
@@ -177,9 +204,7 @@ public class EntityAIShipGuarding extends EntityAIBase {
                 this.updateAttackParms();
             }
             // delay--
-            this.delayTime[0] = this.delayTime[0] - 1;
-            this.delayTime[1] = this.delayTime[1] - 1;
-            this.delayTime[2] = this.delayTime[2] - 1;
+            int elapsed = this.advanceDelays();
 
             // find target
             if (host2.ticksExisted % 32 == 0) {
@@ -195,7 +220,7 @@ public class EntityAIShipGuarding extends EntityAIBase {
             if (this.target != null && this.host2.getEntitySenses().canSee(this.target)) {
                 LogHelper.debug("ship saw it:" + this.target.getName());
                 // onsight++
-                this.onSightTime++;
+                this.onSightTime += elapsed;
 
                 // calc dist
                 this.tarDistX = this.target.posX - this.host2.posX;
@@ -313,9 +338,7 @@ public class EntityAIShipGuarding extends EntityAIBase {
 
     // find target
     private void findTarget() {
-        AxisAlignedBB fireRange = this.host2.getEntityBoundingBox().grow(this.range * 0.9D, this.range * 0.6D,
-                this.range * 0.9D);
-        fireRange = fireRange.grow(this.range * -0.9D, this.range * -0.6D, this.range * -0.9D);
+        AxisAlignedBB fireRange = getSearchBox(this.host2.getEntityBoundingBox(), this.range);
         List<EntityLivingBase> list1 = this.host2.world.getEntitiesWithinAABB(EntityLivingBase.class, fireRange,
                 this.targetSelector);
         String str = "";
@@ -489,31 +512,40 @@ public class EntityAIShipGuarding extends EntityAIBase {
         }
     }
 
+    /** decrement attack delays by the ticks elapsed since the last update, returns the elapsed ticks */
+    private int advanceDelays() {
+        int now = this.host2.ticksExisted;
+        int elapsed = elapsedTicks(this.lastDelayTick, now);
+        this.lastDelayTick = now;
+        this.delayTime[0] -= elapsed;
+        this.delayTime[1] -= elapsed;
+        this.delayTime[2] -= elapsed;
+        return elapsed;
+    }
+
     private void fireControl() {
-        // LogHelper.debug("de:fireControl");
-        this.updateAttackParms();
-        // delay--
-        this.delayTime[0] = this.delayTime[0] - 1;
-        this.delayTime[1] = this.delayTime[1] - 1;
-        this.delayTime[2] = this.delayTime[2] - 1;
-        // find target
-        this.findTarget();
-        /*
-         * if(this.target!=null)
-         * LogHelper.debug("fire target"+this.target.getName());
-         * else
-         * LogHelper.debug("target not found");
-         * //clear target if target dead
-         */
+        // delay-- by elapsed ticks; skip if this tick was already processed (e.g. by updateTask)
+        int elapsed = this.advanceDelays();
+        if (elapsed <= 0) {
+            return;
+        }
+
+        // update parms and find target at a fixed interval
+        if (this.lastFindTick == NEVER || this.host2.ticksExisted - this.lastFindTick >= FIND_INTERVAL) {
+            this.lastFindTick = this.host2.ticksExisted;
+            this.updateAttackParms();
+            this.findTarget();
+        }
+
+        // clear target if target dead
         if (this.target != null && !this.target.isEntityAlive()) {
             this.target = null;
         }
 
         // attack target
         if (this.target != null && this.host2.getEntitySenses().canSee(this.target)) {
-            // LogHelper.debug("ship saw it:"+ this.target.getName());
             // onsight++
-            this.onSightTime++;
+            this.onSightTime += elapsed;
 
             // calc dist
             this.tarDistX = this.target.posX - this.host2.posX;

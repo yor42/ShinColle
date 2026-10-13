@@ -1435,7 +1435,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
 
                 //owner在附近才需要sync
                 if (player != null && player.dimension == this.dimension &&
-                        this.getDistanceSq(player) < 64F) {
+                        EntityHelper.isWithinRadius(this.getDistanceSq(player), EntityHelper.OWNER_SYNC_RADIUS, false)) {
                     CommonProxy.channelG.sendTo(new S2CGUIPackets(this), player);
                 }
             }
@@ -1495,7 +1495,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
                 }
 
                 //owner在附近才需要sync
-                if (player != null && this.getDistanceSq(player) <= 64F) {
+                if (player != null && EntityHelper.isWithinRadius(this.getDistanceSq(player), EntityHelper.OWNER_SYNC_RADIUS, true)) {
                     CommonProxy.channelE.sendTo(new S2CEntitySync(this, type), player);
                 }
             }

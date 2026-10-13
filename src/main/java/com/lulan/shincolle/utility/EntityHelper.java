@@ -62,6 +62,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.function.IntPredicate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -108,18 +109,47 @@ public class EntityHelper {
         return 0;
     }
 
+    /** radius in blocks within which a ship syncs GUI and entity state to its owner (1.10.2: 64) */
+    public static final double OWNER_SYNC_RADIUS = 64D;
+
     /**
-     * Optimized depth calculation for entities in water
-     * Low precision but high performance - suitable for gameplay logic that checks integer depth values
+     * Compare a squared distance (as returned by getDistanceSq) against a linear radius.
+     * 1.12 getDistanceSq returns the squared distance, so the radius must be squared too.
+     */
+    public static boolean isWithinRadius(double distSq, double radius, boolean inclusive) {
+        double radiusSq = radius * radius;
+        return inclusive ? distSq <= radiusSq : distSq < radiusSq;
+    }
+
+    /**
+     * Count the consecutive liquid blocks of a column, starting with offset 0 (the block at the entity's feet).
+     * The block at offset 0 is counted once; the scan stops at the first non-liquid offset or at maxOffset.
+     */
+    public static int liquidRunLength(IntPredicate liquidAtOffset, int maxOffset) {
+        int count = 0;
+
+        for (int dy = 0; dy <= maxOffset; dy++) {
+            if (!liquidAtOffset.test(dy)) break;
+            count++;
+        }
+
+        return count;
+    }
+
+    /**
+     * Depth in blocks, 1.10.2 formula: number of liquid blocks minus the fractional height of the entity.
+     */
+    public static double calcDepth(int liquidBlocks, double posY) {
+        return liquidBlocks - (posY - Math.floor(posY));
+    }
+
+    /**
+     * replace isInWater, check water block with NO extend AABB.
+     * Runs every call (1.10.2 behavior) so depth and float-up state are 0/false immediately after leaving liquid.
      */
     public static void checkDepth(IShipFloating host) {
         Entity host2 = (Entity) host;
         World w = host2.world;
-
-        // Only check every 8 ticks (0.4 seconds) - depth changes slowly
-        if (host2.ticksExisted % 8 != 0) {
-            return;
-        }
 
         int px = MathHelper.floor(host2.posX);
         int py = MathHelper.floor(host2.getEntityBoundingBox().minY);
@@ -134,40 +164,23 @@ public class EntityHelper {
             return;
         }
 
-        // We're in liquid - now find the surface (search upward)
-        int liquidBlocks = 1; // Current block is liquid
-        boolean canFloatUp = false;
-
-        // Limit search to reasonable range (16 blocks up)
         BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain();
 
         try {
-            int maxSearchHeight = Math.min(py + 64, w.getActualHeight());
+            int maxOffset = Math.min(py + 64, w.getActualHeight()) - py;
 
-            for (int y = py; y <= maxSearchHeight; y ++) { // Sample every 2 blocks
-                // Skip if chunk not loaded to avoid expensive operations
-                if (!w.isBlockLoaded(pos.setPos(px, y, pz))) {
-                    break;
-                }
+            // stop at unloaded chunks to avoid expensive operations
+            int liquidBlocks = liquidRunLength(dy -> w.isBlockLoaded(pos.setPos(px, py + dy, pz)) &&
+                                                     BlockHelper.checkBlockIsLiquid(w.getBlockState(pos)), maxOffset);
 
-                IBlockState state = w.getBlockState(pos);
-
-                if (BlockHelper.checkBlockIsLiquid(state)) {
-                    liquidBlocks ++; // Add 2 since we're sampling every 2 blocks
-                } else {
-                    // Found non-liquid - check if we can float up
-                    canFloatUp = state.getMaterial() == Material.AIR;
-                    break;
-                }
+            // float up only if the column ends in an air block
+            boolean canFloatUp = false;
+            if (py + liquidBlocks <= py + maxOffset && w.isBlockLoaded(pos.setPos(px, py + liquidBlocks, pz))) {
+                canFloatUp = w.getBlockState(pos).getMaterial() == Material.AIR;
             }
 
             host.setStateFlag(ID.F.CanFloatUp, canFloatUp);
-
-            // Calculate approximate depth (integer precision is fine)
-            // Subtract fractional position for slightly better accuracy without much cost
-            double approximateDepth = liquidBlocks - (host2.posY - py);
-            host.setShipDepth(Math.max(0, approximateDepth));
-
+            host.setShipDepth(calcDepth(liquidBlocks, host2.posY));
         } finally {
             pos.release();
         }
