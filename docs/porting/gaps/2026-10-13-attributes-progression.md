@@ -76,3 +76,6 @@ Most of the code in scope is unchanged from 8bca563 apart from 1.12 API renames.
 1. Stabilization candidates: ATTR-03 (duplication), ATTR-01/02 (with NET-04).
 2. Characterization golden tables for ATTR-09 before any extraction.
 3. Maintainer questions: ATTR-06, ATTR-10, and whether ATTR-05 and the ATTR-04 bowl change are PLANNED_DEVIATION.
+
+## Phase 3 updates
+- 2026-10-13 ATTR-03 (#1): reproduced by unit tests and fixed. Whole-stack takes also **deleted** items (1.12 `copy()` of a 0-count stack is `EMPTY`), which the Phase 2 record missed. A manual in-game check is pending. See `../reports/2026-10-13-issue-1-item-duplication.md`.

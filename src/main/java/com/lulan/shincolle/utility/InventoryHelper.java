@@ -555,9 +555,9 @@ public class InventoryHelper {
                             //take item from chest
                             int minsize = Math.min(getTemp.getCount(), number);
                             number -= minsize;
-                            getTemp.shrink(minsize);
                             getItem = getTemp.copy();
                             getItem.setCount(minsize);
+                            getTemp.shrink(minsize);
 
                             //clear slot if size <= 0
                             if (getTemp.getCount() <= 0) {
@@ -596,9 +596,9 @@ public class InventoryHelper {
                         //take item from chest
                         int minsize = Math.min(getTemp.getCount(), number);
                         number -= minsize;
-                        getTemp.shrink(minsize);
                         getItem = getTemp.copy();
-                        getItem.grow(minsize);
+                        getItem.setCount(minsize);
+                        getTemp.shrink(minsize);
 
                         //clear slot if size <= 0
                         if (getTemp.getCount() <= 0) {
@@ -644,9 +644,9 @@ public class InventoryHelper {
                         //take item from chest
                         int minsize = Math.min(getTemp.getCount(), number);
                         number -= minsize;
-                        getTemp.shrink(minsize);
                         getItem = getTemp.copy();
-                        getItem.grow(minsize);
+                        getItem.setCount(minsize);
+                        getTemp.shrink(minsize);
 
                         //clear slot if size <= 0
                         if (getTemp.getCount() <= 0) {
