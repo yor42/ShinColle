@@ -27,14 +27,34 @@ dependencies {
     }
 
     // Local jars (debugMod/) and CurseMaven mods. Mods must use the mod* configurations so Unimined remaps them.
-    modImplementation ":Mekanism-Community-Edition-1.12.2-9.12.8-ALL:"
     modCompileOnly ":mclib-2.4-1.12.2:"
     modCompileOnly ":metamorph-1.3-1.12.2:"
     modCompileOnly ":Baubles-1.12-1.5.2-api:"
     modCompileOnly "curse.maven:tinkers-construct-74072:2902483"
     modCompileOnly "curse.maven:industrial-craft-242638:2746892"
-    modImplementation "curse.maven:mantle-74924:2713386"
-    modImplementation "curse.maven:the-one-probe-community-edition-885670:6934576"
+
+    // Integrations on the dev runtime by default (decision P-15/MOD-12).
+    // -Pdev_runtime_integrations=false compiles against them but leaves them out of runClient/runServer (absent-mod launch check).
+    def devIntegrations = [
+            ":Mekanism-Community-Edition-1.12.2-9.12.8-ALL:",
+            "curse.maven:mantle-74924:2713386",
+            "curse.maven:the-one-probe-community-edition-885670:6934576",
+    ]
+    devIntegrations.each {
+        if (dev_runtime_integrations.toBoolean()) {
+            modImplementation it
+        } else {
+            modCompileOnly it
+        }
+    }
+
+    // Metamorph, MCLib and Baubles on the dev runtime, off by default (decision P-16).
+    // Baubles needs the full mod jar at runtime; debugMod/ only has the API jar.
+    if (dev_runtime_morph_baubles.toBoolean()) {
+        modRuntimeOnly ":mclib-2.4-1.12.2:"
+        modRuntimeOnly ":metamorph-1.3-1.12.2:"
+        modRuntimeOnly "curse.maven:baubles-227083:2518667"
+    }
 
     // Example - Dependency descriptor:
     // 'com.google.code.gson:gson:2.8.6' << group: com.google.code.gson, name:gson, version:2.8.6

@@ -136,6 +136,11 @@ sourceSets {
             }
         }
     }
+    // Unimined adds Minecraft to main only; tests need the same classpath
+    test {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
 }
 
 idea {
@@ -237,6 +242,12 @@ test {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+// Forward stdin to the dedicated server console so smoke runs can pipe commands
+// (they run on the server thread; RCON commands do not and race world saving)
+tasks.matching { it.name == 'runServer' }.configureEach {
+    standardInput = System.in
 }
 
 apply from: 'gradle/scripts/publishing.gradle'
