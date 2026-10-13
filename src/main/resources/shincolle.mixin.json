@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.lulan.shincolle.mixin",
   "refmap": "mixins.shincolle.refmap.json",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
     "MixinWorldServer"
   ],

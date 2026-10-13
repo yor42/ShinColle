@@ -9,7 +9,7 @@
 
 **Verified, uncommitted.** The Mixin fix (final `@WrapWithCondition` version) and the `use_mixins=true` build change are in the working tree and are not committed. The regression-verifier checked the final snapshot (HEAD `7b91e2d` plus the working tree); its results are in "Final verification" below. Single-player was not re-run for the final version.
 
-The fix is verified in the dev environment only. The reobfuscated jar has not been run on a real server (see Unknowns).
+The fix is verified in the dev environment, and the reobfuscated jar has been run on a production-style dedicated server for patch application only. Ship survival on that server is not tested (blocked by GitHub #11; see "Production server check" and Unknowns).
 
 ## Final verification (regression-verifier, final snapshot)
 
@@ -27,9 +27,37 @@ Snapshot: HEAD `7b91e2d` plus the uncommitted working tree (the `@WrapWithCondit
 | Dedicated harness, normal | `gametest-dedicated-issue10-wrap-results.txt` | 8 passed, 0 failed |
 | Diff scope | inspection | Clean; no debug leftovers; stash empty; `server.properties` back to spawn-on |
 
-Not run by the verifier: `runClient` and a live server. The reobfuscated jar has not been run on a real server.
+Not run by the verifier: `runClient` and a live server. The reobfuscated jar was run later on a production-style server (see "Production server check").
 
 Evidence gap (wrap red run): the spawn-off red run of the `@WrapWithCondition` version kept only its results file, not a server log. The ship's death in that run rests on `ships=0`. The earlier `@Redirect` red run's server log shows `isDead=true ticks=1`, which is the direct evidence for the death mechanism; the `@WrapWithCondition` red run does not have an equivalent log.
+
+## Production server check (2026-10-13)
+
+Setup (parent-supplied):
+- Cleanroom 0.6.13-alpha server installed at `C:\cleanroom server` (`cleanroom-0.6.13-alpha.jar`, `minecraft_server.1.12.2.jar`, `libraries/`).
+- A copy was made in `run/server-prod-check/` (untracked). Its `mods/` held only the reobfuscated `shincolle-1.12.2.1.11.jar`.
+- `server.properties`: `spawn-animals=false`, `spawn-npcs=false`, server port `127.0.0.1:25622`, RCON `25632`.
+- Launch: `java -Dmixin.debug.verbose=true -Dmixin.debug.export=true -jar cleanroom-0.6.13-alpha.jar nogui`. On first start the server asked for `/fml confirm` (the Fugue/Scalar warning); it was answered through stdin.
+
+Results:
+- Log lines: `[CleanMix]: Preparing config shincolle.mixin.json`; `[CleanMix]: Mixing MixinWorldServer from shincolle.mixin.json into net.minecraft.world.WorldServer`; MixinExtras 0.5.5 initialised.
+- `javap` of the exported `WorldServer.func_72866_a`: both `Entity.func_70106_y` (`setDead`) calls are guarded by `wrapWithCondition$...$shincolle$allowSweep(Entity)`. This shows the SRG refmap is in effect in production.
+- Control: `/summon cow` and `/summon pig` were removed within about one tick with `spawn-animals=false`.
+- **Ship survival on the production server was NOT tested.** `/summon shincolle:EntityDestroyerI` throws an NPE at `CapaShipSavedValues.java:129` (`loadNBTData`, called from `BasicEntityShip.readFromNBT`, `BasicEntityShip.java:585`) because the ShipExtProps NBT is missing. Filed as GitHub issue #11 (https://github.com/yor42/ShinColle/issues/11). Gap ENT-15 in `2026-10-13-entity-lifecycle.md`.
+- Logs: `docs/porting/reports/logs/2026-10-13-issue10-prod-server.log` and `docs/porting/reports/logs/2026-10-13-issue10-prod-results.txt`.
+
+Compatibility-level follow-up (human-approved):
+- The first production run warned: "Class version 69 required is higher than the class version supported by the current version of Mixin (JAVA_8 supports class version 52)".
+- `shincolle.mixin.json` `compatibilityLevel` changed from `JAVA_8` to `JAVA_25`. CleanMix 0.7.2's `CompatibilityLevel` enum goes from `JAVA_6` to `JAVA_25`; `JAVA_25` is class version 69, which matches the build.
+- `test` and `build` both exited 0 (`docs/porting/reports/logs/2026-10-13-issue10-compat-build.log`).
+- Production re-run: the warning appeared 0 times; the mixin still applied (both guards still in `func_72866_a`); the cow and pig were still removed. Logs: `docs/porting/reports/logs/2026-10-13-issue10-prod-server-compat.log` and `docs/porting/reports/logs/2026-10-13-issue10-prod-compat-results.txt`.
+- Dev spawn-off harness re-run with `JAVA_25` (fresh world, parent-supplied): `SUMMARY passed=5 failed=0`; `dedi-spawnoff-ship-survives` passed. The server log has 0 "Class version" warnings and no mixin config errors. The only warnings are the two known dev ones (config not in a jar; refmap not read in dev). Results: `docs/porting/reports/logs/2026-10-13-gametest-dedicated-issue10-compat-spawnoff-results.txt`. The dev server log for this run was not reported to the documentation worker and is not cited here.
+
+Decision (human, 2026-10-13): the human accepted the current proof for #10, namely the production patch shown in the bytecode and log, plus the dev-harness ship survival. Ship survival on the production server is not required for this acceptance and is not claimed. This is a human decision recorded as given; it is not a verification claim.
+
+What this check does and does not show:
+- Shows: the reobfuscated jar applies the exemption on a production-style Cleanroom 0.6.13 server (bytecode and log), with and without the `JAVA_25` change. The dev harness with `JAVA_25` passed 5/0.
+- Does not show: that a ship survives the sweep on a production server (the NPE in #11 blocks that check via `/summon`).
 
 ## Scope
 
@@ -63,7 +91,7 @@ Not covered:
 10. Code (parent-supplied):
     - `src/main/java/com/lulan/shincolle/utility/SpawnSweepGuard.java`, `isExempt(Class entityClass, Class shipBase)` returns `shipBase.isAssignableFrom(entityClass)`.
     - `mixin/MixinWorldServer`, a MixinExtras `@WrapWithCondition` on the `Entity.setDead()` INVOKE inside `WorldServer.updateEntityWithOptionalForce`, covering both the animal/water-mob branch and the NPC branch. Only `BasicEntityShip` subclasses are exempt.
-    - `src/main/resources/shincolle.mixin.json` (`required: true`, `JAVA_8`, refmap `mixins.shincolle.refmap.json`).
+    - `src/main/resources/shincolle.mixin.json` (`required: true`, refmap `mixins.shincolle.refmap.json`). The `compatibilityLevel` was `JAVA_8` when Evidence 10 was recorded; it is now `JAVA_25` (see Evidence 17).
     - The first version used `@Redirect`. It was switched to `@WrapWithCondition` so that it stacks with other mods' wrappers instead of failing hard.
 11. Refmap (parent-supplied): `setDead` maps to `func_70106_y()V`; `updateEntityWithOptionalForce` maps to `WorldServer.func_72866_a(Lnet/minecraft/entity/Entity;Z)V`. The reobfuscated jar has no shaded `org/spongepowered` or `com/llamalad` classes and no gametest entries.
 12. Unit tests, `SpawnSweepGuardTest` (5 tests):
@@ -83,6 +111,8 @@ Not covered:
     - Normal dedicated: 8 passed, 0 failed. Log: `docs/porting/reports/logs/2026-10-13-gametest-dedicated-issue10-wrap-results.txt`.
     - Single-player was not re-run for the wrap change; the integrated server forces both settings on, so it is not affected by this path.
 15. Attempt history: one earlier `runClient` attempt hung with no output; the identical rerun passed. Cause unknown (Unknowns).
+16. Production-style dedicated server (parent-supplied; see "Production server check"): Cleanroom 0.6.13-alpha, reobfuscated jar, `spawn-animals=false`, `spawn-npcs=false`. Log `docs/porting/reports/logs/2026-10-13-issue10-prod-server.log`; results `docs/porting/reports/logs/2026-10-13-issue10-prod-results.txt`. Shows CleanMix applying `MixinWorldServer`, `javap` of `func_72866_a` with both `setDead` calls guarded, and cow and pig removed. Ship survival not tested (NPE, GitHub #11).
+17. Compatibility-level change (parent-supplied, human-approved): `shincolle.mixin.json` `JAVA_8` to `JAVA_25`, after a production warning about class version 69. `docs/porting/reports/logs/2026-10-13-issue10-compat-build.log` (test and build exit 0). Production re-run with `docs/porting/reports/logs/2026-10-13-issue10-prod-server-compat.log` and `docs/porting/reports/logs/2026-10-13-issue10-prod-compat-results.txt`: warning 0 times, mixin applied, cow and pig removed. The dev spawn-off harness re-run with `JAVA_25` is pending.
 
 ## Confirmed findings
 
@@ -92,6 +122,8 @@ Not covered:
 | Settings reads and forced values | Recorded code behavior (not a feature status) | HIGH (source read) | n/a | Dedicated defaults `true`; integrated forces `true` (Evidence 6) | n/a | 6 |
 | Ship persistence on `setDead` | Unknown whether recoverable | n/a | n/a | Writes `CacheDataShip` with `isDead=true` (Evidence 7) | Unknown | 7 |
 | Build: Mixin enabled | Build change, human-approved | MEDIUM (parent-supplied build inspection; the build logs are the record) | n/a | `use_mixins=true`; no new dependency (Evidence 8) | n/a | 8, 9, 11 |
+| Mixin patch applied on a production-style server | Patch application verified on one server run (bytecode and log); ship survival NOT verified there | MEDIUM (one run per configuration; the JAVA_25 production re-run and the dev JAVA_25 harness re-run are recorded) | n/a | Cleanroom 0.6.13 server: `func_72866_a` guards in bytecode; cow and pig removed (Evidence 16, 17) | Ships survive the sweep (human-accepted proof: patch plus dev-harness survival; Production server check) | 16, 17 |
+| Summon of a ship from `/summon shincolle:EntityDestroyerI` on production | CONFIRMED_BUG (GitHub #11, tracked as ENT-15 in the gap file) | HIGH (reproduced on the production server) | Unknown whether upstream `/summon` worked | NPE at `CapaShipSavedValues.java:129` (see "Production server check") | Unknown (not decided here) | 16 |
 
 Note: the pre-fix deletion is confirmed by the harness only. Its one-variable flip and stack trace are recorded in the gap entry; the `spawn-off red` run in both versions reproduces it.
 
@@ -100,13 +132,15 @@ Note: the pre-fix deletion is confirmed by the harness only. Its one-variable fl
 - A-1: The vanilla sweep (`updateEntityWithOptionalForce`) is the only deletion path for friendly ships in this report. Other despawn and removal paths were not checked.
 - A-2: Mounts (`EntityCreature`), summons (`EntityLiving`) and hostile ships (`EntityMob`) are not `EntityAnimal`, so the animal branch does not delete them. Derived from the superclass chain; not tested.
 - A-3: The wrapped `Entity.setDead()` call inside the sweep is the only call that needs the exemption. Derived from the code described in Evidence 10; not checked against other paths.
-- A-4: The harness-forged path exercises the same server deletion code as a real server with the same settings. Not verified on a real server.
+- A-4: The harness-forged path exercises the same server deletion code as a real server with the same settings. Patch application is now seen on a production-style server; ship survival is not (U-12).
 - A-5: The 1.7.10 and 1.10.2 loss of ships is inferred from the vanilla precedent and the upstream issues, not from a run (ENT-13).
 
 ## Unknowns
 
 - U-1: Whether a deleted ship's `CacheDataShip` copy (written by `setDead`) is saved to disk or recoverable. Resolves by a targeted read of the save path and a run that inspects the saved data.
-- U-2: Whether the reobfuscated jar behaves the same on a real dedicated server as in the dev harness. Resolves by one run of the built jar on a real dedicated server with `spawn-animals=false` and `spawn-npcs=false`; not run.
+- U-2: Partly resolved. The reobfuscated jar on a production-style Cleanroom 0.6.13 server is verified for patch application (bytecode and log). Ship survival on that server is not verified (the NPE in GitHub #11 blocks the `/summon` test). Resolves by a ship-survival run once #11 is fixed or by another ship creation path that does not hit the NPE; needs human go-ahead.
+- U-12: Ship survival of the sweep on the production server. Not tested; blocked by #11. Human accepted the patch-plus-dev-proof decision for #10 (see "Production server check"), so this is an open verification gap, not an acceptance blocker by the human's account.
+- U-13: Resolved. The dev spawn-off harness re-run with `JAVA_25` passed 5/0 with no "Class version" warnings (see Production server check). The dev server log for that run is not cited here.
 - U-3: Whether the mixin is applied in the built jar. No explicit "mixin applied" log line exists; the evidence is behavioural only (harness).
 - U-4: Coexistence with another mod that wraps the same `setDead` call. Untested. The `@WrapWithCondition` form was chosen to allow stacking.
 - U-5: Resolved. The final `@WrapWithCondition` version: 21 tests, 0 failures (see Final verification).
@@ -127,12 +161,16 @@ Note: the pre-fix deletion is confirmed by the harness only. Its one-variable fl
 - **Behavior change on servers.** With the fix, friendly ships survive the sweep on servers that disabled animal or NPC spawning. This departs from upstream (human decision). Mitigation: documented in the gap entry.
 - **Dev-only harness arguments.** `-Dcrl.dev.mixin=shincolle.mixin.json` and the json-editing harness steps are dev-only. The jar manifest carries the real `MixinConfigs` entry.
 - **Single-player not re-run for the final version.** Low risk, since the integrated server forces both settings on; not verified for the final version.
+- **Mixin compatibility level changed to JAVA_25 (human-approved).** `shincolle.mixin.json` `compatibilityLevel` moved from `JAVA_8` to `JAVA_25` to match the build's class version 69. This is a configuration change that targets the mixin runtime; the production re-run showed no warning and the patch still applied. Dev spawn-off re-run with `JAVA_25` passed 5/0 (U-13 resolved). Flag for review.
+- **Production ship survival blocked.** `/summon` of a ship throws an NPE on production (GitHub #11, ENT-15), so ship survival on the production server cannot be checked through that path. Impact: the #10 proof on production is patch-level only (human-accepted). Likelihood: certain on the tested server.
 
 ## Recommended next actions
 
 1. Done: the final verifier result for the `@WrapWithCondition` version is recorded (verified, uncommitted).
 2. Run the built reobfuscated jar once on a real dedicated server with `spawn-animals=false` and `spawn-npcs=false`, and record the log path. Needs human go-ahead (it starts a server and may change the server world).
 2a. Optionally repeat the `@WrapWithCondition` spawn-off red run with its server log kept (closes U-11). Needs human go-ahead (it changes the dev world).
+2b. Done: the dev spawn-off harness result with `JAVA_25` is recorded (U-13 resolved).
+2c. Ship survival on the production-style server (U-12): blocked by GitHub #11 (ENT-15). Needs a fix or another creation path, and human go-ahead before any server run.
 3. Resolve U-1 (`CacheDataShip` persistence) with a read of the save path. Read-only; any change to persistence needs human approval.
 4. Decide whether the coexistence risk (U-4) needs a test with another mod. Needs human decision.
 5. Commit only when asked. The change is uncommitted; commit needs the human's go-ahead.

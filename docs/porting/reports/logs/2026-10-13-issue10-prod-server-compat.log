@@ -1,0 +1,232 @@
+=== stdout.log (compatibilityLevel JAVA_25) ===
+[23:13:24] [main/INFO] [Foundation]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLServerTweaker
+[23:13:24] [main/INFO] [Foundation]: Using primary tweak name net.minecraftforge.fml.common.launcher.FMLServerTweaker
+[23:13:24] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLServerTweaker@38b27cdc
+[23:13:24] [main/INFO] [FML.TWEAK]: Jar location: file:/C:/Projects/ShinColle/run/server-prod-check/cleanroom-0.6.13-alpha.jar
+[23:13:24] [main/INFO] [FML]: Forge Mod Loader version 14.23.5.2864 for Minecraft 1.12.2 loading
+[23:13:24] [main/INFO] [FML]: Cleanroom version 0.6.13-alpha
+[23:13:24] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 25.0.4, running on Windows 11:amd64:10.0, installed at C:\Users\yor42\.jdks\temurin-25.0.4
+[23:13:24] [main/INFO] [Cleanroom]: Initializing CleanMix...
+[23:13:24] [main/INFO] [CleanMix]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:/C:/Projects/ShinColle/run/server-prod-check/libraries/com/cleanroommc/cleanmix/0.7.2/cleanmix-0.7.2.jar!/org/spongepowered/asm/mixin/MixinEnvironment.class Service=CleanMix Env=SERVER
+[23:13:24] [main/INFO] [CleanMix]: Attempting to load Fernflower decompiler (Threaded mode)
+[23:13:24] [main/INFO] [CleanMix]: Fernflower could not be loaded, exported classes will not be decompiled. ClassNotFoundException: org.spongepowered.asm.mixin.transformer.debug.RuntimeDecompilerAsync
+[23:13:24] [main/INFO] [Cleanroom]: Discovering mods
+[23:13:24] [main/INFO] [FML]: Searching C:\Projects\ShinColle\run\server-prod-check\.\mods for mods
+[23:13:24] [main/INFO] [Cleanroom]: Finished discovering mods. Found 1 discovered mod ids in 77 ms.
+[23:13:24] [main/INFO] [Cleanroom]: Initializing MixinExtras...
+[23:13:24] [main/WARN] [CleanMix]: Compatibility level JAVA_25 specified by shincolle.mixin.json is higher than the maximum level supported by this version of mixin (JAVA_13).
+[23:13:24] [main/INFO] [Foundation]: Loading tweak name org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[23:13:24] [main/INFO] [Foundation]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[23:13:24] [main/INFO] [Foundation]: Loading tweak name org.spongepowered.asm.launch.MixinTweaker
+[23:13:24] [main/INFO] [Foundation]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[23:13:24] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker@4f0cab0a
+[23:13:24] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker@4f0cab0a
+[23:13:24] [main/INFO] [Foundation]: Calling tweak org.spongepowered.asm.mixin.EnvironmentStateTweaker@77681ce4
+[23:13:24] [main/INFO] [Foundation]: Calling tweak FMLCorePlugin
+[23:13:25] [main/INFO] [FML]: FML appears to be missing any signature data. This is expected, don't worry.
+[23:13:25] [main/INFO] [Foundation]: Calling tweak FMLForgePlugin
+[23:13:25] [main/INFO] [Foundation]: Calling tweak org.spongepowered.asm.launch.MixinTweaker@402f8592
+[23:13:25] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLDeobfTweaker@61b65d54
+[23:13:25] [main/INFO] [CleanMix]: Preparing config shincolle.mixin.json
+[23:13:25] [main/INFO] [CleanMix]: Preparing shincolle.mixin.json (1)
+[23:13:25] [main/INFO] [MixinExtras|Service]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
+[23:13:25] [main/INFO] [CleanMix]: Mixing MixinWorldServer from shincolle.mixin.json into net.minecraft.world.WorldServer
+[23:13:25] [main/INFO] [Foundation]: Launching wrapped minecraft net.minecraft.server.MinecraftServer
+[23:13:26] [Server thread/INFO] [minecraft/DedicatedServer]: Starting minecraft server version 1.12.2
+[23:13:26] [Server thread/INFO] [FML]: Cleanroom v0.6.13-alpha Initialized
+[23:13:26] [Server thread/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[23:13:26] [Server thread/INFO] [FML]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
+[23:13:26] [Server thread/INFO] [FML]: Replaced 1227 ore ingredients
+[23:13:26] [Server thread/WARN] [FML]: These mods are missing:
+[23:13:26] [Server thread/WARN] [FML]:   Fugue is missing
+[23:13:26] [Server thread/WARN] [FML]:   Scalar is missing
+[23:13:26] [Server thread/WARN] [FML]: WARNING
+Fugue and Scalar are not installed
+Your pack may crash without these mods.
+To disable this warning, check forge_early.cfg
+
+Run the command /fml confirm to proceed, or /fml cancel to abort.
+
+Run the command /fml confirm or or /fml cancel to proceed.
+Alternatively start the server with -Dfml.queryResult=confirm or -Dfml.queryResult=cancel to preselect the answer.
+[23:13:28] [Server thread/INFO] [FML]: confirmed
+[23:13:29] [Server thread/INFO] [Kirino Core]: Initializing Kirino-Engine's Mod Container.
+[23:13:29] [Server thread/INFO] [Kirino Core]: Initializing Kirino-ECS's Mod Container.
+[23:13:29] [Server thread/INFO] [Kirino Core]: Initializing Kirino-GL's Mod Container.
+[23:13:29] [Server thread/INFO] [FML]: Forge Mod Loader has identified 12 mods to load
+[23:13:29] [Server thread/WARN] [FML]: Missing English translation for cleanmix: assets/cleanmix/lang/en_us.lang
+[23:13:29] [Server thread/WARN] [FML]: Missing English translation for mixinbooter: assets/mixinbooter/lang/en_us.lang
+[23:13:29] [Server thread/WARN] [FML]: Missing English translation for configanytime: assets/configanytime/lang/en_us.lang
+[23:13:29] [Server thread/WARN] [FML]: Missing English translation for kirino_engine: assets/kirino_engine/lang/en_us.lang
+[23:13:29] [Server thread/WARN] [FML]: Missing English translation for kirino_ecs: assets/kirino_ecs/lang/en_us.lang
+[23:13:29] [Server thread/WARN] [FML]: Missing English translation for kirino_gl: assets/kirino_gl/lang/en_us.lang
+[23:13:29] [Server thread/WARN] [FML]: Missing English translation for FML: assets/fml/lang/en_us.lang
+[23:13:29] [Server thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, cleanroom, cleanmix, mixinbooter, configanytime, kirino_engine, kirino_ecs, kirino_gl, FML, forge, shincolle] at CLIENT
+[23:13:29] [Server thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, cleanroom, cleanmix, mixinbooter, configanytime, kirino_engine, kirino_ecs, kirino_gl, FML, forge, shincolle] at SERVER
+[23:13:29] [Server thread/INFO] [FML]: Processing ObjectHolder annotations
+[23:13:29] [Server thread/INFO] [FML]: Found 1220 ObjectHolder annotations
+[23:13:29] [Server thread/INFO] [FML]: Identifying ItemStackHolder annotations
+[23:13:29] [Server thread/INFO] [FML]: Found 0 ItemStackHolder annotations
+[23:13:29] [Server thread/INFO] [FML]: Configured a dormant chunk cache size of 0
+[23:13:29] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[23:13:29] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Pre-Init completed.
+[23:13:29] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[23:13:29] [Server thread/INFO] [FML]: Object Holders set.
+[23:13:29] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[23:13:29] [Server thread/INFO] [FML]: Object Holders set.
+[23:13:29] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[23:13:29] [Server thread/INFO] [FML]: Object Holders set.
+[23:13:29] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[23:13:29] [Server thread/INFO] [FML]: Object Holders set.
+[23:13:29] [Server thread/INFO] [FML]: Injecting itemstacks
+[23:13:29] [Server thread/INFO] [FML]: Itemstack injection complete
+[23:13:29] [Server thread/INFO] [Kirino Core]: ---------- Kirino Common Initialization ----------
+[23:13:29] [Server thread/INFO] [Kirino Core]: Registered the default ShaderRegistrationEvent listener.
+[23:13:29] [Server thread/INFO] [Kirino Core]: Registered the default PostProcessingRegistrationEvent listener.
+[23:13:29] [Server thread/INFO] [Kirino Core]: Initializing ECS Runtime.
+[23:13:29] [Server thread/INFO] [Kirino Core]: ECS Runtime Initialized. Time taken: 21 ms
+[23:13:29] [Server thread/INFO] [Kirino Core]: Initializing Kirino Engine.
+[23:13:29] [Server thread/INFO] [Kirino Core]: Registered headless module installer "com.cleanroommc.kirino.engine.analysis.install.AnalyticalWorldInstaller".
+[23:13:29] [Server thread/INFO] [Kirino Core]: Registered graphics module installer "com.cleanroommc.kirino.engine.graphics.install.GraphicsWorldInstaller".
+[23:13:29] [Server thread/INFO] [Kirino Core]: Kirino Engine Initialized. Time taken: 79 ms
+[23:13:29] [Server thread/INFO] [Kirino Core]: ---------- Kirino Server-Side Initialization ----------
+[23:13:29] [Server thread/INFO] [minecraft/DedicatedServer]: Loading properties
+[23:13:29] [Server thread/INFO] [minecraft/DedicatedServer]: Default game type: SURVIVAL
+[23:13:29] [Server thread/INFO] [minecraft/DedicatedServer]: Generating keypair
+[23:13:29] [Server thread/INFO] [minecraft/DedicatedServer]: Starting Minecraft server on 127.0.0.1:25622
+[23:13:29] [Server thread/INFO] [minecraft/NetworkSystem]: Using default channel type
+[23:13:29] [Server thread/WARN] [minecraft/DedicatedServer]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[23:13:29] [Server thread/WARN] [minecraft/DedicatedServer]: The server will make no attempt to authenticate usernames. Beware.
+[23:13:29] [Server thread/WARN] [minecraft/DedicatedServer]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[23:13:29] [Server thread/WARN] [minecraft/DedicatedServer]: To change this, set "online-mode" to "true" in the server.properties file.
+[23:13:29] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[23:13:29] [Server thread/INFO] [FML]: Object Holders set.
+[23:13:29] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Init completed.
+[23:13:29] [Server thread/INFO] [FML]: Injecting itemstacks
+[23:13:29] [Server thread/INFO] [FML]: Itemstack injection complete
+[23:13:29] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Post-Init completed.
+[23:13:29] [Server thread/INFO] [FML]: Forge Mod Loader has successfully loaded 12 mods
+[23:13:29] [Server thread/INFO] [Kirino Core]: ---------- Kirino Common Post-Initialization ----------
+[23:13:29] [Server thread/INFO] [Kirino Core]: ---------- Kirino Server-Side Post-Initialization ----------
+[23:13:29] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: server about to start: is MP server? true
+[23:13:29] [Server thread/INFO] [minecraft/DedicatedServer]: Preparing level "world-prodcheck"
+[23:13:29] [Server thread/INFO] [FML]: Injecting existing registry data into this server instance
+[23:13:29] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[23:13:29] [Server thread/INFO] [FML]: Object Holders set.
+[23:13:29] [Server thread/INFO] [FML]: Loading dimension 0 (world-prodcheck) (net.minecraft.server.dedicated.DedicatedServer@be105f3)
+[23:13:30] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [forge] Found status: BETA Target: null
+[23:13:30] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [cleanroom] Starting version check at https://download.cleanroommc.com/api/forge
+[23:13:30] [Server thread/INFO] [minecraft/AdvancementList]: Loaded 488 advancements
+[23:13:30] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy data
+[23:13:30] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get data from .dat file
+[23:13:30] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get unattackable target list: count: 0
+[23:13:30] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get player data count: 0
+[23:13:30] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get team data count: 0
+[23:13:30] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get ship data count: 0
+[23:13:30] [Server thread/INFO] [FML]: Loading dimension -1 (world-prodcheck) (net.minecraft.server.dedicated.DedicatedServer@be105f3)
+[23:13:30] [Server thread/INFO] [FML]: Loading dimension 1 (world-prodcheck) (net.minecraft.server.dedicated.DedicatedServer@be105f3)
+[23:13:30] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing start region for level 0
+[23:13:30] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [cleanroom] Found status: BETA_OUTDATED Target: 0.7.0-alpha
+[23:13:30] [Server thread/INFO] [minecraft/DedicatedServer]: Done (0.800s)! For help, type "help" or "?"
+[23:13:30] [Server thread/INFO] [minecraft/DedicatedServer]: Starting remote control listener
+[23:13:30] [RCON Listener #1/INFO] [minecraft/MinecraftServer]: RCON running on 127.0.0.1:25632
+[23:13:30] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Server starting event: is MP server? true
+[23:13:30] [Server thread/INFO] [FML]: Unloading dimension -1
+[23:13:30] [Server thread/INFO] [FML]: Unloading dimension 1
+[23:13:31] [RCON Listener #1/INFO] [minecraft/MinecraftServer]: Rcon connection from: /127.0.0.1
+[23:13:31] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Found item.tile.mushroom]
+[23:13:31] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Found item.tile.gravel]
+[23:13:31] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Found item.tile.mushroom]
+[23:13:31] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Found item.tile.gravel]
+[23:13:31] [RCON Client #2/ERROR] [FML]: An Entity shincolle:EntityDestroyerI(Destroyer I-Class) has thrown an exception during loading, its state cannot be restored. Report this to the mod author
+java.lang.NullPointerException: Cannot invoke "net.minecraft.nbt.NBTTagCompound.func_74781_a(String)" because "nbt_tag" is null
+	at com.lulan.shincolle.capability.CapaShipSavedValues.loadNBTData(CapaShipSavedValues.java:129) ~[CapaShipSavedValues.class:?]
+	at com.lulan.shincolle.entity.BasicEntityShip.func_70020_e(BasicEntityShip.java:585) ~[BasicEntityShip.class:?]
+	at net.minecraft.entity.EntityList.func_75615_a(EntityList.java:221) ~[vi.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.func_186053_a(AnvilChunkLoader.java:626) ~[aye.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.func_186054_a(AnvilChunkLoader.java:585) ~[aye.class:?]
+	at net.minecraft.command.server.CommandSummon.func_184881_a(SourceFile:87) ~[ds.class:?]
+	at net.minecraft.command.CommandHandler.func_175786_a(CommandHandler.java:120) [bj.class:?]
+	at net.minecraft.command.CommandHandler.func_71556_a(CommandHandler.java:92) [bj.class:?]
+	at net.minecraft.command.CommandExecuteAt.func_184881_a(SourceFile:76) ~[cf.class:?]
+	at net.minecraft.command.CommandHandler.func_175786_a(CommandHandler.java:120) [bj.class:?]
+	at net.minecraft.command.CommandHandler.func_71556_a(CommandHandler.java:92) [bj.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.func_71252_i(DedicatedServer.java:744) [nz.class:?]
+	at net.minecraft.network.rcon.RConThreadClient.run(SourceFile:80) [qb.class:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+[23:13:31] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [item.tile.mushroom: Object successfully summoned]
+[23:13:37] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [item.tile.mushroom: Object successfully summoned]
+[23:13:40] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Stopping the server]
+[23:13:40] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Server stopping event
+[23:13:40] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[23:13:40] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[23:13:40] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[23:13:40] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'world-prodcheck'/overworld
+[23:13:40] [Server thread/INFO] [FML]: Unloading dimension 0
+[23:13:40] [Server Shutdown Thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[23:13:40] [Server Shutdown Thread/INFO] [minecraft/MinecraftServer]: Saving players
+[23:13:40] [Server Shutdown Thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+=== RCON ===
+> list -> There are 0/20 players online:
+> testfor @e -> Found item.tile.mushroomFound item.tile.gravel
+> testfor @e[type=item] -> Found item.tile.mushroomFound item.tile.gravel
+> execute @e[type=item,c=1] ~ ~2 ~ summon shincolle:EntityDestroyerI {ShipExtProps:{Minor:{},Display:{},Point:{},ShipFlags:{},Timer:{}}} -> Unable to summon objectFailed to execute 'summon shincolle:EntityDestroyerI {ShipExtProps:{Minor:{},Display:{},Point:{},ShipFlags:{},Timer:{}}}' as item.tile.mushroom
+> execute @e[type=item,c=1] ~ ~2 ~ summon cow -> Object successfully summoned
+> testfor @e[type=shincolle:EntityDestroyerI] -> Selector '@e[type=shincolle:EntityDestroyerI]' found nothing
+> testfor @e[type=cow] -> Selector '@e[type=cow]' found nothing
+> testfor @e[type=shincolle:EntityDestroyerI] -> Selector '@e[type=shincolle:EntityDestroyerI]' found nothing
+> testfor @e[type=cow] -> Selector '@e[type=cow]' found nothing
+> entitydata @e[type=shincolle:EntityDestroyerI,c=1] {} -> Entity '@e[type=shincolle:EntityDestroyerI,c=1]' cannot be found
+> execute @e[type=item,c=1] ~ ~2 ~ summon pig -> Object successfully summoned
+> testfor @e[type=pig] -> Selector '@e[type=pig]' found nothing
+> stop -> Stopping the server
+=== javap func_72866_a ===
+1902:  public void func_72866_a(net.minecraft.entity.Entity, boolean);
+1903-    Code:
+1904-         0: aload_0
+1905-         1: invokevirtual #1286               // Method func_175735_ai:()Z
+1906-         4: ifne          38
+1907-         7: aload_1
+1908-         8: instanceof    #1288               // class net/minecraft/entity/passive/EntityAnimal
+1909-        11: ifne          21
+1910-        14: aload_1
+1911-        15: instanceof    #1290               // class net/minecraft/entity/passive/EntityWaterMob
+1912-        18: ifeq          38
+1913-        21: aload_1
+1914-        22: astore_3
+1915-        23: aload_0
+1916-        24: aload_3
+1917-        25: invokevirtual #1293               // Method wrapWithCondition$zza000$shincolle$allowSweep:(Lnet/minecraft/entity/Entity;)Z
+1918-        28: ifeq          38
+1919-        31: aload_3
+1920-        32: invokevirtual #1296               // Method net/minecraft/entity/Entity.func_70106_y:()V
+1921-        35: goto          38
+1922-        38: aload_0
+1923-        39: invokevirtual #1299               // Method func_175738_ah:()Z
+1924-        42: ifne          69
+1925-        45: aload_1
+1926-        46: instanceof    #1301               // class net/minecraft/entity/INpc
+1927-        49: ifeq          69
+1928-        52: aload_1
+1929-        53: astore_3
+1930-        54: aload_0
+1931-        55: aload_3
+1932-        56: invokevirtual #1293               // Method wrapWithCondition$zza000$shincolle$allowSweep:(Lnet/minecraft/entity/Entity;)Z
+1933-        59: ifeq          69
+1934-        62: aload_3
+1935-        63: invokevirtual #1296               // Method net/minecraft/entity/Entity.func_70106_y:()V
+1936-        66: goto          69
+1937-        69: aload_0
+1938-        70: aload_1
+1939-        71: iload_2
+1940-        72: invokespecial #1303               // Method net/minecraft/world/World.func_72866_a:(Lnet/minecraft/entity/Entity;Z)V
+1941-        75: return
+1942-
+1943-  private boolean func_175738_ah();
+1944-    Code:
+1945-         0: aload_0
+1946-         1: getfield      #140                // Field field_73061_a:Lnet/minecraft/server/MinecraftServer;
+1947-         4: invokevirtual #1309               // Method net/minecraft/server/MinecraftServer.func_71220_V:()Z
+1948-         7: ireturn
+1949-
+1950-  private boolean func_175735_ai();

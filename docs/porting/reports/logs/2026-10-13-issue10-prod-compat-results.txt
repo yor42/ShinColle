@@ -1,0 +1,9 @@
+Issue #10 compat follow-up, 2026-10-13.
+Change: src/main/resources/shincolle.mixin.json compatibilityLevel JAVA_8 -> JAVA_25 (class version 69). CleanMix 0.7.2 enum CompatibilityLevel has JAVA_6..JAVA_25 (javap of the Gradle-cache jar).
+test exit 0, build exit 0 (2026-10-13-issue10-compat-build.log). Reobf jar shincolle.mixin.json contains JAVA_25; refmap still has func_70106_y and func_72866_a.
+Production check (Cleanroom 0.6.13-alpha copy, spawn-animals=false, spawn-npcs=false, ports 25622/25632):
+- "Class version 69 required is higher..." warning: gone (0 matches).
+- "Mixing MixinWorldServer from shincolle.mixin.json into net.minecraft.world.WorldServer": present.
+- Exported func_72866_a: allowSweep guard appears twice (both setDead calls wrapped).
+- Cow and pig summoned then removed within a tick (testfor found nothing).
+- Ship survival: still not tested (/summon of a ship NPEs, see earlier results).
