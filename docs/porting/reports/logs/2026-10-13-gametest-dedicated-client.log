@@ -1,0 +1,50 @@
+[20:38:38] [main/INFO]: Adding extra mod file C:\Projects\ShinColle\build\classes\java\gametest
+[20:38:38] [main/INFO]: Adding extra mod file C:\Projects\ShinColle\build\resources\gametest
+[20:38:44] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, cleanroom, cleanmix, mixinbooter, configanytime, kirino_engine, kirino_ecs, kirino_gl, FML, forge, mantle, theoneprobe, shincolle, shincolle_gametest, mekanism, mekanismgenerators, mekanismtools] at CLIENT
+[20:38:44] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, cleanroom, cleanmix, mixinbooter, configanytime, kirino_engine, kirino_ecs, kirino_gl, FML, forge, mantle, theoneprobe, shincolle, shincolle_gametest, mekanism, mekanismgenerators, mekanismtools] at SERVER
+[20:38:55] [Client thread/INFO] [GameTest]: [GAMETEST] step dedi-connect
+[20:39:00] [Client thread/INFO] [GameTest]: [GAMETEST] PASS dedi-connect: joined 127.0.0.1:25621 as Developer, 18 mods
+[20:39:00] [Client thread/INFO] [GameTest]: [GAMETEST] step dedi-rcon-setup
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] INFO rcon: list -> There are 1/20 players online:Developer
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] INFO rcon: deop Developer -> Could not de-op Developer
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] INFO rcon: gamemode survival Developer -> 
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] PASS dedi-rcon-setup: RCON 127.0.0.1:25631 ok; There are 1/20 players online:Developer
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] step dedi-spawn-ship-with-egg
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] chat: Your game mode has been updated to Survival Mode
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe state
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] state ships=0 playerPos=1117.5/4.0/371.5 playerUID=100 op=false gm=SURVIVAL
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] INFO dedi-spawn-ship-with-egg: precondition op=false gm=SURVIVAL ships=0
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe egg
+[20:39:01] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] egg given slot=0
+[20:39:02] [Client thread/INFO] [GameTest]: [GAMETEST] INFO dedi-spawn-ship-with-egg: client processRightClick -> SUCCESS
+[20:39:04] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe fakeowner
+[20:39:04] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] fakeowner ships=0
+[20:39:05] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe state
+[20:39:05] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:05] [Client thread/INFO] [GameTest]: [GAMETEST] FAIL dedi-spawn-ship-with-egg: ship not found or fakeowner failed: ships=0 fake=[GT] fakeowner ships=0
+[20:39:05] [Client thread/INFO] [GameTest]: [GAMETEST] step dedi-nonop-survival-forged-packets
+[20:39:06] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe state
+[20:39:06] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:06] [Client thread/INFO] [GameTest]: [GAMETEST] FAIL dedi-nonop-survival-forged-packets: precondition failed: expected exactly 1 ship on the server, got ships=0
+[20:39:06] [Client thread/INFO] [GameTest]: [GAMETEST] step dedi-nonop-creative-commands
+[20:39:07] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe state
+[20:39:07] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:07] [Client thread/INFO] [GameTest]: [GAMETEST] FAIL dedi-nonop-creative-commands: precondition failed: expected exactly 1 ship on the server, got ships=0
+[20:39:07] [Client thread/INFO] [GameTest]: [GAMETEST] step dedi-op-commands
+[20:39:08] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe state
+[20:39:08] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:08] [Client thread/INFO] [GameTest]: [GAMETEST] FAIL dedi-op-commands: precondition failed: expected exactly 1 ship on the server, got ships=0
+[20:39:08] [Client thread/INFO] [GameTest]: [GAMETEST] step dedi-op-forged-packets-control
+[20:39:09] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe fakeowner
+[20:39:09] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] fakeowner ships=0
+[20:39:09] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe reset
+[20:39:09] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] reset ships=0
+[20:39:09] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe state
+[20:39:09] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:09] [Client thread/INFO] [GameTest]: [GAMETEST] FAIL dedi-op-forged-packets-control: precondition failed: expected exactly 1 ship on the server, got ships=0
+[20:39:09] [Client thread/INFO] [GameTest]: [GAMETEST] step dedi-stop-server
+[20:39:10] [Client thread/INFO] [GameTest]: [GAMETEST] INFO rcon: deop Developer -> Could not de-op Developer
+[20:39:10] [Client thread/INFO] [GameTest]: [GAMETEST] INFO client: chat> /gtprobe stop
+[20:39:10] [Client thread/INFO] [GameTest]: [GAMETEST] chat: [GT] stopping server
+[20:39:13] [Client thread/INFO] [GameTest]: [GAMETEST] PASS dedi-stop-server: stop requested through the server-thread /gtprobe stop
+[20:39:13] [Client thread/INFO] [GameTest]: [GAMETEST] SUMMARY passed=3 failed=5

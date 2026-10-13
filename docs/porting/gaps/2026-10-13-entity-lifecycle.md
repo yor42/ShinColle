@@ -73,3 +73,12 @@ Result of the normalized diff: apart from 1.12 API renames, the lifecycle logic 
 ## Recommended next actions
 1. Stabilization candidates: ENT-08 (trivial, verified regression), ENT-02 (data loss), ENT-03.
 2. Maintainer decisions: ENT-04 (ring gate), ENT-07 (revive position), ENT-11 (portals), ENT-12 (old-world migration).
+
+## Phase 3 updates
+- 2026-10-13 ENT-13 added. **All ships are deleted when spawning is off.** With `server.properties` `spawn-animals=false` or `spawn-npcs=false`, vanilla `WorldServer.updateEntityWithOptionalForce` (`WorldServer.java:847`) calls `setDead` on every `EntityAnimal` on its first tick. Ships extend `EntityAnimal`, so all ships are deleted.
+  - Evidence: stack trace and a one-variable flip (harness, dedicated server). Confidence HIGH.
+  - Historical (8bca563): not checked; likely pre-existing.
+  - Status: CONFIRMED_BUG (current behavior). Fix not proposed or approved. The harness needs both flags set to true.
+- 2026-10-13 ENT-14 added (low impact). **Double spawn from the egg.** `EntityHelper.createShipEntity` (`EntityHelper.java:1676`) already spawns the entity, and `ShipSpawnEgg.java:473` spawns it again. The second spawn is rejected with the "Keeping entity ... already exists" warning. The join event fires before `initEntityAttribute`, so HP is 4.0 at join; this explains the task-0 "Health 4.0" oddity.
+  - Historical (8bca563): not checked.
+  - Status: not assigned. Observed on the harness; impact described as low. Confidence not stated in the supplied evidence; not separately checked.
