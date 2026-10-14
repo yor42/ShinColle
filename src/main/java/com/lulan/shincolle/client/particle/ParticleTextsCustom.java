@@ -30,6 +30,7 @@ public class ParticleTextsCustom extends Particle {
     private final RenderManager rm;
     private final FontRenderer fr;
     private String text;
+    private java.util.List<String> lines;
     private final Entity host;
 
 
@@ -68,6 +69,15 @@ public class ParticleTextsCustom extends Particle {
                 break;
         }
 
+        // (#65) wrap once, same rule as FontRenderer.drawSplitString (trailing newlines trimmed, wrap width = textWidth * 2)
+        if (this.text != null) {
+            String trimmed = this.text;
+            while (trimmed.endsWith("\n")) {
+                trimmed = trimmed.substring(0, trimmed.length() - 1);
+            }
+            this.lines = this.fr.listFormattedStringToWidth(trimmed, this.textWidth * 2);
+        }
+
         //init position
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -104,7 +114,16 @@ public class ParticleTextsCustom extends Particle {
 
         //draw text
         GlStateManager.depthMask(true);
-        this.fr.drawSplitString(this.text, -this.textWidth, -this.textHeight * 9, this.textWidth * 2, -1);
+        if (this.lines == null || this.fr.getBidiFlag()) {
+            // bidi text is right-aligned per line by vanilla; keep the original path for it
+            this.fr.drawSplitString(this.text, -this.textWidth, -this.textHeight * 9, this.textWidth * 2, -1);
+        } else {
+            int lineY = -this.textHeight * 9;
+            for (String line : this.lines) {
+                this.fr.drawString(line, -this.textWidth, lineY, -1);
+                lineY += this.fr.FONT_HEIGHT;
+            }
+        }
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.color(1F, 1F, 1F, 1F);

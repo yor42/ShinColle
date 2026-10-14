@@ -506,9 +506,9 @@ public class RenderShipEntity extends RenderBasic {
     @Override
     protected void renderLeash(EntityLiving host, double x, double y, double z, float yaw, float parTick) {
         Entity entity = host.getLeashHolder();
-        float[] leashHeight = getLeashHeight();
 
         if (entity != null) {
+            float[] leashHeight = getLeashHeight();    // resolved only when leashed
             IShipEmotion host1 = (IShipEmotion) host;
 
             //get leash point height

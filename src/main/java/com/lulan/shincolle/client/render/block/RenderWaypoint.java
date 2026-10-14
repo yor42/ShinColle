@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -32,10 +33,12 @@ public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint
     @Override
     public void render(TileEntityWaypoint te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         EntityPlayer player = Minecraft.getMinecraft().player;
+        if (player == null) return;    // (#64)
+
         ItemStack stack = player.getHeldItemMainhand();
         Item item = stack.getItem();
 
-        if (item != ModItems.TargetWrench && item != new ItemStack(ModBlocks.BlockWaypoint).getItem()) {
+        if (item != ModItems.TargetWrench && item != getWaypointItem()) {
             return;
         }
 
@@ -60,6 +63,19 @@ public class RenderWaypoint extends TileEntitySpecialRenderer<TileEntityWaypoint
         this.model_waypoint.render(0.05F);
         GlStateManager.depthMask(true);
         GlStateManager.popMatrix();
+    }
+
+    // (#64) resolved lazily after registration; avoids a new ItemStack per frame
+    private static Item waypointItem;
+
+    private static Item getWaypointItem() {
+        if (waypointItem == null) {
+            Item resolved = Item.getItemFromBlock(ModBlocks.BlockWaypoint);
+            // do not cache an unresolved (air) result, a later call may succeed
+            if (resolved == Items.AIR) return resolved;
+            waypointItem = resolved;
+        }
+        return waypointItem;
     }
 
     public static float RadianToDegrees(float radian){

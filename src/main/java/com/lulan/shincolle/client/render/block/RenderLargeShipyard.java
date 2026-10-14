@@ -40,6 +40,8 @@ public class RenderLargeShipyard extends TileEntitySpecialRenderer<BasicTileEnti
         if (meta <= 0) return;
 
         EntityPlayer player = Minecraft.getMinecraft().player;
+        if (player == null) return;
+
         BlockPos pos = tile.getPos();
         double distX = pos.getX() + 0.5D - player.posX;
         double distY = pos.getY() - 0.75D - player.posY;

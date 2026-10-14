@@ -154,10 +154,6 @@ public class RenderHelper {
         //get ship
         BasicEntityShip ship = null;
         boolean isMorph = false;
-        boolean[] drawBtn = new boolean[5];
-        int[] drawCD = new int[5];
-        int[] drawCDMax = new int[5];
-        int[] drawAirNum = new int[2];
 
         //if player on ship mounts
         if (player.getRidingEntity() instanceof BasicEntityMount &&
@@ -180,7 +176,12 @@ public class RenderHelper {
             return;
         }
 
-        //init skill button
+        //init skill button (#66: arrays are allocated only after the early-outs above)
+        boolean[] drawBtn = new boolean[5];
+        int[] drawCD = new int[5];
+        int[] drawCDMax = new int[5];
+        int[] drawAirNum = new int[2];
+
         if (ship != null) {
             drawBtn[0] = ship.getStateFlag(ID.F.AtkType_Light);
             drawBtn[1] = ship.getStateFlag(ID.F.AtkType_Heavy);
@@ -192,11 +193,12 @@ public class RenderHelper {
             drawCD[2] = ship.getStateTimer(ID.T.MountSkillCD3);
             drawCD[3] = ship.getStateTimer(ID.T.MountSkillCD4);
             drawCD[4] = ship.getStateTimer(ID.T.MountSkillCD5);
-            drawCDMax[0] = CombatHelper.getAttackDelay(ship.getAttrs().getAttackSpeed(), 1);
-            drawCDMax[1] = CombatHelper.getAttackDelay(ship.getAttrs().getAttackSpeed(), 2);
-            drawCDMax[2] = CombatHelper.getAttackDelay(ship.getAttrs().getAttackSpeed(), 3);
-            drawCDMax[3] = CombatHelper.getAttackDelay(ship.getAttrs().getAttackSpeed(), 4);
-            drawCDMax[4] = CombatHelper.getAttackDelay(ship.getAttrs().getAttackSpeed(), 0);
+            float aspd = ship.getAttrs().getAttackSpeed();
+            drawCDMax[0] = CombatHelper.getAttackDelay(aspd, 1);
+            drawCDMax[1] = CombatHelper.getAttackDelay(aspd, 2);
+            drawCDMax[2] = CombatHelper.getAttackDelay(aspd, 3);
+            drawCDMax[3] = CombatHelper.getAttackDelay(aspd, 4);
+            drawCDMax[4] = CombatHelper.getAttackDelay(aspd, 0);
 
             if (ship instanceof BasicEntityShipCV) {
                 drawAirNum[0] = ((BasicEntityShipCV) ship).getNumAircraftLight();
@@ -207,7 +209,7 @@ public class RenderHelper {
         try {
             //get window size
             GameSettings keySet = mc.gameSettings;
-            ScaledResolution sr = new ScaledResolution(mc);
+            ScaledResolution sr = event.getResolution();
             int i = sr.getScaledWidth();
             int j = sr.getScaledHeight();
             int px = (int) (i * ConfigHandler.posHUD[0]);
@@ -233,7 +235,7 @@ public class RenderHelper {
                     RenderHelper.drawTexturedModalRect(px2, py + 18 - len, 0, 36 - len, 18, len, 0);
                     //draw button cooldown text
                     if (len > 0)
-                        fr.drawStringWithShadow(String.format("%.1f", (float) drawCD[k] * 0.05F), px2 + 5, py + 18, Enums.EnumColors.YELLOW.getValue());
+                        fr.drawStringWithShadow(CooldownText.format(drawCD[k]), px2 + 5, py + 18, Enums.EnumColors.YELLOW.getValue());
                     //draw click effect
                     if (keySet.keyBindsHotbar[k].isKeyDown()) Gui.drawRect(px2, py, px2 + 18, py + 18, 1073741823);
 
