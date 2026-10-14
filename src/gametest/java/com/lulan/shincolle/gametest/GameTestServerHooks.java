@@ -64,6 +64,7 @@ public final class GameTestServerHooks {
         if (SHIPLOAD) shipLoadTick((net.minecraft.world.WorldServer) event.world);
         if (MORPHPROBE) morphProbeTick((net.minecraft.world.WorldServer) event.world);
         if (SHIPYARDDROP) shipyardDropTick((net.minecraft.world.WorldServer) event.world);
+        if (ServerProbes.ACTIVE) ServerProbes.tick((net.minecraft.world.WorldServer) event.world);
         for (java.util.Iterator<java.util.Map.Entry<BasicEntityShip, Integer>> it = watched.entrySet().iterator(); it.hasNext(); ) {
             java.util.Map.Entry<BasicEntityShip, Integer> en = it.next();
             BasicEntityShip w = en.getKey();
