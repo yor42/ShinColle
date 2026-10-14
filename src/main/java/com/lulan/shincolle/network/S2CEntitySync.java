@@ -12,6 +12,7 @@ import com.lulan.shincolle.utility.EntityIdGuard;
 import com.lulan.shincolle.utility.LogHelper;
 import com.lulan.shincolle.utility.PacketHelper;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +50,8 @@ public class S2CEntitySync implements IMessage {
     private List<String> valueString1;
     private Map<Integer, Integer> valueMap1;
     private NonNullList<ItemStack> stacks;
+    //SyncShip_Attrs body, captured on the constructing (server) thread (issue #35)
+    private byte[] attrsBytes;
 
     public S2CEntitySync() {
     }    //必須要有空參數constructor, forge才能使用此class
@@ -57,6 +60,11 @@ public class S2CEntitySync implements IMessage {
     public S2CEntitySync(Entity entity, byte type) {
         this.entity = entity;
         this.packetType = type;
+
+        //issue #35: copy attrs and consume the update flags here (server thread), not in toBytes
+        if (type == PID.SyncShip_Attrs && entity instanceof BasicEntityShip) {
+            this.attrsBytes = snapshotAttrs((BasicEntityShip) entity);
+        }
     }
 
     public S2CEntitySync(Entity entity, int value, byte type) {
@@ -857,66 +865,12 @@ public class S2CEntitySync implements IMessage {
             break;
             case PID.SyncShip_Attrs:    //sync all attrs
             {
-                BasicEntityShip entity = (BasicEntityShip) this.entity;
-                AttrsAdv attrs = (AttrsAdv) entity.getAttrs();
-                byte[] data1;
-                float[] data2;
-
-                //get flags
-                buf.writeBoolean(entity.getUpdateFlag(ID.FlagUpdate.AttrsBonus));
-                buf.writeBoolean(entity.getUpdateFlag(ID.FlagUpdate.AttrsRaw));
-                buf.writeBoolean(entity.getUpdateFlag(ID.FlagUpdate.AttrsEquip));
-                buf.writeBoolean(entity.getUpdateFlag(ID.FlagUpdate.AttrsMorale));
-                buf.writeBoolean(entity.getUpdateFlag(ID.FlagUpdate.AttrsPotion));
-                buf.writeBoolean(entity.getUpdateFlag(ID.FlagUpdate.AttrsFormation));
-                buf.writeBoolean(entity.getUpdateFlag(ID.FlagUpdate.AttrsBuffed));
-
-                //send data
-                if (entity.getUpdateFlag(ID.FlagUpdate.AttrsBonus)) {
-                    data1 = attrs.getAttrsBonus();
-                    PacketHelper.sendArrayByte(buf, data1);
+                //flags + data were serialized and the flags reset in the constructor (issue #35)
+                if (this.attrsBytes == null) {
+                    throw new IllegalStateException("SyncShip_Attrs packet was not built from a ship");
                 }
 
-                if (entity.getUpdateFlag(ID.FlagUpdate.AttrsRaw)) {
-                    data2 = attrs.getAttrsRaw();
-                    PacketHelper.sendArrayFloat(buf, data2);
-                }
-
-                if (entity.getUpdateFlag(ID.FlagUpdate.AttrsEquip)) {
-                    data2 = attrs.getAttrsEquip();
-                    PacketHelper.sendArrayFloat(buf, data2);
-                }
-
-                if (entity.getUpdateFlag(ID.FlagUpdate.AttrsMorale)) {
-                    data2 = attrs.getAttrsMorale();
-                    PacketHelper.sendArrayFloat(buf, data2);
-                }
-
-                if (entity.getUpdateFlag(ID.FlagUpdate.AttrsPotion)) {
-                    data2 = attrs.getAttrsPotion();
-                    PacketHelper.sendArrayFloat(buf, data2);
-                }
-
-                if (entity.getUpdateFlag(ID.FlagUpdate.AttrsFormation)) {
-                    data2 = attrs.getAttrsFormation();
-                    PacketHelper.sendArrayFloat(buf, data2);
-                    buf.writeFloat(attrs.getMinMOV());
-                }
-
-                if (entity.getUpdateFlag(ID.FlagUpdate.AttrsBuffed)) {
-                    data2 = attrs.getAttrsBuffed();
-                    PacketHelper.sendArrayFloat(buf, data2);
-                    buf.writeFloat(attrs.getMinMOV());
-                }
-
-                //reset flags
-                entity.setUpdateFlag(ID.FlagUpdate.AttrsBuffed, false);
-                entity.setUpdateFlag(ID.FlagUpdate.AttrsBonus, false);
-                entity.setUpdateFlag(ID.FlagUpdate.AttrsEquip, false);
-                entity.setUpdateFlag(ID.FlagUpdate.AttrsMorale, false);
-                entity.setUpdateFlag(ID.FlagUpdate.AttrsPotion, false);
-                entity.setUpdateFlag(ID.FlagUpdate.AttrsFormation, false);
-                entity.setUpdateFlag(ID.FlagUpdate.AttrsRaw, false);
+                buf.writeBytes(this.attrsBytes);
             }
             break;
             case PID.SyncShip_Emo:    //entity state only
@@ -1208,6 +1162,85 @@ public class S2CEntitySync implements IMessage {
             }
             break;
         }
+    }
+
+    //update flags of the attrs packet, in wire order
+    private static final int[] ATTRS_FLAGS = {
+            ID.FlagUpdate.AttrsBonus, ID.FlagUpdate.AttrsRaw, ID.FlagUpdate.AttrsEquip,
+            ID.FlagUpdate.AttrsMorale, ID.FlagUpdate.AttrsPotion, ID.FlagUpdate.AttrsFormation,
+            ID.FlagUpdate.AttrsBuffed};
+
+    /**
+     * Read the ship's attrs and update flags, serialize them and clear the flags (issue #35).
+     * Same bytes and same flag reset as the former toBytes body, but on the constructing thread.
+     */
+    private static byte[] snapshotAttrs(BasicEntityShip ship) {
+        boolean[] flags = new boolean[ATTRS_FLAGS.length];
+
+        for (int i = 0; i < flags.length; i++) {
+            flags[i] = ship.getUpdateFlag(ATTRS_FLAGS[i]);
+        }
+
+        AttrsAdv attrs = (AttrsAdv) ship.getAttrs();
+        byte[] bytes = writeAttrs(flags, attrs.getAttrsBonus(), attrs.getAttrsRaw(), attrs.getAttrsEquip(),
+                attrs.getAttrsMorale(), attrs.getAttrsPotion(), attrs.getAttrsFormation(), attrs.getAttrsBuffed(),
+                attrs.getMinMOV());
+
+        //reset flags
+        for (int id : ATTRS_FLAGS) {
+            ship.setUpdateFlag(id, false);
+        }
+
+        return bytes;
+    }
+
+    /**
+     * Serialize the attrs packet body. flags order: Bonus, Raw, Equip, Morale, Potion, Formation, Buffed.
+     * Package-private test seam (pure, no entity needed).
+     */
+    static byte[] writeAttrs(boolean[] flags, byte[] bonus, float[] raw, float[] equip, float[] morale,
+                             float[] potion, float[] formation, float[] buffed, float minMov) {
+        ByteBuf out = Unpooled.buffer();
+
+        //get flags
+        for (boolean flag : flags) {
+            out.writeBoolean(flag);
+        }
+
+        //send data
+        if (flags[0]) {
+            PacketHelper.sendArrayByte(out, bonus);
+        }
+
+        if (flags[1]) {
+            PacketHelper.sendArrayFloat(out, raw);
+        }
+
+        if (flags[2]) {
+            PacketHelper.sendArrayFloat(out, equip);
+        }
+
+        if (flags[3]) {
+            PacketHelper.sendArrayFloat(out, morale);
+        }
+
+        if (flags[4]) {
+            PacketHelper.sendArrayFloat(out, potion);
+        }
+
+        if (flags[5]) {
+            PacketHelper.sendArrayFloat(out, formation);
+            out.writeFloat(minMov);
+        }
+
+        if (flags[6]) {
+            PacketHelper.sendArrayFloat(out, buffed);
+            out.writeFloat(minMov);
+        }
+
+        byte[] bytes = new byte[out.readableBytes()];
+        out.readBytes(bytes);
+        return bytes;
     }
 
     //packet id
