@@ -62,6 +62,8 @@ public final class GameTestServerHooks {
         if (event.phase != net.minecraftforge.fml.common.gameevent.TickEvent.Phase.END || event.world.isRemote
                 || event.world.provider.getDimension() != 0) return;
         if (SHIPLOAD) shipLoadTick((net.minecraft.world.WorldServer) event.world);
+        if (MORPHPROBE) morphProbeTick((net.minecraft.world.WorldServer) event.world);
+        if (SHIPYARDDROP) shipyardDropTick((net.minecraft.world.WorldServer) event.world);
         for (java.util.Iterator<java.util.Map.Entry<BasicEntityShip, Integer>> it = watched.entrySet().iterator(); it.hasNext(); ) {
             java.util.Map.Entry<BasicEntityShip, Integer> en = it.next();
             BasicEntityShip w = en.getKey();
@@ -180,6 +182,130 @@ public final class GameTestServerHooks {
             loadDone = true;
             w.getMinecraftServer().initiateShutdown();
         }
+    }
+
+    /* ---------------- issue #43: MetamorphHelper class loading without the Metamorph mod ----------------
+     * Opt-in, headless. Only with -Dshincolle.gametest.metamorphprobe=true. At tick 40 it calls the same
+     * MetamorphHelper entry point that S2CSpawnParticle (client) and the packet handlers use, records
+     * whether it throws (NoClassDefFoundError expected only when Metamorph is absent AND the call is unguarded),
+     * writes gametest-metamorph-results.txt and shuts the server down.
+     */
+    private static final boolean MORPHPROBE = Boolean.getBoolean("shincolle.gametest.metamorphprobe");
+    private int probeTick;
+
+    private void morphProbeTick(net.minecraft.world.WorldServer w) {
+        if (++probeTick != 40) return;
+        java.util.List<String> res = new java.util.ArrayList<>();
+        res.add("INFO activeMetamorph=" + com.lulan.shincolle.proxy.CommonProxy.activeMetamorph
+                + " metamorphLoaded=" + net.minecraftforge.fml.common.Loader.isModLoaded("metamorph"));
+        int fails = 0;
+        try {
+            Object o = com.lulan.shincolle.intermod.metamorph.MetamorphHelper.getMorphEntityByPlayerEID(-1, 0, false);
+            res.add("PASS getMorphEntityByPlayerEID returned " + o);
+        } catch (Throwable t) {
+            fails++;
+            java.io.StringWriter sw = new java.io.StringWriter();
+            t.printStackTrace(new java.io.PrintWriter(sw));
+            res.add("FAIL getMorphEntityByPlayerEID threw " + t);
+            res.add(sw.toString());
+        }
+        res.add("SUMMARY failed=" + fails);
+        for (String line : res) LOG.info("[GAMETEST-SRV] metamorphprobe {}", line);
+        try {
+            java.nio.file.Files.write(java.nio.file.Paths.get("gametest-metamorph-results.txt"), res, java.nio.charset.StandardCharsets.UTF_8);
+        } catch (java.io.IOException e) {
+            LOG.error("[GAMETEST-SRV] cannot write metamorph probe results", e);
+        }
+        w.getMinecraftServer().initiateShutdown();
+    }
+
+    /* ---------------- issue #47: does the Large Shipyard (BlockGrudgeHeavy) drop its item more than once? ----------------
+     * Opt-in, headless. Only with -Dshincolle.gametest.shipyarddrop=true. Places an UNFORMED BlockGrudgeHeavy (no multi-block
+     * structure around it) and breaks it several ways, counting dropped item entities (vanilla EntityItem and the mod's
+     * BasicEntityItem) within 4 blocks. Writes gametest-shipyarddrop-results.txt and shuts the server down.
+     * Info only (no PASS/FAIL): the expected count is a maintainer decision.
+     */
+    private static final boolean SHIPYARDDROP = Boolean.getBoolean("shincolle.gametest.shipyarddrop");
+    private int dropTick;
+
+    private void shipyardDropTick(net.minecraft.world.WorldServer w) {
+        if (++dropTick != 40) return;
+        java.util.List<String> res = new java.util.ArrayList<>();
+        try {
+            net.minecraft.util.math.BlockPos sp = w.getTopSolidOrLiquidBlock(w.getSpawnPoint());
+            net.minecraft.util.math.BlockPos pos = sp.add(10, 0, 10);
+            w.getChunk(pos);
+            net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(w);
+            fp.setPosition(pos.getX() + 2.5, pos.getY(), pos.getZ() + 0.5);
+            net.minecraft.block.Block blk = com.lulan.shincolle.init.ModBlocks.BlockGrudgeHeavy;
+            res.add("INFO block=" + blk.getRegistryName() + " material=" + blk.getDefaultState().getMaterial().getClass().getSimpleName()
+                    + " fakePlayerOpPerm=" + com.lulan.shincolle.utility.EntityHelper.checkOP(fp));
+            {
+                w.setBlockState(pos, blk.getDefaultState(), 3);
+                net.minecraft.block.state.IBlockState st = w.getBlockState(pos);
+                net.minecraft.util.NonNullList<ItemStack> nn = net.minecraft.util.NonNullList.create();
+                blk.getDrops(nn, w, pos, st, 0);
+                res.add("INFO getDrops(NonNullList,...) size=" + nn.size() + " " + nn + " ; getDrops(IBlockAccess,...) size=" + blk.getDrops(w, pos, st, 0).size());
+                res.add("INFO doTileDrops=" + w.getGameRules().getBoolean("doTileDrops") + " canHarvestBlock(fp)=" + blk.canHarvestBlock(w, pos, fp));
+                w.setBlockToAir(pos);
+            }
+            String[] modes ={"survival-tryHarvestBlock", "creative-tryHarvestBlock", "destroyBlock(pos,true)", "setBlockToAir", "survival-tryHarvestBlock-again"};
+            for (String mode : modes) {
+                clearDrops(w, pos);
+                w.setBlockState(pos, blk.getDefaultState(), 3);
+                net.minecraft.tileentity.TileEntity te = w.getTileEntity(pos);
+                if (te instanceof com.lulan.shincolle.tileentity.TileMultiGrudgeHeavy) {
+                    ((com.lulan.shincolle.tileentity.TileMultiGrudgeHeavy) te).setPlayerUID(com.lulan.shincolle.utility.EntityHelper.getPlayerUID(fp));
+                    ((com.lulan.shincolle.tileentity.TileMultiGrudgeHeavy) te).setMatStock(0, 7);
+                }
+                fp.interactionManager.setGameType(mode.startsWith("creative") ? net.minecraft.world.GameType.CREATIVE : net.minecraft.world.GameType.SURVIVAL);
+                fp.capabilities.isCreativeMode = mode.startsWith("creative");
+                boolean ok = true;
+                if (mode.startsWith("creative")) {
+                    //PlayerInteractionManager.tryHarvestBlock needs a connection in creative; replay its creative branch (onBlockHarvested + removedByPlayer(willHarvest=false), no harvestBlock)
+                    net.minecraft.block.state.IBlockState st = w.getBlockState(pos);
+                    st.getBlock().onBlockHarvested(w, pos, st, fp);
+                    ok = st.getBlock().removedByPlayer(st, w, pos, fp, false);
+                } else if (mode.contains("tryHarvestBlock")) ok = fp.interactionManager.tryHarvestBlock(pos);
+                else if (mode.startsWith("destroyBlock")) ok = w.destroyBlock(pos, true);
+                else ok = w.setBlockToAir(pos);
+                res.add("INFO " + mode + " result=" + ok + " blockAfter=" + w.getBlockState(pos).getBlock().getRegistryName()
+                        + " drops=" + describeDrops(w, pos));
+            }
+        } catch (Throwable t) {
+            java.io.StringWriter sw = new java.io.StringWriter();
+            t.printStackTrace(new java.io.PrintWriter(sw));
+            res.add("FAIL scenario threw " + t);
+            res.add(sw.toString());
+        }
+        for (String line : res) LOG.info("[GAMETEST-SRV] shipyarddrop {}", line);
+        try {
+            java.nio.file.Files.write(java.nio.file.Paths.get("gametest-shipyarddrop-results.txt"), res, java.nio.charset.StandardCharsets.UTF_8);
+        } catch (java.io.IOException e) {
+            LOG.error("[GAMETEST-SRV] cannot write shipyarddrop results", e);
+        }
+        w.getMinecraftServer().initiateShutdown();
+    }
+
+    private static java.util.List<net.minecraft.entity.Entity> dropEntities(net.minecraft.world.WorldServer w, net.minecraft.util.math.BlockPos pos) {
+        net.minecraft.util.math.AxisAlignedBB box = new net.minecraft.util.math.AxisAlignedBB(pos).grow(4);
+        return w.getEntitiesWithinAABB(net.minecraft.entity.Entity.class, box,
+                e -> !e.isDead && (e instanceof net.minecraft.entity.item.EntityItem || e instanceof com.lulan.shincolle.item.BasicEntityItem));
+    }
+
+    private static void clearDrops(net.minecraft.world.WorldServer w, net.minecraft.util.math.BlockPos pos) {
+        for (net.minecraft.entity.Entity e : dropEntities(w, pos)) e.setDead();
+    }
+
+    private static String describeDrops(net.minecraft.world.WorldServer w, net.minecraft.util.math.BlockPos pos) {
+        java.util.List<net.minecraft.entity.Entity> l = dropEntities(w, pos);
+        StringBuilder sb = new StringBuilder("count=").append(l.size()).append(" [");
+        for (net.minecraft.entity.Entity e : l) {
+            ItemStack st = e instanceof net.minecraft.entity.item.EntityItem ? ((net.minecraft.entity.item.EntityItem) e).getItem()
+                    : ((com.lulan.shincolle.item.BasicEntityItem) e).getEntityItem();
+            sb.append(e.getClass().getSimpleName()).append(':').append(st).append(" nbt=").append(st.getTagCompound()).append("; ");
+        }
+        return sb.append(']').toString();
     }
 
     public static final class ProbeCommand extends CommandBase {

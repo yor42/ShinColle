@@ -63,6 +63,13 @@ public class TrainingBook extends BasicItem {
         }
     }
 
+    /**
+     * Level after one use: current level + 5 + roll (roll = 0..5), clamped to the level cap.
+     */
+    public static int calcTrainedLevel(int level, int lvcap, int roll) {
+        return Math.min(level + 5 + roll, lvcap);
+    }
+
     @Override
     @Nonnull
     public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase host) {
@@ -72,9 +79,10 @@ public class TrainingBook extends BasicItem {
             if (capa != null && capa.morphEntity instanceof BasicEntityShip ship) {
 
                 //level up when use finish
-                if (ship.getLevel() < 150) {
-                    int lv = ship.getLevel() + 5 + ship.getRNG().nextInt(6);
-                    if (lv > 150) lv = 150;
+                //level cap of the ship: 100 unmarried, 150 married (deliberate deviation from 1.10, which used 150)
+                int lvcap = ship.getLVCap();
+                if (ship.getLevel() < lvcap) {
+                    int lv = calcTrainedLevel(ship.getLevel(), lvcap, ship.getRNG().nextInt(6));
 
                     ship.setShipLevel(lv, true);
 

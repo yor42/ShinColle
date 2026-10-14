@@ -591,8 +591,16 @@ public class TileMultiGrudgeHeavy extends BasicTileMulti implements ITileLiquidF
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         BlockPos pos = getPos();
-        return new AxisAlignedBB(pos.add(-2, -3, -2), pos.add(2, 2, 2));
+        // cached per position; the box is a pure function of the position
+        if (this.renderBox == null || !pos.equals(this.renderBoxPos)) {
+            this.renderBoxPos = pos;
+            this.renderBox = new AxisAlignedBB(pos.add(-2, -3, -2), pos.add(2, 2, 2));
+        }
+        return this.renderBox;
     }
+
+    private AxisAlignedBB renderBox;
+    private BlockPos renderBoxPos;
 
 
 }

@@ -58,7 +58,7 @@ public class CombatHelper {
      * distance = 0.25 * (target dist / max hit range)
      * level = 0.001 * ship level
      * equip = total miss reduction on equips
-     * buff = nausea +0.5/level
+     * buff = nausea +0.4 flat (not per level), added after the 0..0.5 limit
      * <p>
      * parms: host, target, can multiple hit, distance, raw damage
      * return: new damage

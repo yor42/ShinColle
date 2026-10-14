@@ -78,7 +78,9 @@ public class EntityAIShipFloating extends EntityAIBase {
     private boolean shouldMountFloat(BasicEntityMount mount) {
         BasicEntityShip hostShip = getHostShip(mount);
         if (hostShip == null) {
-            return false;
+            // No host ship: fall through to the plain depth comparison, as 1.10 did.
+            // shouldExecute() already checked depth > floating depth.
+            return true;
         }
 
         // Cannot float if host ship is in restricted state

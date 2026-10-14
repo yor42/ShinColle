@@ -1,5 +1,6 @@
 package com.lulan.shincolle.utility;
 
+import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.command.ShipCmdEmotes;
 import com.lulan.shincolle.network.S2CSpawnParticle;
 import com.lulan.shincolle.proxy.CommonProxy;
@@ -17,7 +18,6 @@ public class AutoEmoteHelper {
 
     private final Map<UUID, Long> playerLastEmoteTime = new HashMap<>();
     private final Map<UUID, Map<Integer, Long>> playerEmoteHistory = new HashMap<>();
-    private final Set<UUID> disabledPlayers = new HashSet<>();
 
     public static final AutoEmoteHelper AUTO_EMOTE_MANAGER = new AutoEmoteHelper();
 
@@ -28,8 +28,9 @@ public class AutoEmoteHelper {
     public void tryShowAutoEmote(EntityPlayerMP player, WorldServer world, String message) {
         UUID playerId = player.getUniqueID();
 
-        // 비활성화된 플레이어 체크
-        if (disabledPlayers.contains(playerId)) {
+        // 비활성화된 플레이어 체크 (issue #32: persisted AutoEmoteOff flag of the player capability)
+        CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(player);
+        if (capa != null && capa.isAutoEmoteOff()) {
             return;
         }
 
@@ -42,7 +43,7 @@ public class AutoEmoteHelper {
         }
 
         // 이모티콘 찾기
-        int emoteId = ShipCmdEmotes.EmoteData.findBestEmoteForMessage(message);
+        int emoteId = findEmote(message);
         if (emoteId == -1) {
             return;
         }
@@ -64,14 +65,20 @@ public class AutoEmoteHelper {
 
     }
 
-    public void toggleAutoEmote(EntityPlayer player) {
-        UUID playerId = player.getUniqueID();
+    /** whole-word emote lookup for a chat message (issue #32); -1 = none */
+    static int findEmote(String message) {
+        return ShipCmdEmotes.EMOTE_DATA.findBestEmoteForMessageStrict(message);
+    }
 
-        if (disabledPlayers.contains(playerId)) {
-            disabledPlayers.remove(playerId);
+    public void toggleAutoEmote(EntityPlayer player) {
+        CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(player);
+        if (capa == null) return;
+
+        if (capa.isAutoEmoteOff()) {
+            capa.setAutoEmoteOff(false);
             player.sendStatusMessage(new TextComponentTranslation("chat.shincolle:autoemote.enabled"), false);
         } else {
-            disabledPlayers.add(playerId);
+            capa.setAutoEmoteOff(true);
             player.sendStatusMessage(new TextComponentTranslation("chat.shincolle:autoemote.disabled"), false);
         }
     }

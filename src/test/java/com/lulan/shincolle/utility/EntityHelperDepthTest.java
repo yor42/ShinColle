@@ -36,6 +36,23 @@ class EntityHelperDepthTest {
         assertEquals(1.0, EntityHelper.calcDepth(1, 62.0), 1e-9);
     }
 
+    // (#60) checkDepth now uses an inline loop with the same rule; these pin that rule's bounds.
+    @Test
+    void scanIsCappedAtMaxOffsetInclusive() {
+        assertEquals(4, EntityHelper.liquidRunLength(dy -> true, 3));
+        assertEquals(1, EntityHelper.liquidRunLength(dy -> true, 0));
+    }
+
+    @Test
+    void scanStopsAtFirstGapEvenIfLiquidFollows() {
+        assertEquals(2, run(true, true, false, true, true));
+    }
+
+    @Test
+    void negativeMaxOffsetScansNothing() {
+        assertEquals(0, EntityHelper.liquidRunLength(dy -> true, -1));
+    }
+
     @Test
     void depthIsZeroWithoutLiquid() {
         assertEquals(0.0, EntityHelper.calcDepth(0, 62.0), 1e-9);

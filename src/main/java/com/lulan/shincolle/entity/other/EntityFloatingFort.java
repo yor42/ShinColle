@@ -176,7 +176,7 @@ public class EntityFloatingFort extends BasicEntityAirplane {
                 if (!TeamHelper.doFriendlyFire(this.host, ent)) atk = 0F;
 
                 //對entity造成傷害
-                if (ent.attackEntityFrom(DamageSource.causeMobDamage(host2).setExplosion(), atk)) {
+                if (ent.attackEntityFrom(new MissileDamageSource(host2), atk)) {
                     if (!TeamHelper.checkSameOwner(this.getHostEntity(), ent))
                         BuffHelper.applyBuffOnTarget(ent, this.getAttackEffectMap());
                 }

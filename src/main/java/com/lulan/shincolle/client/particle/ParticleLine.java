@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,6 +27,7 @@ public class ParticleLine extends Particle {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Tags.TEXTURES_PARTICLE + "ParticleGradientLine.png");
     private final int particleType;
     private final float[] parms;
+    private final double[] vtx = new double[36];    // 3 planes x 4 vertices x xyz, reused every frame
 
 
     public ParticleLine(World world, int type, float[] parms) {
@@ -68,33 +68,26 @@ public class ParticleLine extends Particle {
         double px = this.posX - interpPosX;
         double py = this.posY - interpPosY;
         double pz = this.posZ - interpPosZ;
-        double[] xyzh = new double[]{parms[0] * parms[10], parms[0] * parms[11], parms[0] * parms[12]};
-        double[] xyzf = new double[]{parms[1] * parms[10], parms[1] * parms[11], parms[1] * parms[12]};
-        double[] xyzb = new double[]{-parms[2] * parms[10], -parms[2] * parms[11], -parms[2] * parms[12]};
+        // no per-frame arrays: offsets are scalars, plane vertices go into the reusable vtx buffer
+        double h0 = parms[0] * parms[10], h1 = parms[0] * parms[11], h2 = parms[0] * parms[12];
+        double f0 = parms[1] * parms[10], f1 = parms[1] * parms[11], f2 = parms[1] * parms[12];
+        double b0 = -parms[2] * parms[10], b1 = -parms[2] * parms[11], b2 = -parms[2] * parms[12];
+        double[] v = this.vtx;
 
         //三種正交方式: 若vec為(x, y, z), 則三種簡單正交為(-z, 0, x), (0, -z, y), (-y, x, 0)
         //三種正交都畫出來使各種方向看過去皆有機會看到整個面
-        Vec3d[] plane1 = new Vec3d[]
-                {
-                        new Vec3d(xyzf[0], xyzf[1] - xyzh[2], xyzf[2] + xyzh[1]),
-                        new Vec3d(xyzf[0], xyzf[1] + xyzh[2], xyzf[2] - xyzh[1]),
-                        new Vec3d(xyzb[0], xyzb[1] + xyzh[2], xyzb[2] - xyzh[1]),
-                        new Vec3d(xyzb[0], xyzb[1] - xyzh[2], xyzb[2] + xyzh[1])
-                };
-        Vec3d[] plane2 = new Vec3d[]
-                {
-                        new Vec3d(xyzf[0] - xyzh[2], xyzf[1], xyzf[2] + xyzh[0]),
-                        new Vec3d(xyzf[0] + xyzh[2], xyzf[1], xyzf[2] - xyzh[0]),
-                        new Vec3d(xyzb[0] - xyzh[2], xyzb[1], xyzb[2] + xyzh[0]),
-                        new Vec3d(xyzb[0] + xyzh[2], xyzb[1], xyzb[2] - xyzh[0])
-                };
-        Vec3d[] plane3 = new Vec3d[]
-                {
-                        new Vec3d(xyzf[0] - xyzh[1], xyzf[1] + xyzh[0], xyzf[2]),
-                        new Vec3d(xyzf[0] + xyzh[1], xyzf[1] - xyzh[0], xyzf[2]),
-                        new Vec3d(xyzb[0] - xyzh[1], xyzb[1] + xyzh[0], xyzb[2]),
-                        new Vec3d(xyzb[0] + xyzh[1], xyzb[1] - xyzh[0], xyzb[2])
-                };
+        setVtx(v, 0, f0, f1 - h2, f2 + h1);
+        setVtx(v, 3, f0, f1 + h2, f2 - h1);
+        setVtx(v, 6, b0, b1 + h2, b2 - h1);
+        setVtx(v, 9, b0, b1 - h2, b2 + h1);
+        setVtx(v, 12, f0 - h2, f1, f2 + h0);
+        setVtx(v, 15, f0 + h2, f1, f2 - h0);
+        setVtx(v, 18, b0 - h2, b1, b2 + h0);
+        setVtx(v, 21, b0 + h2, b1, b2 - h0);
+        setVtx(v, 24, f0 - h1, f1 + h0, f2);
+        setVtx(v, 27, f0 + h1, f1 - h0, f2);
+        setVtx(v, 30, b0 - h1, b1 + h0, b2);
+        setVtx(v, 33, b0 + h1, b1 - h0, b2);
 
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
@@ -109,36 +102,18 @@ public class ParticleLine extends Particle {
         render.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
-        //front plane1
-        render.pos(px + plane1[0].x, py + plane1[0].y, pz + plane1[0].z).tex(1D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane1[1].x, py + plane1[1].y, pz + plane1[1].z).tex(1D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane1[2].x, py + plane1[2].y, pz + plane1[2].z).tex(0D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane1[3].x, py + plane1[3].y, pz + plane1[3].z).tex(0D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        //back plane1
-        render.pos(px + plane1[3].x, py + plane1[3].y, pz + plane1[3].z).tex(0D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane1[2].x, py + plane1[2].y, pz + plane1[2].z).tex(0D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane1[1].x, py + plane1[1].y, pz + plane1[1].z).tex(1D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane1[0].x, py + plane1[0].y, pz + plane1[0].z).tex(1D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        //front plane2
-        render.pos(px + plane2[0].x, py + plane2[0].y, pz + plane2[0].z).tex(1D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane2[1].x, py + plane2[1].y, pz + plane2[1].z).tex(1D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane2[2].x, py + plane2[2].y, pz + plane2[2].z).tex(0D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane2[3].x, py + plane2[3].y, pz + plane2[3].z).tex(0D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        //back plane2
-        render.pos(px + plane2[3].x, py + plane2[3].y, pz + plane2[3].z).tex(0D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane2[2].x, py + plane2[2].y, pz + plane2[2].z).tex(0D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane2[1].x, py + plane2[1].y, pz + plane2[1].z).tex(1D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane2[0].x, py + plane2[0].y, pz + plane2[0].z).tex(1D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        //front plane3
-        render.pos(px + plane3[0].x, py + plane3[0].y, pz + plane3[0].z).tex(1D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane3[1].x, py + plane3[1].y, pz + plane3[1].z).tex(1D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane3[2].x, py + plane3[2].y, pz + plane3[2].z).tex(0D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane3[3].x, py + plane3[3].y, pz + plane3[3].z).tex(0D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        //back plane3
-        render.pos(px + plane3[3].x, py + plane3[3].y, pz + plane3[3].z).tex(0D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane3[2].x, py + plane3[2].y, pz + plane3[2].z).tex(0D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane3[1].x, py + plane3[1].y, pz + plane3[1].z).tex(1D, 0D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
-        render.pos(px + plane3[0].x, py + plane3[0].y, pz + plane3[0].z).tex(1D, 1D).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
+        for (int base = 0; base < 36; base += 12) {
+            //front plane
+            putVtx(render, px, py, pz, base, 0, 1D, 1D);
+            putVtx(render, px, py, pz, base, 3, 1D, 0D);
+            putVtx(render, px, py, pz, base, 6, 0D, 0D);
+            putVtx(render, px, py, pz, base, 9, 0D, 1D);
+            //back plane
+            putVtx(render, px, py, pz, base, 9, 0D, 1D);
+            putVtx(render, px, py, pz, base, 6, 0D, 0D);
+            putVtx(render, px, py, pz, base, 3, 1D, 0D);
+            putVtx(render, px, py, pz, base, 0, 1D, 1D);
+        }
 
         Tessellator.getInstance().draw();
 
@@ -146,6 +121,17 @@ public class ParticleLine extends Particle {
         GlStateManager.depthMask(false);
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
+    }
+
+    private static void setVtx(double[] v, int i, double x, double y, double z) {
+        v[i] = x;
+        v[i + 1] = y;
+        v[i + 2] = z;
+    }
+
+    private void putVtx(BufferBuilder render, double px, double py, double pz, int base, int off, double u, double w) {
+        int i = base + off;
+        render.pos(px + this.vtx[i], py + this.vtx[i + 1], pz + this.vtx[i + 2]).tex(u, w).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
     }
 
     //layer: 0:particle 1:terrain 2:items 3:custom?

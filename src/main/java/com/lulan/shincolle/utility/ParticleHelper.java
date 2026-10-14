@@ -57,6 +57,21 @@ public class ParticleHelper {
     }
 
     /**
+     * (#63) loop stride for the large particle bursts. 'All' (0) keeps every iteration, so the output
+     * is unchanged; 'Decreased' (1) keeps every 2nd, 'Minimal' (2) every 4th. A stride (instead of a
+     * shorter loop) keeps the spatial spread of effects whose position depends on the loop index.
+     */
+    public static int particleStepFor(int particleSetting) {
+        if (particleSetting <= 0) return 1;
+        return particleSetting == 1 ? 2 : 4;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static int getParticleStep() {
+        return particleStepFor(ClientProxy.getMineraft().gameSettings.particleSetting);
+    }
+
+    /**
      * SPAWN ATTACK PARTICLE WITH CUSTOM POSITION
      *
      * @parm posX, posY, posZ, lookX, lookY, lookZ, type
@@ -119,6 +134,7 @@ public class ParticleHelper {
     @SideOnly(Side.CLIENT)
     public static void spawnAttackParticleAt(double posX, double posY, double posZ, double lookX, double lookY, double lookZ, byte type) {
         World world = ClientProxy.getClientWorld();
+        int step = getParticleStep();    // (#63)
 
         //get target position
         double ran1 = 0D;
@@ -140,7 +156,7 @@ public class ParticleHelper {
                 break;
             case 2:        //hugeexplosion
                 world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, posX, posY + 1, posZ, 0.0D, 0.0D, 0.0D);
-                for (int i = 0; i < 24; ++i) {
+                for (int i = 0; i < 24; i += step) {
                     ran1 = rand.nextFloat() * 6F - 3F;
                     ran2 = rand.nextFloat() * 6F - 3F;
                     world.spawnParticle(EnumParticleTypes.LAVA, posX + ran1, posY + 1, posZ + ran2, 0D, 0D, 0D);
@@ -172,7 +188,7 @@ public class ParticleHelper {
                 }
                 break;
             case 6:    //largesmoke
-                for (int i = 0; i < 24; i++) {
+                for (int i = 0; i < 24; i += step) {
                     ran1 = rand.nextFloat() - 0.5F;
                     ran2 = rand.nextFloat();
                     ran3 = rand.nextFloat();
@@ -196,7 +212,7 @@ public class ParticleHelper {
                 break;
             case 9:    //lava + largeexplode
                 world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, posX, posY + 1.5, posZ, 0.0D, 0.0D, 0.0D);
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 15; i += step) {
                     ran1 = rand.nextFloat() * 3F - 1.5F;
                     ran2 = rand.nextFloat() * 3F - 1.5F;
                     world.spawnParticle(EnumParticleTypes.LAVA, posX + ran1, posY + 1, posZ + ran2, 0D, 0D, 0D);
@@ -253,7 +269,7 @@ public class ParticleHelper {
                 newPos1 = CalcHelper.rotateXZByAxis(0F, (float) lookY, degYaw, 1F);
                 newPos2 = CalcHelper.rotateXZByAxis(0F, (float) -lookY, degYaw, 1F);
 
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 15; i += step) {
                     ran1 = rand.nextFloat() - 0.5F;
                     ran2 = rand.nextFloat();
                     ran3 = rand.nextFloat();
@@ -281,7 +297,7 @@ public class ParticleHelper {
                 Minecraft.getMinecraft().effectRenderer.addEffect(particleLaser4);
 
                 //draw hit particle
-                for (int i = 0; i < 20; ++i) {
+                for (int i = 0; i < 20; i += step) {
                     newPos1 = CalcHelper.rotateXZByAxis(1, 0, 6.28F / 20F * i, 1);
                     //motionY傳入4, 表示為特殊設定
                     ParticleSpray particleSpray5 = new ParticleSpray(world,
@@ -295,7 +311,7 @@ public class ParticleHelper {
                 Minecraft.getMinecraft().effectRenderer.addEffect(particle91Type);
                 break;
             case 22:    //Type 91 AP Fist: phase 1,3 particle
-                for (int i = 0; i < 20; ++i) {
+                for (int i = 0; i < 20; i += step) {
                     newPos1 = CalcHelper.rotateXZByAxis((float) lookX, 0, 6.28F / 20F * i, 1);
                     //motionY傳入4, 表示為特殊設定
                     ParticleSpray particleSpray7 = new ParticleSpray(world,
@@ -304,7 +320,7 @@ public class ParticleHelper {
                 }
                 break;
             case 23:    //Type 91 AP Fist: phase 2 particle
-                for (int i = 0; i < 20; ++i) {
+                for (int i = 0; i < 20; i += step) {
                     newPos1 = CalcHelper.rotateXZByAxis((float) lookX, 0, 6.28F / 20F * i, 1);
                     //motionY傳入4, 表示為特殊設定
                     ParticleSpray particleSpray8 = new ParticleSpray(world,
@@ -342,7 +358,7 @@ public class ParticleHelper {
                 Minecraft.getMinecraft().effectRenderer.addEffect(particleSpray9);
                 break;
             case 30:    //snow hit
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 15; i += step) {
                     ran1 = rand.nextFloat() * 2F - 1F;
                     ran2 = rand.nextFloat() * 2F - 1F;
                     ran3 = rand.nextFloat() * 2F - 1F;
@@ -350,7 +366,7 @@ public class ParticleHelper {
                 }
                 break;
             case 31:    //throw snow smoke
-                for (int i = 0; i < 22; i++) {
+                for (int i = 0; i < 22; i += step) {
                     ran1 = rand.nextFloat() - 0.5F;
                     ran2 = rand.nextFloat();
                     ran3 = rand.nextFloat();
@@ -379,7 +395,7 @@ public class ParticleHelper {
                 newPos1 = CalcHelper.rotateXZByAxis(0F, (float) lookY, degYaw, 1F);
                 newPos2 = CalcHelper.rotateXZByAxis(0F, (float) -lookY, degYaw, 1F);
 
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 15; i += step) {
                     ran1 = rand.nextFloat() - 0.5F;
                     ran2 = rand.nextFloat();
                     ran3 = rand.nextFloat();
@@ -426,7 +442,7 @@ public class ParticleHelper {
                 newPos1 = CalcHelper.rotateXZByAxis(0F, (float) lookY, (float) (lookX * Values.N.DIV_PI_180), 1F);
                 newPos2 = CalcHelper.rotateXZByAxis(0F, (float) -lookY, (float) (lookX * Values.N.DIV_PI_180), 1F);
 
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 15; i += step) {
                     ran1 = rand.nextFloat() - 0.5F;
                     ran2 = rand.nextFloat();
                     ran3 = rand.nextFloat();
@@ -497,7 +513,7 @@ public class ParticleHelper {
             break;
             case 48:    //water bubble
             {
-                for (int i = 0; i < 14; i++) {
+                for (int i = 0; i < 14; i += step) {
                     ran1 = (rand.nextFloat() - 0.5F) * lookY;
                     ran2 = (rand.nextFloat() - 0.5F) * lookX;
                     ran3 = (rand.nextFloat() - 0.5F) * lookZ;
@@ -528,6 +544,7 @@ public class ParticleHelper {
 
         World world = Minecraft.getMinecraft().world;
         EntityLivingBase host = null;
+        int step = getParticleStep();    // (#63)
 
         //get target position
         double ran1 = 0D;
@@ -578,7 +595,7 @@ public class ParticleHelper {
                 newPos2 = CalcHelper.rotateXZByAxis((float) par2, (float) -par1, degYaw, 1F);
                 newPos3 = CalcHelper.rotateXZByAxis(0.25F, 0F, degYaw, 1F);
 
-                for (int i = 0; i < 24; i++) {
+                for (int i = 0; i < 24; i += step) {
                     ran1 = (rand.nextFloat() - 0.5F) * 2F;
                     ran2 = (rand.nextFloat() - 0.5F) * 2F;
                     ran3 = (rand.nextFloat() - 0.5F) * 2F;
@@ -656,7 +673,7 @@ public class ParticleHelper {
                 newPos3 = CalcHelper.rotateXZByAxis(1.5F, 0F, ((EntityLivingBase) ent).rotationYawHead * Values.N.DIV_PI_180, 1F);
 
                 //實際煙霧位置: 身體旋轉xz位移(達到砲台底座位置)+頭部旋轉xz位移(達到砲管旋轉位置)
-                for (int i = 0; i < 24; i++) {
+                for (int i = 0; i < 24; i += step) {
                     ran1 = rand.nextFloat() - 0.5F;
                     ran2 = rand.nextFloat();
                     ran3 = rand.nextFloat();

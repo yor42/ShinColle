@@ -18,6 +18,8 @@ import net.minecraft.util.math.MathHelper;
  */
 public class ModelCAHime extends ShipModelBaseAdv {
 
+    private final float[] cosf2 = new float[9];    // tail sway scratch buffer, rewritten every render
+
     public ModelRenderer BodyMain;
     public ModelRenderer ArmLeft01;
     public ModelRenderer ArmRight01;
@@ -713,7 +715,7 @@ public class ModelCAHime extends ShipModelBaseAdv {
         }
 
         //equip: tail position
-        float[] cosf2 = new float[9];
+        float[] cosf2 = this.cosf2;    // reused buffer, fully rewritten below
         for (int i = 0; i < 9; i++) {
             cosf2[i] = MathHelper.cos(f2 * 0.1F + f * 0.25F + 0.8F * i);
         }

@@ -41,11 +41,11 @@ import java.util.Map.Entry;
  * 6  instant heal:   heal (1% + 2)/lv
  * 7  instant dmg:    hurt (1% + 2)/lv
  * 8  jump:           range++
- * 9  nausea:         miss -0.4/lv
+ * 9  nausea:         miss +0.4 flat (not per level, applied after the miss limit)
  * 10 regen:          heal (1% + 2)/lv every x ticks
  * 11 resis:          reduce missile dmg 20%/lv
  * 12 fire resis:     reduce non-missile dmg 20%/lv
- * 13 water breath:   dodge, ASM
+ * 13 water breath:   dodge +0.15/lv, ASM +20/lv
  * 14 invis:          no special effect (clear invis target every 64 ticks)
  * 15 blind:          range--
  * 16 night vision:   night battle effect -80%
@@ -251,7 +251,7 @@ public class BuffHelper {
                 case 8:  //jump: range +2
                     potion[ID.Attrs.HIT] += 2F * lv;
                     break;
-                case 13: //water breath: dodge +0.15,ASM +60
+                case 13: ///water breath: dodge +0.15/lv, ASM +20/lv
                     potion[ID.Attrs.DODGE] += 0.15F * lv;
                     potion[ID.Attrs.ASM] += 20F * lv;
                     break;
@@ -465,6 +465,14 @@ public class BuffHelper {
     }
 
     /**
+     * True for missile hits: MissileDamageSource (the immediate source of a missile hit is the host ship,
+     * not the missile entity) or a damage source whose immediate source is a missile entity.
+     */
+    public static boolean isMissileDamage(DamageSource source) {
+        return source instanceof MissileDamageSource || source.getImmediateSource() instanceof EntityAbyssMissile;
+    }
+
+    /**
      * apply resist potion effect to damage source
      * <p>
      * IN: host entity, source, damage value
@@ -481,7 +489,7 @@ public class BuffHelper {
          *  11: resist, reduce missile
          *  12: fire resist, reduce non-missile
          */
-        if (source.getImmediateSource() instanceof EntityAbyssMissile) {
+        if (isMissileDamage(source)) {
             if ((level = getPotionLevel(buffmap, 11)) > 0) {
                 //limit buff level to 1~4
                 if (level > 4) level = 4;

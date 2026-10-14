@@ -39,5 +39,23 @@ public class CacheDataShip {
         this.entityNBT = nbt;
     }
 
+    /**
+     * True if this snapshot would serialize to the same world data entry as the other one
+     * (same entity id, dimension, class, dead flag, block position and entity NBT).
+     * Used to skip rewriting and re-dirtying the world data when a ship did not change.
+     */
+    public boolean hasSameContent(CacheDataShip other) {
+        if (other == null) return false;
+        if (this == other) return true;
+
+        return this.entityID == other.entityID &&
+                this.worldID == other.worldID &&
+                this.classID == other.classID &&
+                this.isDead == other.isDead &&
+                this.posX == other.posX &&
+                this.posY == other.posY &&
+                this.posZ == other.posZ &&
+                java.util.Objects.equals(this.entityNBT, other.entityNBT);
+    }
 
 }

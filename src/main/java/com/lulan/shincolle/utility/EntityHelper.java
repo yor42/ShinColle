@@ -176,8 +176,13 @@ public class EntityHelper {
             int maxOffset = Math.min(py + 64, w.getActualHeight()) - py;
 
             // stop at unloaded chunks to avoid expensive operations
-            int liquidBlocks = liquidRunLength(dy -> w.isBlockLoaded(pos.setPos(px, py + dy, pz)) &&
-                                                     BlockHelper.checkBlockIsLiquid(w.getBlockState(pos)), maxOffset);
+            // (#60) inline loop, same rule as liquidRunLength: count consecutive loaded liquid blocks from offset 0
+            int liquidBlocks = 0;
+            for (int dy = 0; dy <= maxOffset; dy++) {
+                if (!(w.isBlockLoaded(pos.setPos(px, py + dy, pz)) &&
+                      BlockHelper.checkBlockIsLiquid(w.getBlockState(pos)))) break;
+                liquidBlocks++;
+            }
 
             // float up only if the column ends in an air block
             boolean canFloatUp = false;
@@ -394,19 +399,29 @@ public class EntityHelper {
                 //get player data
                 int peid = getPlayerEID(uid);
 
-                //check all world
+                //check all world: (#55) look the entity id up per world, then verify it is a listed player
                 for (World w : worlds) {
-                    //check player entity list
-                    for (EntityPlayer p : w.playerEntities) {
-                        if (p != null && p.getEntityId() == peid) {
-                            return p;
-                        }
+                    EntityPlayer p = pickListedPlayer(w.getEntityByID(peid), EntityPlayer.class, w.playerEntities);
+                    if (p != null) {
+                        return p;
                     }
                 }
             } catch (Exception e) {
                 LogHelper.error("EXCEPTION: get EntityPlayer by name fail: " + e, e);
                 return null;
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * (#55) matching rule of getEntityPlayerByUID: the entity found by id is accepted only when it is a
+     * player and is present in the world's player list; otherwise null.
+     */
+    static <T> T pickListedPlayer(Object found, Class<T> playerType, java.util.Collection<? extends T> listed) {
+        if (playerType.isInstance(found) && listed.contains(found)) {
+            return playerType.cast(found);
         }
 
         return null;
@@ -1196,6 +1211,13 @@ public class EntityHelper {
      * get entity with specific class/interface
      */
     public static <T> ArrayList getEntitiesWithinAABB(World world, Class<? extends T> cls, AxisAlignedBB aabb, @Nullable Predicate filter) {
+        //(#52) cls == Entity.class: the typed lookup visits the same chunk entity lists in the same order as the
+        //fetch-all path below, and the 2-arg lookup applies NOT_SPECTATING first, so fold both filters into one pass
+        if (cls == Entity.class && filter != null) {
+            return (ArrayList) world.getEntitiesWithinAABB(Entity.class, aabb,
+                    com.google.common.base.Predicates.and(net.minecraft.util.EntitySelectors.NOT_SPECTATING, (Predicate<Entity>) filter));
+        }
+
         //get all entity within AABB
         ArrayList<Entity> list = (ArrayList<Entity>) world.getEntitiesWithinAABB(Entity.class, aabb);
         ArrayList<T> list2 = new ArrayList<T>();

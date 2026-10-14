@@ -25,6 +25,8 @@ import org.lwjgl.input.Keyboard;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * some targeting class/method
@@ -45,11 +47,32 @@ public class TargetHelper {
         HashMap<Integer, String> unatklist = ServerProxy.getUnattackableTargetClass();
 
         if (target != null && unatklist != null) {
-            String tarClass = target.getClass().getSimpleName();
-            return unatklist.containsKey(tarClass.hashCode());
+            return isUnattackableClass(target.getClass(), unatklist, unattackVerdictCache);
         }
 
         return false;
+    }
+
+    /**
+     * (#52) per-class verdict cache of checkUnattackTargetList. The verdict is still decided by the
+     * simple-name hashcode, so two classes with the same simple name share a verdict like before.
+     * Must be cleared whenever ServerProxy.unattackableTargetClass changes.
+     */
+    private static final Map<Class<?>, Boolean> unattackVerdictCache = new ConcurrentHashMap<Class<?>, Boolean>();
+
+    public static void clearUnattackTargetCache() {
+        unattackVerdictCache.clear();
+    }
+
+    static boolean isUnattackableClass(Class<?> cls, Map<Integer, String> unatklist, Map<Class<?>, Boolean> cache) {
+        Boolean verdict = cache.get(cls);
+
+        if (verdict == null) {
+            verdict = unatklist.containsKey(cls.getSimpleName().hashCode());
+            cache.put(cls, verdict);
+        }
+
+        return verdict;
     }
 
     /**
