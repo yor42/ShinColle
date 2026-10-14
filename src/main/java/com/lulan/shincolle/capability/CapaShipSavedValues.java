@@ -175,6 +175,14 @@ public class CapaShipSavedValues {
     /** load default for a missing CanDrop key (issues #30, #45): ships drop items by default */
     static final boolean DEFAULT_CAN_DROP = true;
 
+    /**
+     * BasicEntityShip.initAI forces CanDrop=true once on a new ship; a saved CanDrop (including false) must survive.
+     * @param canDropLoadedFromNbt true if a CanDrop key was read from NBT
+     */
+    public static boolean shouldForceCanDropOnInit(boolean canDropLoadedFromNbt) {
+        return !canDropLoadedFromNbt;
+    }
+
     /** saved Level if the key exists, else 1 (issue #7: a stub Minor section must not give Level 0) */
     static int defaultedLevel(NBTTagCompound minor) {
         return intOr(minor, "Level", DEFAULT_LEVEL);
@@ -280,6 +288,7 @@ public class CapaShipSavedValues {
         loadFlag(nbt_load, "AirH", ID.F.UseAirHeavy, ship);
         loadFlag(nbt_load, "WedEffect", ID.F.UseRingEffect, ship);
         ship.setStateFlag(ID.F.CanDrop, boolOr(nbt_load, "CanDrop", DEFAULT_CAN_DROP));
+        ship.setCanDropLoaded(nbt_load.hasKey("CanDrop"));
         loadFlag(nbt_load, "CanFollow", ID.F.CanFollow, ship);
         loadFlag(nbt_load, "OnSight", ID.F.OnSightChase, ship);
         loadFlag(nbt_load, "PVPFirst", ID.F.PVPFirst, ship);
