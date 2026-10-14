@@ -11,6 +11,7 @@ import com.lulan.shincolle.utility.*;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -105,12 +106,16 @@ public class C2SGUIPackets implements IMessage {
         CapaTeitoku capa;
         BasicEntityShip ship;
 
+        //ADR-0004: the acting player is the packet sender, never the id in the payload (issue #29)
+        EntityPlayerMP sender = ctx.getServerHandler().player;
+        bindActorToSender(msg, sender);
+
         switch (msg.packetType) {
             case PID.ShipBtn:    //ship entity gui click
             {
                 entity = EntityHelper.getEntityByID(msg.valueInt[0], msg.valueInt[1], false);
 
-                if (entity instanceof BasicEntityShip) {
+                if (entity instanceof BasicEntityShip && PacketAuthorization.mayCommandShip(sender, (BasicEntityShip) entity)) {
                     PacketHelper.setEntityByGUI((BasicEntityShip) entity, msg.valueInt[2], msg.valueInt[3]);
                 }
             }
@@ -119,7 +124,8 @@ public class C2SGUIPackets implements IMessage {
             {
                 capa = CapaTeitoku.getTeitokuCapability(msg.valueInt[0], msg.valueInt[1], false);
 
-                if (capa != null && capa.morphEntity instanceof BasicEntityShip) {
+                if (capa != null && capa.morphEntity instanceof BasicEntityShip &&
+                        PacketAuthorization.mayCommandShip(sender, (BasicEntityShip) capa.morphEntity)) {
                     PacketHelper.setEntityByGUI((BasicEntityShip) capa.morphEntity, msg.valueInt[2], msg.valueInt[3]);
                 }
             }
@@ -170,8 +176,10 @@ public class C2SGUIPackets implements IMessage {
                     //get ship
                     entity = EntityHelper.getEntityByID(msg.valueInt[2], msg.valueInt[1], false);
 
-                    //點到的是ship entity, 則add team
+                    //點到的是ship entity, 則add team (owner or server OP only, no ally access)
                     if (entity instanceof BasicEntityShip) {
+                        if (!PacketAuthorization.mayOwnShip(sender, (BasicEntityShip) entity)) return;
+
                         //add ship to team
                         capa.addShipEntity(0, (BasicEntityShip) entity, false);
                         //reset formation id
@@ -223,7 +231,8 @@ public class C2SGUIPackets implements IMessage {
                 player = EntityHelper.getEntityPlayerByID(msg.valueInt[0], msg.valueInt[1], false);
                 entity = EntityHelper.getEntityByID(msg.valueInt[2], msg.valueInt[1], false);
 
-                if (player != null && entity instanceof BasicEntityShip) {
+                if (player != null && entity instanceof BasicEntityShip &&
+                        PacketAuthorization.mayCommandShip(sender, (BasicEntityShip) entity)) {
                     FMLNetworkHandler.openGui(player, ShinColle.instance, ID.Gui.SHIPINVENTORY, player.world, msg.valueInt[2], 0, 0);
                 }
             }
@@ -426,15 +435,13 @@ public class C2SGUIPackets implements IMessage {
                  *  3. check player is OP (server)
                  *  4. add/remove entity to list (server)
                  */
-                player = EntityHelper.getEntityPlayerByID(msg.valueInt[0], msg.valueInt[1], false);
-
-                //check OP
-                if (EntityHelper.checkOP(player)) {
+                //check OP: server OP list of the sender, creative mode does not count (ADR-0004)
+                if (PacketAuthorization.isServerOp(sender)) {
                     //add target to list
                     if (ServerProxy.addUnattackableTargetClass(msg.valueStr)) {
-                        player.sendMessage(new TextComponentTranslation("chat.shincolle:optool.add").appendText(" " + msg.valueStr));
+                        sender.sendMessage(new TextComponentTranslation("chat.shincolle:optool.add").appendText(" " + msg.valueStr));
                     } else {
-                        player.sendMessage(new TextComponentTranslation("chat.shincolle:optool.remove").appendText(" " + msg.valueStr));
+                        sender.sendMessage(new TextComponentTranslation("chat.shincolle:optool.remove").appendText(" " + msg.valueStr));
                     }
                 }
             }
@@ -442,7 +449,7 @@ public class C2SGUIPackets implements IMessage {
             case PID.HitHeight: {
                 entity = EntityHelper.getEntityByID(msg.valueInt[2], msg.valueInt[1], false);
 
-                if (entity instanceof BasicEntityShip) {
+                if (entity instanceof BasicEntityShip && PacketAuthorization.mayCommandShip(sender, (BasicEntityShip) entity)) {
                     ((BasicEntityShip) entity).setHitHeight(msg.valueInt[3]);
                     ((BasicEntityShip) entity).setHitAngle(msg.valueInt[4]);
                 }
@@ -489,6 +496,27 @@ public class C2SGUIPackets implements IMessage {
             }
             break;
         }//end packet type switch
+    }
+
+    /**
+     * Overwrite the payload actor (valueInt[0] player entity id, valueInt[1] world id) with the packet sender,
+     * so every handler below resolves the sender no matter what the client wrote. The wire format is unchanged.
+     * ShipBtn carries a ship entity id in slot 0; TileBtn and Desk_FuncSync carry no actor.
+     */
+    private static void bindActorToSender(C2SGUIPackets msg, EntityPlayerMP sender) {
+        switch (msg.packetType) {
+            case PID.ShipBtn:
+            case PID.TileBtn:
+            case PID.Desk_FuncSync:
+                return;
+            default:
+                break;
+        }
+
+        if (sender != null && msg.valueInt != null && msg.valueInt.length >= 2) {
+            msg.valueInt[0] = sender.getEntityId();
+            msg.valueInt[1] = sender.world.provider.getDimension();
+        }
     }
 
     //接收packet方法

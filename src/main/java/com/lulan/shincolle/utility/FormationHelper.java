@@ -5,6 +5,7 @@ import com.lulan.shincolle.entity.BasicEntityMount;
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.IShipAttackBase;
 import com.lulan.shincolle.handler.ConfigHandler;
+import com.lulan.shincolle.network.PacketAuthorization;
 import com.lulan.shincolle.network.S2CEntitySync;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.reference.ID;
@@ -957,6 +958,10 @@ public class FormationHelper {
             //不在隊伍名單裡面
             if (capa.checkIsInCurrentTeam(parms[3]) < 0) {
                 BasicEntityShip target = EntityHelper.getShipByUID(parms[3]);
+
+                //ADR-0004: target may be gone, and the sender must be allowed to command it (issue #29)
+                if (target == null || !(player instanceof EntityPlayerMP) ||
+                        !PacketAuthorization.mayCommandShip((EntityPlayerMP) player, target)) return;
 
                 target.setEntitySit(!target.isSitting());
                 target.setRiderAndMountSit();
