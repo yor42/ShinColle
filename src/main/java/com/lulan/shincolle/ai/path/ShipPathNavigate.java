@@ -27,6 +27,24 @@ import javax.annotation.Nullable;
  * 注意此path navigator使用時, 必須把ship floating關閉以免阻礙y軸移動
  */
 public class ShipPathNavigate {
+
+    /** Offset from pos1 to pos2 as {x, y, z}. */
+    static double[] offsetVector(Vec3d pos1, Vec3d pos2) {
+        return new double[]{pos2.x - pos1.x, pos2.y - pos1.y, pos2.z - pos1.z};
+    }
+
+    static double offsetSq(double[] off) {
+        return off[0] * off[0] + off[1] * off[1] + off[2] * off[2];
+    }
+
+    /** Stuck-recovery push direction for one axis: 1, -1 or 0. */
+    static int pushDirection(double d) {
+        int r = 0;
+        if (d > 0.2F) r += 1;
+        if (d < -0.2F) r -= 1;
+        return r;
+    }
+
     private static final int UpdatePathDelay = 20;
     private final EntityLiving host;
     /**
@@ -333,10 +351,8 @@ public class ShipPathNavigate {
                     if (host.getRNG().nextInt(2) == 0) {
                         host.getJumpHelper().setJumping();
                         float speed = host.getAIMoveSpeed() * 0.35F;
-                        if (dx > 0.2F) host.motionX += speed;
-                        if (dx < 0.2F) host.motionX -= speed;
-                        if (dz > 0.2F) host.motionZ += speed;
-                        if (dz < 0.2F) host.motionZ -= speed;
+                        host.motionX += pushDirection(dx) * speed;
+                        host.motionZ += pushDirection(dz) * speed;
                     }
                 }
             }
@@ -463,10 +479,11 @@ public class ShipPathNavigate {
         int x1 = MathHelper.floor(pos1.x);
         int y1 = (int) pos1.y;
         int z1 = MathHelper.floor(pos1.z);
-        double xOffset = pos2.x - pos1.x;
-        double yOffset = pos2.x - pos1.x;
-        double zOffset = pos2.z - pos1.z;
-        double offsetSq = xOffset * xOffset + zOffset * zOffset + yOffset * yOffset;
+        double[] offset = offsetVector(pos1, pos2);
+        double xOffset = offset[0];
+        double yOffset = offset[1];
+        double zOffset = offset[2];
+        double offsetSq = offsetSq(offset);
 
         if (offsetSq < 1.0E-8D)                //若距離極小, 則判定不須跳點
         {

@@ -62,6 +62,10 @@ import java.util.List;
  */
 public class TaskHelper {
 
+    /** Fishing luck bonus from ship level. */
+    public static float levelLuckBonus(int level, int maxLevel) {
+        return (float) level / (float) maxLevel * 1.5F;
+    }
 
     public TaskHelper() {
     }
@@ -855,7 +859,7 @@ public class TaskHelper {
             luck += lv1;
 
             //add level modify
-            luck += ship.getLevel() / ConfigHandler.maxLevel * 1.5F;
+            luck += levelLuckBonus(ship.getLevel(), ConfigHandler.maxLevel);
         } else if (host instanceof IShipAttackBase) {
             world = (WorldServer) host.world;
         } else {

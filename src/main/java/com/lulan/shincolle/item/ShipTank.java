@@ -133,6 +133,11 @@ public class ShipTank extends BasicItem {
         return 4;
     }
 
+    /** Returns FAIL when the ray trace found nothing, otherwise null (continue normal handling). */
+    static EnumActionResult resultForMissingTrace(@Nullable RayTraceResult trace) {
+        return trace == null ? EnumActionResult.FAIL : null;
+    }
+
     //right click: place liquid block or fill tank
     @Override
     @Nonnull
@@ -152,7 +157,11 @@ public class ShipTank extends BasicItem {
         }
 
         //server side
-        //no target
+        //no target (open air): trace is null
+        if (resultForMissingTrace(raytraceresult) != null) {
+            return new ActionResult<>(EnumActionResult.FAIL, stack);
+        }
+
         if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
             pos = raytraceresult.getBlockPos();
 

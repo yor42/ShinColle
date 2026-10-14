@@ -72,6 +72,12 @@ import java.util.UUID;
  * helper about entity
  */
 public class EntityHelper {
+
+    /** Ring requirement shared by mob and boss spawning: Check_Ring false means no ring needed. */
+    public static boolean canSpawnByRing(boolean checkRing, boolean hasRing) {
+        return !checkRing || hasRing;
+    }
+
     /**
      * check entity is in (stand on, y+0D) liquid (not air or solid block)
      */
@@ -1961,11 +1967,7 @@ public class EntityHelper {
         Random rng = player.getRNG();
 
         //check ring
-        if (ConfigHandler.checkRing) {
-            if (capa.hasRing()) canSpawn = true;
-        } else {
-            canSpawn = true;
-        }
+        canSpawn = canSpawnByRing(ConfigHandler.checkRing, capa.hasRing());
 
         //check biome
         if (canSpawn) {
@@ -2067,7 +2069,8 @@ public class EntityHelper {
 
         //boss cooldown--
         if ((BiomeDictionary.hasType(biome, BiomeDictionary.Type.WATER) ||
-                BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) && capa.hasRing()) {
+                BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) &&
+                canSpawnByRing(ConfigHandler.checkRing, capa.hasRing())) {
             capa.setBossCooldown(capa.getBossCooldown() - 1);
         }
 

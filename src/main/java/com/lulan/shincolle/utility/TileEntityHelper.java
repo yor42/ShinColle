@@ -19,6 +19,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TileEntityHelper {
 
+    /** Apply fuel magnification (config) to a fuel amount. */
+    public static int applyFuelMagni(int fuel, float magni) {
+        return (int) ((float) fuel * magni);
+    }
 
     public TileEntityHelper() {
     }
@@ -43,7 +47,7 @@ public class TileEntityHelper {
                 int fuelx = TileEntityFurnace.getItemBurnTime(stack);
 
                 //calc config setting
-                fuelx *= (int) ((ITileFurnace) tile).getFuelMagni();
+                fuelx = applyFuelMagni(fuelx, ((ITileFurnace) tile).getFuelMagni());
 
                 //check power storage and add disposable fuel (ex: coal, lava bucket, lava cell)
                 if (fuelx > 0 && fuelx + tile2.getPowerRemained() < tile2.getPowerMax()) {
@@ -80,7 +84,7 @@ public class TileEntityHelper {
                     fuelx = 20000;
 
                     //calc config setting
-                    fuelx *= (int) ((ITileFurnace) tile).getFuelMagni();
+                    fuelx = applyFuelMagni(fuelx, ((ITileFurnace) tile).getFuelMagni());
 
                     //is lava and > 1000 mb
                     if (fstack != null && fstack.containsFluid(BlockHelper.SampleFluidLava) &&
