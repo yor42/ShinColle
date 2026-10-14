@@ -480,8 +480,10 @@ public class C2SGUIPackets implements IMessage {
 
                     for (BasicEntityShip s : ships) {
                         if (s == null) continue;
+                        //updateNameTag recomputes the names and pushes them to clients with
+                        //sendSyncPacketUnitName (S2CEntitySync.SyncShip_UnitName); the former
+                        //s.sendSyncRequest(1) here was a client-only no-op on the server (#27)
                         EntityHelper.updateNameTag(s);
-                        s.sendSyncRequest(1);
                     }
                 }
             }

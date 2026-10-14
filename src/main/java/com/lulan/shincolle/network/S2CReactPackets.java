@@ -105,6 +105,10 @@ public class S2CReactPackets implements IMessage {
                 //total size, page num, list size
                 this.valueInt = PacketHelper.readIntArray(buf, 3);
 
+                //list size comes from the packet: validate before allocating (min bytes per entry:
+                //8 ints + 2 booleans + the 4-byte string flag)
+                PacketHelper.checkLength(buf, this.valueInt[2], 8 * 4 + 2 + 4, PacketHelper.MAX_ARRAY_LENGTH);
+
                 if (this.valueInt[2] > 0) {
                     this.valueInt2 = new int[this.valueInt[2] * 8];
                     this.valueBoolean = new boolean[this.valueInt[2] * 2];

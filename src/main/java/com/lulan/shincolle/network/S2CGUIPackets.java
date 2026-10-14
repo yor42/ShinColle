@@ -547,7 +547,7 @@ public class S2CGUIPackets implements IMessage {
                 if (this.valueInt > 0) {
                     //get list data
                     for (int i = 0; i < this.valueInt; ++i) {
-                        str = ByteBufUtils.readUTF8String(buf);
+                        str = PacketHelper.readBoundedUTF8String(buf);
                         this.dataMap.put(str.hashCode(), str);
                     }
                 }
