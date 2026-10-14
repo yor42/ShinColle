@@ -1,5 +1,6 @@
 package com.lulan.shincolle.utility;
 
+import com.lulan.shincolle.network.PacketAuthorization;
 import com.lulan.shincolle.tileentity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -186,7 +187,8 @@ public class TileEntityHelper {
      * parms: pid: packet sender uid, posF: from pos, posT: to pos
      */
     public static void pairingWaypointAndChest(EntityPlayer player, int pid, World w, BlockPos posWp, BlockPos posChest) {
-        if (pid <= 0) return;
+        //issue #29: pid must be the sender's real UID (caller binds it); both chunks must already be loaded
+        if (pid <= 0 || !PacketAuthorization.isChunkLoaded(w, posWp) || !PacketAuthorization.isChunkLoaded(w, posChest)) return;
 
         TileEntity pos1 = w.getTileEntity(posWp);
         TileEntity pos2 = w.getTileEntity(posChest);
@@ -194,11 +196,19 @@ public class TileEntityHelper {
         if (pos1 instanceof ITileWaypoint && pos2 instanceof IInventory) {
             ITileWaypoint wp = (ITileWaypoint) pos1;
 
-            //check owner
-            if (wp.getPlayerUID() != pid) {
+            //check owner or server OP (no ally access), then reach: the chest has no owner data, so it is reach-only
+            boolean isOp = PacketAuthorization.isServerOp(player);
+
+            if (!PacketAuthorization.mayActAsOwner(pid, wp.getPlayerUID(), isOp)) {
                 //not the owner, return
                 player.sendMessage(new TextComponentTranslation("chat.shincolle:wrongowner")
                         .appendText(" " + wp.getPlayerUID()));
+                return;
+            }
+
+            if (!PacketAuthorization.mayPairTiles(pid, wp.getPlayerUID(), isOp,
+                    PacketAuthorization.distSqToBlock(player, posWp), true,
+                    PacketAuthorization.distSqToBlock(player, posChest), true)) {
                 return;
             }
 
@@ -223,7 +233,8 @@ public class TileEntityHelper {
      * parms: pid: packet sender uid, posF: from pos, posT: to pos
      */
     public static void pairingWaypoints(EntityPlayer player, int pid, World w, BlockPos posF, BlockPos posT) {
-        if (pid <= 0) return;
+        //issue #29: pid must be the sender's real UID (caller binds it); both chunks must already be loaded
+        if (pid <= 0 || !PacketAuthorization.isChunkLoaded(w, posF) || !PacketAuthorization.isChunkLoaded(w, posT)) return;
 
         TileEntity tileF = w.getTileEntity(posF);
         TileEntity tileT = w.getTileEntity(posT);
@@ -233,11 +244,25 @@ public class TileEntityHelper {
             ITileWaypoint wpTo = (ITileWaypoint) tileT;
             BlockPos nextWpTo = wpTo.getNextWaypoint();
 
-            //check owner
-            if (wpFrom.getPlayerUID() != pid) {
+            //check owner or server OP of BOTH waypoints (wpTo's last-waypoint is modified too), then reach
+            boolean isOp = PacketAuthorization.isServerOp(player);
+
+            if (!PacketAuthorization.mayActAsOwner(pid, wpFrom.getPlayerUID(), isOp)) {
                 //not the owner, return
                 player.sendMessage(new TextComponentTranslation("chat.shincolle:wrongowner")
                         .appendText(" " + wpFrom.getPlayerUID()));
+                return;
+            }
+
+            if (!PacketAuthorization.mayActAsOwner(pid, wpTo.getPlayerUID(), isOp)) {
+                player.sendMessage(new TextComponentTranslation("chat.shincolle:wrongowner")
+                        .appendText(" " + wpTo.getPlayerUID()));
+                return;
+            }
+
+            if (!PacketAuthorization.mayPairTiles(pid, wpFrom.getPlayerUID(), isOp,
+                    PacketAuthorization.distSqToBlock(player, posF), true,
+                    PacketAuthorization.distSqToBlock(player, posT), true)) {
                 return;
             }
 

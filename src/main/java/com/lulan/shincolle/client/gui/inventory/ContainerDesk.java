@@ -1,8 +1,10 @@
 package com.lulan.shincolle.client.gui.inventory;
 
 import com.lulan.shincolle.capability.CapaTeitoku;
+import com.lulan.shincolle.network.PacketAuthorization;
 import com.lulan.shincolle.tileentity.TileEntityDesk;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.item.ItemStack;
@@ -48,6 +50,13 @@ public class ContainerDesk extends Container {
     //玩家是否可以觸發右鍵點方塊事件
     @Override
     public boolean canInteractWith(EntityPlayer player) {
+        //issue #29: tile GUI (type 0) needs vanilla reach; the desk tile has no owner. Item GUIs (type 1/2) have no world anchor.
+        if (this.type == 0 && this.tile != null && player instanceof EntityPlayerMP) {
+            return !this.tile.isInvalid() && this.tile.getWorld() == player.world &&
+                    PacketAuthorization.withinReach(PacketAuthorization.distSqToBlock(player, this.tile.getPos()),
+                            PacketAuthorization.isChunkLoaded(this.tile.getWorld(), this.tile.getPos()));
+        }
+
         return true;
     }
 

@@ -2,8 +2,13 @@ package com.lulan.shincolle.network;
 
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.entity.BasicEntityShip;
+import com.lulan.shincolle.entity.IShipOwner;
 import com.lulan.shincolle.utility.TeamHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.function.BiPredicate;
@@ -64,6 +69,88 @@ public final class PacketAuthorization {
      */
     public static boolean withinReach(double distSq, boolean chunkLoaded) {
         return chunkLoaded && distSq <= REACH_SQ;
+    }
+
+    /**
+     * Pure tile/container rule (batch 2): the {@link #mayAct} owner/OP/ally rule plus vanilla reach.
+     * Used for tiles that have an owner (IShipOwner).
+     */
+    public static boolean mayUseOwnedTile(int actorUid, int ownerUid, boolean isServerOp,
+                                          BiPredicate<Integer, Integer> isTeammate, double distSq, boolean chunkLoaded) {
+        return withinReach(distSq, chunkLoaded) && mayAct(actorUid, ownerUid, isServerOp, isTeammate);
+    }
+
+    /**
+     * Pure pairing rule (Request_WpSet / Request_ChestSet): owner or server OP, no ally access.
+     * An unloaded chunk or no endpoint within reach rejects. The wrench is used on the second block and the first
+     * one may be up to the configured pairing distance away, so one endpoint within reach is enough.
+     */
+    public static boolean mayPairTiles(int actorUid, int ownerUid, boolean isServerOp,
+                                       double distSqA, boolean loadedA, double distSqB, boolean loadedB) {
+        if (!loadedA || !loadedB) return false;
+        if (!withinReach(distSqA, true) && !withinReach(distSqB, true)) return false;
+        return mayActAsOwner(actorUid, ownerUid, isServerOp);
+    }
+
+    /** Array guard: true when the array exists and has at least {@code min} elements. */
+    public static boolean hasLength(int[] arr, int min) {
+        return arr != null && arr.length >= min;
+    }
+
+    /** Array guard for byte payloads. */
+    public static boolean hasLength(byte[] arr, int min) {
+        return arr != null && arr.length >= min;
+    }
+
+    /**
+     * True when the chunk holding {@code pos} is already loaded in {@code world}. Never loads or generates a chunk
+     * (World#getTileEntity would), so call this before resolving a client-supplied position.
+     */
+    public static boolean isChunkLoaded(World world, BlockPos pos) {
+        return world != null && pos != null && world.getChunkProvider().getLoadedChunk(pos.getX() >> 4, pos.getZ() >> 4) != null;
+    }
+
+    /** Squared distance from the player to the block center. */
+    public static double distSqToBlock(EntityPlayer player, BlockPos pos) {
+        return player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+    }
+
+    /**
+     * Production check for TileBtn / Desk_FuncSync: sender-bound reach (8 blocks, loaded chunk) and, for tiles with an
+     * owner (IShipOwner), owner / ally / non-Creative OP. Tiles without an owner concept (e.g. the desk) are reach-only.
+     *
+     * @param tile the tile already resolved from the sender's world; may be null
+     */
+    public static boolean mayUseTile(EntityPlayerMP sender, TileEntity tile) {
+        if (sender == null || tile == null || tile.isInvalid() || tile.getWorld() != sender.world) return false;
+
+        BlockPos pos = tile.getPos();
+        boolean loaded = isChunkLoaded(sender.world, pos);
+        double distSq = distSqToBlock(sender, pos);
+
+        if (!(tile instanceof IShipOwner)) {
+            return withinReach(distSq, loaded);
+        }
+
+        CapaTeitoku capa = CapaTeitoku.getTeitokuCapability(sender);
+        if (capa == null) return false;
+        return mayUseOwnedTile(capa.getPlayerUID(), ((IShipOwner) tile).getPlayerUID(), isServerOp(sender),
+                TeamHelper::checkIsAlly, distSq, loaded);
+    }
+
+    /** Container variant: only a server-side player can be checked; the client side is not authoritative. */
+    public static boolean isServerOp(EntityPlayer player) {
+        return player instanceof EntityPlayerMP && isServerOp((EntityPlayerMP) player);
+    }
+
+    /**
+     * Container check for a ship GUI: ship alive and the player may command it, within 8 blocks.
+     * A non-server player (client side) is not authoritative and passes.
+     */
+    public static boolean mayUseShipContainer(EntityPlayer player, BasicEntityShip ship) {
+        if (!(player instanceof EntityPlayerMP)) return true;
+        if (ship == null || !ship.isEntityAlive() || ship.world != player.world) return false;
+        return withinReach(player.getDistanceSq(ship), true) && mayCommandShip((EntityPlayerMP) player, ship);
     }
 
     /**

@@ -141,29 +141,29 @@ public class C2SGUIPackets implements IMessage {
             break;
             case PID.TileBtn:    //tile entity gui click
             {
-                world = ServerProxy.getServerWorld(msg.valueInt[0]);
+                //issue #29: short arrays drop the packet; the tile is resolved only in the sender's world, loaded chunk,
+                //within reach, and the sender must be owner / ally / non-Creative OP (reach-only for ownerless tiles)
+                if (!PacketAuthorization.hasLength(msg.valueInt, 4) || !PacketAuthorization.hasLength(msg.valueByte, 3)) return;
 
-                if (world != null) {
-                    PacketHelper.setTileEntityByGUI(world.getTileEntity(new BlockPos(
-                                    msg.valueInt[1], msg.valueInt[2], msg.valueInt[3])),
-                            msg.valueByte[0], msg.valueByte[1], msg.valueByte[2]);
+                TileEntity btnTile = resolveSenderTile(sender, msg.valueInt);
+
+                if (PacketAuthorization.mayUseTile(sender, btnTile)) {
+                    PacketHelper.setTileEntityByGUI(btnTile, msg.valueByte[0], msg.valueByte[1], msg.valueByte[2]);
                 }
             }
             break;
             case PID.Desk_FuncSync:    //tile entity gui sync
             {
-                world = ServerProxy.getServerWorld(msg.valueInt[0]);
+                //issue #29: the desk has no owner concept, so this is reach-only (8 blocks, loaded chunk, sender's world)
+                if (!PacketAuthorization.hasLength(msg.valueInt, 4) || !PacketAuthorization.hasLength(msg.valueByte, 4)) return;
 
-                if (world != null) {
-                    TileEntity tile = world.getTileEntity(new BlockPos(msg.valueInt[1], msg.valueInt[2], msg.valueInt[3]));
+                TileEntity deskTile = resolveSenderTile(sender, msg.valueInt);
 
-                    if (tile instanceof TileEntityDesk tile2) {
-
-                        tile2.setField(0, msg.valueByte[0]);
-                        tile2.setField(1, msg.valueByte[1]);
-                        tile2.setField(2, msg.valueByte[2]);
-                        tile2.setField(3, msg.valueByte[3]);
-                    }
+                if (deskTile instanceof TileEntityDesk tile2 && PacketAuthorization.mayUseTile(sender, deskTile)) {
+                    tile2.setField(0, msg.valueByte[0]);
+                    tile2.setField(1, msg.valueByte[1]);
+                    tile2.setField(2, msg.valueByte[2]);
+                    tile2.setField(3, msg.valueByte[3]);
                 }
             }
             break;
@@ -496,6 +496,20 @@ public class C2SGUIPackets implements IMessage {
             }
             break;
         }//end packet type switch
+    }
+
+    /**
+     * Resolve the tile at payload (dim, x, y, z) only inside the sender's own world and only if its chunk is already
+     * loaded, so a forged position can neither load chunks nor reach another dimension. Null when not resolvable.
+     */
+    private static TileEntity resolveSenderTile(EntityPlayerMP sender, int[] dimXyz) {
+        if (sender == null || dimXyz == null || dimXyz.length < 4) return null;
+        if (sender.world.provider.getDimension() != dimXyz[0]) return null;
+
+        BlockPos pos = new BlockPos(dimXyz[1], dimXyz[2], dimXyz[3]);
+        if (!PacketAuthorization.isChunkLoaded(sender.world, pos)) return null;
+
+        return sender.world.getTileEntity(pos);
     }
 
     /**

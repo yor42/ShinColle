@@ -214,13 +214,13 @@ public class C2SInputPackets implements IMessage {
                 {
                     /*
                       waypoint pairing packet:
-                      data: 0:playerUID, 1~3:from xyz, 4~6:to xyz
+                      data: 0:playerUID (ignored since issue #29, the sender's real UID is used), 1~3:from xyz, 4~6:to xyz
                      */
                     EntityPlayer p = ctx.getServerHandler().player;
                     World w = null;
                     if (p != null) w = p.world;
 
-                    if (w != null) {
+                    if (w != null && PacketAuthorization.hasLength(msg.value3, 7)) {
                         float dx = msg.value3[1] - msg.value3[4];
                         float dy = msg.value3[2] - msg.value3[5];
                         float dz = msg.value3[3] - msg.value3[6];
@@ -228,7 +228,7 @@ public class C2SInputPackets implements IMessage {
 
                         //check distance
                         if (dist <= ConfigHandler.pairDistWp) {
-                            TileEntityHelper.pairingWaypoints(p, msg.value3[0], w,
+                            TileEntityHelper.pairingWaypoints(p, EntityHelper.getPlayerUID(p), w,
                                     new BlockPos(msg.value3[1], msg.value3[2], msg.value3[3]),
                                     new BlockPos(msg.value3[4], msg.value3[5], msg.value3[6]));
                         } else {
@@ -243,13 +243,13 @@ public class C2SInputPackets implements IMessage {
                 {
                     /*
                       chest and waypoint pairing packet:
-                      data: 0:playerUID, 1~3:waypoint xyz, 4~6:chest xyz
+                      data: 0:playerUID (ignored since issue #29, the sender's real UID is used), 1~3:waypoint xyz, 4~6:chest xyz
                      */
                     EntityPlayer p = ctx.getServerHandler().player;
                     World w = null;
                     if (p != null) w = p.world;
 
-                    if (w != null) {
+                    if (w != null && PacketAuthorization.hasLength(msg.value3, 7)) {
                         float dx = msg.value3[1] - msg.value3[4];
                         float dy = msg.value3[2] - msg.value3[5];
                         float dz = msg.value3[3] - msg.value3[6];
@@ -257,7 +257,7 @@ public class C2SInputPackets implements IMessage {
 
                         //check distance
                         if (dist <= ConfigHandler.pairDistChest) {
-                            TileEntityHelper.pairingWaypointAndChest(p, msg.value3[0], w,
+                            TileEntityHelper.pairingWaypointAndChest(p, EntityHelper.getPlayerUID(p), w,
                                     new BlockPos(msg.value3[1], msg.value3[2], msg.value3[3]),
                                     new BlockPos(msg.value3[4], msg.value3[5], msg.value3[6]));
                         } else {

@@ -2,6 +2,7 @@ package com.lulan.shincolle.client.gui.inventory;
 
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.item.BasicEquip;
+import com.lulan.shincolle.network.PacketAuthorization;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -61,7 +62,8 @@ public class ContainerShipInventory extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return true;
+        //issue #29: ship alive, within 8 blocks, owner / ally / non-Creative OP (server side only)
+        return PacketAuthorization.mayUseShipContainer(player, this.entity);
     }
 
     /**
