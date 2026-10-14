@@ -31,6 +31,9 @@ public class EntityAIShipPickItem extends EntityAIBase {
     private int pickDelay, pickDelayMax;
     private float pickRange;
     private final float pickRangeBase;
+    private static final int SPACE_CACHE_TICKS = 16;    //(#57) max ticks the inventory has-space result is reused
+    private int spaceCheckTick;
+    private boolean spaceChecked, spaceResult;
 
 
     public EntityAIShipPickItem(IShipEmotion entity, float pickRangeBase) {
@@ -67,8 +70,16 @@ public class EntityAIShipPickItem extends EntityAIBase {
                 return false;
             }
 
-            //check inventory space
-            return this.hostShip.getCapaShipInventory().getFirstSlotForItem() > 0;
+            //check inventory space (#57: result reused for up to 16 ticks)
+            int now = this.hostShip.ticksExisted;
+
+            if (needSpaceRecheck(this.spaceChecked, this.spaceCheckTick, now)) {
+                this.spaceResult = this.hostShip.getCapaShipInventory().getFirstSlotForItem() > 0;
+                this.spaceCheckTick = now;
+                this.spaceChecked = true;
+            }
+
+            return this.spaceResult;
         }
         //mount類
         else if (this.hostMount != null && this.hostShip != null) {
@@ -173,11 +184,19 @@ public class EntityAIShipPickItem extends EntityAIBase {
         //get random item
         if (getlist != null && !getlist.isEmpty()) {
             //sort by dist
-            Collections.sort(getlist, this.targetSorter);
+            if (getlist.size() > 1) Collections.sort(getlist, this.targetSorter);
             getitem = getlist.get(0);
         }
 
         return getitem;
+    }
+
+    /**
+     * (#57) true if the cached inventory has-space result is missing, older than SPACE_CACHE_TICKS, or from a
+     * future tick (ticksExisted went backwards)
+     */
+    static boolean needSpaceRecheck(boolean checked, int lastTick, int nowTick) {
+        return !checked || nowTick < lastTick || nowTick - lastTick >= SPACE_CACHE_TICKS;
     }
 
     //update parms

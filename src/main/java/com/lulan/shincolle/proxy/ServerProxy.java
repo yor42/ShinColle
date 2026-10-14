@@ -11,6 +11,8 @@ import com.lulan.shincolle.team.TeamData;
 import com.lulan.shincolle.utility.CalcHelper;
 import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.LogHelper;
+import com.lulan.shincolle.utility.RadarShipGrouping;
+import com.lulan.shincolle.utility.TargetHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -142,6 +144,7 @@ public class ServerProxy extends CommonProxy {
         // init data by default value
         customTagetClass = new HashMap<Integer, HashMap<Integer, String>>();
         unattackableTargetClass = new HashMap<Integer, String>();
+        TargetHelper.clearUnattackTargetCache();
         mapPlayerID = new HashMap<Integer, CacheDataPlayer>();
         mapShipID = new HashMap<Integer, CacheDataShip>();
         mapTeamID = new HashMap<Integer, TeamData>();
@@ -173,6 +176,7 @@ public class ServerProxy extends CommonProxy {
             }
 
             unattackableTargetClass = unatklist;
+            TargetHelper.clearUnattackTargetCache();
 
             // load player data: from server save file to playerMap
             NBTTagList list = ShinWorldData.nbtData.getTagList(ShinWorldData.TAG_PLAYERDATA, Constants.NBT.TAG_COMPOUND);
@@ -356,6 +360,8 @@ public class ServerProxy extends CommonProxy {
                 result = true;
             }
 
+            TargetHelper.clearUnattackTargetCache();
+
             serverData.markDirty();
         }
 
@@ -371,6 +377,7 @@ public class ServerProxy extends CommonProxy {
     public static void setUnattackableTargetClass(HashMap<Integer, String> map) {
         if (map != null) {
             unattackableTargetClass = map;
+            TargetHelper.clearUnattackTargetCache();
             serverData.markDirty();
         }
     }
@@ -713,49 +720,43 @@ public class ServerProxy extends CommonProxy {
                 }
 
                 if (needUpdate) {
-                    // all ship map: <Player UID, ship entity id list>
-                    HashMap<Integer, List<Integer>> shipListByPlayer = new HashMap<Integer, List<Integer>>();
-
-                    // all player entity map (for cache)
+                    // all player entity map (for cache), only ONLINE players
                     HashMap<Integer, EntityPlayer> playerByPUID = new HashMap<Integer, EntityPlayer>();
 
-                    // init value: add empty list for each player
-                    mapPlayerID.forEach((pid, pdata) -> {
-                        List<Integer> newlist = new ArrayList<>(); // empty list
+                    // online player uid -> dimension id
+                    HashMap<Integer, Integer> onlineDimByPUID = new HashMap<Integer, Integer>();
 
+                    mapPlayerID.forEach((pid, pdata) -> {
                         // get player entity
                         EntityPlayer pe = EntityHelper.getEntityPlayerByUID(pid);
-
-                        // add init value
-                        shipListByPlayer.put(pid, newlist);
 
                         // add player entity cache, only for ONLINE player
                         if (pe != null) {
                             playerByPUID.put(pid, pe);
+                            onlineDimByPUID.put(pid, pe.world.provider.getDimension());
                         }
                     });
+
+                    // ship map: <Player UID, ship entity id list>, only ONLINE players have a list (#53)
+                    HashMap<Integer, List<Integer>> shipListByPlayer = new HashMap<Integer, List<Integer>>(
+                            RadarShipGrouping.createLists(onlineDimByPUID));
 
                     // add ship to each player: get ship from mapShipID, save to shipListByPlayer
-                    mapShipID.forEach((sid, sdata) -> {
-                        // get ship entity
-                        Entity ent = EntityHelper.getEntityByID(sdata.entityID, sdata.worldID, false);
+                    // nobody online = nothing to send, skip the ship scan
+                    if (!onlineDimByPUID.isEmpty()) {
+                        mapShipID.forEach((sid, sdata) -> {
+                            // get ship entity
+                            Entity ent = EntityHelper.getEntityByID(sdata.entityID, sdata.worldID, false);
 
-                        if (ent instanceof BasicEntityShip) {
-                            BasicEntityShip ship = (BasicEntityShip) ent;
-                            int pid = ship.getPlayerUID();
-                            EntityPlayer player = playerByPUID.get(pid);
+                            if (ent instanceof BasicEntityShip) {
+                                BasicEntityShip ship = (BasicEntityShip) ent;
 
-                            // check same dimension
-                            if (player != null && player.world.provider.getDimension() == ship.world.provider.getDimension()) {
-                                // add ship's entity id to player's shipList
-                                List shipList = shipListByPlayer.get(pid);
-
-                                if (shipList != null) {
-                                    shipList.add(sdata.entityID);
-                                }
+                                // check owner online and same dimension, then add ship's entity id to player's shipList
+                                RadarShipGrouping.addShip(shipListByPlayer, onlineDimByPUID, sdata.entityID,
+                                        ship.getPlayerUID(), ship.world.provider.getDimension());
                             }
-                        }
-                    });
+                        });
+                    }
 
                     // sync map to each ONLINE player
                     shipListByPlayer.forEach((pid, value) -> {

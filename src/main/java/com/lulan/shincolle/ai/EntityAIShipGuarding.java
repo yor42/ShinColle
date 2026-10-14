@@ -341,13 +341,16 @@ public class EntityAIShipGuarding extends EntityAIBase {
         AxisAlignedBB fireRange = getSearchBox(this.host2.getEntityBoundingBox(), this.range);
         List<EntityLivingBase> list1 = this.host2.world.getEntitiesWithinAABB(EntityLivingBase.class, fireRange,
                 this.targetSelector);
-        String str = "";
-        for (EntityLivingBase i : list1) {
-            str += i.getName();
-        }
+        // (#54) build the debug string only when debug output is enabled
+        if (ConfigHandler.debugMode) {
+            String str = "";
+            for (EntityLivingBase i : list1) {
+                str += i.getName();
+            }
 
-        // LogHelper.debug("list size: "+list1.size());
-        LogHelper.debug("target list:" + str);
+            // LogHelper.debug("list size: "+list1.size());
+            LogHelper.debug("target list:" + str);
+        }
         // sort target list
         Collections.sort(list1, this.targetSorter);
 

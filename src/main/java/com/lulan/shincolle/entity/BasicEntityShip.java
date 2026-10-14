@@ -152,6 +152,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
     //chunk loader
     private Ticket chunkTicket;
     private Set<ChunkPos> chunks;
+    private ChunkLoaderApplyKey chunkApplyKey;    //(#56) last applied chunk x/z, mode, ticket
 
 
     public BasicEntityShip(World world) {
@@ -4377,6 +4378,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
 
         this.chunks = null;
         this.chunkTicket = null;
+        this.chunkApplyKey = null;
     }
 
     /**
@@ -4439,6 +4441,13 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
             int cx = MathHelper.floor(this.posX) >> 4;
             int cz = MathHelper.floor(this.posZ) >> 4;
 
+            //(#56) same chunk x/z, mode and ticket as last apply: forced chunks are already correct
+            if (ChunkLoaderApplyKey.isUnchanged(this.chunkApplyKey, cx, cz, ConfigHandler.chunkloaderMode, this.chunkTicket)) {
+                return;
+            }
+
+            this.chunkApplyKey = new ChunkLoaderApplyKey(cx, cz, ConfigHandler.chunkloaderMode, this.chunkTicket);
+
             //get new chunk
             loadChunks = BlockHelper.getChunksWithinRange(world, cx, cz, ConfigHandler.chunkloaderMode);
 
@@ -4467,7 +4476,9 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
                 ForgeChunkManager.forceChunk(this.chunkTicket, p);
             }
 
-            LogHelper.debug("DEBUG : ship chunk loader: " + this.chunks + " " + this);
+            if (ConfigHandler.debugMode) {
+                LogHelper.debug("DEBUG : ship chunk loader: " + this.chunks + " " + this);
+            }
         }
     }
 
