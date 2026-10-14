@@ -34,6 +34,8 @@ import java.util.*;
 public class CapaTeitoku implements ICapaTeitoku, IInventory {
     public static final String CAPA_KEY = "TeitokuExtProps";
     public static final String INV_KEY = "CpInv";
+    /** additive boolean key (issue #32, ADR-0002): missing = auto emote on */
+    public static final String AUTO_EMOTE_OFF_KEY = "AutoEmoteOff";
     public EntityPlayer player;
     public String playerName;
 
@@ -50,6 +52,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
     private boolean hasTeam;
     private boolean isRingActive;
     private boolean isRingFlying;
+    private boolean autoEmoteOff; // issue #32: absent in old saves = auto emote ON
     private int marriageNum;
     private int bossCooldown; // spawn boss cooldown
     private int teamCooldown; // recreate team cooldown
@@ -89,6 +92,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         this.hasTeam = false;
         this.isRingActive = false;
         this.isRingFlying = false;
+        this.autoEmoteOff = false;
         this.marriageNum = 0;
         this.bossCooldown = ConfigHandler.bossCooldown;
         this.teamCooldown = 20;
@@ -247,6 +251,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         nbtExt.setBoolean("hasRing", hasRing);
         nbtExt.setBoolean("RingOn", isRingActive);
         nbtExt.setBoolean("RingFly", isRingFlying);
+        nbtExt.setBoolean(AUTO_EMOTE_OFF_KEY, autoEmoteOff);
         nbtExt.setIntArray("FormatID", formatID);
         nbtExt.setInteger("MarriageNum", marriageNum);
         nbtExt.setInteger("BossCD", bossCooldown);
@@ -337,6 +342,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
             hasRing = nbtExt.getBoolean("hasRing");
             isRingActive = nbtExt.getBoolean("RingOn");
             isRingFlying = nbtExt.getBoolean("RingFly");
+            autoEmoteOff = readAutoEmoteOff(nbtExt);
             formatID = nbtExt.getIntArray("FormatID");
             marriageNum = nbtExt.getInteger("MarriageNum");
             bossCooldown = nbtExt.getInteger("BossCD");
@@ -405,6 +411,19 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
 
     public boolean isRingFlying() {
         return isRingFlying;
+    }
+
+    /** saved AutoEmoteOff if the key exists, else false (auto emote on) */
+    static boolean readAutoEmoteOff(NBTTagCompound nbtExt) {
+        return nbtExt.hasKey(AUTO_EMOTE_OFF_KEY) && nbtExt.getBoolean(AUTO_EMOTE_OFF_KEY);
+    }
+
+    public boolean isAutoEmoteOff() {
+        return autoEmoteOff;
+    }
+
+    public void setAutoEmoteOff(boolean par1) {
+        autoEmoteOff = par1;
     }
 
     public void setRingFlying(boolean par1) {

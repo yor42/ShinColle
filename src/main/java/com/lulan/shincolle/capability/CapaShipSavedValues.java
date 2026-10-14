@@ -168,44 +168,73 @@ public class CapaShipSavedValues {
         return parent.getCompoundTag(key);
     }
 
+    /** load default for a missing Level key (issue #7, #30): never 0 */
+    static final int DEFAULT_LEVEL = 1;
+    /** load default for a missing Morale key (issue #30): the spawn value of the constructor */
+    static final int DEFAULT_MORALE = 60;
+    /** load default for a missing CanDrop key (issues #30, #45): ships drop items by default */
+    static final boolean DEFAULT_CAN_DROP = true;
+
     /** saved Level if the key exists, else 1 (issue #7: a stub Minor section must not give Level 0) */
     static int defaultedLevel(NBTTagCompound minor) {
-        return minor.hasKey("Level") ? minor.getInteger("Level") : 1;
+        return intOr(minor, "Level", DEFAULT_LEVEL);
     }
 
+    /**
+     * saved int if the key exists, else the fallback (issue #30). A saved 0 is a real value and is never replaced.
+     * Callers pass the ship's current value (constructor default on a fresh ship) as fallback.
+     */
+    static int intOr(NBTTagCompound nbt, String key, int fallback) {
+        return nbt.hasKey(key) ? nbt.getInteger(key) : fallback;
+    }
+
+    /** saved byte if the key exists, else the fallback (issue #30) */
+    static byte byteOr(NBTTagCompound nbt, String key, byte fallback) {
+        return nbt.hasKey(key) ? nbt.getByte(key) : fallback;
+    }
+
+    /** saved boolean if the key exists, else the fallback (issue #30). A saved false is a real value. */
+    static boolean boolOr(NBTTagCompound nbt, String key, boolean fallback) {
+        return nbt.hasKey(key) ? nbt.getBoolean(key) : fallback;
+    }
+
+    /**
+     * Per-key load defaults (issues #30, #45): every key is presence-checked. A missing key keeps the ship's current
+     * value, which on a fresh ship is the BasicEntityShip constructor value; Level, Morale and CanDrop use the
+     * explicit defaults above. A present key (including 0 / false) loads exactly as before.
+     */
     private static void loadMinor(NBTTagCompound nbt_load, BasicEntityShip ship) {
         if (nbt_load == null) return;
 
-        //a missing Level must not read as 0; a saved Level is never altered
         ship.setStateMinor(ID.M.ShipLevel, defaultedLevel(nbt_load));
-        ship.setStateMinor(ID.M.Kills, nbt_load.getInteger("Kills"));
-        ship.setStateMinor(ID.M.ExpCurrent, nbt_load.getInteger("Exp"));
-        ship.setStateMinor(ID.M.NumAmmoLight, nbt_load.getInteger("NumAmmoL"));
-        ship.setStateMinor(ID.M.NumAmmoHeavy, nbt_load.getInteger("NumAmmoH"));
-        ship.setStateMinor(ID.M.NumGrudge, nbt_load.getInteger("NumGrudge"));
-        ship.setStateMinor(ID.M.NumAirLight, nbt_load.getInteger("NumAirL"));
-        ship.setStateMinor(ID.M.NumAirHeavy, nbt_load.getInteger("NumAirH"));
-        ship.setStateMinor(ID.M.FollowMin, nbt_load.getInteger("FMin"));
-        ship.setStateMinor(ID.M.FollowMax, nbt_load.getInteger("FMax"));
-        ship.setStateMinor(ID.M.FleeHP, nbt_load.getInteger("FHP"));
-        ship.setStateMinor(ID.M.GuardX, nbt_load.getInteger("GuardX"));
-        ship.setStateMinor(ID.M.GuardY, nbt_load.getInteger("GuardY"));
-        ship.setStateMinor(ID.M.GuardZ, nbt_load.getInteger("GuardZ"));
-        ship.setStateMinor(ID.M.GuardDim, nbt_load.getInteger("GuardDim"));
-        ship.setStateMinor(ID.M.GuardID, nbt_load.getInteger("GuardID"));
-        ship.setStateMinor(ID.M.GuardType, nbt_load.getInteger("GuardType"));
-        ship.setStateMinor(ID.M.PlayerUID, nbt_load.getInteger("PlayerUID"));
-        ship.setStateMinor(ID.M.ShipUID, nbt_load.getInteger("ShipUID"));
-        ship.setStateMinor(ID.M.FormatType, nbt_load.getInteger("FType"));
-        ship.setStateMinor(ID.M.FormatPos, nbt_load.getInteger("FPos"));
-        ship.setStateMinor(ID.M.Morale, nbt_load.getInteger("Morale"));
-        ship.setStateMinor(ID.M.Food, nbt_load.getInteger("Food"));
-        ship.setStateMinor(ID.M.CraneState, nbt_load.getInteger("Crane"));
-        ship.setStateMinor(ID.M.WpStay, nbt_load.getInteger("WpStay"));
-        ship.setStateMinor(ID.M.UseCombatRation, nbt_load.getInteger("AutoCR"));
-        ship.setStateMinor(ID.M.Task, nbt_load.getInteger("Task"));
-        ship.setStateMinor(ID.M.TaskSide, nbt_load.getInteger("Side"));
-        ship.setNameTag(nbt_load.getString("tagName"));
+        ship.setStateMinor(ID.M.Kills, intOr(nbt_load, "Kills", ship.getStateMinor(ID.M.Kills)));
+        ship.setStateMinor(ID.M.ExpCurrent, intOr(nbt_load, "Exp", ship.getStateMinor(ID.M.ExpCurrent)));
+        ship.setStateMinor(ID.M.NumAmmoLight, intOr(nbt_load, "NumAmmoL", ship.getStateMinor(ID.M.NumAmmoLight)));
+        ship.setStateMinor(ID.M.NumAmmoHeavy, intOr(nbt_load, "NumAmmoH", ship.getStateMinor(ID.M.NumAmmoHeavy)));
+        ship.setStateMinor(ID.M.NumGrudge, intOr(nbt_load, "NumGrudge", ship.getStateMinor(ID.M.NumGrudge)));
+        ship.setStateMinor(ID.M.NumAirLight, intOr(nbt_load, "NumAirL", ship.getStateMinor(ID.M.NumAirLight)));
+        ship.setStateMinor(ID.M.NumAirHeavy, intOr(nbt_load, "NumAirH", ship.getStateMinor(ID.M.NumAirHeavy)));
+        ship.setStateMinor(ID.M.FollowMin, intOr(nbt_load, "FMin", ship.getStateMinor(ID.M.FollowMin)));
+        ship.setStateMinor(ID.M.FollowMax, intOr(nbt_load, "FMax", ship.getStateMinor(ID.M.FollowMax)));
+        ship.setStateMinor(ID.M.FleeHP, intOr(nbt_load, "FHP", ship.getStateMinor(ID.M.FleeHP)));
+        ship.setStateMinor(ID.M.GuardX, intOr(nbt_load, "GuardX", ship.getStateMinor(ID.M.GuardX)));
+        ship.setStateMinor(ID.M.GuardY, intOr(nbt_load, "GuardY", ship.getStateMinor(ID.M.GuardY)));
+        ship.setStateMinor(ID.M.GuardZ, intOr(nbt_load, "GuardZ", ship.getStateMinor(ID.M.GuardZ)));
+        ship.setStateMinor(ID.M.GuardDim, intOr(nbt_load, "GuardDim", ship.getStateMinor(ID.M.GuardDim)));
+        ship.setStateMinor(ID.M.GuardID, intOr(nbt_load, "GuardID", ship.getStateMinor(ID.M.GuardID)));
+        ship.setStateMinor(ID.M.GuardType, intOr(nbt_load, "GuardType", ship.getStateMinor(ID.M.GuardType)));
+        ship.setStateMinor(ID.M.PlayerUID, intOr(nbt_load, "PlayerUID", ship.getStateMinor(ID.M.PlayerUID)));
+        ship.setStateMinor(ID.M.ShipUID, intOr(nbt_load, "ShipUID", ship.getStateMinor(ID.M.ShipUID)));
+        ship.setStateMinor(ID.M.FormatType, intOr(nbt_load, "FType", ship.getStateMinor(ID.M.FormatType)));
+        ship.setStateMinor(ID.M.FormatPos, intOr(nbt_load, "FPos", ship.getStateMinor(ID.M.FormatPos)));
+        ship.setStateMinor(ID.M.Morale, intOr(nbt_load, "Morale", DEFAULT_MORALE));
+        ship.setStateMinor(ID.M.Food, intOr(nbt_load, "Food", ship.getStateMinor(ID.M.Food)));
+        ship.setStateMinor(ID.M.CraneState, intOr(nbt_load, "Crane", ship.getStateMinor(ID.M.CraneState)));
+        ship.setStateMinor(ID.M.WpStay, intOr(nbt_load, "WpStay", ship.getStateMinor(ID.M.WpStay)));
+        ship.setStateMinor(ID.M.UseCombatRation, intOr(nbt_load, "AutoCR", ship.getStateMinor(ID.M.UseCombatRation)));
+        ship.setStateMinor(ID.M.Task, intOr(nbt_load, "Task", ship.getStateMinor(ID.M.Task)));
+        ship.setStateMinor(ID.M.TaskSide, intOr(nbt_load, "Side", ship.getStateMinor(ID.M.TaskSide)));
+        if (nbt_load.hasKey("tagName")) ship.setNameTag(nbt_load.getString("tagName"));
 
     }
 
@@ -214,10 +243,10 @@ public class CapaShipSavedValues {
 
         //load display state
 
-        ship.setStateEmotion(ID.S.State, nbt_load.getInteger("State"), false);
-        ship.setStateEmotion(ID.S.Emotion, nbt_load.getInteger("Emotion"), false);
-        ship.setStateEmotion(ID.S.Emotion2, nbt_load.getInteger("Emotion2"), false);
-        ship.setStateEmotion(ID.S.Phase, nbt_load.getInteger("Phase"), false);
+        ship.setStateEmotion(ID.S.State, intOr(nbt_load, "State", ship.getStateEmotion(ID.S.State)), false);
+        ship.setStateEmotion(ID.S.Emotion, intOr(nbt_load, "Emotion", ship.getStateEmotion(ID.S.Emotion)), false);
+        ship.setStateEmotion(ID.S.Emotion2, intOr(nbt_load, "Emotion2", ship.getStateEmotion(ID.S.Emotion2)), false);
+        ship.setStateEmotion(ID.S.Phase, intOr(nbt_load, "Phase", ship.getStateEmotion(ID.S.Phase)), false);
 
     }
 
@@ -227,12 +256,12 @@ public class CapaShipSavedValues {
         //load bonus point
 
         Attrs attrs = ship.getAttrs();
-        attrs.setAttrsBonus(ID.AttrsBase.HP, nbt_load.getByte("HP"));
-        attrs.setAttrsBonus(ID.AttrsBase.ATK, nbt_load.getByte("ATK"));
-        attrs.setAttrsBonus(ID.AttrsBase.DEF, nbt_load.getByte("DEF"));
-        attrs.setAttrsBonus(ID.AttrsBase.SPD, nbt_load.getByte("SPD"));
-        attrs.setAttrsBonus(ID.AttrsBase.MOV, nbt_load.getByte("MOV"));
-        attrs.setAttrsBonus(ID.AttrsBase.HIT, nbt_load.getByte("HIT"));
+        attrs.setAttrsBonus(ID.AttrsBase.HP, byteOr(nbt_load, "HP", attrs.getAttrsBonus(ID.AttrsBase.HP)));
+        attrs.setAttrsBonus(ID.AttrsBase.ATK, byteOr(nbt_load, "ATK", attrs.getAttrsBonus(ID.AttrsBase.ATK)));
+        attrs.setAttrsBonus(ID.AttrsBase.DEF, byteOr(nbt_load, "DEF", attrs.getAttrsBonus(ID.AttrsBase.DEF)));
+        attrs.setAttrsBonus(ID.AttrsBase.SPD, byteOr(nbt_load, "SPD", attrs.getAttrsBonus(ID.AttrsBase.SPD)));
+        attrs.setAttrsBonus(ID.AttrsBase.MOV, byteOr(nbt_load, "MOV", attrs.getAttrsBonus(ID.AttrsBase.MOV)));
+        attrs.setAttrsBonus(ID.AttrsBase.HIT, byteOr(nbt_load, "HIT", attrs.getAttrsBonus(ID.AttrsBase.HIT)));
 
     }
 
@@ -241,35 +270,40 @@ public class CapaShipSavedValues {
 
         //load flags
 
-        ship.setStateFlag(ID.F.CanFloatUp, nbt_load.getBoolean("CanFloat"));
-        ship.setStateFlag(ID.F.IsMarried, nbt_load.getBoolean("IsMarried"));
-        ship.setStateFlag(ID.F.NoFuel, nbt_load.getBoolean("NoFuel"));
-        ship.setStateFlag(ID.F.UseMelee, nbt_load.getBoolean("Melee"));
-        ship.setStateFlag(ID.F.UseAmmoLight, nbt_load.getBoolean("AmmoL"));
-        ship.setStateFlag(ID.F.UseAmmoHeavy, nbt_load.getBoolean("AmmoH"));
-        ship.setStateFlag(ID.F.UseAirLight, nbt_load.getBoolean("AirL"));
-        ship.setStateFlag(ID.F.UseAirHeavy, nbt_load.getBoolean("AirH"));
-        ship.setStateFlag(ID.F.UseRingEffect, nbt_load.getBoolean("WedEffect"));
-        ship.setStateFlag(ID.F.CanDrop, nbt_load.getBoolean("CanDrop"));
-        ship.setStateFlag(ID.F.CanFollow, nbt_load.getBoolean("CanFollow"));
-        ship.setStateFlag(ID.F.OnSightChase, nbt_load.getBoolean("OnSight"));
-        ship.setStateFlag(ID.F.PVPFirst, nbt_load.getBoolean("PVPFirst"));
-        ship.setStateFlag(ID.F.AntiAir, nbt_load.getBoolean("AA"));
-        ship.setStateFlag(ID.F.AntiSS, nbt_load.getBoolean("ASM"));
-        ship.setStateFlag(ID.F.PassiveAI, nbt_load.getBoolean("PassiveAI"));
-        ship.setStateFlag(ID.F.TimeKeeper, nbt_load.getBoolean("TimeKeeper"));
-        ship.setStateFlag(ID.F.PickItem, nbt_load.getBoolean("PickItem"));
-        ship.setStateFlag(ID.F.ShowHeldItem, nbt_load.getBoolean("HeldItem"));
-        ship.setStateFlag(ID.F.AutoPump, nbt_load.getBoolean("AutoPump"));
-        ship.setIsMorph(nbt_load.getBoolean("IsMorph"));
+        loadFlag(nbt_load, "CanFloat", ID.F.CanFloatUp, ship);
+        loadFlag(nbt_load, "IsMarried", ID.F.IsMarried, ship);
+        loadFlag(nbt_load, "NoFuel", ID.F.NoFuel, ship);
+        loadFlag(nbt_load, "Melee", ID.F.UseMelee, ship);
+        loadFlag(nbt_load, "AmmoL", ID.F.UseAmmoLight, ship);
+        loadFlag(nbt_load, "AmmoH", ID.F.UseAmmoHeavy, ship);
+        loadFlag(nbt_load, "AirL", ID.F.UseAirLight, ship);
+        loadFlag(nbt_load, "AirH", ID.F.UseAirHeavy, ship);
+        loadFlag(nbt_load, "WedEffect", ID.F.UseRingEffect, ship);
+        ship.setStateFlag(ID.F.CanDrop, boolOr(nbt_load, "CanDrop", DEFAULT_CAN_DROP));
+        loadFlag(nbt_load, "CanFollow", ID.F.CanFollow, ship);
+        loadFlag(nbt_load, "OnSight", ID.F.OnSightChase, ship);
+        loadFlag(nbt_load, "PVPFirst", ID.F.PVPFirst, ship);
+        loadFlag(nbt_load, "AA", ID.F.AntiAir, ship);
+        loadFlag(nbt_load, "ASM", ID.F.AntiSS, ship);
+        loadFlag(nbt_load, "PassiveAI", ID.F.PassiveAI, ship);
+        loadFlag(nbt_load, "TimeKeeper", ID.F.TimeKeeper, ship);
+        loadFlag(nbt_load, "PickItem", ID.F.PickItem, ship);
+        loadFlag(nbt_load, "HeldItem", ID.F.ShowHeldItem, ship);
+        loadFlag(nbt_load, "AutoPump", ID.F.AutoPump, ship);
+        ship.setIsMorph(boolOr(nbt_load, "IsMorph", ship.isMorph()));
 
+    }
+
+    /** presence-checked flag load: a missing key keeps the ship's current (constructor) value */
+    private static void loadFlag(NBTTagCompound nbt_load, String key, int flag, BasicEntityShip ship) {
+        ship.setStateFlag(flag, boolOr(nbt_load, key, ship.getStateFlag(flag)));
     }
 
     private static void loadTimer(NBTTagCompound nbt_load, BasicEntityShip ship) {
         if (nbt_load == null) return;
 
         //load timer
-        ship.setStateTimer(ID.T.CraneTime, nbt_load.getInteger("Crane"));
+        ship.setStateTimer(ID.T.CraneTime, intOr(nbt_load, "Crane", ship.getStateTimer(ID.T.CraneTime)));
     }
 
 }

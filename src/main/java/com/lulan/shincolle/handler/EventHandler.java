@@ -779,6 +779,9 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public void onPlayerChat(ServerChatEvent event) {
+        //issue #32: a cancelled chat message (muted, filtered, command-like) must not trigger an emote
+        if (event.isCanceled()) return;
+
         EntityPlayerMP playerMP = event.getPlayer();
         String msg = event.getMessage();
         AUTO_EMOTE_MANAGER.tryShowAutoEmote(playerMP, playerMP.getServerWorld(), msg);

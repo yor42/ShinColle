@@ -268,8 +268,12 @@ public class ShipCmdEmotes extends CommandBase {
 
                 boolean found = false;
 
+                // issue #32: plain ASCII words and digits ("o", "no", "an", "10") need a word boundary even when short
+                if (name.matches("[a-zA-Z0-9]+")) {
+                    found = lowerMessage.matches(".*\\b" + Pattern.quote(name.toLowerCase()) + "\\b.*");
+                }
                 // 특수 문자나 짧은 감정표현은 포함 검사
-                if (name.length() <= 2 || name.matches(".*[^a-zA-Z가-힣].*")) {
+                else if (name.length() <= 2 || name.matches(".*[^a-zA-Z가-힣].*")) {
                     found = lowerMessage.contains(name.toLowerCase());
                 }
                 // 긴 단어는 단어 경계 검사
