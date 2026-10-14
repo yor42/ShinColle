@@ -8,7 +8,6 @@ import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.reference.unitclass.Attrs;
 import com.lulan.shincolle.reference.unitclass.AttrsAdv;
-import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.EntityIdGuard;
 import com.lulan.shincolle.utility.LogHelper;
 import com.lulan.shincolle.utility.PacketHelper;
@@ -20,12 +19,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.*;
+import java.util.function.IntFunction;
 
 /**
  * SERVER TO CLIENT : ENTITY SYNC PACKET
@@ -82,6 +83,35 @@ public class S2CEntitySync implements IMessage {
 
     //packet handle method
     private static void handle(S2CEntitySync msg, MessageContext ctx) {
+        final World world = ClientProxy.getClientWorld();
+        handle(msg, world, id -> world != null && EntityIdGuard.isLookupable(id) ? world.getEntityByID(id) : null);
+    }
+
+    //local ring ability snapshot taken before the first server config sync (null = no sync active)
+    private static int[] localRingAbility = null;
+
+    /**
+     * Restore the client's own ringAbility after a server config sync (disconnect / world unload).
+     * No-op if no server sync happened since the last restore.
+     */
+    public static synchronized void restoreRingAbility() {
+        if (localRingAbility != null) {
+            ConfigHandler.ringAbility = localRingAbility;
+            localRingAbility = null;
+        }
+    }
+
+    /**
+     * Handler body with the world and entity lookup passed in (test seam).
+     * Test seam only: package-private, called by the private handler above.
+     */
+    static void handle(S2CEntitySync msg, World world, IntFunction<Entity> lookup) {
+        //no client world (disconnecting / world change): ignore, only the config sync does not need a world
+        if (world == null && msg.packetType != PID.SyncSystem_Config) {
+            LogHelper.debug("DEBUG: packet handler: S2CEntitySync: client world is null, type: " + msg.packetType);
+            return;
+        }
+
         boolean getTarget = false;
 
         //get target entity
@@ -90,7 +120,7 @@ public class S2CEntitySync implements IMessage {
         CapaTeitoku capa = null;
 
         if (EntityIdGuard.isLookupable(msg.entityID)) {
-            entity = EntityHelper.getEntityByID(msg.entityID, 0, true);
+            entity = lookup.apply(msg.entityID);
         }
 
         switch (msg.packetType) {
@@ -118,9 +148,13 @@ public class S2CEntitySync implements IMessage {
                     getTarget = true;
                 }
                 //sync emotion to morph entity
-                else {
-                    entity = EntityHelper.getEntityPlayerByID(msg.valueInt1[5], 0, true);
-                    if (entity != null) getTarget = true;
+                else if (msg.valueInt1 != null && msg.valueInt1.length > 5) {
+                    Entity player = lookup.apply(msg.valueInt1[5]);
+
+                    if (player instanceof EntityPlayer) {
+                        entity = player;
+                        getTarget = true;
+                    }
                 }
                 break;
             case PID.SyncShip_Riders:
@@ -213,6 +247,8 @@ public class S2CEntitySync implements IMessage {
                     ship = getShipByEntity(entity);
                     if (ship == null) return;
 
+                    if (!(ship.getAttrs() instanceof AttrsAdv)) return;
+
                     AttrsAdv attrs = (AttrsAdv) ship.getAttrs();
                     int flag = 0;
 
@@ -259,7 +295,8 @@ public class S2CEntitySync implements IMessage {
                         }
                     }
 
-                    if (entity2 != null) {
+                    if (entity2 != null && msg.valueInt1 != null && msg.valueInt1.length >= 5 &&
+                            msg.valueBoolean1 != null && msg.valueBoolean1.length >= 2) {
                         entity2.setStateEmotion(ID.S.State, msg.valueInt1[0], false);
                         entity2.setStateEmotion(ID.S.HPState, msg.valueInt1[1], false);
                         entity2.setStateEmotion(ID.S.Emotion, msg.valueInt1[2], false);
@@ -401,7 +438,7 @@ public class S2CEntitySync implements IMessage {
                     if (msg.valueInt > 0) {
                         //set entity's riders
                         for (int i = 0; i < msg.valueInt; i++) {
-                            Entity ent = EntityHelper.getEntityByID(msg.valueInt1[i], 0, true);
+                            Entity ent = lookup.apply(msg.valueInt1[i]);
                             if (ent != null) ent.startRiding(entity, true);
                         }
 
@@ -409,7 +446,7 @@ public class S2CEntitySync implements IMessage {
                         if (entity instanceof BasicEntityMount) {
                             //set mounts' host entity
                             if (msg.valueInt1[msg.valueInt] > 0) {
-                                Entity ent = EntityHelper.getEntityByID(msg.valueInt1[msg.valueInt], 0, true);
+                                Entity ent = lookup.apply(msg.valueInt1[msg.valueInt]);
 
                                 if (ent instanceof BasicEntityShip) {
                                     ((BasicEntityMount) entity).host = (BasicEntityShip) ent;
@@ -425,7 +462,7 @@ public class S2CEntitySync implements IMessage {
 
                     //set entity's mounts
                     if (msg.valueInt1[msg.valueInt + 1] > 0) {
-                        Entity ent = EntityHelper.getEntityByID(msg.valueInt1[msg.valueInt + 1], 0, true);
+                        Entity ent = lookup.apply(msg.valueInt1[msg.valueInt + 1]);
                         if (ent != null) entity.startRiding(ent, true);
                     } else {
                         entity.dismountRidingEntity();
@@ -495,15 +532,15 @@ public class S2CEntitySync implements IMessage {
                 {
                     //host is entity
                     if (msg.valueInt1[2] == -1) {
-                        entity = EntityHelper.getEntityByID(msg.valueInt1[0], 0, true);
+                        Entity owner = lookup.apply(msg.valueInt1[0]);
 
-                        if (entity instanceof IShipOwner) {
-                            ((IShipOwner) entity).setPlayerUID(msg.valueInt1[3]);
+                        if (owner instanceof IShipOwner) {
+                            ((IShipOwner) owner).setPlayerUID(msg.valueInt1[3]);
                         }
                     }
                     //host is tile
                     else {
-                        TileEntity tile = ClientProxy.getClientWorld().getTileEntity(new BlockPos(msg.valueInt1[0], msg.valueInt1[1], msg.valueInt1[2]));
+                        TileEntity tile = world.getTileEntity(new BlockPos(msg.valueInt1[0], msg.valueInt1[1], msg.valueInt1[2]));
 
                         if (tile instanceof IShipOwner) {
                             ((IShipOwner) tile).setPlayerUID(msg.valueInt1[3]);
@@ -513,11 +550,19 @@ public class S2CEntitySync implements IMessage {
                 break;
                 case PID.SyncSystem_Config:    //server config sync to client
                 {
-                    if (ConfigHandler.ringAbility != null && msg.valueInt1 != null) {
-                        if (ConfigHandler.ringAbility.length != msg.valueInt1.length) {
-                            ConfigHandler.ringAbility = new int[msg.valueInt1.length];
+                    if (msg.valueInt1 == null) {
+                        LogHelper.debug("DEBUG: packet handler: S2CEntitySync: config sync without data");
+                        break;
+                    }
+
+                    //remember the local value before the first server sync, restored on disconnect
+                    synchronized (S2CEntitySync.class) {
+                        if (localRingAbility == null && ConfigHandler.ringAbility != null) {
+                            localRingAbility = Arrays.copyOf(ConfigHandler.ringAbility, ConfigHandler.ringAbility.length);
                         }
-                    } else {
+                    }
+
+                    if (ConfigHandler.ringAbility == null || ConfigHandler.ringAbility.length != msg.valueInt1.length) {
                         ConfigHandler.ringAbility = new int[msg.valueInt1.length];
                     }
 
@@ -542,7 +587,7 @@ public class S2CEntitySync implements IMessage {
                 break;
                 case PID.SyncEntity_Host:    //sync host
                 {
-                    Entity ent = EntityHelper.getEntityByID(msg.valueInt, 0, true);
+                    Entity ent = lookup.apply(msg.valueInt);
                     if (ent != null) {
                         if (entity instanceof EntityShipFishingHook && ent instanceof EntityLivingBase) {
                             ((EntityShipFishingHook) entity).host = (EntityLivingBase) ent;

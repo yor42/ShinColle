@@ -38,6 +38,8 @@ public class C2SInputPackets implements IMessage {
 
     private World world;
     private EntityPlayer player;
+    //set when fromBytes failed: the half-decoded message is dropped by the handler (issue #77)
+    private boolean decodeFailed = false;
     private byte packetID;
     private int worldID, entityID, value;
     private int[] value3;
@@ -63,6 +65,11 @@ public class C2SInputPackets implements IMessage {
 
     //packet handle method
     private static void handle(C2SInputPackets msg, MessageContext ctx) {
+        if (msg.decodeFailed) {
+            LogHelper.debug("DEBUG: packet handler: C2SInputPackets: dropped packet that failed to decode, id: " + msg.packetID);
+            return;
+        }
+
         EntityPlayerMP player = ctx.getServerHandler().player;
         Entity entity;
 
@@ -347,6 +354,7 @@ public class C2SInputPackets implements IMessage {
                         this.value3 = PacketHelper.readIntArray(buf, this.value);
                     }
                 } catch (Exception e) {
+                    this.decodeFailed = true;
                     LogHelper.info("EXCEPTION: C2S input packet: ");
                     e.printStackTrace();
                 }

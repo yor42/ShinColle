@@ -22,6 +22,8 @@ public class S2CReactPackets implements IMessage {
 
     private World world;
     private EntityPlayer player;
+    //set when fromBytes failed: the half-decoded message is dropped by the handler (issue #77)
+    private boolean decodeFailed = false;
     private byte packetType;
     private int[] valueInt, valueInt2;
     private boolean[] valueBoolean;
@@ -45,6 +47,11 @@ public class S2CReactPackets implements IMessage {
 
     //packet handle method
     private static void handle(S2CReactPackets msg, MessageContext ctx) {
+        if (msg.decodeFailed) {
+            LogHelper.debug("DEBUG: packet handler: S2CReactPackets: dropped packet that failed to decode, type: " + msg.packetType);
+            return;
+        }
+
         switch (msg.packetType) {
             case PID.CmdChOwner:    //cmd: change owner packet
                 CommandHelper.processShipChangeOwner(msg.valueInt[0], msg.valueInt[1]);
@@ -95,6 +102,7 @@ public class S2CReactPackets implements IMessage {
                         this.valueInt = PacketHelper.readIntArray(buf, length);
                     }
                 } catch (Exception e) {
+                    this.decodeFailed = true;
                     LogHelper.info("EXCEPTION: S2C input packet: get data fail: " + e);
                     e.printStackTrace();
                 }
