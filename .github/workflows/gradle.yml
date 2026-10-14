@@ -54,6 +54,7 @@ jobs:
       - name: Configure Gradle Properties
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gradle" | Out-Null
           Add-Content $env:USERPROFILE\.gradle\gradle.properties "systemProp.https.protocols=TLSv1.2"
           Add-Content $env:USERPROFILE\.gradle\gradle.properties "org.gradle.jvmargs=-Xmx3G -Dhttps.protocols=TLSv1.2"
 
@@ -97,6 +98,7 @@ jobs:
       - name: Configure Gradle Properties
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gradle" | Out-Null
           Add-Content $env:USERPROFILE\.gradle\gradle.properties "systemProp.https.protocols=TLSv1.2"
           Add-Content $env:USERPROFILE\.gradle\gradle.properties "org.gradle.jvmargs=-Xmx3G -Dhttps.protocols=TLSv1.2"
 
@@ -165,6 +167,7 @@ jobs:
       - name: Configure Gradle Properties
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gradle" | Out-Null
           Add-Content $env:USERPROFILE\.gradle\gradle.properties "systemProp.https.protocols=TLSv1.2"
           Add-Content $env:USERPROFILE\.gradle\gradle.properties "org.gradle.jvmargs=-Xmx3G -Dhttps.protocols=TLSv1.2"
 

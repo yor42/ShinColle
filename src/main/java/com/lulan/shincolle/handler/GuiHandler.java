@@ -7,10 +7,12 @@ import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.init.ModItems;
 import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.tileentity.*;
+import com.lulan.shincolle.network.PacketAuthorization;
 import com.lulan.shincolle.utility.EntityHelper;
 import com.lulan.shincolle.utility.LogHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -41,6 +43,12 @@ public class GuiHandler implements IGuiHandler {
                 entity = world.getEntityByID(x); // entity id存在x座標參數上
 
                 if (entity instanceof BasicEntityShip) {
+                    //ADR-0004: server decides whether the player may open this ship (issue #29)
+                    if (!(player instanceof EntityPlayerMP) ||
+                            !PacketAuthorization.mayCommandShip((EntityPlayerMP) player, (BasicEntityShip) entity)) {
+                        return null;
+                    }
+
                     LogHelper.debug("DEBUG: open ship inventory");
                     // get ship class id and register to player data for ship list recording
                     int cid = ((BasicEntityShip) entity).getShipClass();

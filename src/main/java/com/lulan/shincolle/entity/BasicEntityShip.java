@@ -147,6 +147,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
     protected EntityPlayer morphHost;
     //for initial
     private boolean initAI, initWaitAI;    //init flag
+    private boolean canDropLoaded;        //transient: CanDrop key was read from NBT, so initAI must not overwrite it
     private boolean isUpdated;            //updated ship id/owner id tag
     private int updateTime = 16;        //update check interval
     //chunk loader
@@ -1874,7 +1875,8 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
 
                     //reset AI and sync once
                     if (!this.initAI && ticksExisted > 10) {
-                        setStateFlag(ID.F.CanDrop, true);
+                        if (CapaShipSavedValues.shouldForceCanDropOnInit(this.canDropLoaded))
+                            setStateFlag(ID.F.CanDrop, true);
                         clearAITasks();
                         clearAITargetTasks();        //reset AI for get owner after loading NBT data
                         setAIList();
@@ -5001,6 +5003,11 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
     @Override
     public boolean isMorph() {
         return this.isMorph;
+    }
+
+    /** mark that a saved CanDrop value was loaded from NBT (not persisted) */
+    public void setCanDropLoaded(boolean loaded) {
+        this.canDropLoaded = loaded;
     }
 
     @Override

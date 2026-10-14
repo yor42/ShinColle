@@ -4,6 +4,7 @@ import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.item.BasicEquip;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
@@ -56,7 +57,8 @@ public class ContainerMorphInventory extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return true;
+        //issue #29: the morph inventory belongs to the player's own capability (server side only)
+        return !(player instanceof EntityPlayerMP) || CapaTeitoku.getTeitokuCapability(player) == this.capa;
     }
 
     /**

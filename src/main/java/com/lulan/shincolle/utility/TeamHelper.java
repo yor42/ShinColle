@@ -3,6 +3,7 @@ package com.lulan.shincolle.utility;
 import com.lulan.shincolle.capability.CapaTeitoku;
 import com.lulan.shincolle.entity.BasicEntityShip;
 import com.lulan.shincolle.entity.IShipOwner;
+import com.lulan.shincolle.network.PacketAuthorization;
 import com.lulan.shincolle.handler.ConfigHandler;
 import com.lulan.shincolle.proxy.ServerProxy;
 import com.lulan.shincolle.team.TeamData;
@@ -233,25 +234,19 @@ public class TeamHelper {
         //null check
         if (tile == null || player == null) return false;
 
-        //get tile owner id
-        int tid = 0;
-
-        if (tile instanceof IShipOwner) {
-            tid = ((IShipOwner) tile).getPlayerUID();
+        //issue #29: owner / ally / non-Creative server OP (PacketAuthorization.isServerOp), plus reach and loaded chunk.
+        //The rule is the pure PacketAuthorization.mayUseOwnedTile; ownerless tiles (uid <= 0) accept server OPs only.
+        if (tile.getWorld() == null || tile.isInvalid() ||
+                !PacketAuthorization.isChunkLoaded(tile.getWorld(), tile.getPos())) {
+            return false;
         }
 
-        //check owner, op and ally
-        if (BlockHelper.checkTileOwner(player, tile) ||
-                EntityHelper.checkOP(player) ||
-                TeamHelper.checkIsAlly(tid, EntityHelper.getPlayerUID(player))) {
-            //由於會有多個tile entity副本, 要先確認座標相同的副本才能使用
-            //確認player要在該tile entity 8格內
-            //確認該tile entity沒有被標為invalid
-            return tile.getWorld().getTileEntity(tile.getPos()) == tile && !tile.isInvalid() &&
-                    player.getDistanceSq(tile.getPos().getX() + 0.5D, tile.getPos().getY() + 0.5D, tile.getPos().getZ() + 0.5D) <= 64;
-        }
+        //由於會有多個tile entity副本, 要先確認座標相同的副本才能使用
+        if (tile.getWorld().getTileEntity(tile.getPos()) != tile) return false;
 
-        return false;
+        return PacketAuthorization.mayUseOwnedTile(EntityHelper.getPlayerUID(player), tile.getPlayerUID(),
+                PacketAuthorization.isServerOp(player), TeamHelper::checkIsAlly,
+                PacketAuthorization.distSqToBlock(player, tile.getPos()), true);
     }
 
 

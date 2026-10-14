@@ -71,6 +71,12 @@ class CapaShipSavedValuesLoadDefaultsTest {
     }
 
     @Test
+    void initAiForcesCanDropOnlyWhenNoSavedValueWasLoaded() {
+        assertTrue(CapaShipSavedValues.shouldForceCanDropOnInit(false));
+        assertFalse(CapaShipSavedValues.shouldForceCanDropOnInit(true));
+    }
+
+    @Test
     void savedMoraleZeroAndLevelAreNeverAltered() {
         NBTTagCompound minor = new NBTTagCompound();
         minor.setInteger("Morale", 0);

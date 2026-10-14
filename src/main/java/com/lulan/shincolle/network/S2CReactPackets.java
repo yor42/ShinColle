@@ -6,6 +6,7 @@ import com.lulan.shincolle.utility.CommandHelper;
 import com.lulan.shincolle.utility.LogHelper;
 import com.lulan.shincolle.utility.PacketHelper;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,6 +29,8 @@ public class S2CReactPackets implements IMessage {
     private int[] valueInt, valueInt2;
     private boolean[] valueBoolean;
     private String[] valueStr;
+    //CmdShipList reply bytes, captured on the constructing (server) thread (issue #35)
+    private byte[] shipListBytes;
 
     public S2CReactPackets() {
     }  //必須要有空參數constructor, forge才能使用此class
@@ -43,6 +46,15 @@ public class S2CReactPackets implements IMessage {
     public S2CReactPackets(byte type, int... parms) {
         this.packetType = type;
         this.valueInt = parms;
+
+        //issue #35: processSendShipList reads and refreshes live world/ship caches, so run it here
+        //(server thread) and keep only the bytes; toBytes (netty thread) just copies them
+        if (type == PID.CmdShipList && parms != null && parms.length > 0 && parms[0] == 0) {
+            ByteBuf snapshot = Unpooled.buffer();
+            CommandHelper.processSendShipList(snapshot, parms[1]);
+            this.shipListBytes = new byte[snapshot.readableBytes()];
+            snapshot.readBytes(this.shipListBytes);
+        }
     }
 
     //packet handle method
@@ -169,8 +181,8 @@ public class S2CReactPackets implements IMessage {
             {
                 if (this.valueInt != null) {
                     if (this.valueInt[0] == 0) {        //cmd: /ship list X
-                        //send ship list
-                        CommandHelper.processSendShipList(buf, this.valueInt[1]);
+                        //send ship list (snapshot taken in the constructor)
+                        buf.writeBytes(this.shipListBytes);
                     }
                 }
             }

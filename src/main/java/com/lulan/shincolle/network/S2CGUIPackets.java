@@ -13,6 +13,7 @@ import com.lulan.shincolle.utility.EntityIdGuard;
 import com.lulan.shincolle.utility.LogHelper;
 import com.lulan.shincolle.utility.PacketHelper;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -52,6 +53,8 @@ public class S2CGUIPackets implements IMessage {
     private int[][] valueInt2, valueInt2a;
     private boolean[][] valueBoolean2;
     private List<String> valueStrs;
+    //SyncPlayerProp_TeamData body, captured on the constructing (server) thread (issue #35)
+    private byte[] teamDataBytes;
 
     public S2CGUIPackets() {
     }    //必須要有空參數constructor, forge才能使用此class
@@ -77,6 +80,9 @@ public class S2CGUIPackets implements IMessage {
                     break;
                 case PID.SyncPlayerProp_Formation:
                     this.valueInt1 = this.capa.getFormatID();
+                    break;
+                case PID.SyncPlayerProp_TeamData:
+                    this.teamDataBytes = snapshotTeamData(ServerProxy.getAllTeamWorldData());
                     break;
             }
         }
@@ -879,35 +885,9 @@ public class S2CGUIPackets implements IMessage {
             break;
             case PID.SyncPlayerProp_TeamData:  //sync all team data to client
             {
-                //get team data
-                this.dataMap = ServerProxy.getAllTeamWorldData();
-
-                //has data
-                if (this.dataMap != null) {
-                    //send map size
-                    buf.writeInt(this.dataMap.size());
-
-                    //send map data
-                    this.dataMap.forEach((k, v) ->
-                    {
-                        int tid = (Integer) k;
-                        TeamData tdata = (TeamData) v;
-
-                        //send team id
-                        buf.writeInt(tid);
-
-                        //send team banned list
-                        PacketHelper.sendListInt(buf, tdata.getTeamBannedList());
-
-                        //send team ally list
-                        PacketHelper.sendListInt(buf, tdata.getTeamAllyList());
-
-                        //send team name
-                        PacketHelper.sendString(buf, tdata.getTeamName());
-
-                        //send leader name
-                        PacketHelper.sendString(buf, tdata.getTeamLeaderName());
-                    });
+                //team data was serialized in the constructor (issue #35)
+                if (this.teamDataBytes != null) {
+                    buf.writeBytes(this.teamDataBytes);
                 }
                 //no data
                 else {
@@ -1005,6 +985,47 @@ public class S2CGUIPackets implements IMessage {
             }
             break;
         }//end send packet type switch
+    }
+
+    /**
+     * Serialize the team data map (issue #35). Runs on the constructing (server) thread so that
+     * toBytes never touches the live map or its lists. Wire layout is unchanged.
+     */
+    static byte[] snapshotTeamData(Map<Integer, TeamData> teams) {
+        ByteBuf out = Unpooled.buffer();
+
+        //has data
+        if (teams != null) {
+            //send map size
+            out.writeInt(teams.size());
+
+            //send map data
+            teams.forEach((tid, tdata) ->
+            {
+                //send team id
+                out.writeInt(tid);
+
+                //send team banned list
+                PacketHelper.sendListInt(out, tdata.getTeamBannedList());
+
+                //send team ally list
+                PacketHelper.sendListInt(out, tdata.getTeamAllyList());
+
+                //send team name
+                PacketHelper.sendString(out, tdata.getTeamName());
+
+                //send leader name
+                PacketHelper.sendString(out, tdata.getTeamLeaderName());
+            });
+        }
+        //no data
+        else {
+            out.writeInt(-1);
+        }
+
+        byte[] bytes = new byte[out.readableBytes()];
+        out.readBytes(bytes);
+        return bytes;
     }
 
     //packet id
