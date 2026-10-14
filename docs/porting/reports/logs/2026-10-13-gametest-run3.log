@@ -1,0 +1,26 @@
+[18:15:34] [Client thread/INFO] [FML]: Forge Mod Loader has successfully loaded 18 mods
+[18:15:35] [Client thread/INFO] [com.mojang.text2speech.NarratorWindows]: Narrator library for x64 successfully loaded
+[18:15:35] [Client thread/INFO] [GameTest]: [GAMETEST] step enter-world
+[18:15:40] [Client thread/INFO] [GameTest]: [GAMETEST] INFO screenshot: screenshots/gametest-world.png
+[18:15:40] [Client thread/INFO] [GameTest]: [GAMETEST] PASS enter-world: world gametest-1791882934686, 18 mods
+[18:15:40] [Client thread/INFO] [GameTest]: [GAMETEST] step spawn-ship-with-egg
+[18:15:40] [Client thread/INFO] [GameTest]: [GAMETEST] INFO spawn-ship-with-egg: egg meta 2
+[18:15:40] [Client thread/INFO] [GameTest]: [GAMETEST] INFO spawn-ship-with-egg: client processRightClick -> SUCCESS
+[18:15:42] [Client thread/INFO] [GameTest]: [GAMETEST] PASS spawn-ship-with-egg: EntityDestroyerI level=1 hp=20.3/20.3 ownerUID=100 ownerUUID=a01a21f5-c117-3c1f-b5d0-e055b927f733 playerUUID=a01a21f5-c117-3c1f-b5d0-e055b927f733 CanDrop=true ticks=30
+[18:15:42] [Client thread/INFO] [GameTest]: [GAMETEST] step open-ship-gui
+[18:15:43] [Client thread/INFO] [GameTest]: [GAMETEST] INFO screenshot: screenshots/gametest-ship-gui.png
+[18:15:43] [Client thread/INFO] [GameTest]: [GAMETEST] PASS open-ship-gui: com.lulan.shincolle.client.gui.GuiShipInventory
+[18:15:43] [Client thread/INFO] [GameTest]: [GAMETEST] step feed-ship
+[18:15:45] [Client thread/INFO] [GameTest]: [GAMETEST] PASS feed-ship: food 0 -> 1 (max 10), beef left 8, sitting false -> false
+[18:15:45] [Client thread/INFO] [GameTest]: [GAMETEST] step feed-ammo
+[18:15:46] [Client thread/INFO] [GameTest]: [GAMETEST] PASS feed-ammo: light ammo 0 -> 15
+[18:15:46] [Client thread/INFO] [GameTest]: [GAMETEST] step ship-attacks-husk
+[18:15:51] [Client thread/INFO] [GameTest]: [GAMETEST] INFO screenshot: screenshots/gametest-combat.png
+[18:16:26] [Client thread/INFO] [GameTest]: [GAMETEST] FAIL ship-attacks-husk: husk undamaged after 790 ticks; sitting=false target=null targetSeen=false ammoL=15 ammoH=0 passive=false dist=4.836001
+[18:16:26] [Client thread/INFO] [GameTest]: [GAMETEST] step save-quit-reload
+[18:16:30] [Client thread/INFO] [GameTest]: [GAMETEST] PASS save-quit-reload: level=1 ownerUID=100 hp=20.3/20.3
+[18:16:30] [Client thread/INFO] [GameTest]: [GAMETEST] INFO screenshot: screenshots/gametest-reloaded.png
+[18:16:30] [Client thread/INFO] [GameTest]: [GAMETEST] step crafting-task-take
+[18:16:30] [Client thread/INFO] [GameTest]: [GAMETEST] INFO crafting-task-take: SKIP: not automated yet (issue #1 manual check)
+[18:16:30] [Client thread/INFO] [GameTest]: [GAMETEST] SUMMARY passed=6 failed=1
+[18:16:30] [Client thread/INFO] [net.minecraft.client.Minecraft]: Stopping!

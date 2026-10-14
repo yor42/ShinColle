@@ -1,0 +1,15 @@
+INFO screenshot: screenshots/gametest-world.png
+PASS enter-world: world gametest-1791882934686, 18 mods
+INFO spawn-ship-with-egg: egg meta 2
+INFO spawn-ship-with-egg: client processRightClick -> SUCCESS
+PASS spawn-ship-with-egg: EntityDestroyerI level=1 hp=20.3/20.3 ownerUID=100 ownerUUID=a01a21f5-c117-3c1f-b5d0-e055b927f733 playerUUID=a01a21f5-c117-3c1f-b5d0-e055b927f733 CanDrop=true ticks=30
+INFO screenshot: screenshots/gametest-ship-gui.png
+PASS open-ship-gui: com.lulan.shincolle.client.gui.GuiShipInventory
+PASS feed-ship: food 0 -> 1 (max 10), beef left 8, sitting false -> false
+PASS feed-ammo: light ammo 0 -> 15
+INFO screenshot: screenshots/gametest-combat.png
+FAIL ship-attacks-husk: husk undamaged after 790 ticks; sitting=false target=null targetSeen=false ammoL=15 ammoH=0 passive=false dist=4.836001
+PASS save-quit-reload: level=1 ownerUID=100 hp=20.3/20.3
+INFO screenshot: screenshots/gametest-reloaded.png
+INFO crafting-task-take: SKIP: not automated yet (issue #1 manual check)
+SUMMARY passed=6 failed=1

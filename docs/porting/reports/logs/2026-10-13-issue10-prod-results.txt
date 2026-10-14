@@ -1,0 +1,7 @@
+Issue #10 production check, 2026-10-13. Cleanroom 0.6.13-alpha server copied from C:\cleanroom server into run/server-prod-check/ (jar cleanroom-0.6.13-alpha.jar + minecraft_server.1.12.2.jar + libraries). mods/ holds only build/libs/shincolle-1.12.2.1.11.jar. server.properties: 127.0.0.1:25622, rcon 25632, online-mode=false, spawn-animals=false, spawn-npcs=false.
+Launch: java -Dmixin.debug.verbose=true [-Dmixin.debug.export=true] -jar cleanroom-0.6.13-alpha.jar nogui, stdin fed "/fml confirm" (Fugue/Scalar warning gate).
+MIXIN LOADED (SRG, production): "Preparing config shincolle.mixin.json", "Mixing MixinWorldServer from shincolle.mixin.json into net.minecraft.world.WorldServer", MixinExtras 0.5.5 initialised.
+MIXIN APPLIED: exported WorldServer.func_72866_a (updateEntityWithOptionalForce) has both Entity.func_70106_y (setDead) calls preceded by wrapWithCondition$zza000$shincolle$allowSweep(Entity) (javap in prod-server.log).
+WARN seen: "Class version 69 required is higher than the class version supported by the current version of Mixin (JAVA_8 supports class version 52)". The mixin still applied.
+CONTROL: /summon cow and /summon pig at spawn (spawn-animals=false) were removed within a tick (testfor found nothing).
+SHIP SURVIVAL: NOT TESTED. /summon shincolle:EntityDestroyerI fails with NPE in CapaShipSavedValues.loadNBTData (CapaShipSavedValues.java:129, ShipExtProps missing from NBT); retry with a stub ShipExtProps tag failed the same way. Separate finding, not fixed.

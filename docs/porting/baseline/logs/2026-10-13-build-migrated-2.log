@@ -1,0 +1,103 @@
+Starting a Gradle Daemon, 1 incompatible Daemon could not be reused, use --status for details
+
+> Configure project :
+[Unimined] Plugin Version: 1.4.43-kappa
+kotlin-logging: initializing... active logger factory: Slf4jLoggerFactory
+[Unimined/MinecraftDownloader] retrieving version metadata
+[Unimined/Forge] Using FG3 transformer
+[Unimined/Minecraft ::main] Applying minecraft config for source set 'main'
+[Unimined/Minecraft ::main] Applying CleanroomFG3
+[Unimined/ForgeTransformer] Attempting inject forge userdev into minecraft jar
+[Unimined/Minecraft ::main] Applying run configs
+Merging client and server jars...
+[Unimined/Forge] transforming minecraft jar for FG3
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class ain$22, {official=ain$22, searge=net/minecraft/item/Item$22, mcp=net/minecraft/item/Item$22}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class anh$FlowerEntry, {official=anh$FlowerEntry, searge=net/minecraft/world/biome/Biome$FlowerEntry, mcp=net/minecraft/world/biome/Biome$FlowerEntry}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class anp$EmeraldGenerator, {official=anp$EmeraldGenerator, searge=net/minecraft/world/biome/BiomeHills$EmeraldGenerator, mcp=net/minecraft/world/biome/BiomeHills$EmeraldGenerator}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class awu$Builder, {official=awu$Builder, searge=net/minecraft/block/state/BlockStateContainer$Builder, mcp=net/minecraft/block/state/BlockStateContainer$Builder}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class aym$WorldSleepResult, {official=aym$WorldSleepResult, searge=net/minecraft/world/WorldProvider$WorldSleepResult, mcp=net/minecraft/world/WorldProvider$WorldSleepResult}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class c$4, {official=c$4, searge=net/minecraft/crash/CrashReportCategory$4, mcp=net/minecraft/crash/CrashReportCategory$4}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class c$5, {official=c$5, searge=net/minecraft/crash/CrashReportCategory$5, mcp=net/minecraft/crash/CrashReportCategory$5}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class ot$1, {official=ot$1, searge=net/minecraft/server/management/PlayerChunkMapEntry$1, mcp=net/minecraft/server/management/PlayerChunkMapEntry$1}
+[Unimined/McRemapper] Remapping minecraft JOINED to searge
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> Configure project :
+[TinyRemapper] Fixing access for 2 classes and 7 members.
+[Unimined/McRemapper] Remapping minecraft JOINED to mcp
+[Unimined/Forge] Applying ASM transforms to fix additional issues...
+[Unimined/Forge] Patching IObjectIntIterable...
+[Unimined/Forge] Patching KeyBinding...
+[Unimined/ForgeTransformer] Applying ATs [forge_at.cfg]
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] No mods found for remapping
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] No mods found for remapping
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] No mods found for remapping
+
+[Incubating] Problems report is available at: file:///C:/Projects/ShinColle/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Script 'C:\Projects\ShinColle\gradle\scripts\dependencies.gradle' line: 1
+
+* What went wrong:
+A problem occurred evaluating script.
+> Could not read script 'C:\Projects\ShinColle\gradle\scripts\helpers.gradle' as it does not exist.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.8.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 1m 13s
+exit=1

@@ -2,6 +2,7 @@ package com.lulan.shincolle.command;
 
 import com.lulan.shincolle.network.S2CReactPackets;
 import com.lulan.shincolle.proxy.CommonProxy;
+import com.lulan.shincolle.network.PacketAuthorization;
 import com.lulan.shincolle.utility.EntityHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -92,7 +93,7 @@ public class ShipCmdShipAttrs extends CommandBase {
             if (sender instanceof EntityPlayer) {
                 op = (EntityPlayer) sender;
                 senderEID = op.getEntityId();
-                isOP = EntityHelper.checkOP(op);
+                isOP = op instanceof EntityPlayerMP mp && PacketAuthorization.mayEditShips(mp);
 
                 //need owner parm
                 if (args.length != 7 && args.length != 1) {

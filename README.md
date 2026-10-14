@@ -21,6 +21,8 @@ Goal of this fork is:<br>
 as always, you can grab build jar on [Github Actions](https://github.com/yor42/ShinColle/actions)<br>
 this mod uses part of code and texture of PlusTic by Landmaster; which uses Apache License Version 2.0.
 
+**AI Disclosure: This fork used Large language model Generative AI for bug hunting, triage and bugfixes.** 
+
 # Shin Colle(Mikasa10843)
 
 此仓库是复刻自 Cappycot/ShinColle后使用GitHub actions自动编译程序编译jar，顺便将其他仓库中的优化与修复添加于此 

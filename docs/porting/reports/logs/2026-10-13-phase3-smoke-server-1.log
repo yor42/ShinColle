@@ -1,0 +1,409 @@
+
+> Configure project :
+[Unimined] Plugin Version: 1.4.43-kappa
+[Unimined/MinecraftDownloader] retrieving version metadata
+[Unimined/Forge] Using FG3 transformer
+[Unimined/Minecraft ::main] Applying minecraft config for source set 'main'
+[Unimined/Minecraft ::main] Applying CleanroomFG3
+[Unimined/ForgeTransformer] Attempting inject forge userdev into minecraft jar
+[Unimined/Minecraft ::main] Applying run configs
+Merging client and server jars...
+[Unimined/Forge] transforming minecraft jar for FG3
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class ain$22, {official=ain$22, searge=net/minecraft/item/Item$22, mcp=net/minecraft/item/Item$22}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class anh$FlowerEntry, {official=anh$FlowerEntry, searge=net/minecraft/world/biome/Biome$FlowerEntry, mcp=net/minecraft/world/biome/Biome$FlowerEntry}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class anp$EmeraldGenerator, {official=anp$EmeraldGenerator, searge=net/minecraft/world/biome/BiomeHills$EmeraldGenerator, mcp=net/minecraft/world/biome/BiomeHills$EmeraldGenerator}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class awu$Builder, {official=awu$Builder, searge=net/minecraft/block/state/BlockStateContainer$Builder, mcp=net/minecraft/block/state/BlockStateContainer$Builder}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class aym$WorldSleepResult, {official=aym$WorldSleepResult, searge=net/minecraft/world/WorldProvider$WorldSleepResult, mcp=net/minecraft/world/WorldProvider$WorldSleepResult}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class c$4, {official=c$4, searge=net/minecraft/crash/CrashReportCategory$4, mcp=net/minecraft/crash/CrashReportCategory$4}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class c$5, {official=c$5, searge=net/minecraft/crash/CrashReportCategory$5, mcp=net/minecraft/crash/CrashReportCategory$5}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class ot$1, {official=ot$1, searge=net/minecraft/server/management/PlayerChunkMapEntry$1, mcp=net/minecraft/server/management/PlayerChunkMapEntry$1}
+[Unimined/ForgeTransformer] Applying ATs [forge_at.cfg]
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] Found 3 mods for remapping
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] Found 5 mods for remapping
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] No mods found for remapping
+
+> Task :generateJavaTemplates UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+> Task :generateResourceTemplates UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :preRunServer
+
+> Task :runServer
+2026-10-13T07:52:24.683162800Z main WARN The use of package scanning to locate Log4j plugins is deprecated.
+Please remove the `packages` attribute from your configuration file.
+See https://logging.apache.org/log4j/2.x/faq.html#package-scanning for details.
+[16:52:24] [main/WARN]: Mappings not available! (mappings/mappings.tiny in classpath)
+[16:52:24] [main/WARN]: Could not load mappings from classpath, falling back to checking packages
+[2026-10-13 16:52:24] [����     ] Main Class: top.outlands.foundation.boot.Foundation 
+[2026-10-13 16:52:24] [����     ] Srg2Mcp: C:\Projects\ShinColle\.gradle\unimined\local\mappings\srg2mcp.tsrg 
+[2026-10-13 16:52:24] [����     ] Extra: [--username, Developer] 
+[2026-10-13 16:52:24] [����     ] Running with arguments: [--tweakClass, net.minecraftforge.fml.common.launcher.FMLServerTweaker, --username, Developer] 
+[16:52:24] [main/INFO]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLServerTweaker
+[16:52:24] [main/INFO]: Using primary tweak name net.minecraftforge.fml.common.launcher.FMLServerTweaker
+[16:52:24] [main/INFO]: Calling tweak net.minecraftforge.fml.common.launcher.FMLServerTweaker@3c01cfa1
+[16:52:24] [main/INFO]: Jar location: file:/C:/Users/yor42/.gradle/caches/unimined/maven/net/minecraft/minecraft-cleanroom-0.6.13-alpha/1.12.2/minecraft-cleanroom-0.6.13-alpha-1.12.2.jar
+2026-10-13T07:52:25.413441600Z main WARN Disabling terminal, you're running in an unsupported environment.
+[16:52:25] [main/INFO] [FML]: Forge Mod Loader version 14.23.5.2864 for Minecraft 1.12.2 loading
+[16:52:25] [main/INFO] [FML]: Cleanroom version 0.6.13-alpha
+[16:52:25] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 25.0.4, running on Windows 11:amd64:10.0, installed at C:\Users\yor42\.jdks\temurin-25.0.4
+[16:52:25] [main/ERROR] [FML]: Apache Maven library folder was not in the format expected. Using default libraries directory.
+[16:52:25] [main/ERROR] [FML]: Full: C:\Users\yor42\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.9.16\1176c6579a8a68508c3479ef72d514e71c98ddca\maven-artifact-3.9.16.jar
+[16:52:25] [main/ERROR] [FML]: Trimmed: c:/users/yor42/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.9.16/
+[16:52:25] [main/INFO] [Cleanroom]: Initializing CleanMix...
+[16:52:25] [main/INFO] [CleanMix]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:/C:/Users/yor42/.gradle/caches/modules-2/files-2.1/com.cleanroommc/cleanmix/0.7.2/b8793a2f5b29799853dc4bf070707f91112ea2ed/cleanmix-0.7.2.jar!/org/spongepowered/asm/mixin/MixinEnvironment.class Service=CleanMix Env=SERVER
+[16:52:25] [main/INFO] [Cleanroom]: Discovering mods
+[16:52:25] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\build\classes\java\main
+[16:52:25] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\build\resources\main
+[16:52:25] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\debugMod\Mekanism-Community-Edition-1.12.2-9.12.8-ALL.jar
+[16:52:25] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\.gradle\unimined\local\modTransform\remapped_curse\maven\mantle-74924\2713386\mantle-74924-2713386.jar
+[16:52:25] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\.gradle\unimined\local\modTransform\remapped_curse\maven\the-one-probe-community-edition-885670\6934576\the-one-probe-community-edition-885670-6934576.jar
+[16:52:25] [main/INFO] [FML]: Searching C:\Projects\ShinColle\run\server\.\mods for mods
+[16:52:26] [main/INFO] [Cleanroom]: Finished discovering mods. Found 5 discovered mod ids in 1122 ms.
+[16:52:26] [main/INFO] [Cleanroom]: Initializing MixinExtras...
+[16:52:26] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugin
+[16:52:26] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugin
+[16:52:26] [main/INFO] [Foundation]: Loading tweak name org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[16:52:26] [main/INFO] [Foundation]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[16:52:26] [main/INFO] [Foundation]: Loading tweak name org.spongepowered.asm.launch.MixinTweaker
+[16:52:26] [main/INFO] [Foundation]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[16:52:26] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker@2f510a24
+[16:52:26] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker@2f510a24
+[16:52:26] [main/INFO] [Foundation]: Calling tweak org.spongepowered.asm.mixin.EnvironmentStateTweaker@369a654e
+[16:52:26] [main/INFO] [Foundation]: Calling tweak FMLCorePlugin
+[16:52:26] [main/ERROR] [FML]: The binary patch set is missing, because you are in a development environment!
+[16:52:27] [main/INFO] [FML]: FML appears to be missing any signature data. This is expected, don't worry.
+[16:52:27] [main/INFO] [Foundation]: Calling tweak FMLForgePlugin
+[16:52:27] [main/INFO] [Foundation]: Calling tweak org.spongepowered.asm.launch.MixinTweaker@ebad17c
+[16:52:27] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLDeobfTweaker@5c646c59
+[16:52:27] [main/INFO] [Foundation]: Calling tweak MekanismCoremod
+[16:52:27] [main/INFO] [Foundation]: Launching wrapped minecraft net.minecraft.server.MinecraftServer
+[16:52:28] [Server thread/INFO] [minecraft/DedicatedServer]: Starting minecraft server version 1.12.2
+[16:52:28] [Server thread/INFO] [FML]: Cleanroom v0.6.13-alpha Initialized
+[16:52:28] [Server thread/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[16:52:29] [Server thread/INFO] [FML]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
+[16:52:29] [Server thread/INFO] [FML]: Replaced 1227 ore ingredients
+[16:52:29] [Server thread/INFO] [Kirino Core]: Initializing Kirino-Engine's Mod Container.
+[16:52:29] [Server thread/INFO] [Kirino Core]: Initializing Kirino-ECS's Mod Container.
+[16:52:29] [Server thread/INFO] [Kirino Core]: Initializing Kirino-GL's Mod Container.
+[16:52:32] [Server thread/WARN] [FML]: Mod mekanismgenerators is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 9.12.8
+[16:52:32] [Server thread/WARN] [FML]: Mod mekanismtools is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 9.12.8
+[16:52:37] [Server thread/INFO] [FML]: Forge Mod Loader has identified 17 mods to load
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for cleanmix: assets/cleanmix/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for mixinbooter: assets/mixinbooter/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for configanytime: assets/configanytime/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for kirino_engine: assets/kirino_engine/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for kirino_ecs: assets/kirino_ecs/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for kirino_gl: assets/kirino_gl/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for FML: assets/fml/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for mantle: assets/mantle/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for shincolle: /C:/Projects/ShinColle/build/classes/java/main/assets/shincolle/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for mekanismgenerators: assets/mekanismgenerators/lang/en_us.lang
+[16:52:37] [Server thread/WARN] [FML]: Missing English translation for mekanismtools: assets/mekanismtools/lang/en_us.lang
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jna-5.19.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jopt-simple-5.0.4.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file codecjorbis-20101023.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file codecwav-20101023.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file libraryjavasound-20101123.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file librarylwjglopenal-20100824.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file soundsystem-20120107.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file guava-33.6.0-jre.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file commons-lang3-3.20.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file commons-io-2.22.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file commons-codec-1.22.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jinput-2.0.10.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file gson-2.14.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file authlib-1.5.25.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file realms-1.10.22.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file commons-compress-1.28.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file commons-logging-1.4.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file fastutil-8.5.18.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file log4j-api-2.26.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file log4j-core-2.26.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jinput-platform-2.0.5-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file text2speech-1.10.3.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file text2speech-1.10.3-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-glfw-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-glfw-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-glfw-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-glfw-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-jemalloc-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-jemalloc-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-jemalloc-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-jemalloc-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-openal-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-openal-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-openal-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-openal-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-opengl-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-opengl-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-opengl-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-opengl-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-stb-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-stb-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-stb-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-stb-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-tinyfd-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-tinyfd-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-tinyfd-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-tinyfd-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1-unsafe.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file asm-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file asm-commons-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file asm-tree-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file asm-util-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file asm-analysis-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file asm-deprecated-7.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file foundation-0.19.11.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file Reflect-1.6.4.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file javassist-3.30.2-GA.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file icu4j-78.3.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jline-4.1.3.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jline-native-4.1.3.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file lzma-0.0.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file vecmath-1.5.2.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file oshi-core-ffm-7.3.2.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jna-platform-5.19.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file maven-artifact-3.9.16.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jspecify-1.0.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file httpcore5-5.4.3.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file httpcore5-h2-5.4.3.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file httpclient5-5.6.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-base-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-buffer-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-common-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-handler-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-resolver-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-native-unix-common-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-native-unix-common-4.2.15.Final-linux-x86_64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-classes-epoll-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-native-epoll-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-native-epoll-4.2.15.Final-linux-x86_64.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-http-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-http2-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-dns-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-compression-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file netty-resolver-dns-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.xml.ws-api-4.0.3.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.activation-api-2.1.4.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.annotation-api-3.0.0.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.xml.bind-api-4.0.5.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.inject-api-2.0.1.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jaxb-runtime-4.0.9.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file jaxb-core-4.0.9.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file classgraph-4.8.184.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file mixinextras-common-0.5.5.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file httpclient-4.5.14.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: FML has found a non-mod file httpcore-4.4.16.jar in your mods directory. It will now be injected into your classpath.
+[16:52:37] [Server thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, cleanroom, cleanmix, mixinbooter, configanytime, kirino_engine, kirino_ecs, kirino_gl, FML, forge, mantle, theoneprobe, shincolle, mekanism, mekanismgenerators, mekanismtools] at CLIENT
+[16:52:37] [Server thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, cleanroom, cleanmix, mixinbooter, configanytime, kirino_engine, kirino_ecs, kirino_gl, FML, forge, mantle, theoneprobe, shincolle, mekanism, mekanismgenerators, mekanismtools] at SERVER
+[16:52:40] [Server thread/INFO] [FML]: Processing ObjectHolder annotations
+[16:52:41] [Server thread/INFO] [FML]: Found 1278 ObjectHolder annotations
+[16:52:41] [Server thread/INFO] [FML]: Identifying ItemStackHolder annotations
+[16:52:41] [Server thread/INFO] [FML]: Found 0 ItemStackHolder annotations
+[16:52:41] [Server thread/INFO] [FML]: Configured a dormant chunk cache size of 0
+[16:52:41] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[16:52:41] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Pre-Init completed.
+[16:52:42] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [forge] Found status: BETA Target: null
+[16:52:42] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [cleanroom] Starting version check at https://download.cleanroommc.com/api/forge
+[16:52:43] [Server thread/INFO] [Mekanism]: Didn't detect MCMP, ignoring compatibility package
+[16:52:43] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [cleanroom] Found status: BETA Target: null
+[16:52:55] [Server thread/WARN] [FML]: Potentially Dangerous alternative prefix `minecraft` for name `portal`, expected `mekanism`. This could be a intended override, but in most cases indicates a broken mod.
+[16:52:55] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[16:52:55] [Server thread/INFO] [FML]: Object Holders set.
+[16:52:55] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[16:52:56] [Server thread/INFO] [FML]: Object Holders set.
+[16:52:57] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[16:52:57] [Server thread/INFO] [FML]: Object Holders set.
+[16:52:57] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[16:52:57] [Server thread/INFO] [FML]: Object Holders set.
+[16:52:57] [Server thread/INFO] [FML]: Injecting itemstacks
+[16:52:57] [Server thread/INFO] [FML]: Itemstack injection complete
+[16:52:57] [Server thread/INFO] [Kirino Core]: ---------- Kirino Common Initialization ----------
+[16:52:57] [Server thread/INFO] [Kirino Core]: Registered the default ShaderRegistrationEvent listener.
+[16:52:57] [Server thread/INFO] [Kirino Core]: Registered the default PostProcessingRegistrationEvent listener.
+[16:52:57] [Server thread/INFO] [Kirino Core]: Initializing ECS Runtime.
+[16:52:57] [Server thread/INFO] [Kirino Core]: ECS Runtime Initialized. Time taken: 139 ms
+[16:52:57] [Server thread/INFO] [Kirino Core]: Initializing Kirino Engine.
+[16:52:57] [Server thread/INFO] [Kirino Core]: Registered headless module installer "com.cleanroommc.kirino.engine.analysis.install.AnalyticalWorldInstaller".
+[16:52:57] [Server thread/INFO] [Kirino Core]: Registered graphics module installer "com.cleanroommc.kirino.engine.graphics.install.GraphicsWorldInstaller".
+[16:52:57] [Server thread/INFO] [Kirino Core]: Kirino Engine Initialized. Time taken: 567 ms
+[16:52:57] [Server thread/INFO] [Kirino Core]: ---------- Kirino Server-Side Initialization ----------
+[16:52:57] [Server thread/INFO] [minecraft/DedicatedServer]: Loading properties
+[16:52:58] [Server thread/INFO] [minecraft/DedicatedServer]: Default game type: SURVIVAL
+[16:52:58] [Server thread/INFO] [minecraft/DedicatedServer]: Generating keypair
+[16:52:58] [Server thread/INFO] [minecraft/DedicatedServer]: Starting Minecraft server on 127.0.0.1:25565
+[16:52:58] [Server thread/INFO] [minecraft/NetworkSystem]: Using default channel type
+[16:52:59] [Server thread/WARN] [minecraft/DedicatedServer]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[16:52:59] [Server thread/WARN] [minecraft/DedicatedServer]: The server will make no attempt to authenticate usernames. Beware.
+[16:52:59] [Server thread/WARN] [minecraft/DedicatedServer]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[16:52:59] [Server thread/WARN] [minecraft/DedicatedServer]: To change this, set "online-mode" to "true" in the server.properties file.
+[16:53:01] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[16:53:01] [Server thread/INFO] [FML]: Object Holders set.
+[16:53:01] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Init completed.
+[16:53:01] [Server thread/INFO] [Mekanism]: Version 999.999.999 initializing...
+[16:53:01] [Server thread/INFO] [Mekanism]: Loading complete.
+[16:53:01] [Server thread/INFO] [Mekanism]: Mod loaded.
+[16:53:01] [Server thread/INFO] [Mekanism]: Loaded MekanismGenerators module.
+[16:53:01] [Server thread/INFO] [Mekanism]: Loaded 'Mekanism: Tools' module.
+[16:53:01] [Server thread/INFO] [FML]: Injecting itemstacks
+[16:53:01] [Server thread/INFO] [FML]: Itemstack injection complete
+[16:53:01] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Post-Init completed.
+[16:53:01] [Server thread/INFO] [Mekanism]: Fake player readout: UUID = 46e82cd0-d480-3d48-800a-77431ede078e, name = [Mekanism]
+[16:53:01] [Server thread/INFO] [Mekanism]: Finished loading Cardboard Box blacklist (loaded 0 entries)
+[16:53:01] [Server thread/INFO] [Mekanism]: Hooking complete.
+[16:53:02] [Server thread/INFO] [FML]: Forge Mod Loader has successfully loaded 17 mods
+[16:53:02] [Server thread/INFO] [Kirino Core]: ---------- Kirino Common Post-Initialization ----------
+[16:53:02] [Server thread/INFO] [Kirino Core]: ---------- Kirino Server-Side Post-Initialization ----------
+[16:53:02] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: server about to start: is MP server? true
+[16:53:02] [Server thread/INFO] [minecraft/DedicatedServer]: Preparing level "smoke-world-2"
+[16:53:02] [Server thread/INFO] [FML]: Loading dimension 0 (smoke-world-2) (net.minecraft.server.dedicated.DedicatedServer@38e191c4)
+[16:53:04] [Server thread/INFO] [minecraft/AdvancementList]: Loaded 488 advancements
+[16:53:05] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy data
+[16:53:05] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: create .dat file
+[16:53:05] [Server thread/INFO] [FML]: Loading dimension -1 (smoke-world-2) (net.minecraft.server.dedicated.DedicatedServer@38e191c4)
+[16:53:05] [Server thread/INFO] [FML]: Loading dimension 1 (smoke-world-2) (net.minecraft.server.dedicated.DedicatedServer@38e191c4)
+[16:53:05] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing start region for level 0
+[16:53:06] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 4%
+[16:53:07] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 7%
+[16:53:08] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 11%
+[16:53:09] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 15%
+[16:53:10] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 19%
+[16:53:11] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 23%
+[16:53:12] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 29%
+[16:53:13] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 34%
+[16:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 41%
+[16:53:15] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 48%
+[16:53:16] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 53%
+[16:53:17] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 60%
+[16:53:18] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 65%
+[16:53:19] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 71%
+[16:53:20] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 77%
+[16:53:22] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 84%
+[16:53:23] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 90%
+[16:53:24] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing spawn area: 95%
+[16:53:25] [Server thread/INFO] [minecraft/DedicatedServer]: Done (22.579s)! For help, type "help" or "?"
+[16:53:25] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Server starting event: is MP server? true
+[16:53:25] [Server thread/INFO] [FML]: Unloading dimension -1
+[16:53:25] [Server thread/INFO] [FML]: Unloading dimension 1
+[16:53:26] [Server thread/INFO] [minecraft/DedicatedServer]: There are 0/20 players online:
+[16:53:26] [Server thread/INFO] [minecraft/DedicatedServer]: 
+[16:53:33] [Server thread/INFO] [minecraft/DedicatedServer]: Saving...
+[16:53:34] [Server thread/INFO] [minecraft/DedicatedServer]: Saved the world
+[16:53:43] [Server thread/ERROR] [FML]: An Entity shincolle:EntityDestroyerAkatsuki(entity.shincolle.EntityDestroyerAkatsuki.name) has thrown an exception during loading, its state cannot be restored. Report this to the mod author
+java.lang.NullPointerException: Cannot invoke "net.minecraft.nbt.NBTTagCompound.getTag(String)" because "nbt_tag" is null
+	at com.lulan.shincolle.capability.CapaShipSavedValues.loadNBTData(CapaShipSavedValues.java:129) ~[CapaShipSavedValues.class:?]
+	at com.lulan.shincolle.entity.BasicEntityShip.readFromNBT(BasicEntityShip.java:585) ~[BasicEntityShip.class:?]
+	at net.minecraft.entity.EntityList.createEntityFromNBT(EntityList.java:221) ~[EntityList.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.createEntityFromNBT(AnvilChunkLoader.java:626) ~[AnvilChunkLoader.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.readWorldEntityPos(AnvilChunkLoader.java:585) ~[AnvilChunkLoader.class:?]
+	at net.minecraft.command.server.CommandSummon.execute(CommandSummon.java:87) ~[CommandSummon.class:?]
+	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:120) ~[CommandHandler.class:?]
+	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:92) ~[CommandHandler.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.executePendingCommands(DedicatedServer.java:462) ~[DedicatedServer.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.updateTimeLightAndEntities(DedicatedServer.java:423) ~[DedicatedServer.class:?]
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:698) [MinecraftServer.class:?]
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:554) [MinecraftServer.class:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+[16:53:43] [Server thread/INFO] [minecraft/DedicatedServer]: Unable to summon object
+[16:53:43] [Server thread/INFO] [minecraft/DedicatedServer]: Object successfully summoned
+[16:53:43] [Server thread/ERROR] [FML]: An Entity shincolle:EntityBattleshipHime(entity.shincolle.EntityBattleshipHime.name) has thrown an exception during loading, its state cannot be restored. Report this to the mod author
+java.lang.NullPointerException: Cannot invoke "net.minecraft.nbt.NBTTagCompound.getTag(String)" because "nbt_tag" is null
+	at com.lulan.shincolle.capability.CapaShipSavedValues.loadNBTData(CapaShipSavedValues.java:129) ~[CapaShipSavedValues.class:?]
+	at com.lulan.shincolle.entity.BasicEntityShip.readFromNBT(BasicEntityShip.java:585) ~[BasicEntityShip.class:?]
+	at net.minecraft.entity.EntityList.createEntityFromNBT(EntityList.java:221) ~[EntityList.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.createEntityFromNBT(AnvilChunkLoader.java:626) ~[AnvilChunkLoader.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.readWorldEntityPos(AnvilChunkLoader.java:585) ~[AnvilChunkLoader.class:?]
+	at net.minecraft.command.server.CommandSummon.execute(CommandSummon.java:87) ~[CommandSummon.class:?]
+	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:120) ~[CommandHandler.class:?]
+	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:92) ~[CommandHandler.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.executePendingCommands(DedicatedServer.java:462) ~[DedicatedServer.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.updateTimeLightAndEntities(DedicatedServer.java:423) ~[DedicatedServer.class:?]
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:698) [MinecraftServer.class:?]
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:554) [MinecraftServer.class:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+[16:53:43] [Server thread/INFO] [minecraft/DedicatedServer]: Unable to summon object
+[16:53:43] [Server thread/ERROR] [FML]: An Entity shincolle:EntityDestroyerI(entity.shincolle.EntityDestroyerI.name) has thrown an exception during loading, its state cannot be restored. Report this to the mod author
+java.lang.NullPointerException: Cannot invoke "net.minecraft.nbt.NBTTagCompound.getTag(String)" because "nbt_tag" is null
+	at com.lulan.shincolle.capability.CapaShipSavedValues.loadNBTData(CapaShipSavedValues.java:129) ~[CapaShipSavedValues.class:?]
+	at com.lulan.shincolle.entity.BasicEntityShip.readFromNBT(BasicEntityShip.java:585) ~[BasicEntityShip.class:?]
+	at net.minecraft.entity.EntityList.createEntityFromNBT(EntityList.java:221) ~[EntityList.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.createEntityFromNBT(AnvilChunkLoader.java:626) ~[AnvilChunkLoader.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.readWorldEntityPos(AnvilChunkLoader.java:585) ~[AnvilChunkLoader.class:?]
+	at net.minecraft.command.server.CommandSummon.execute(CommandSummon.java:87) ~[CommandSummon.class:?]
+	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:120) ~[CommandHandler.class:?]
+	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:92) ~[CommandHandler.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.executePendingCommands(DedicatedServer.java:462) ~[DedicatedServer.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.updateTimeLightAndEntities(DedicatedServer.java:423) ~[DedicatedServer.class:?]
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:698) [MinecraftServer.class:?]
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:554) [MinecraftServer.class:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+[16:53:43] [Server thread/INFO] [minecraft/DedicatedServer]: Unable to summon object
+[16:54:12] [Server thread/INFO] [minecraft/DedicatedServer]: Object successfully summoned
+[16:54:12] [Server thread/INFO] [minecraft/DedicatedServer]: Object successfully summoned
+[16:54:12] [Server thread/INFO] [minecraft/DedicatedServer]: Object successfully summoned
+[16:54:12] [Server thread/ERROR] [FML]: An Entity shincolle:EntityDestroyerAkatsuki(entity.shincolle.EntityDestroyerAkatsuki.name) has thrown an exception during loading, its state cannot be restored. Report this to the mod author
+java.lang.NullPointerException: Cannot invoke "net.minecraft.nbt.NBTTagCompound.getInteger(String)" because "nbt_load" is null
+	at com.lulan.shincolle.capability.CapaShipSavedValues.loadNBTData(CapaShipSavedValues.java:164) ~[CapaShipSavedValues.class:?]
+	at com.lulan.shincolle.entity.BasicEntityShip.readFromNBT(BasicEntityShip.java:585) ~[BasicEntityShip.class:?]
+	at net.minecraft.entity.EntityList.createEntityFromNBT(EntityList.java:221) ~[EntityList.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.createEntityFromNBT(AnvilChunkLoader.java:626) ~[AnvilChunkLoader.class:?]
+	at net.minecraft.world.chunk.storage.AnvilChunkLoader.readWorldEntityPos(AnvilChunkLoader.java:585) ~[AnvilChunkLoader.class:?]
+	at net.minecraft.command.server.CommandSummon.execute(CommandSummon.java:87) ~[CommandSummon.class:?]
+	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:120) ~[CommandHandler.class:?]
+	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:92) ~[CommandHandler.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.executePendingCommands(DedicatedServer.java:462) ~[DedicatedServer.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.updateTimeLightAndEntities(DedicatedServer.java:423) ~[DedicatedServer.class:?]
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:698) [MinecraftServer.class:?]
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:554) [MinecraftServer.class:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+[16:54:12] [Server thread/INFO] [minecraft/DedicatedServer]: Unable to summon object
+[16:54:32] [Server thread/INFO] [minecraft/DedicatedServer]: Object successfully summoned
+[16:55:02] [Server thread/INFO] [minecraft/DedicatedServer]: [entity.shincolle.EntityDestroyerAkatsuki.name] alive
+[16:55:02] [Server thread/INFO] [minecraft/DedicatedServer]: [entity.shincolle.EntityBattleshipHime.name] alive
+[16:55:02] [Server thread/INFO] [minecraft/DedicatedServer]: [entity.shincolle.EntityDestroyerI.name] alive
+[16:55:02] [Server thread/INFO] [minecraft/DedicatedServer]: [entity.shincolle.EntityDestroyerAkatsukiMob.name] alive
+[16:55:02] [Server thread/INFO] [minecraft/DedicatedServer]: Selector '@e[name=SmokeHibiki]' found nothing
+[16:55:02] [Server thread/INFO] [minecraft/DedicatedServer]: Saving...
+[16:55:02] [Server thread/INFO] [minecraft/DedicatedServer]: Saved the world
+[17:08:42] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {CpInv:{Size:60,Items:[]},HurtByTimestamp:0,Sitting:0b,Attributes:[{Base:55.959999084472656d,Name:"generic.maxHealth"},{Base:64.0d,Name:"generic.followRange"},{Base:0.009999990463256836d,Name:"generic.knockbackResistance"},{Base:0.4339999854564667d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"}],Invulnerable:0b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,InLove:0,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-6666050409905532331L,Health:4.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],OwnerUUID:"",UUIDMost:4621338692411017546L,Pos:[134.5d,80.0d,-229.5d],ShipExtProps:{Timer:{Crane:0},uname:[],Minor:{Task:0,Crane:0,FMin:0,GuardType:0,ShipUID:0,FHP:0,FPos:0,Side:0,PlayerUID:0,Morale:0,FMax:0,Food:0,FType:0,NumAmmoL:0,NumAirL:0,GuardDim:0,Kills:7,NumAmmoH:0,NumAirH:0,AutoCR:0,tagName:"",GuardID:0,NumGrudge:0,GuardY:0,GuardZ:0,GuardX:0,WpStay:0,Level:42,Exp:13},Point:{HIT:0b,DEF:0b,MOV:0b,SPD:0b,HP:0b,ATK:0b},Display:{Emotion2:0,Phase:0,State:0,Emotion:0},ShipFlags:{NoFuel:0b,AA:0b,CanFloat:0b,AirH:0b,PVPFirst:0b,TimeKeeper:0b,IsMarried:0b,CanDrop:0b,CanFollow:0b,IsMorph:0b,AutoPump:0b,HeldItem:0b,PassiveAI:0b,WedEffect:0b,PickItem:0b,Melee:0b,AmmoL:0b,OnSight:0b,ASM:0b,AmmoH:0b,AirL:0b}},Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:08:59] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {CpInv:{Size:60,Items:[]},HurtByTimestamp:0,Sitting:0b,Attributes:[{Base:32.0d,Name:"generic.maxHealth"},{Base:64.0d,Name:"generic.followRange"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.3499999940395355d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"}],Invulnerable:0b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,InLove:0,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-7629923153392510594L,Health:4.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],OwnerUUID:"",UUIDMost:8676573550735216015L,Pos:[132.5d,80.0d,-231.5d],ShipExtProps:{Timer:{Crane:0},uname:[],Minor:{Task:0,Crane:0,FMin:0,GuardType:0,ShipUID:0,FHP:0,FPos:0,Side:0,PlayerUID:0,Morale:0,FMax:0,Food:0,FType:0,NumAmmoL:0,NumAirL:0,GuardDim:0,Kills:0,NumAmmoH:0,NumAirH:0,AutoCR:0,tagName:"",GuardID:0,NumGrudge:0,GuardY:0,GuardZ:0,GuardX:0,WpStay:0,Level:0,Exp:0},Point:{HIT:0b,DEF:0b,MOV:0b,SPD:0b,HP:0b,ATK:0b},Display:{Emotion2:0,Phase:0,State:0,Emotion:0},ShipFlags:{NoFuel:0b,AA:0b,CanFloat:0b,AirH:0b,PVPFirst:0b,TimeKeeper:0b,IsMarried:0b,CanDrop:0b,CanFollow:0b,IsMorph:0b,AutoPump:0b,HeldItem:0b,PassiveAI:0b,WedEffect:0b,PickItem:0b,Melee:0b,AmmoL:0b,OnSight:0b,ASM:0b,AmmoH:0b,AirL:0b}},Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:08:59] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {CpInv:{Size:60,Items:[]},HurtByTimestamp:0,Sitting:0b,Attributes:[{Base:220.0d,Name:"generic.maxHealth"},{Base:64.0d,Name:"generic.followRange"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.25d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"}],Invulnerable:0b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,InLove:0,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-5307440017207636653L,Health:4.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],OwnerUUID:"",UUIDMost:4139428438681079408L,Pos:[128.5d,80.0d,-231.5d],ShipExtProps:{Timer:{Crane:0},uname:[],Minor:{Task:0,Crane:0,FMin:0,GuardType:0,ShipUID:0,FHP:0,FPos:0,Side:0,PlayerUID:0,Morale:0,FMax:0,Food:0,FType:0,NumAmmoL:0,NumAirL:0,GuardDim:0,Kills:0,NumAmmoH:0,NumAirH:0,AutoCR:0,tagName:"",GuardID:0,NumGrudge:0,GuardY:0,GuardZ:0,GuardX:0,WpStay:0,Level:0,Exp:0},Point:{HIT:0b,DEF:0b,MOV:0b,SPD:0b,HP:0b,ATK:0b},Display:{Emotion2:0,Phase:0,State:0,Emotion:0},ShipFlags:{NoFuel:0b,AA:0b,CanFloat:0b,AirH:0b,PVPFirst:0b,TimeKeeper:0b,IsMarried:0b,CanDrop:0b,CanFollow:0b,IsMorph:0b,AutoPump:0b,HeldItem:0b,PassiveAI:0b,WedEffect:0b,PickItem:0b,Melee:0b,AmmoL:0b,OnSight:0b,ASM:0b,AmmoH:0b,AirL:0b}},Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:08:59] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {CpInv:{Size:60,Items:[]},HurtByTimestamp:0,Sitting:0b,Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:64.0d,Name:"generic.followRange"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.3499999940395355d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"}],Invulnerable:0b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,InLove:0,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-9107579344472811767L,Health:4.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],OwnerUUID:"",UUIDMost:7526088750804586221L,Pos:[132.5d,80.0d,-227.5d],ShipExtProps:{Timer:{Crane:0},uname:[],Minor:{Task:0,Crane:0,FMin:0,GuardType:0,ShipUID:0,FHP:0,FPos:0,Side:0,PlayerUID:0,Morale:0,FMax:0,Food:0,FType:0,NumAmmoL:0,NumAirL:0,GuardDim:0,Kills:0,NumAmmoH:0,NumAirH:0,AutoCR:0,tagName:"",GuardID:0,NumGrudge:0,GuardY:0,GuardZ:0,GuardX:0,WpStay:0,Level:0,Exp:0},Point:{HIT:0b,DEF:0b,MOV:0b,SPD:0b,HP:0b,ATK:0b},Display:{Emotion2:0,Phase:0,State:0,Emotion:0},ShipFlags:{NoFuel:0b,AA:0b,CanFloat:0b,AirH:0b,PVPFirst:0b,TimeKeeper:0b,IsMarried:0b,CanDrop:0b,CanFollow:0b,IsMorph:0b,AutoPump:0b,HeldItem:0b,PassiveAI:0b,WedEffect:0b,PickItem:0b,Melee:0b,AmmoL:0b,OnSight:0b,ASM:0b,AmmoH:0b,AirL:0b}},Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:08:59] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {HurtByTimestamp:0,Attributes:[{Base:87.5d,Name:"generic.maxHealth"},{Base:0.20000000298023224d,Name:"generic.knockbackResistance"},{Base:0.4950000047683716d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:2.0d,Name:"generic.attackDamage"},{Base:64.0d,Modifiers:[{UUIDMost:-2214052092566486384L,UUIDLeast:-7141434921416908022L,Amount:0.02435091036414062d,Operation:1,Name:"Random spawn bonus"}],Name:"generic.followRange"},{Base:1.0d,Name:"forge.swimSpeed"}],Invulnerable:0b,FallFlying:0b,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-8078412544096710851L,Health:4.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],scaleLV:0b,UUIDMost:-4621375212307134069L,Pos:[136.5d,80.0d,-231.5d],Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:08:59] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {CpInv:{Size:60,Items:[]},HurtByTimestamp:0,Sitting:0b,Attributes:[{Base:55.959999084472656d,Name:"generic.maxHealth"},{Base:64.0d,Name:"generic.followRange"},{Base:0.009999990463256836d,Name:"generic.knockbackResistance"},{Base:0.4339999854564667d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"}],Invulnerable:0b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,InLove:0,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-6666050409905532331L,Health:4.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],OwnerUUID:"",UUIDMost:4621338692411017546L,Pos:[134.5d,80.0d,-229.5d],ShipExtProps:{Timer:{Crane:0},uname:[],Minor:{Task:0,Crane:0,FMin:0,GuardType:0,ShipUID:0,FHP:0,FPos:0,Side:0,PlayerUID:0,Morale:0,FMax:0,Food:0,FType:0,NumAmmoL:0,NumAirL:0,GuardDim:0,Kills:7,NumAmmoH:0,NumAirH:0,AutoCR:0,tagName:"",GuardID:0,NumGrudge:0,GuardY:0,GuardZ:0,GuardX:0,WpStay:0,Level:42,Exp:13},Point:{HIT:0b,DEF:0b,MOV:0b,SPD:0b,HP:0b,ATK:0b},Display:{Emotion2:0,Phase:0,State:0,Emotion:0},ShipFlags:{NoFuel:0b,AA:0b,CanFloat:0b,AirH:0b,PVPFirst:0b,TimeKeeper:0b,IsMarried:0b,CanDrop:0b,CanFollow:0b,IsMorph:0b,AutoPump:0b,HeldItem:0b,PassiveAI:0b,WedEffect:0b,PickItem:0b,Melee:0b,AmmoL:0b,OnSight:0b,ASM:0b,AmmoH:0b,AirL:0b}},Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:09:17] [Server thread/INFO] [minecraft/DedicatedServer]: Object successfully summoned
+[17:09:23] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {HurtByTimestamp:0,Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.23000000417232513d,Name:"generic.movementSpeed"},{Base:2.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"},{Base:35.0d,Name:"generic.followRange"},{Base:3.0d,Name:"generic.attackDamage"},{Base:0.015934680955541302d,Name:"zombie.spawnReinforcements"}],Invulnerable:0b,FallFlying:0b,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:1b,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-5147420726845084903L,Health:20.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],UUIDMost:2587134205968009043L,Pos:[130.5d,80.0d,-233.5d],CanBreakDoors:0b,Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:09:37] [Server thread/INFO] [minecraft/DedicatedServer]: Set the world spawn point to (132, 64, -232)
+[17:09:41] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {HurtByTimestamp:0,Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.23000000417232513d,Name:"generic.movementSpeed"},{Base:2.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"},{Base:35.0d,Name:"generic.followRange"},{Base:3.0d,Name:"generic.attackDamage"},{Base:0.015934680955541302d,Name:"zombie.spawnReinforcements"}],Invulnerable:0b,FallFlying:0b,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:1b,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-5147420726845084903L,Health:20.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],UUIDMost:2587134205968009043L,Pos:[130.5d,80.0d,-233.5d],CanBreakDoors:0b,Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:09:41] [Server thread/INFO] [minecraft/DedicatedServer]: The data tag did not change: {CpInv:{Size:60,Items:[]},HurtByTimestamp:0,Sitting:0b,Attributes:[{Base:55.959999084472656d,Name:"generic.maxHealth"},{Base:64.0d,Name:"generic.followRange"},{Base:0.009999990463256836d,Name:"generic.knockbackResistance"},{Base:0.4339999854564667d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"}],Invulnerable:0b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,InLove:0,DeathTime:0s,HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,0.0d,0.0d],Leashed:0b,UUIDLeast:-6666050409905532331L,Health:4.0f,LeftHanded:0b,Air:0s,OnGround:0b,Dimension:0,Rotation:[0.0f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],OwnerUUID:"",UUIDMost:4621338692411017546L,Pos:[134.5d,80.0d,-229.5d],ShipExtProps:{Timer:{Crane:0},uname:[],Minor:{Task:0,Crane:0,FMin:0,GuardType:0,ShipUID:0,FHP:0,FPos:0,Side:0,PlayerUID:0,Morale:0,FMax:0,Food:0,FType:0,NumAmmoL:0,NumAirL:0,GuardDim:0,Kills:7,NumAmmoH:0,NumAirH:0,AutoCR:0,tagName:"",GuardID:0,NumGrudge:0,GuardY:0,GuardZ:0,GuardX:0,WpStay:0,Level:42,Exp:13},Point:{HIT:0b,DEF:0b,MOV:0b,SPD:0b,HP:0b,ATK:0b},Display:{Emotion2:0,Phase:0,State:0,Emotion:0},ShipFlags:{NoFuel:0b,AA:0b,CanFloat:0b,AirH:0b,PVPFirst:0b,TimeKeeper:0b,IsMarried:0b,CanDrop:0b,CanFollow:0b,IsMorph:0b,AutoPump:0b,HeldItem:0b,PassiveAI:0b,WedEffect:0b,PickItem:0b,Melee:0b,AmmoL:0b,OnSight:0b,ASM:0b,AmmoH:0b,AirL:0b}},Fire:0s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}
+[17:10:00] [Server thread/INFO] [minecraft/DedicatedServer]: Stopping the server
+[17:10:00] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Server stopping event
+[17:10:01] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[17:10:01] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[17:10:01] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[17:10:01] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'smoke-world-2'/overworld
+[17:10:01] [Server thread/INFO] [FML]: Unloading dimension 0
+[17:10:01] [Server Shutdown Thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[17:10:01] [Server Shutdown Thread/INFO] [minecraft/MinecraftServer]: Saving players
+[17:10:01] [Server Shutdown Thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+
+[Incubating] Problems report is available at: file:///C:/Projects/ShinColle/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.8.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 17m 42s
+6 actionable tasks: 2 executed, 4 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.0/userguide/configuration_cache_enabling.html

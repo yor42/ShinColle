@@ -17,6 +17,13 @@ import java.util.Random;
  */
 public class CombatHelper {
 
+    //roll outcomes, values equal the ParticleHelper.spawnAttackTextParticle type
+    public static final int HIT_NORMAL = -1;
+    public static final int HIT_MISS = 0;
+    public static final int HIT_CRI = 1;
+    public static final int HIT_DOUBLE = 2;
+    public static final int HIT_TRIPLE = 3;
+
     public static Random rand = new Random();
 
 
@@ -72,46 +79,68 @@ public class CombatHelper {
             float dhit = host.getAttrs().getAttrsBuffed(ID.Attrs.DHIT);
             float thit = host.getAttrs().getAttrsBuffed(ID.Attrs.THIT);
 
-            //add cri rate
-            cri += miss;
-            if (cri < miss) cri = miss;
-
-            //add double hit rate
-            dhit += cri;
-            if (dhit < cri) dhit = cri;
-
-            //add triple hit rate
-            thit += dhit;
-            if (thit < dhit) thit = dhit;
-
             //roll
             float roll = host.getRand().nextFloat();
+            int outcome = rollOutcome(roll, miss, cri, dhit, thit, canMultiHit);
 
-            //if miss hit
-            if (roll <= miss) {
-                if (host instanceof Entity) ParticleHelper.spawnAttackTextParticle((Entity) host, 0);
-                return 0F;
-            }
-            //if cri hit
-            else if (roll <= cri) {
-                if (host instanceof Entity) ParticleHelper.spawnAttackTextParticle((Entity) host, 1);
-                return rawAtk * 1.5F;
-            }
-            //if double hit
-            else if (canMultiHit && roll <= dhit) {
-                if (host instanceof Entity) ParticleHelper.spawnAttackTextParticle((Entity) host, 2);
-                return rawAtk * 2F;
-            }
-            //if triple hit
-            else if (canMultiHit && roll <= dhit) {
-                if (host instanceof Entity) ParticleHelper.spawnAttackTextParticle((Entity) host, 3);
-                return rawAtk * 3F;
-            } else {
+            if (outcome != HIT_NORMAL) {
+                if (host instanceof Entity) ParticleHelper.spawnAttackTextParticle((Entity) host, outcome);
+                return rawAtk * outcomeMultiplier(outcome);
             }
         }
 
         //if normal hit
         return rawAtk;
+    }
+
+    /**
+     * pure roll: miss/cri/dhit/thit are the individual rates (miss absolute, others added on top of the previous band)
+     * priority: miss > cri > dhit > thit; return one of HIT_* (HIT_NORMAL when no band hit)
+     */
+    public static int rollOutcome(float roll, float miss, float cri, float dhit, float thit, boolean canMultiHit) {
+        //add cri rate
+        cri += miss;
+        if (cri < miss) cri = miss;
+
+        //add double hit rate
+        dhit += cri;
+        if (dhit < cri) dhit = cri;
+
+        //add triple hit rate
+        thit += dhit;
+        if (thit < dhit) thit = dhit;
+
+        if (roll <= miss) return HIT_MISS;
+        else if (roll <= cri) return HIT_CRI;
+        else if (canMultiHit && roll <= dhit) return HIT_DOUBLE;
+        else if (canMultiHit && roll <= thit) return HIT_TRIPLE;
+        return HIT_NORMAL;
+    }
+
+    /**
+     * damage multiplier of a HIT_* outcome
+     */
+    public static float outcomeMultiplier(int outcome) {
+        switch (outcome) {
+            case HIT_MISS:
+                return 0F;
+            case HIT_CRI:
+                return 1.5F;
+            case HIT_DOUBLE:
+                return 2F;
+            case HIT_TRIPLE:
+                return 3F;
+            default:
+                return 1F;
+        }
+    }
+
+    /**
+     * apply the configured dodge limit: a negative limit means "no limit"
+     */
+    public static float limitDodge(float dodge, double limit) {
+        if (limit >= 0D && dodge > limit) dodge = (float) limit;
+        return dodge;
     }
 
     /**
@@ -157,8 +186,7 @@ public class CombatHelper {
                     //dist > 6 blocks
                     dodge += ((IShipInvisible) host).getInvisibleLevel();
                     //check limit
-                    if (dodge > ConfigHandler.limitShipAttrs[ID.Attrs.DODGE])
-                        dodge = (float) ConfigHandler.limitShipAttrs[ID.Attrs.DODGE];
+                    dodge = limitDodge(dodge, ConfigHandler.limitShipAttrs[ID.Attrs.DODGE]);
                 }
 
                 //submarine will increase dodge if dist > 16 blocks, without config limit
@@ -191,6 +219,13 @@ public class CombatHelper {
      * lightCoef: 0=night, 1=day, 0.X=night vision potion
      */
     public static float modDamageByLight(float dmg, int typeAtk, int typeDef, float lightCoef) {
+        return modDamageByLight(dmg, typeAtk, typeDef, lightCoef, Values.ModDmgDay, Values.ModDmgNight);
+    }
+
+    /**
+     * same as above with explicit tables (dayTable used at coef 1, nightTable at coef 0), so it can be tested without Values
+     */
+    public static float modDamageByLight(float dmg, int typeAtk, int typeDef, float lightCoef, float[][] dayTable, float[][] nightTable) {
         //if type = undefined, return org damage
         if (typeAtk <= 0 || typeDef <= 0) return dmg;
 
@@ -199,8 +234,8 @@ public class CombatHelper {
         else if (lightCoef > 1F) lightCoef = 1F;
 
         //calc damage modifier
-        float modDay = Values.ModDmgNight[typeAtk - 1][typeDef - 1];
-        float modNight = Values.ModDmgDay[typeAtk - 1][typeDef - 1];
+        float modDay = dayTable[typeAtk - 1][typeDef - 1];
+        float modNight = nightTable[typeAtk - 1][typeDef - 1];
         float mod = modNight + (modDay - modNight) * lightCoef;
 
         return dmg * mod;

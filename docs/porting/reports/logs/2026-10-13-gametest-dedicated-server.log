@@ -1,0 +1,56 @@
+[20:38:56] [Server thread/INFO] [net.minecraft.server.management.PlayerList]: Developer[/127.0.0.1:63525] logged in with entity id 0 at (1117.5, 4.0, 371.5)
+[20:39:01] [RCON Client #2/INFO] [net.minecraft.server.dedicated.DedicatedServer]: [Rcon: Set Developer's game mode to Survival Mode]
+[20:39:01] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=0 playerPos=1117.5/4.0/371.5 playerUID=100 op=false gm=SURVIVAL
+[20:39:01] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] egg given slot=0
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] ship join EntityDestroyerI uuid=2fb14aa8-38b9-42ac-af24-3e295c0a9074 canceled=false hp=4.0
+[20:39:02] [Server thread/WARN] [net.minecraft.world.WorldServer]: Keeping entity shincolle:entitydestroyeri that already exists with UUID 2fb14aa8-38b9-42ac-af24-3e295c0a9074
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:02] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:03] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=true hp=20.3 inLoadedList=false pos=1117/4/371 shipUID=-1
+[20:39:04] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] fakeowner ships=0
+[20:39:05] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:06] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:07] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:08] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:09] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] fakeowner ships=0
+[20:39:09] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] reset ships=0
+[20:39:09] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=0 playerPos=1117.6/4.0/371.6 playerUID=100 op=false gm=SURVIVAL
+[20:39:10] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] stopping server
+[20:39:10] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Developer lost connection: Server closed

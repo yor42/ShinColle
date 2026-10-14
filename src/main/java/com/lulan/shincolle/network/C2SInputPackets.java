@@ -38,6 +38,8 @@ public class C2SInputPackets implements IMessage {
 
     private World world;
     private EntityPlayer player;
+    //set when fromBytes failed: the half-decoded message is dropped by the handler (issue #77)
+    private boolean decodeFailed = false;
     private byte packetID;
     private int worldID, entityID, value;
     private int[] value3;
@@ -63,6 +65,11 @@ public class C2SInputPackets implements IMessage {
 
     //packet handle method
     private static void handle(C2SInputPackets msg, MessageContext ctx) {
+        if (msg.decodeFailed) {
+            LogHelper.debug("DEBUG: packet handler: C2SInputPackets: dropped packet that failed to decode, id: " + msg.packetID);
+            return;
+        }
+
         EntityPlayerMP player = ctx.getServerHandler().player;
         Entity entity;
 
@@ -125,7 +132,9 @@ public class C2SInputPackets implements IMessage {
                          6. change ship's owner UUID and PlayerUID (server)
                      */
                     //value3: 0:owner eid, 1:ship eid, 2:world id
-                    player = (EntityPlayerMP) EntityHelper.getEntityPlayerByID(msg.value3[0], msg.value3[2], false);
+                    //NET-02: sender is the packet's server player; `player` is reassigned below to the new owner
+                    if (!PacketAuthorization.mayEditShips(player)) break;
+                    player =(EntityPlayerMP) EntityHelper.getEntityPlayerByID(msg.value3[0], msg.value3[2], false);
                     entity = EntityHelper.getEntityByID(msg.value3[1], msg.value3[2], false);
 
                     if (player != null && entity instanceof BasicEntityShip) {
@@ -146,6 +155,8 @@ public class C2SInputPackets implements IMessage {
                          4.(done) send ship eid to server (c to s)
                          5. change ship's attributes (server)
                      */
+                    //NET-02: server-side OP check on the packet's sender
+                    if (!PacketAuthorization.mayEditShips(player)) break;
                     entity = EntityHelper.getEntityByID(msg.value3[0], msg.value3[1], false);
 
                     if (entity instanceof BasicEntityShip ship) {
@@ -343,8 +354,8 @@ public class C2SInputPackets implements IMessage {
                         this.value3 = PacketHelper.readIntArray(buf, this.value);
                     }
                 } catch (Exception e) {
-                    LogHelper.info("EXCEPTION: C2S input packet: ");
-                    e.printStackTrace();
+                    this.decodeFailed = true;
+                    LogHelper.error("EXCEPTION: C2S input packet: ", e);
                 }
                 break;
         }

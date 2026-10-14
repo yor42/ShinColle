@@ -254,7 +254,7 @@ public class LargeRecipes {
                 } // end can add
             } // end try
             catch (Exception e) {
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: addMaterialStock fail", e);
                 return false;
             }
         }

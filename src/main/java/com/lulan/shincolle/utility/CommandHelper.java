@@ -166,6 +166,35 @@ public class CommandHelper {
      * 3. send ship list data to client (S2C input packet)
      * 4. display list (client)
      */
+    /**
+     * Hard cap on the number of ships in one reply when the "show all" form (page <= 0) is used.
+     * Only the first page of this size is sent; the reply still says "page 1 / N", so N > 1 tells
+     * the player the list was truncated and the numbered pages hold the rest. Pages > 0 use
+     * ConfigHandler.shipNumPerPage as before. (Issue #27; value decided by the maintainer.)
+     */
+    public static final int SHIP_LIST_SHOW_ALL_MAX = 100;
+
+    /**
+     * Resolve paging for the ship list reply (pure, no world access).
+     *
+     * @param size              number of ships in the world data
+     * @param page              requested page, <= 0 means "show all" (capped)
+     * @param configNumPerPage  ConfigHandler.shipNumPerPage
+     * @return {numPerPage, maxPage, page} where page is the page that will be sent
+     */
+    public static int[] resolveShipListPaging(int size, int page, int configNumPerPage) {
+        int numPerPage = configNumPerPage;
+
+        //if show all ship: capped at SHIP_LIST_SHOW_ALL_MAX ships in one reply
+        if (page <= 0) {
+            numPerPage = SHIP_LIST_SHOW_ALL_MAX;
+            page = 1;
+        }
+
+        int maxPage = (size - 1) / numPerPage + 1;
+        return new int[]{numPerPage, maxPage, page};
+    }
+
     public static void processSendShipList(ByteBuf buf, int page) {
         HashMap<Integer, CacheDataShip> map = ServerProxy.getAllShipWorldData();
 
@@ -189,15 +218,10 @@ public class CommandHelper {
 
         //start process packet
         int size = map.size();
-        int numPerPage = ConfigHandler.shipNumPerPage;
-        int maxPage = (size - 1) / numPerPage + 1;
-
-        //if show all ship
-        if (page <= 0) {
-            numPerPage = 30000;
-            maxPage = (size - 1) / numPerPage + 1;
-            page = 1;
-        }
+        int[] paging = resolveShipListPaging(size, page, ConfigHandler.shipNumPerPage);
+        int numPerPage = paging[0];
+        int maxPage = paging[1];
+        page = paging[2];
 
         //write total #page
         buf.writeInt(maxPage);

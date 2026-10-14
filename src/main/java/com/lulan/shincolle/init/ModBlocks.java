@@ -88,8 +88,7 @@ public class ModBlocks {
                 ((ICustomModels) b).initModel();
             } catch (Exception e) {
                 //抓model失敗, 此例外必須丟出以強制中止遊戲
-                LogHelper.info("EXCEPTION: block texture init fail: " + b);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: block texture init fail: " + b, e);
                 throw e;
             }
         }

@@ -22,6 +22,8 @@ public class S2CReactPackets implements IMessage {
 
     private World world;
     private EntityPlayer player;
+    //set when fromBytes failed: the half-decoded message is dropped by the handler (issue #77)
+    private boolean decodeFailed = false;
     private byte packetType;
     private int[] valueInt, valueInt2;
     private boolean[] valueBoolean;
@@ -45,6 +47,11 @@ public class S2CReactPackets implements IMessage {
 
     //packet handle method
     private static void handle(S2CReactPackets msg, MessageContext ctx) {
+        if (msg.decodeFailed) {
+            LogHelper.debug("DEBUG: packet handler: S2CReactPackets: dropped packet that failed to decode, type: " + msg.packetType);
+            return;
+        }
+
         switch (msg.packetType) {
             case PID.CmdChOwner:    //cmd: change owner packet
                 CommandHelper.processShipChangeOwner(msg.valueInt[0], msg.valueInt[1]);
@@ -95,8 +102,8 @@ public class S2CReactPackets implements IMessage {
                         this.valueInt = PacketHelper.readIntArray(buf, length);
                     }
                 } catch (Exception e) {
-                    LogHelper.info("EXCEPTION: S2C input packet: get data fail: " + e);
-                    e.printStackTrace();
+                    this.decodeFailed = true;
+                    LogHelper.error("EXCEPTION: S2C input packet: get data fail: " + e, e);
                 }
             }
             break;
@@ -104,6 +111,10 @@ public class S2CReactPackets implements IMessage {
             {
                 //total size, page num, list size
                 this.valueInt = PacketHelper.readIntArray(buf, 3);
+
+                //list size comes from the packet: validate before allocating (min bytes per entry:
+                //8 ints + 2 booleans + the 4-byte string flag)
+                PacketHelper.checkLength(buf, this.valueInt[2], 8 * 4 + 2 + 4, PacketHelper.MAX_ARRAY_LENGTH);
 
                 if (this.valueInt[2] > 0) {
                     this.valueInt2 = new int[this.valueInt[2] * 8];

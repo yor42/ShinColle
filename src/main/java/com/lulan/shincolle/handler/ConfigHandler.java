@@ -4,6 +4,7 @@ import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.config.ConfigLoot;
 import com.lulan.shincolle.config.ConfigMining;
 import com.lulan.shincolle.config.ConfigSound;
+import com.lulan.shincolle.utility.LogHelper;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -399,7 +400,7 @@ public class ConfigHandler {
         tileShipyardSmall = getDoubleArrayFromConfig(tileShipyardSmall, propShipyardSmall);
         tileShipyardLarge = getDoubleArrayFromConfig(tileShipyardLarge, propShipyardLarge);
         tileVolCore = getDoubleArrayFromConfig(tileVolCore, propVolCore);
-        tileCrane = getIntArrayFromConfig(tileCrane, propCrane);
+        tileCrane = getCraneArrayFromConfig(tileCrane, propCrane);
         ringAbility = getIntArrayFromConfig(ringAbility, propRingAbility);
         scaleHeldItem = getDoubleArrayFromConfig(scaleHeldItem, propHeldItem);
         drumLiquid = getIntArrayFromConfig(drumLiquid, propDrumLiquid);
@@ -476,6 +477,23 @@ public class ConfigHandler {
         }
     }
 
+    // Tile_Crane: legacy (1.10) arrays had 2 values [fluid tank mB, EU capacity]; keep them, fill the new slots with defaults
+    public static int[] getCraneArrayFromConfig(int[] defaultValue, Property target) {
+        int[] geti = target.getIntList();
+        if (geti != null && geti.length == 2 && defaultValue.length > 2) {
+            int[] migrated = defaultValue.clone();
+            migrated[0] = geti[0];
+            migrated[1] = geti[1];
+            target.set(migrated);
+            LogHelper.info("Config " + target.getName() + ": migrated legacy 2-value array to " + migrated.length + " values, new slots use defaults");
+            return migrated;
+        }
+        if (geti == null || geti.length != defaultValue.length) {
+            LogHelper.info("Config " + target.getName() + ": invalid array length " + (geti == null ? "null" : geti.length) + ", reset to defaults");
+        }
+        return getIntArrayFromConfig(defaultValue, target);
+    }
+
     // check get value
     public static double[] getDoubleArrayFromConfig(double[] defaultValue, Property target) {
         int size = defaultValue.length;
@@ -514,4 +532,4 @@ public class ConfigHandler {
 
     }
 
-}
+}

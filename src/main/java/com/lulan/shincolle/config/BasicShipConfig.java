@@ -46,8 +46,7 @@ public abstract class BasicShipConfig {
         try {
             load();
         } catch (Throwable e) {
-            LogHelper.info("ERROR: load config file: " + this.file + " fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("ERROR: load config file: " + this.file + " fail: " + e, e);
 
             //for exception, throw out
             if (e instanceof Exception) throw (Exception) e;
@@ -149,7 +148,7 @@ public abstract class BasicShipConfig {
                 fos.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: createDefault: save ship config file fail", e);
         }
     }
 

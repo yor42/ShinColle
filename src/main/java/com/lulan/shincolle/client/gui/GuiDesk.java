@@ -1899,7 +1899,7 @@ public class GuiDesk extends GuiContainer {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: setShipModel fail", e);
         }
 
         // get no ship

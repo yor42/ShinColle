@@ -16,6 +16,7 @@ import com.lulan.shincolle.tileentity.TileMultiGrudgeHeavy;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+import io.netty.handler.codec.DecoderException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -191,19 +192,58 @@ public class PacketHelper {
     }
 
     /**
+     * Default per-call maximum element count for variable-length reads. Real packets carry far
+     * fewer elements; the readable-bytes check is the primary bound, this caps the rest.
+     */
+    public static final int MAX_ARRAY_LENGTH = 65536;
+
+    /** Largest value the 2-byte varint length of a UTF-8 string can hold. */
+    private static final int MAX_STRING_BYTES = 32767;
+
+    /**
+     * Validate a packet-supplied element count BEFORE allocating anything (issue #16, ADR-0004).
+     * The count must be non-negative, at most max, and the remaining bytes must be able to hold
+     * length * minElementSize bytes.
+     *
+     * @return length, when valid
+     * @throws DecoderException when the length is invalid
+     */
+    public static int checkLength(ByteBuf buf, int length, int minElementSize, int max) {
+        if (length < 0) {
+            throw new DecoderException("Packet length is negative: " + length);
+        }
+        if (length > max) {
+            throw new DecoderException("Packet length " + length + " exceeds maximum " + max);
+        }
+        if ((long) length * minElementSize > buf.readableBytes()) {
+            throw new DecoderException("Packet length " + length + " x " + minElementSize +
+                    " bytes exceeds readable bytes " + buf.readableBytes());
+        }
+        return length;
+    }
+
+    /**
+     * Read a length prefix for a sequence. -1 is the null marker written by the send methods and
+     * 0 is an empty sequence, both give 0; any other negative value is malformed.
+     */
+    private static int readPrefix(ByteBuf buf, int minElementSize, int max) {
+        int length = buf.readInt();
+        if (length == -1) return 0;
+        return checkLength(buf, length, minElementSize, max);
+    }
+
+    /**
      * get int map data
      */
     public static Map<Integer, Integer> readMapInt(ByteBuf buf) {
         Map<Integer, Integer> getMap = new HashMap<Integer, Integer>();
 
         //get size
-        int size = buf.readInt();
+        int size = readPrefix(buf, 8, MAX_ARRAY_LENGTH);
 
         //get data
-        if (size > 0) {
-            for (int i = 0; i < size; ++i) {
-                getMap.put(buf.readInt(), buf.readInt());
-            }
+        for (int i = 0; i < size; ++i) {
+            getMap.put(buf.readInt(), buf.readInt());
         }
 
         return getMap;
@@ -216,13 +256,11 @@ public class PacketHelper {
         List<Integer> getlist = new ArrayList();
 
         //get size
-        int size = buf.readInt();
+        int size = readPrefix(buf, 4, MAX_ARRAY_LENGTH);
 
         //get data
-        if (size > 0) {
-            for (int i = 0; i < size; ++i) {
-                getlist.add(buf.readInt());
-            }
+        for (int i = 0; i < size; ++i) {
+            getlist.add(buf.readInt());
         }
 
         return getlist;
@@ -234,14 +272,12 @@ public class PacketHelper {
     public static List<String> readListString(ByteBuf buf) {
         List<String> getlist = new ArrayList();
 
-        //get size
-        int size = buf.readInt();
+        //get size (every string takes at least its 1 byte length prefix)
+        int size = readPrefix(buf, 1, MAX_ARRAY_LENGTH);
 
         //get data
-        if (size > 0) {
-            for (int i = 0; i < size; ++i) {
-                getlist.add(ByteBufUtils.readUTF8String(buf));
-            }
+        for (int i = 0; i < size; ++i) {
+            getlist.add(readBoundedUTF8String(buf));
         }
 
         return getlist;
@@ -267,25 +303,46 @@ public class PacketHelper {
         int flag = buf.readInt();
 
         if (flag > 0) {
-            str = ByteBufUtils.readUTF8String(buf);
+            str = readBoundedUTF8String(buf);
         }
 
         return str;
     }
 
     /**
-     * get double array data, read array length first
+     * Same wire format as ByteBufUtils.readUTF8String (varint length, then UTF-8 bytes), but the
+     * length is checked against the readable bytes before the string is built.
+     */
+    public static String readBoundedUTF8String(ByteBuf buf) {
+        int mark = buf.readerIndex();
+        int len = ByteBufUtils.readVarInt(buf, 2);
+        checkLength(buf, len, 1, MAX_STRING_BYTES);
+        buf.readerIndex(mark);
+        return ByteBufUtils.readUTF8String(buf);
+    }
+
+    /**
+     * get double array data, read array length first (-1 = null marker, gives an empty array)
      */
     public static double[] readDoubleArray(ByteBuf buf) {
-        int length = buf.readInt();
+        int length = readPrefix(buf, 8, MAX_ARRAY_LENGTH);
         if (length > 0) return readDoubleArray(buf, length);
         return new double[0];
     }
 
     /**
-     * get double array data
+     * get double array data, length validated against the default maximum
      */
     public static double[] readDoubleArray(ByteBuf buf, int length) {
+        return readDoubleArray(buf, length, MAX_ARRAY_LENGTH);
+    }
+
+    /**
+     * get double array data, length validated (non-negative, at most max and at most the readable
+     * bytes) before the array is allocated
+     */
+    public static double[] readDoubleArray(ByteBuf buf, int length, int max) {
+        checkLength(buf, length, 8, max);
         double[] array = new double[length];
 
         for (int i = 0; i < length; i++) {
@@ -296,18 +353,27 @@ public class PacketHelper {
     }
 
     /**
-     * get int array data, read array length first
+     * get int array data, read array length first (-1 = null marker, gives an empty array)
      */
     public static int[] readIntArray(ByteBuf buf) {
-        int length = buf.readInt();
+        int length = readPrefix(buf, 4, MAX_ARRAY_LENGTH);
         if (length > 0) return readIntArray(buf, length);
         return new int[0];
     }
 
     /**
-     * get int array data
+     * get int array data, length validated against the default maximum
      */
     public static int[] readIntArray(ByteBuf buf, int length) {
+        return readIntArray(buf, length, MAX_ARRAY_LENGTH);
+    }
+
+    /**
+     * get int array data, length validated (non-negative, at most max and at most the readable
+     * bytes) before the array is allocated
+     */
+    public static int[] readIntArray(ByteBuf buf, int length, int max) {
+        checkLength(buf, length, 4, max);
         int[] array = new int[length];
 
         for (int i = 0; i < length; i++) {
@@ -318,18 +384,27 @@ public class PacketHelper {
     }
 
     /**
-     * get float array data, read array length first
+     * get float array data, read array length first (-1 = null marker, gives an empty array)
      */
     public static float[] readFloatArray(ByteBuf buf) {
-        int length = buf.readInt();
+        int length = readPrefix(buf, 4, MAX_ARRAY_LENGTH);
         if (length > 0) return readFloatArray(buf, length);
         return new float[0];
     }
 
     /**
-     * get float array data
+     * get float array data, length validated against the default maximum
      */
     public static float[] readFloatArray(ByteBuf buf, int length) {
+        return readFloatArray(buf, length, MAX_ARRAY_LENGTH);
+    }
+
+    /**
+     * get float array data, length validated (non-negative, at most max and at most the readable
+     * bytes) before the array is allocated
+     */
+    public static float[] readFloatArray(ByteBuf buf, int length, int max) {
+        checkLength(buf, length, 4, max);
         float[] array = new float[length];
 
         for (int i = 0; i < length; i++) {
@@ -340,18 +415,27 @@ public class PacketHelper {
     }
 
     /**
-     * get boolean array data, read array length first
+     * get boolean array data, read array length first (-1 = null marker, gives an empty array)
      */
     public static boolean[] readBooleanArray(ByteBuf buf) {
-        int length = buf.readInt();
+        int length = readPrefix(buf, 1, MAX_ARRAY_LENGTH);
         if (length > 0) return readBooleanArray(buf, length);
         return new boolean[0];
     }
 
     /**
-     * get boolean array data
+     * get boolean array data, length validated against the default maximum
      */
     public static boolean[] readBooleanArray(ByteBuf buf, int length) {
+        return readBooleanArray(buf, length, MAX_ARRAY_LENGTH);
+    }
+
+    /**
+     * get boolean array data, length validated (non-negative, at most max and at most the readable
+     * bytes) before the array is allocated
+     */
+    public static boolean[] readBooleanArray(ByteBuf buf, int length, int max) {
+        checkLength(buf, length, 1, max);
         boolean[] array = new boolean[length];
 
         for (int i = 0; i < length; i++) {
@@ -362,18 +446,27 @@ public class PacketHelper {
     }
 
     /**
-     * get byte array data, read array length first
+     * get byte array data, read array length first (-1 = null marker, gives an empty array)
      */
     public static byte[] readByteArray(ByteBuf buf) {
-        int length = buf.readInt();
+        int length = readPrefix(buf, 1, MAX_ARRAY_LENGTH);
         if (length > 0) return readByteArray(buf, length);
         return new byte[0];
     }
 
     /**
-     * get byte array data
+     * get byte array data, length validated against the default maximum
      */
     public static byte[] readByteArray(ByteBuf buf, int length) {
+        return readByteArray(buf, length, MAX_ARRAY_LENGTH);
+    }
+
+    /**
+     * get byte array data, length validated (non-negative, at most max and at most the readable
+     * bytes) before the array is allocated
+     */
+    public static byte[] readByteArray(ByteBuf buf, int length, int max) {
+        checkLength(buf, length, 1, max);
         byte[] array = new byte[length];
 
         for (int i = 0; i < length; i++) {
@@ -762,8 +855,7 @@ public class PacketHelper {
             try {
                 CompressedStreamTools.write(nbt, new ByteBufOutputStream(buf));
             } catch (IOException e) {
-                LogHelper.info("EXCEPTION: NBT packet: send data fail: " + e);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: NBT packet: send data fail: " + e, e);
             }
         }
     }
@@ -784,8 +876,7 @@ public class PacketHelper {
             try {
                 return CompressedStreamTools.read(new ByteBufInputStream(buf), new NBTSizeTracker(2097152L));
             } catch (IOException e) {
-                LogHelper.info("EXCEPTION: NBT packet: get data fail: " + e);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: NBT packet: get data fail: " + e, e);
                 return null;
             }
         }

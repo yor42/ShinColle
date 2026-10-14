@@ -339,8 +339,7 @@ public class ShipSpawnEgg extends BasicItem {
                         entity.setShipLevel(attrs[0], true);
                     }
                 } catch (Exception e) {
-                    LogHelper.info("EXCEPTION: init ship attrs fail: " + e);
-                    e.printStackTrace();
+                    LogHelper.error("EXCEPTION: init ship attrs fail: " + e, e);
                 }
 
                 //set custom name
@@ -402,6 +401,28 @@ public class ShipSpawnEgg extends BasicItem {
     }
 
     /**
+     * XP level cost of a specific egg: first element of the Attrs array (ship level) / 3.
+     * A missing or empty array costs 0.
+     */
+    static int costLevel(int[] attrs) {
+        return attrs == null || attrs.length == 0 ? 0 : attrs[0] / 3;
+    }
+
+    /**
+     * The egg is consumed only when the ship was spawned and the player is not in creative mode.
+     */
+    static boolean shouldConsume(boolean creative, boolean spawned) {
+        return !creative && spawned;
+    }
+
+    /**
+     * XP levels to deduct: the cost only when the egg is consumed, otherwise 0.
+     */
+    static int levelsToCharge(boolean creative, boolean spawned, int costLevel) {
+        return shouldConsume(creative, spawned) ? costLevel : 0;
+    }
+
+    /**
      * VANILLA SPAWN EGG onItemRightClick event (use item to air)
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
@@ -434,25 +455,20 @@ public class ShipSpawnEgg extends BasicItem {
                     return new ActionResult<>(EnumActionResult.PASS, stack);
                 }
 
-                //itemstack-- & exp-- & spawn entity
-                //if creative mode = item not consume
-                if (!player.capabilities.isCreativeMode) {
-                    //cost exp if use specific egg
-                    if (stack.getItemDamage() > 1 && stack.hasTagCompound() && stack.getTagCompound() != null) {
-                        NBTTagCompound nbt = stack.getTagCompound();
-                        int costLevel = nbt.getIntArray("Attrs")[0] / 3;
+                //cost exp if use specific egg (checked now, charged only after a successful spawn)
+                int costLevel = 0;
 
-                        if (player.experienceLevel < costLevel) {
-                            player.sendMessage(new TextComponentTranslation("chat.shincolle:levelfail"));
-                            return new ActionResult<>(EnumActionResult.FAIL, stack);
-                        } else {
-                            player.addExperienceLevel(-costLevel);
-                        }
+                if (!player.capabilities.isCreativeMode
+                        && stack.getItemDamage() > 1 && stack.hasTagCompound() && stack.getTagCompound() != null) {
+                    costLevel = costLevel(stack.getTagCompound().getIntArray("Attrs"));
+
+                    if (player.experienceLevel < costLevel) {
+                        player.sendMessage(new TextComponentTranslation("chat.shincolle:levelfail"));
+                        return new ActionResult<>(EnumActionResult.FAIL, stack);
                     }
-
-                    //item -1
-                    stack.shrink(1);
                 }
+
+                boolean spawned = false;
 
                 //spawn entity in front of player (1 block)
                 //if boss egg
@@ -463,6 +479,7 @@ public class ShipSpawnEgg extends BasicItem {
                         ship.initAttrs(player.getRNG().nextInt(4));
                         player.world.spawnEntity(ship);
                         ship.playLivingSound();
+                        spawned = true;
                     }
                 }
                 //normal egg
@@ -483,8 +500,16 @@ public class ShipSpawnEgg extends BasicItem {
 
                         //send sync packet
                         ship.sendSyncPacketAll();
+                        spawned = true;
                     }
                 }//end spawn entity
+
+                //itemstack-- & exp-- only after a successful spawn, creative mode consumes nothing
+                player.addExperienceLevel(-levelsToCharge(player.capabilities.isCreativeMode, spawned, costLevel));
+
+                if (shouldConsume(player.capabilities.isCreativeMode, spawned)) {
+                    stack.shrink(1);
+                }
             }//end get position
 
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);

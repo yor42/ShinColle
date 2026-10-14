@@ -174,6 +174,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
                 -1, 0, 0, 0, 0,
                 -1, -1, -1, 0, 0
         };
+        this.setExpNext();   //initial ExpNext follows the expMod config
         this.StateTimer = new int[21];
         this.StateEmotion = new int[8];
         this.StateFlag = new boolean[]{false, false, false, false, true,
@@ -583,6 +584,13 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
 
         //load ship attributes
         CapaShipSavedValues.loadNBTData(nbt, this);
+
+        //no vanilla Health tag (ex: /summon): start at full HP instead of the constructor's 4.0. Saved ships always have the tag,
+        //so their saved HP is kept. loadNBTData skips the attribute calc when there is no ship data, so do it here first.
+        if (!nbt.hasKey("Health", Constants.NBT.TAG_ANY_NUMERIC)) {
+            this.calcShipAttributes(31, true);
+            this.setHealth(this.getMaxHealth());
+        }
 
         //load ship inventory
         if (nbt.hasKey(CapaShipInventory.InvName)) {
@@ -1158,7 +1166,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
 
     //set next exp value (for client load nbt data, gui display)
     public void setExpNext() {
-        StateMinor[ID.M.ExpNext] = StateMinor[ID.M.ShipLevel] * ConfigHandler.expMod + ConfigHandler.expMod;
+        StateMinor[ID.M.ExpNext] = ExpCurve.expNext(StateMinor[ID.M.ShipLevel], ConfigHandler.expMod);
     }
 
     //called when entity exp++
@@ -1184,7 +1192,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
                 }
 
                 StateMinor[ID.M.ExpCurrent] -= StateMinor[ID.M.ExpNext];    //level up
-                StateMinor[ID.M.ExpNext] = (StateMinor[ID.M.ShipLevel] + 2) * ConfigHandler.expMod;
+                StateMinor[ID.M.ExpNext] = ExpCurve.expNext(StateMinor[ID.M.ShipLevel] + 1, ConfigHandler.expMod);
                 setShipLevel(++StateMinor[ID.M.ShipLevel], true);
             }
         }
@@ -1196,6 +1204,8 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
         if (par1 < 151) {
             StateMinor[ID.M.ShipLevel] = par1;
         }
+        //exp needed for next level follows the level and the expMod config
+        setExpNext();
         //update attributes
         if (update) {
             this.calcShipAttributes(31, true);
@@ -1428,7 +1438,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
 
                 //owner在附近才需要sync
                 if (player != null && player.dimension == this.dimension &&
-                        this.getDistanceSq(player) < 64F) {
+                        EntityHelper.isWithinRadius(this.getDistanceSq(player), EntityHelper.OWNER_SYNC_RADIUS, false)) {
                     CommonProxy.channelG.sendTo(new S2CGUIPackets(this), player);
                 }
             }
@@ -1488,7 +1498,7 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
                 }
 
                 //owner在附近才需要sync
-                if (player != null && this.getDistanceSq(player) <= 64F) {
+                if (player != null && EntityHelper.isWithinRadius(this.getDistanceSq(player), EntityHelper.OWNER_SYNC_RADIUS, true)) {
                     CommonProxy.channelE.sendTo(new S2CEntitySync(this, type), player);
                 }
             }
@@ -4796,9 +4806,9 @@ public abstract class BasicEntityShip extends EntityTameable implements IShipCan
             }
         }
 
-        if (this.deathTime == ConfigHandler.deathMaxTick) {
+        if (!this.isDead && DeathDropRule.isDeathComplete(this.deathTime, ConfigHandler.deathMaxTick)) {
             //spawn ship egg
-            if (!this.world.isRemote && this.getStateFlag(ID.F.CanDrop)) {
+            if (!this.world.isRemote && DeathDropRule.shouldDropEgg(this.deathTime, ConfigHandler.deathMaxTick, this.getStateFlag(ID.F.CanDrop))) {
                 //set flag to false to prevent multiple drop from unknown bug
                 this.setStateFlag(ID.F.CanDrop, false);
 

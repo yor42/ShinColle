@@ -107,7 +107,7 @@ public class CapaShipInventory extends CapaInventory<BasicEntityShip> implements
                 return ItemStack.EMPTY;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: decrStackSize fail", e);
             return ItemStack.EMPTY;
         }
     }

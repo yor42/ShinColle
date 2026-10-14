@@ -12,6 +12,10 @@ public class LogHelper {
         FMLLog.log(Tags.MOD_NAME, logLevel, String.valueOf(object));
     }
 
+    private static void createLog(Level logLevel, Object object, Throwable throwable) {
+        FMLLog.log(Tags.MOD_NAME, logLevel, throwable, "%s", String.valueOf(object));
+    }
+
     //off: 不紀錄log
     public static void off(Object object) {
         createLog(Level.OFF, object);
@@ -25,6 +29,11 @@ public class LogHelper {
     //error: 紀錄程式可能停止運作的問題
     public static void error(Object object) {
         createLog(Level.ERROR, object);
+    }
+
+    //error: log an error message together with the exception stack trace
+    public static void error(Object object, Throwable throwable) {
+        createLog(Level.ERROR, object, throwable);
     }
 
     //warn: 紀錄可能導致error的問題

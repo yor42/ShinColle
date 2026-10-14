@@ -13,6 +13,7 @@ import com.lulan.shincolle.reference.Enums;
 import com.lulan.shincolle.reference.ID;
 import com.lulan.shincolle.reference.Values;
 import com.lulan.shincolle.reference.unitclass.AttrsAdv;
+import com.lulan.shincolle.utility.AttrLimit;
 import com.lulan.shincolle.utility.CalcHelper;
 import com.lulan.shincolle.utility.CombatHelper;
 import com.lulan.shincolle.utility.GuiHelper;
@@ -657,8 +658,7 @@ public class GuiMorphInventory extends GuiContainer {
                     //calc dodge for submarine
                     if (this.entity instanceof IShipInvisible) {
                         float temp2 = attrs.getAttrsBuffed(ID.Attrs.DODGE) + ((IShipInvisible) this.entity).getInvisibleLevel();
-                        if (temp2 > ConfigHandler.limitShipAttrs[ID.Attrs.DODGE])
-                            temp2 = (float) ConfigHandler.limitShipAttrs[ID.Attrs.DODGE];
+                        temp2 = AttrLimit.limitAttr(temp2, ConfigHandler.limitShipAttrs[ID.Attrs.DODGE]);
                         overText = String.format("%.0f", temp2 * 100F) + " %";
                     }
                     //calc dodge for normal ship

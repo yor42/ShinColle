@@ -408,12 +408,6 @@
       "shincolle:hit3301"
     ]
   },
-  "ship-feed-33": {
-    "sounds": [
-      "shincolle:feed3301",
-      "shincolle:feed3302"
-    ]
-  },
   "ship-idle-38": {
     "sounds": [
       "shincolle:idle3801",
@@ -554,7 +548,7 @@
     "sounds": [
       "shincolle:hurt5401",
       "shincolle:hurt5402",
-      "shincolle:hurt54013"
+      "shincolle:hurt5403"
     ]
   },
   "ship-death-54": {
@@ -704,6 +698,24 @@
   "ship-time23-54": {
     "sounds": [
       "shincolle:time5423"
+    ]
+  },
+  "ship-idle-60": {
+    "sounds": [
+      "shincolle:pan1",
+      "shincolle:pan2"
+    ]
+  },
+  "ship-hit-60": {
+    "sounds": [
+      "shincolle:pan1",
+      "shincolle:pan2"
+    ]
+  },
+  "ship-hit-62": {
+    "sounds": [
+      "shincolle:burnlove1",
+      "shincolle:burnlove2"
     ]
   }
 }

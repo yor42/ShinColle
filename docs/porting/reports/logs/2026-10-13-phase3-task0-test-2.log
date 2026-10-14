@@ -1,0 +1,48 @@
+
+> Configure project :
+[Unimined] Plugin Version: 1.4.43-kappa
+[Unimined/MinecraftDownloader] retrieving version metadata
+[Unimined/Forge] Using FG3 transformer
+[Unimined/Minecraft ::main] Applying minecraft config for source set 'main'
+[Unimined/Minecraft ::main] Applying CleanroomFG3
+[Unimined/ForgeTransformer] Attempting inject forge userdev into minecraft jar
+[Unimined/Minecraft ::main] Applying run configs
+Merging client and server jars...
+[Unimined/Forge] transforming minecraft jar for FG3
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class ain$22, {official=ain$22, searge=net/minecraft/item/Item$22, mcp=net/minecraft/item/Item$22}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class anh$FlowerEntry, {official=anh$FlowerEntry, searge=net/minecraft/world/biome/Biome$FlowerEntry, mcp=net/minecraft/world/biome/Biome$FlowerEntry}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class anp$EmeraldGenerator, {official=anp$EmeraldGenerator, searge=net/minecraft/world/biome/BiomeHills$EmeraldGenerator, mcp=net/minecraft/world/biome/BiomeHills$EmeraldGenerator}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class awu$Builder, {official=awu$Builder, searge=net/minecraft/block/state/BlockStateContainer$Builder, mcp=net/minecraft/block/state/BlockStateContainer$Builder}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class aym$WorldSleepResult, {official=aym$WorldSleepResult, searge=net/minecraft/world/WorldProvider$WorldSleepResult, mcp=net/minecraft/world/WorldProvider$WorldSleepResult}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class c$4, {official=c$4, searge=net/minecraft/crash/CrashReportCategory$4, mcp=net/minecraft/crash/CrashReportCategory$4}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class c$5, {official=c$5, searge=net/minecraft/crash/CrashReportCategory$5, mcp=net/minecraft/crash/CrashReportCategory$5}
+[Unimined/JarMod ::source set 'main'] Adding mappings for added inner class ot$1, {official=ot$1, searge=net/minecraft/server/management/PlayerChunkMapEntry$1, mcp=net/minecraft/server/management/PlayerChunkMapEntry$1}
+[Unimined/ForgeTransformer] Applying ATs [forge_at.cfg]
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] Found 3 mods for remapping
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] Found 5 mods for remapping
+[Unimined/ModRemapper] Remapping mods from searge to mcp
+[Unimined/ModRemapper] No mods found for remapping
+
+> Task :generateJavaTemplates UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+> Task :generateResourceTemplates UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :compileTestJava
+> Task :processTestResources NO-SOURCE
+> Task :testClasses
+> Task :test
+
+[Incubating] Problems report is available at: file:///C:/Projects/ShinColle/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.8.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 8s
+6 actionable tasks: 2 executed, 4 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.0/userguide/configuration_cache_enabling.html

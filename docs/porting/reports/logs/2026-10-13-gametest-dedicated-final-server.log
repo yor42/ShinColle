@@ -1,0 +1,329 @@
+[20:52:09] [main/WARN]: Mappings not available! (mappings/mappings.tiny in classpath)
+[20:52:09] [main/WARN]: Could not load mappings from classpath, falling back to checking packages
+[20:52:10] [main/INFO]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLServerTweaker
+[20:52:10] [main/INFO]: Using primary tweak name net.minecraftforge.fml.common.launcher.FMLServerTweaker
+[20:52:10] [main/INFO]: Calling tweak net.minecraftforge.fml.common.launcher.FMLServerTweaker@3c01cfa1
+[20:52:10] [main/INFO]: Jar location: file:/C:/Users/yor42/.gradle/caches/unimined/maven/net/minecraft/minecraft-cleanroom-0.6.13-alpha/1.12.2/minecraft-cleanroom-0.6.13-alpha-1.12.2.jar
+[20:52:10] [main/INFO] [FML]: Forge Mod Loader version 14.23.5.2864 for Minecraft 1.12.2 loading
+[20:52:10] [main/INFO] [FML]: Cleanroom version 0.6.13-alpha
+[20:52:10] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 25.0.4, running on Windows 11:amd64:10.0, installed at C:\Users\yor42\.jdks\temurin-25.0.4
+[20:52:10] [main/ERROR] [FML]: Apache Maven library folder was not in the format expected. Using default libraries directory.
+[20:52:10] [main/ERROR] [FML]: Full: C:\Users\yor42\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.9.16\1176c6579a8a68508c3479ef72d514e71c98ddca\maven-artifact-3.9.16.jar
+[20:52:10] [main/ERROR] [FML]: Trimmed: c:/users/yor42/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.9.16/
+[20:52:10] [main/INFO] [Cleanroom]: Initializing CleanMix...
+[20:52:10] [main/INFO] [CleanMix]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:/C:/Users/yor42/.gradle/caches/modules-2/files-2.1/com.cleanroommc/cleanmix/0.7.2/b8793a2f5b29799853dc4bf070707f91112ea2ed/cleanmix-0.7.2.jar!/org/spongepowered/asm/mixin/MixinEnvironment.class Service=CleanMix Env=SERVER
+[20:52:10] [main/INFO] [Cleanroom]: Discovering mods
+[20:52:10] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\build\classes\java\main
+[20:52:10] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\build\resources\main
+[20:52:10] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\build\classes\java\gametest
+[20:52:10] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\build\resources\gametest
+[20:52:10] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\debugMod\Mekanism-Community-Edition-1.12.2-9.12.8-ALL.jar
+[20:52:10] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\.gradle\unimined\local\modTransform\remapped_curse\maven\mantle-74924\2713386\mantle-74924-2713386.jar
+[20:52:10] [main/INFO] [FML]: Adding extra mod file C:\Projects\ShinColle\.gradle\unimined\local\modTransform\remapped_curse\maven\the-one-probe-community-edition-885670\6934576\the-one-probe-community-edition-885670-6934576.jar
+[20:52:10] [main/INFO] [FML]: Searching C:\Projects\ShinColle\run\server-gametest\.\mods for mods
+[20:52:11] [main/INFO] [Cleanroom]: Finished discovering mods. Found 5 discovered mod ids in 1138 ms.
+[20:52:11] [main/INFO] [Cleanroom]: Initializing MixinExtras...
+[20:52:11] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugin
+[20:52:11] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugin
+[20:52:11] [main/INFO] [Foundation]: Loading tweak name org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[20:52:11] [main/INFO] [Foundation]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:52:11] [main/INFO] [Foundation]: Loading tweak name org.spongepowered.asm.launch.MixinTweaker
+[20:52:11] [main/INFO] [Foundation]: Loading tweak name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[20:52:11] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker@5419a078
+[20:52:11] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker@5419a078
+[20:52:11] [main/INFO] [Foundation]: Calling tweak org.spongepowered.asm.mixin.EnvironmentStateTweaker@7c484b45
+[20:52:11] [main/INFO] [Foundation]: Calling tweak FMLCorePlugin
+[20:52:11] [main/ERROR] [FML]: The binary patch set is missing, because you are in a development environment!
+[20:52:11] [main/INFO] [FML]: FML appears to be missing any signature data. This is expected, don't worry.
+[20:52:11] [main/INFO] [Foundation]: Calling tweak FMLForgePlugin
+[20:52:11] [main/INFO] [Foundation]: Calling tweak org.spongepowered.asm.launch.MixinTweaker@7fa47b8a
+[20:52:11] [main/INFO] [Foundation]: Calling tweak net.minecraftforge.fml.common.launcher.FMLDeobfTweaker@3c32da85
+[20:52:11] [main/INFO] [Foundation]: Calling tweak MekanismCoremod
+[20:52:12] [main/INFO] [Foundation]: Launching wrapped minecraft net.minecraft.server.MinecraftServer
+[20:52:13] [Server thread/INFO] [minecraft/DedicatedServer]: Starting minecraft server version 1.12.2
+[20:52:13] [Server thread/INFO] [FML]: Cleanroom v0.6.13-alpha Initialized
+[20:52:13] [Server thread/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[20:52:13] [Server thread/INFO] [FML]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
+[20:52:13] [Server thread/INFO] [FML]: Replaced 1227 ore ingredients
+[20:52:13] [Server thread/INFO] [Kirino Core]: Initializing Kirino-Engine's Mod Container.
+[20:52:13] [Server thread/INFO] [Kirino Core]: Initializing Kirino-ECS's Mod Container.
+[20:52:13] [Server thread/INFO] [Kirino Core]: Initializing Kirino-GL's Mod Container.
+[20:52:15] [Server thread/WARN] [FML]: Mod mekanismgenerators is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 9.12.8
+[20:52:15] [Server thread/WARN] [FML]: Mod mekanismtools is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version 9.12.8
+[20:52:15] [Server thread/INFO] [FML]: Forge Mod Loader has identified 18 mods to load
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for cleanmix: assets/cleanmix/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for mixinbooter: assets/mixinbooter/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for configanytime: assets/configanytime/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for kirino_engine: assets/kirino_engine/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for kirino_ecs: assets/kirino_ecs/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for kirino_gl: assets/kirino_gl/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for FML: assets/fml/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for mantle: assets/mantle/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for shincolle: /C:/Projects/ShinColle/build/classes/java/main/assets/shincolle/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for shincolle_gametest: /C:/Projects/ShinColle/build/classes/java/gametest/assets/shincolle_gametest/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for mekanismgenerators: assets/mekanismgenerators/lang/en_us.lang
+[20:52:15] [Server thread/WARN] [FML]: Missing English translation for mekanismtools: assets/mekanismtools/lang/en_us.lang
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jna-5.19.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jopt-simple-5.0.4.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file codecjorbis-20101023.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file codecwav-20101023.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file libraryjavasound-20101123.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file librarylwjglopenal-20100824.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file soundsystem-20120107.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file guava-33.6.0-jre.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file commons-lang3-3.20.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file commons-io-2.22.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file commons-codec-1.22.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jinput-2.0.10.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file gson-2.14.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file authlib-1.5.25.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file realms-1.10.22.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file commons-compress-1.28.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file commons-logging-1.4.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file fastutil-8.5.18.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file log4j-api-2.26.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file log4j-core-2.26.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jinput-platform-2.0.5-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file text2speech-1.10.3.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file text2speech-1.10.3-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-glfw-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-glfw-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-glfw-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-glfw-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-jemalloc-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-jemalloc-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-jemalloc-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-jemalloc-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-openal-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-openal-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-openal-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-openal-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-opengl-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-opengl-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-opengl-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-opengl-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-stb-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-stb-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-stb-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-stb-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-tinyfd-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-tinyfd-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-tinyfd-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-tinyfd-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1-natives-windows-arm64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1-natives-windows-x86.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1-natives-windows.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lwjgl-3.4.1-unsafe.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file asm-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file asm-commons-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file asm-tree-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file asm-util-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file asm-analysis-9.10.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file asm-deprecated-7.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file foundation-0.19.11.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file Reflect-1.6.4.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file javassist-3.30.2-GA.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file icu4j-78.3.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jline-4.1.3.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jline-native-4.1.3.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file lzma-0.0.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file vecmath-1.5.2.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file oshi-core-ffm-7.3.2.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jna-platform-5.19.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file maven-artifact-3.9.16.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jspecify-1.0.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file httpcore5-5.4.3.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file httpcore5-h2-5.4.3.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file httpclient5-5.6.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-base-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-buffer-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-common-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-handler-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-resolver-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-native-unix-common-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-native-unix-common-4.2.15.Final-linux-x86_64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-classes-epoll-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-native-epoll-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-transport-native-epoll-4.2.15.Final-linux-x86_64.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-http-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-http2-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-dns-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-codec-compression-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file netty-resolver-dns-4.2.15.Final.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.xml.ws-api-4.0.3.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.activation-api-2.1.4.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.annotation-api-3.0.0.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.xml.bind-api-4.0.5.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jakarta.inject-api-2.0.1.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jaxb-runtime-4.0.9.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file jaxb-core-4.0.9.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file classgraph-4.8.184.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file mixinextras-common-0.5.5.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file httpclient-4.5.14.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: FML has found a non-mod file httpcore-4.4.16.jar in your mods directory. It will now be injected into your classpath.
+[20:52:15] [Server thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, cleanroom, cleanmix, mixinbooter, configanytime, kirino_engine, kirino_ecs, kirino_gl, FML, forge, mantle, theoneprobe, shincolle, shincolle_gametest, mekanism, mekanismgenerators, mekanismtools] at CLIENT
+[20:52:15] [Server thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, cleanroom, cleanmix, mixinbooter, configanytime, kirino_engine, kirino_ecs, kirino_gl, FML, forge, mantle, theoneprobe, shincolle, shincolle_gametest, mekanism, mekanismgenerators, mekanismtools] at SERVER
+[20:52:16] [Server thread/INFO] [FML]: Processing ObjectHolder annotations
+[20:52:16] [Server thread/INFO] [FML]: Found 1278 ObjectHolder annotations
+[20:52:16] [Server thread/INFO] [FML]: Identifying ItemStackHolder annotations
+[20:52:16] [Server thread/INFO] [FML]: Found 0 ItemStackHolder annotations
+[20:52:16] [Server thread/INFO] [FML]: Configured a dormant chunk cache size of 0
+[20:52:16] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [cleanroom] Starting version check at https://download.cleanroommc.com/api/forge
+[20:52:16] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Pre-Init completed.
+[20:52:16] [Server thread/INFO] [Mekanism]: Didn't detect MCMP, ignoring compatibility package
+[20:52:17] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [cleanroom] Found status: BETA_OUTDATED Target: 0.7.0-alpha
+[20:52:17] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[20:52:17] [Cleanroom Version Check/INFO] [forge.VersionCheck]: [forge] Found status: BETA Target: null
+[20:52:18] [Server thread/WARN] [FML]: Potentially Dangerous alternative prefix `minecraft` for name `portal`, expected `mekanism`. This could be a intended override, but in most cases indicates a broken mod.
+[20:52:18] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[20:52:18] [Server thread/INFO] [FML]: Object Holders set.
+[20:52:18] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[20:52:18] [Server thread/INFO] [FML]: Object Holders set.
+[20:52:18] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[20:52:18] [Server thread/INFO] [FML]: Object Holders set.
+[20:52:18] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[20:52:18] [Server thread/INFO] [FML]: Object Holders set.
+[20:52:18] [Server thread/INFO] [FML]: Injecting itemstacks
+[20:52:18] [Server thread/INFO] [FML]: Itemstack injection complete
+[20:52:18] [Server thread/INFO] [Kirino Core]: ---------- Kirino Common Initialization ----------
+[20:52:18] [Server thread/INFO] [Kirino Core]: Registered the default ShaderRegistrationEvent listener.
+[20:52:18] [Server thread/INFO] [Kirino Core]: Registered the default PostProcessingRegistrationEvent listener.
+[20:52:18] [Server thread/INFO] [Kirino Core]: Initializing ECS Runtime.
+[20:52:18] [Server thread/INFO] [Kirino Core]: ECS Runtime Initialized. Time taken: 19 ms
+[20:52:18] [Server thread/INFO] [Kirino Core]: Initializing Kirino Engine.
+[20:52:18] [Server thread/INFO] [Kirino Core]: Registered headless module installer "com.cleanroommc.kirino.engine.analysis.install.AnalyticalWorldInstaller".
+[20:52:18] [Server thread/INFO] [Kirino Core]: Registered graphics module installer "com.cleanroommc.kirino.engine.graphics.install.GraphicsWorldInstaller".
+[20:52:18] [Server thread/INFO] [Kirino Core]: Kirino Engine Initialized. Time taken: 68 ms
+[20:52:18] [Server thread/INFO] [Kirino Core]: ---------- Kirino Server-Side Initialization ----------
+[20:52:18] [Server thread/INFO] [minecraft/DedicatedServer]: Loading properties
+[20:52:18] [Server thread/INFO] [minecraft/DedicatedServer]: Default game type: SURVIVAL
+[20:52:18] [Server thread/INFO] [minecraft/DedicatedServer]: Generating keypair
+[20:52:18] [Server thread/INFO] [minecraft/DedicatedServer]: Starting Minecraft server on 127.0.0.1:25621
+[20:52:18] [Server thread/INFO] [minecraft/NetworkSystem]: Using default channel type
+[20:52:18] [Server thread/WARN] [minecraft/DedicatedServer]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[20:52:18] [Server thread/WARN] [minecraft/DedicatedServer]: The server will make no attempt to authenticate usernames. Beware.
+[20:52:18] [Server thread/WARN] [minecraft/DedicatedServer]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[20:52:18] [Server thread/WARN] [minecraft/DedicatedServer]: To change this, set "online-mode" to "true" in the server.properties file.
+[20:52:19] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[20:52:19] [Server thread/INFO] [FML]: Object Holders set.
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Init completed.
+[20:52:19] [Server thread/INFO] [Mekanism]: Version 999.999.999 initializing...
+[20:52:19] [Server thread/INFO] [Mekanism]: Loading complete.
+[20:52:19] [Server thread/INFO] [Mekanism]: Mod loaded.
+[20:52:19] [Server thread/INFO] [Mekanism]: Loaded MekanismGenerators module.
+[20:52:19] [Server thread/INFO] [Mekanism]: Loaded 'Mekanism: Tools' module.
+[20:52:19] [Server thread/INFO] [FML]: Injecting itemstacks
+[20:52:19] [Server thread/INFO] [FML]: Itemstack injection complete
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Post-Init completed.
+[20:52:19] [Server thread/INFO] [Mekanism]: Fake player readout: UUID = 46e82cd0-d480-3d48-800a-77431ede078e, name = [Mekanism]
+[20:52:19] [Server thread/INFO] [Mekanism]: Finished loading Cardboard Box blacklist (loaded 0 entries)
+[20:52:19] [Server thread/INFO] [Mekanism]: Hooking complete.
+[20:52:19] [Server thread/INFO] [FML]: Forge Mod Loader has successfully loaded 18 mods
+[20:52:19] [Server thread/INFO] [Kirino Core]: ---------- Kirino Common Post-Initialization ----------
+[20:52:19] [Server thread/INFO] [Kirino Core]: ---------- Kirino Server-Side Post-Initialization ----------
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: server about to start: is MP server? true
+[20:52:19] [Server thread/INFO] [minecraft/DedicatedServer]: Preparing level "world-gametest"
+[20:52:19] [Server thread/INFO] [FML]: Injecting existing registry data into this server instance
+[20:52:19] [Server thread/INFO] [FML]: Setting Object Holders with value...
+[20:52:19] [Server thread/INFO] [FML]: Object Holders set.
+[20:52:19] [Server thread/INFO] [FML]: Loading dimension 0 (world-gametest) (net.minecraft.server.dedicated.DedicatedServer@41183235)
+[20:52:19] [Server thread/INFO] [minecraft/AdvancementList]: Loaded 488 advancements
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy data
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get data from .dat file
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get unattackable target list: count: 0
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get player data count: 0
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get team data count: 0
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: init server proxy: get ship data count: 1
+[20:52:19] [Server thread/INFO] [FML]: Loading dimension -1 (world-gametest) (net.minecraft.server.dedicated.DedicatedServer@41183235)
+[20:52:19] [Server thread/INFO] [FML]: Loading dimension 1 (world-gametest) (net.minecraft.server.dedicated.DedicatedServer@41183235)
+[20:52:19] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing start region for level 0
+[20:52:19] [Server thread/INFO] [minecraft/DedicatedServer]: Done (0.514s)! For help, type "help" or "?"
+[20:52:19] [Server thread/INFO] [minecraft/DedicatedServer]: Starting remote control listener
+[20:52:19] [RCON Listener #1/INFO] [minecraft/MinecraftServer]: RCON running on 127.0.0.1:25631
+[20:52:19] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Server starting event: is MP server? true
+[20:52:19] [Server thread/INFO] [FML]: Unloading dimension -1
+[20:52:19] [Server thread/INFO] [FML]: Unloading dimension 1
+[20:54:06] [Netty Server IO #1/INFO] [FML]: Client protocol version 2
+[20:54:06] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 18 mods : minecraft@1.12.2,configanytime@3.0,kirino_engine@epoch-1.a5,FML@8.0.99.99,theoneprobe@1.4.29,kirino_gl@epoch-1.a2,shincolle_gametest@dev,mixinbooter@11.8,mekanismtools@9.12.8,cleanmix@0.7.2,mekanismgenerators@9.12.8,cleanroom@0.6.13-alpha,mekanism@9.12.8,forge@14.23.5.2864,mantle@1.12-1.3.3.55,kirino_ecs@epoch-1.a3,mcp@9.42,shincolle@1.12.2.1.11
+[20:54:06] [Server thread/INFO] [FML]: [Server thread] Server side modded connection established
+[20:54:06] [Server thread/INFO] [minecraft/PlayerList]: Developer[/127.0.0.1:52358] logged in with entity id 8 at (1117.8298837312384, 4.0, 371.8298837312384)
+[20:54:06] [Server thread/INFO] [minecraft/DedicatedServer]: Developer joined the game
+[20:54:06] [Server thread/INFO] [Mekanism]: Sent config to 'Developer.'
+[20:54:09] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: update player: update player uid: 100
+[20:54:10] [RCON Listener #1/INFO] [minecraft/MinecraftServer]: Rcon connection from: /127.0.0.1
+[20:54:10] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Set Developer's game mode to Survival Mode]
+[20:54:10] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=0 playerPos=1117.8/4.0/371.8 playerUID=100 op=false gm=SURVIVAL
+[20:54:11] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] egg given slot=0
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] ship join EntityDestroyerI uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 canceled=false hp=4.0
+[20:54:12] [Server thread/WARN] [minecraft/WorldServer]: Keeping entity shincolle:entitydestroyeri that already exists with UUID c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=1 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=2 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=3 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=4 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=5 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=6 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=7 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=8 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=9 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=10 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=11 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=12 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=13 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=14 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=15 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=-1
+[20:54:12] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=16 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=17 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=18 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=19 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=20 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=21 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=22 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=23 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=24 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=25 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=26 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=27 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=28 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=29 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=30 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=31 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=32 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=33 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=34 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=35 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:13] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=36 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:14] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=37 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:14] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=38 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:14] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=39 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:14] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] watch ship ticks=40 isDead=false hp=20.3 inLoadedList=true pos=1117/4/371 shipUID=101
+[20:54:14] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] fakeowner prevOwnerUID=100 nowOwnerUID=9999
+[20:54:14] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=9999 ownerUUID=00000000-0000-4000-8000-000000009999 level=1 bonus=0,0,0,0,0,0 playerPos=1117.8/4.0/371.8 playerUID=100 op=false gm=SURVIVAL
+[20:54:16] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=9999 ownerUUID=00000000-0000-4000-8000-000000009999 level=1 bonus=0,0,0,0,0,0 playerPos=1117.8/4.0/371.8 playerUID=100 op=false gm=SURVIVAL
+[20:54:17] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=9999 ownerUUID=00000000-0000-4000-8000-000000009999 level=1 bonus=0,0,0,0,0,0 playerPos=1117.8/4.0/371.8 playerUID=100 op=false gm=SURVIVAL
+[20:54:18] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=9999 ownerUUID=00000000-0000-4000-8000-000000009999 level=1 bonus=0,0,0,0,0,0 playerPos=1117.8/4.0/371.8 playerUID=100 op=false gm=SURVIVAL
+[20:54:19] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Set Developer's game mode to Creative Mode]
+[20:54:20] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] command /shipchangeowner Developer by Developer (canSendCommands=false gamemode=CREATIVE)
+[20:54:21] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] command /shipattrs 42 10 11 12 13 14 15 by Developer (canSendCommands=false gamemode=CREATIVE)
+[20:54:23] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=9999 ownerUUID=00000000-0000-4000-8000-000000009999 level=1 bonus=0,0,0,0,0,0 playerPos=1117.8/4.0/371.8 playerUID=100 op=false gm=CREATIVE
+[20:54:25] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=9999 ownerUUID=00000000-0000-4000-8000-000000009999 level=1 bonus=0,0,0,0,0,0 playerPos=1117.8/4.0/371.8 playerUID=100 op=false gm=CREATIVE
+[20:54:25] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Opped Developer]
+[20:54:25] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: Set Developer's game mode to Survival Mode]
+[20:54:26] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] command /shipchangeowner Developer by Developer (canSendCommands=true gamemode=SURVIVAL)
+[20:54:29] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] command /shipattrs 42 10 11 12 13 14 15 by Developer (canSendCommands=true gamemode=SURVIVAL)
+[20:54:31] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=100 ownerUUID=a01a21f5-c117-3c1f-b5d0-e055b927f733 level=42 bonus=10,11,12,13,14,15 playerPos=1117.8/4.0/371.8 playerUID=100 op=true gm=SURVIVAL
+[20:54:33] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] fakeowner prevOwnerUID=100 nowOwnerUID=9999
+[20:54:33] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] reset level=1
+[20:54:33] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=9999 ownerUUID=00000000-0000-4000-8000-000000009999 level=1 bonus=0,0,0,0,0,0 playerPos=1117.8/4.0/371.8 playerUID=100 op=true gm=SURVIVAL
+[20:54:34] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] state ships=1 uuid=c3a540cf-1c74-4d93-8e0e-b380b0cc8ca5 shipPos=1117.0/4.0/371.0 eid=8571 ownerUID=100 ownerUUID=a01a21f5-c117-3c1f-b5d0-e055b927f733 level=77 bonus=9,9,9,9,9,9 playerPos=1117.8/4.0/371.8 playerUID=100 op=true gm=SURVIVAL
+[20:54:35] [RCON Client #2/INFO] [minecraft/DedicatedServer]: [Rcon: De-opped Developer]
+[20:54:35] [Server thread/INFO] [GameTestServer]: [GAMETEST-SRV] stopping server
+[20:54:35] [Server thread/INFO] [Shinkeiseikan Collection]: INFO: Server stopping event
+[20:54:35] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[20:54:35] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[20:54:35] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[20:54:35] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'world-gametest'/overworld
+[20:54:35] [Server thread/INFO] [FML]: Unloading dimension 0
+[20:54:35] [Server Shutdown Thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[20:54:35] [Server Shutdown Thread/INFO] [minecraft/MinecraftServer]: Saving players

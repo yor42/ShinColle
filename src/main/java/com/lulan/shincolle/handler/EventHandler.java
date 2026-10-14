@@ -65,6 +65,7 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -145,6 +146,13 @@ public class EventHandler {
                 event.setNewSpeed(event.getOriginalSpeed() * 5F * digBoost);
             }
         }
+    }
+
+    //client disconnect: restore the local ringAbility that a server config sync replaced (issue #26)
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        S2CEntitySync.restoreRingAbility();
     }
 
     //apply ring effect: vision in the water
@@ -788,8 +796,7 @@ public class EventHandler {
                 MetamorphHelper.writeToNBT(event.getEntityPlayer());
             }
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: save morph ship data fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: save morph ship data fail: " + e, e);
         }
     }
 
@@ -805,8 +812,7 @@ public class EventHandler {
                 MetamorphHelper.writeToNBT(event.player);
             }
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: save morph ship data fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: save morph ship data fail: " + e, e);
         }
     }
 
