@@ -283,9 +283,8 @@ public class GuiFormation extends GuiContainer {
                 break;
             case ID.Attrs.MOV:
                 float mov = this.attrs.getMinMOV() + this.attrs.getAttrsFormation(attrid) * (float) ConfigHandler.scaleShip[ID.AttrsBase.MOV];
-                if (mov > (float) ConfigHandler.limitShipAttrs[ID.Attrs.MOV])
-                    mov = (float) ConfigHandler.limitShipAttrs[ID.Attrs.MOV];
-                else if (mov < 0F) mov = 0F;
+                mov = AttrLimit.limitAttr(mov, ConfigHandler.limitShipAttrs[ID.Attrs.MOV]);
+                if (mov < 0F) mov = 0F;
 
                 str = String.format("%.2f", this.attrs.getAttrsFormation(attrid)) + " : " + TextFormatting.GRAY;
                 valueOrg = String.format("%.2f", this.unbuffedAttrs[attrid]);

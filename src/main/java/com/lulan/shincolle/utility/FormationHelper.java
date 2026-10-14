@@ -144,8 +144,8 @@ public class FormationHelper {
         }
 
         //check limit
-        if (mov > ConfigHandler.limitShipAttrs[ID.Attrs.MOV]) mov = (float) ConfigHandler.limitShipAttrs[ID.Attrs.MOV];
-        else if (mov < 0F) mov = 0F;
+        mov = AttrLimit.limitAttr(mov, ConfigHandler.limitShipAttrs[ID.Attrs.MOV]);
+        if (mov < 0F) mov = 0F;
 
         return mov;
     }
