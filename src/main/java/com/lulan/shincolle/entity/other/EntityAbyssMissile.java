@@ -569,7 +569,7 @@ public class EntityAbyssMissile extends Entity implements IShipOwner, IShipAttrs
                     }
 
                     //attack
-                    if (ent.attackEntityFrom(DamageSource.causeMobDamage(host2).setExplosion(), missileAtk)) {
+                    if (ent.attackEntityFrom(new MissileDamageSource(host2), missileAtk)) {
                         if (!TeamHelper.checkSameOwner(this.getHostEntity(), ent))
                             BuffHelper.applyBuffOnTarget(ent, this.EffectMap);
                     }

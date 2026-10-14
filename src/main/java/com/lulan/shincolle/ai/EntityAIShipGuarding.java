@@ -67,6 +67,7 @@ public class EntityAIShipGuarding extends EntityAIBase {
     private int onSightTime; // target on sight time
     private int lastDelayTick = NEVER; // tick of the last attack delay update
     private int lastFindTick = NEVER; // tick of the last target search
+    private int lastStartCheckTick = NEVER; // tick of the last idle start check
     private int aimTime; // time before fire
     private float range, rangeSq; // attack range
     private boolean launchType; // airplane type, true = light
@@ -78,6 +79,29 @@ public class EntityAIShipGuarding extends EntityAIBase {
 
     /** target search interval in ticks */
     private static final int FIND_INTERVAL = 32;
+
+    /**
+     * idle start check interval in ticks. Nominal value kept from the former "ticksExisted % 32" check;
+     * the task scheduler polls shouldExecute() on its own interval (vanilla EntityAITasks tickRate = 3),
+     * which is not a divisor of 32, so the modulo check fired irregularly.
+     */
+    private static final int START_CHECK_INTERVAL = 32;
+
+    /**
+     * Fire condition shared by the stationary and the moving guard path:
+     * not passive AI and guard type > 0 (guard types 1 and 2 attack while guarding).
+     */
+    public static boolean canFire(boolean passiveAI, int guardType) {
+        return !passiveAI && guardType > 0;
+    }
+
+    /**
+     * True when the idle start check is due: the first check always is, afterwards once at least
+     * interval ticks passed since the last one. Independent of the poll interval and of ticksExisted alignment.
+     */
+    public static boolean isStartCheckDue(int lastCheckTick, int nowTick, int interval) {
+        return lastCheckTick == NEVER || nowTick - lastCheckTick >= interval;
+    }
 
     /**
      * Search box of a guarding ship: the ship box extended by 0.9 x range (x, z) and 0.6 x range (y),
@@ -138,10 +162,15 @@ public class EntityAIShipGuarding extends EntityAIBase {
                 !host.getStateFlag(ID.F.CanFollow) && host.getStateMinor(ID.M.CraneState) < 1 &&
                 host.getStateMinor(ID.M.NumGrudge) > 0) {
             // stationary guard fire control; runs on every poll, delays are decremented by elapsed ticks
-            fireControl();
+            // same fire condition as the moving path in updateTask()
+            if (ship != null && canFire(ship.getStateFlag(ID.F.PassiveAI), ship.getStateMinor(ID.M.GuardType))) {
+                fireControl();
+            }
 
-            // get guard target
-            if (host2.ticksExisted % 32 == 0) {
+            // get guard target, at least every START_CHECK_INTERVAL ticks regardless of the poll interval
+            int now = host2.ticksExisted;
+            if (isStartCheckDue(lastStartCheckTick, now, START_CHECK_INTERVAL)) {
+                lastStartCheckTick = now;
                 return true;
             }
             return checkGuardTarget();
@@ -197,7 +226,7 @@ public class EntityAIShipGuarding extends EntityAIBase {
          * 3. guard type > 0
          */
         LogHelper.debug("DEBUG : updating task");
-        if (isMoving && ship != null && !ship.getStateFlag(ID.F.PassiveAI) && ship.getStateMinor(ID.M.GuardType) > 0) {
+        if (isMoving && ship != null && canFire(ship.getStateFlag(ID.F.PassiveAI), ship.getStateMinor(ID.M.GuardType))) {
             // LogHelper.debug("DEBUG : guarding AI: exec moving attack");
             // update parms
             if (host2.ticksExisted % 64 == 0) {

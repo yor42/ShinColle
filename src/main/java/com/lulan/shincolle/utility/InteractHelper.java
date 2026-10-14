@@ -320,6 +320,14 @@ public class InteractHelper {
     }
 
     /**
+     * Container item rule of feeding (issue #33): the container (bowl etc.) is given on every feed
+     * when the food has one, except in creative mode where nothing is consumed and nothing is given.
+     */
+    public static boolean shouldGiveContainer(boolean creative, boolean hasContainer) {
+        return !creative && hasContainer;
+    }
+
+    /**
      * feed
      * <p>
      * 1. morale++
@@ -485,19 +493,23 @@ public class InteractHelper {
 
             //item--
             if (player != null) {
-                if (!player.capabilities.isCreativeMode) {
-					/*
-					if (itemstack.getCount() - 1 <= 0)
-					{
-						//update slot
+                //container item (bowl etc.) of the food, read before the stack is shrunk
+                ItemStack container = itemstack.getItem().getContainerItem(itemstack);
 
-						itemstack = itemstack.getItem().getContainerItem(itemstack);
-						player.inventory.setInventorySlotContents(player.inventory.currentItem, itemstack);
-					}*/
+                if (!player.capabilities.isCreativeMode) {
                     itemstack.shrink(1);
 
                     if (itemstack.getCount() <= 0) {    //物品用完時要設定為null清空該slot
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                    }
+
+                    //Deliberate deviation from 1.10 (maintainer decision, issue #33): 1.10 returned the
+                    //container only when the food stack was used up. Now every feed returns it; if the
+                    //inventory is full it is dropped at the player.
+                    if (shouldGiveContainer(false, !container.isEmpty()) && !player.world.isRemote) {
+                        if (!player.inventory.addItemStackToInventory(container)) {
+                            player.dropItem(container, false);
+                        }
                     }
                 }
             }
