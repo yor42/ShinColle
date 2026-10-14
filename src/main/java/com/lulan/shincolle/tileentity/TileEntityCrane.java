@@ -373,8 +373,9 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
         //load battery
         this.battery.readFromNBT(nbt);
 
-        this.EUCapacity = nbt.getDouble("energy_EUCapacity");
-        this.EUEnergy = Math.min(this.EUCapacity, nbt.getDouble("energy_EUEnergy"));
+        //missing keys (old saves) keep the config-default capacity set in the constructor
+        this.EUCapacity = CraneEnergyNbt.loadEUCapacity(nbt, this.EUCapacity);
+        this.EUEnergy = CraneEnergyNbt.loadEUEnergy(nbt, this.EUCapacity);
 
         //load pos
         int[] pos = nbt.getIntArray("chestPos");
@@ -1927,4 +1928,4 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
     public boolean isTeleporterCompatible(EnumFacing enumFacing) {
         return true;
     }
-}
+}

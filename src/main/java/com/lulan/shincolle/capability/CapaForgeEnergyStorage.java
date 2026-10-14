@@ -15,10 +15,11 @@ public class CapaForgeEnergyStorage extends EnergyStorage {
 
     public CapaForgeEnergyStorage readFromNBT(NBTTagCompound nbt)
     {
-        this.capacity = nbt.getInteger("fe_capacity");
-        this.energy = nbt.getInteger("fe_energy");
-        this.maxExtract = nbt.getInteger("fe_maxExtract");
-        this.maxReceive = nbt.getInteger("fe_maxReceive");
+        //missing keys (old saves) keep the values set by the constructor
+        if (nbt.hasKey("fe_capacity")) this.capacity = nbt.getInteger("fe_capacity");
+        if (nbt.hasKey("fe_energy")) this.energy = Math.max(0, Math.min(this.capacity, nbt.getInteger("fe_energy")));
+        if (nbt.hasKey("fe_maxExtract")) this.maxExtract = nbt.getInteger("fe_maxExtract");
+        if (nbt.hasKey("fe_maxReceive")) this.maxReceive = nbt.getInteger("fe_maxReceive");
         return this;
     }
 
