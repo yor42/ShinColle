@@ -93,4 +93,36 @@ The block that loads and unloads shipgirl inventories, fluid and energy at a Way
 **Waypoint** (lang "Abyssal Waypoint"):
 A block marking a point on a shipgirl's patrol or transport route.
 
+## Ships, equipment and combat (added for issue #71)
+
+**Hime** (姫, lang "Princess"):
+The boss-tier Abyssal class (`entity/hime`, lang e.g. "Destroyer Princess" for 駆逐棲姫). "Princess" comes from `en_us.lang`; docs use "Hime" (maintainer decision), not "Princess".
+
+**Mount** (code `BasicEntityMount`):
+A rideable or attachable companion entity of a shipgirl or Abyssal (lang names such as "Airbase", "Abyssal Aircraft Carrier", "Sanrensouhou-chan"). No agreed English category name; "Mount" is the agreed term.
+
+**Rensouhou** (連装砲, lang "Rensouhou-chan"):
+The small summoned cannon entity (`EntityRensouhou`; `EntityRensouhouS` is "Shinkei Rensouhou-chan"). Do not translate as "turret".
+
+**Equipment** (code `Equip*`, lang group "Equip"):
+Items a shipgirl carries that change attributes (cannons, ammo, armor, airplanes, drums). The lang file has no single English category name; "Equipment" is the agreed term.
+
+**Formation** (陣形, lang "Formation"):
+A team arrangement that gives movement and buffs (lang: Line Ahead, Double Line, Diamond, Echelon, Line Abreast). Needs 5 or 6 ships.
+
+**Guard Point** (code `getGuardedPos`, state `GuardX/Y/Z/Dim/Type`):
+The position or entity a shipgirl is told to hold (see Guard mode). The code says "guarded pos"; there is no lang string.
+
+**Hostile Mob** (code `BasicEntityShipHostile`, lang `gui.shincolle:team.hostile`):
+The code category of Abyssal entities that extend vanilla `EntityMob`. A separate term from **Abyssal** (maintainer decision), not an alias.
+
+**Morph inventory** (code `GuiMorphInventory`, `ContainerMorphInventory`, `ID.Gui.MORPHINVENTORY`):
+The GUI and container for the inventory of a Ship-morph player.
+
+**CMB-01**:
+Finding code (`docs/porting/gaps/2026-10-13-combat-equipment.md`): triple hit (x3) never triggers because of a duplicate condition. Decision P-7: fix after a characterization test.
+
+**CMB-02**:
+Finding code (same file): day and night damage modifier tables are swapped. Decision P-7: fix after a characterization test.
+
 Further terms live in the lang files and the zh-TW `cfg-info.md`. Add each with its original form when it is first used in docs.

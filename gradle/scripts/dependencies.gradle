@@ -32,6 +32,11 @@ dependencies {
     modCompileOnly ":Baubles-1.12-1.5.2-api:"
     modCompileOnly "curse.maven:tinkers-construct-74072:2902483"
     modCompileOnly "curse.maven:industrial-craft-242638:2746892"
+    // Test runtime only: TileEntityCrane implements ic2.api.energy.tile.*, so unit tests that touch it need the
+    // IC2 API classes. Not remapped, not on runClient/runServer, not in the mod jar.
+    if (enable_junit_testing.toBoolean()) {
+        testRuntimeOnly("curse.maven:industrial-craft-242638:2746892") { transitive = false }
+    }
 
     // Integrations on the dev runtime by default (decision P-15/MOD-12).
     // -Pdev_runtime_integrations=false compiles against them but leaves them out of runClient/runServer (absent-mod launch check).
