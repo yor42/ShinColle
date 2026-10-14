@@ -9,7 +9,7 @@ public class CapaForgeEnergyStorage extends EnergyStorage {
 
     public CapaForgeEnergyStorage(int capacity, int transferRate)
     {
-        super(capacity, 2000, 2000);
+        super(capacity, transferRate, transferRate);
         this.CraneTransferRate = 0;
     }
 
