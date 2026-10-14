@@ -60,6 +60,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import net.minecraft.tileentity.TileEntity;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -110,8 +111,9 @@ public class GameTestRunner {
             if (mc.currentScreen instanceof GuiMainMenu) {
                 started = true;
                 mc.gameSettings.pauseOnLostFocus = false;
-                if (CONNECT.isEmpty()) buildSteps();
-                else buildDedicatedSteps();
+                if (!CONNECT.isEmpty()) buildDedicatedSteps();
+                else if (FramePerf.ENABLED) buildRenderPerfSteps();    //opt-in: -Dshincolle.gametest.renderperf=true replaces the normal suite
+                else buildSteps();
                 nextStep();
             }
             return;
@@ -1132,6 +1134,379 @@ public class GameTestRunner {
         }
     }
 
+    /* ---------------- opt-in client render profiling (-Dshincolle.gametest.renderperf=true) ---------------- */
+
+    private static final int PERF_FRAMES = Integer.getInteger("shincolle.gametest.renderperf.frames", 600);
+    private static final int PERF_WARMUP = Integer.getInteger("shincolle.gametest.renderperf.warmup", 300);
+    //copy of MulitBlockHelper.PATTERN[0] [x][y][z]; 1 polymetal, 2 heavy grudge, -1 anything
+    private static final int[][][] PERF_PATTERN = {
+            {{1, 1, 1}, {1, -1, 1}, {-1, -1, -1}},
+            {{1, 1, 1}, {-1, -1, -1}, {-1, 2, -1}},
+            {{1, 1, 1}, {1, -1, 1}, {-1, -1, -1}}};
+
+    private FramePerf perf;
+    private int perfBaseX, perfBaseZ, perfGroundY;
+    private float perfYaw, perfPitch;
+    private final List<ItemStack> eggPool = new ArrayList<>();
+    private final List<String> perfCsv = new ArrayList<>();
+    private BlockPos shipyardMaster;
+    private final List<BlockPos> shipyardBlocks = new ArrayList<>();
+    private volatile int perfEngaged;
+    private volatile int perfHuskAlive;
+    private volatile int perfHuskSpawned;
+    private final List<String> combatSamples = new ArrayList<>();
+    private final java.util.Random perfRnd = new java.util.Random(42L);
+
+    /** a measured window: setup, settle ticks, warm-up frames (discarded), then frames recorded by FramePerf */
+    private abstract class PerfStep extends Step {
+        private final int settle;
+        private final int warm;
+        private final int frames;
+        private boolean armed;
+        private String rendBefore = "";
+
+        PerfStep(String name, int settle, int warm, int frames) {
+            super(name, 30000);
+            this.settle = settle;
+            this.warm = warm;
+            this.frames = frames;
+        }
+
+        abstract void setup() throws Exception;
+
+        void during(int t) throws Exception {
+        }
+
+        void after() throws Exception {
+        }
+
+        @Override
+        boolean tick(int t) throws Exception {
+            if (t == 1) {
+                perfYaw = 0F;
+                perfPitch = 5F;
+                setup();
+            }
+            mc.player.rotationYaw = mc.player.prevRotationYaw = perfYaw;
+            mc.player.rotationPitch = mc.player.prevRotationPitch = perfPitch;
+            during(t);
+
+            if (!armed) {
+                if (t >= settle) {
+                    armed = true;
+                    rendBefore = mc.renderGlobal.getDebugInfoEntities();
+                    perf.begin(warm, frames);
+                }
+                return false;
+            }
+            if (!perf.isDone()) return false;
+
+            String rendAfter = mc.renderGlobal.getDebugInfoEntities();
+            int clientShips = 0;
+            int clientEntities = mc.world.loadedEntityList.size();
+            for (Entity e : mc.world.loadedEntityList) if (e instanceof BasicEntityShip) clientShips++;
+            pass(name, perf.summary() + " | clientShips=" + clientShips + " clientEntities=" + clientEntities
+                    + " clientTileEntities=" + mc.world.loadedTileEntityList.size() + " | renderer before=[" + rendBefore + "] after=[" + rendAfter + "]");
+            perfCsv.add(name + "," + perf.csv());
+            after();
+            return true;
+        }
+    }
+
+    private void perfSettings() {
+        mc.gameSettings.enableVsync = false;
+        mc.gameSettings.limitFramerate = 260;    //GameSettings.Options.FRAMERATE_LIMIT max = unlimited
+        org.lwjgl.opengl.Display.setVSyncEnabled(false);
+    }
+
+    private void buildRenderPerfSteps() {
+        perf = new FramePerf();
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(perf);
+
+        steps.add(new Step("perf-enter-world", 1200) {
+            @Override
+            boolean tick(int t) throws Exception {
+                if (t == 1) {
+                    perfSettings();
+                    WorldSettings settings = new WorldSettings(20261013L, GameType.CREATIVE, false, false, WorldType.FLAT);
+                    settings.enableCommands();
+                    mc.launchIntegratedServer(worldFolder, worldFolder, settings);
+                    return false;
+                }
+                if (mc.player == null || mc.getIntegratedServer() == null) return false;
+                if (mc.player.ticksExisted < 100) return false;
+
+                String ground = callServer(() -> {
+                    WorldServer w = server().getWorld(0);
+                    w.getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
+                    w.getGameRules().setOrCreateGameRule("doMobSpawning", "false");
+                    w.setWorldTime(6000L);
+                    EntityPlayerMP p = serverPlayer();
+                    perfBaseX = MathHelper.floor(p.posX);
+                    perfBaseZ = MathHelper.floor(p.posZ);
+                    perfGroundY = MathHelper.floor(p.posY) - 1;
+                    return w.getBlockState(new BlockPos(perfBaseX, perfGroundY, perfBaseZ)).getBlock().getRegistryName() + " at y=" + perfGroundY
+                            + ", player " + p.posX + "," + p.posY + "," + p.posZ;
+                });
+                NonNullList<ItemStack> eggs = NonNullList.create();
+                ModItems.ShipSpawnEgg.getSubItems(ModItems.ShipSpawnEgg.getCreativeTab(), eggs);
+                for (ItemStack s : eggs) if (s.getMetadata() > 1 && s.getMetadata() <= 2000) eggPool.add(s.copy());
+                info(name, "egg pool " + eggPool.size() + " ship types; ground block " + ground);
+                info(name, "settings: renderDistance=" + mc.gameSettings.renderDistanceChunks + " fancyGraphics=" + mc.gameSettings.fancyGraphics
+                        + " vsync=" + mc.gameSettings.enableVsync + " fpsLimit=" + mc.gameSettings.limitFramerate + " window=" + mc.displayWidth + "x" + mc.displayHeight
+                        + " fov=" + mc.gameSettings.fovSetting + " particles=" + mc.gameSettings.particleSetting + " entityShadows=" + mc.gameSettings.entityShadows
+                        + " guiScale=" + mc.gameSettings.guiScale);
+                info(name, "gl renderer=" + org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_RENDERER) + " vendor=" + org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_VENDOR)
+                        + " java=" + System.getProperty("java.version") + " vm=" + System.getProperty("java.vm.name") + " cpus=" + Runtime.getRuntime().availableProcessors()
+                        + " maxHeapMB=" + Runtime.getRuntime().maxMemory() / 1048576L + " mods=" + Loader.instance().getActiveModList().size());
+                pass(name, "world " + worldFolder);
+                return true;
+            }
+        });
+
+        //S0: idle world, nothing in view (control). Longer warm-up: this is the first window, the JIT is coldest here.
+        steps.add(new PerfStep("S0-idle-control", 100, PERF_WARMUP * 3, PERF_FRAMES) {
+            @Override
+            void setup() {
+            }
+        });
+
+        //S1: formed Large Shipyard in view
+        steps.add(new PerfStep("S1-large-shipyard", 120, PERF_WARMUP, PERF_FRAMES) {
+            @Override
+            void setup() throws Exception {
+                final int mx = perfBaseX;
+                final int mz = perfBaseZ + 6;
+                final int my = perfGroundY + 3;
+                shipyardMaster = new BlockPos(mx, my, mz);
+                int type = callServer(() -> {
+                    WorldServer w = server().getWorld(0);
+                    for (int x = 0; x < 3; x++) {
+                        for (int y = 0; y < 3; y++) {
+                            for (int z = 0; z < 3; z++) {
+                                int v = PERF_PATTERN[x][y][z];
+                                BlockPos pos = new BlockPos(mx - 1 + x, my - 2 + y, mz - 1 + z);
+                                if (v == 1) w.setBlockState(pos, ModBlocks.BlockPolymetal.getDefaultState());
+                                else if (v == 2) w.setBlockState(pos, ModBlocks.BlockGrudgeHeavy.getDefaultState());
+                                else continue;
+                                shipyardBlocks.add(pos);
+                            }
+                        }
+                    }
+                    int ty = com.lulan.shincolle.utility.MulitBlockHelper.checkMultiBlockForm(w, mx, my, mz);
+                    if (ty > 0) com.lulan.shincolle.utility.MulitBlockHelper.setupStructure(w, mx, my, mz, ty);
+                    return ty;
+                });
+                info(name, "built " + shipyardBlocks.size() + " blocks, master " + shipyardMaster + ", checkMultiBlockForm=" + type);
+                if (type <= 0) fail(name, "structure did not form (check returned " + type + ")");
+                diagTile("t=1(setup)");
+            }
+
+            @Override
+            void during(int t) throws Exception {
+                //tile state for the first 5 s (100 ticks) after the structure was formed
+                if (t > 1 && t <= 111 && t % 10 == 1) diagTile("t=" + t);
+            }
+        });
+
+        //S1b: not a measurement. What happens on the client if the tile did have structType > 0 (forced by reflection, then restored)
+        steps.add(new Step("S1b-forced-client-structType", 600) {
+            private java.lang.reflect.Field f;
+
+            @Override
+            boolean tick(int t) throws Exception {
+                mc.player.rotationYaw = mc.player.prevRotationYaw = perfYaw;
+                mc.player.rotationPitch = mc.player.prevRotationPitch = perfPitch;
+                if (t == 1) {
+                    f = com.lulan.shincolle.tileentity.BasicTileMulti.class.getDeclaredField("structType");
+                    f.setAccessible(true);
+                    TileEntity te = findClientTile();
+                    if (te == null) {
+                        info(name, "no client tile at " + shipyardMaster);
+                    } else {
+                        f.setInt(te, 1);
+                        info(name, "forced client tile structType=1 (reflection)");
+                    }
+                    diagTile("forced t=1");
+                    return false;
+                }
+                if (t <= 101 && t % 10 == 1) diagTile("forced t=" + t);
+                if (t == 102) {
+                    TileEntity te = findClientTile();
+                    if (te != null) f.setInt(te, 0);
+                    info(name, "restored client tile structType=0");
+                    callServer(() -> {
+                        WorldServer w = server().getWorld(0);
+                        for (BlockPos bp : shipyardBlocks) w.setBlockState(bp, Blocks.AIR.getDefaultState());
+                        return null;
+                    });
+                    info(name, "removed shipyard blocks on the server");
+                    return false;
+                }
+                if (t < 160) return false;
+                pass(name, "diagnostic only");
+                return true;
+            }
+        });
+
+        //S2: idle ships on screen
+        steps.add(new PerfStep("S2-ships-10-idle", 120, PERF_WARMUP, PERF_FRAMES) {
+            @Override
+            void setup() throws Exception {
+                int n = callServer(() -> spawnPerfShips(0, 10));
+                info(name, "spawn requested 10, server ships now " + n);
+            }
+        });
+        steps.add(new PerfStep("S2-ships-30-idle", 120, PERF_WARMUP, PERF_FRAMES) {
+            @Override
+            void setup() throws Exception {
+                int n = callServer(() -> spawnPerfShips(10, 30));
+                info(name, "spawn requested 20 more, server ships now " + n);
+            }
+        });
+
+        //S3: same 30 ships, husks without AI placed among them, topped up to 8 every second; ships refuelled
+        steps.add(new PerfStep("S3-ships-30-combat", 120, PERF_WARMUP, PERF_FRAMES) {
+            @Override
+            void setup() throws Exception {
+                perfHuskSpawned = 0;
+                callServer(() -> {
+                    maintainCombat();
+                    return 0;
+                });
+            }
+
+            @Override
+            void during(int t) {
+                if (t % 20 == 0) {
+                    //non-blocking: callServer would stall the client frame loop for up to one server tick
+                    server().addScheduledTask(GameTestRunner.this::maintainCombat);
+                    if (t % 100 == 0) combatSamples.add("t=" + t + " engagedShips=" + perfEngaged + " huskAlive=" + perfHuskAlive + " huskSpawnedTotal=" + perfHuskSpawned);
+                }
+            }
+
+            @Override
+            void after() throws Exception {
+                for (String s : combatSamples) info(name, "combat sample " + s);
+                callServer(() -> {
+                    for (Entity e : new ArrayList<>(server().getWorld(0).loadedEntityList)) if (e instanceof EntityHusk) e.setDead();
+                    return null;
+                });
+            }
+        });
+
+        //S0b: control again after everything is removed (drift check)
+        steps.add(new PerfStep("S0b-idle-control-after", 120, PERF_WARMUP, PERF_FRAMES) {
+            @Override
+            void setup() throws Exception {
+                callServer(() -> {
+                    for (Entity e : new ArrayList<>(server().getWorld(0).loadedEntityList)) {
+                        if (e instanceof EntityHusk || e instanceof BasicEntityShip) e.setDead();
+                    }
+                    return null;
+                });
+            }
+        });
+
+        steps.add(new Step("perf-csv", 100) {
+            @Override
+            boolean tick(int t) {
+                info(name, "csv header: scenario,interval_mean_ms,interval_p95_ms,cpu_mean_ms,cpu_p95_ms,alloc_mean_KB,alloc_p95_KB");
+                for (String l : perfCsv) info(name, "csv " + l);
+                pass(name, perfCsv.size() + " windows");
+                return true;
+            }
+        });
+    }
+
+    /** server thread: spawns ships [from,to) through the real egg item (onItemRightClick) in a 7-column grid in front of the player */
+    private int spawnPerfShips(int from, int to) {
+        EntityPlayerMP p = serverPlayer();
+        ItemStack prev = p.inventory.getStackInSlot(p.inventory.currentItem).copy();
+        double ox = p.posX, oy = p.posY, oz = p.posZ;
+        float oyaw = p.rotationYaw, opitch = p.rotationPitch;
+        for (int i = from; i < to; i++) {
+            ItemStack egg = eggPool.get((i * 7 + 3) % eggPool.size()).copy();
+            p.inventory.setInventorySlotContents(p.inventory.currentItem, egg);
+            double x = perfBaseX + 0.5D + (i % 7 - 3) * 2.5D;
+            double z = perfBaseZ + 0.5D + 6D + (i / 7) * 2.5D;
+            p.setPositionAndRotation(x, perfGroundY + 1D, z, 0F, 90F);
+            ModItems.ShipSpawnEgg.onItemRightClick(p.world, p, EnumHand.MAIN_HAND);
+        }
+        p.setPositionAndRotation(ox, oy, oz, oyaw, opitch);
+        p.inventory.setInventorySlotContents(p.inventory.currentItem, prev);
+        int n = 0;
+        for (Entity e : p.world.loadedEntityList) if (e instanceof BasicEntityShip) n++;
+        return n;
+    }
+
+    /** server thread: keep ships fuelled and healthy, keep 8 husks (no AI) among the ships, count engaged ships */
+    private void maintainCombat() {
+        WorldServer w = server().getWorld(0);
+        int engaged = 0;
+        int husks = 0;
+        for (Entity e : new ArrayList<>(w.loadedEntityList)) {
+            if (e instanceof BasicEntityShip) {
+                BasicEntityShip s = (BasicEntityShip) e;
+                if (s.getEntityTarget() != null) engaged++;
+                s.setHealth(s.getMaxHealth());
+                s.setAmmoLight(60);
+                if (s.getGrudge() < 500) {
+                    s.addGrudge(1000 - s.getGrudge());
+                    s.decrGrudgeNum(0);
+                }
+                if (s.getMorale() < 2200) {
+                    s.setMorale(NORMAL_MORALE);
+                    s.calcShipAttributes(4, false);
+                }
+            } else if (e instanceof EntityHusk && e.isEntityAlive()) {
+                husks++;
+            }
+        }
+        for (; husks < 8; husks++) {
+            EntityHusk h = new EntityHusk(w);
+            h.setLocationAndAngles(perfBaseX + 0.5D + perfRnd.nextInt(15) - 7, perfGroundY + 1D, perfBaseZ + 0.5D + 6D + perfRnd.nextInt(10), 0F, 0F);
+            h.enablePersistence();
+            h.setNoAI(true);
+            w.spawnEntity(h);
+            perfHuskSpawned++;
+        }
+        perfEngaged = engaged;
+        perfHuskAlive = husks;
+    }
+
+    private TileEntity findClientTile() {
+        for (TileEntity te : new ArrayList<>(mc.world.loadedTileEntityList)) {
+            if (te.getPos().equals(shipyardMaster)) return te;
+        }
+        return null;
+    }
+
+    /** logs the client (and server) tile at the shipyard master position without creating tiles as a side effect */
+    private void diagTile(String label) throws Exception {
+        TileEntity te = findClientTile();
+        TileEntity inChunk = mc.world.getChunk(shipyardMaster).getTileEntityMap().get(shipyardMaster);
+        String client;
+        if (te == null) {
+            client = "client tile NOT in loadedTileEntityList; chunkMap=" + (inChunk == null ? "none" : inChunk.getClass().getSimpleName()
+                    + "@" + System.identityHashCode(inChunk) + " isInvalid=" + inChunk.isInvalid());
+        } else {
+            client = te.getClass().getSimpleName() + "@" + System.identityHashCode(te) + " isInvalid=" + te.isInvalid()
+                    + " structType=" + (te instanceof com.lulan.shincolle.tileentity.BasicTileMulti ? ((com.lulan.shincolle.tileentity.BasicTileMulti) te).getStructType() : -1)
+                    + " hasMaster=" + (te instanceof com.lulan.shincolle.tileentity.BasicTileMulti && ((com.lulan.shincolle.tileentity.BasicTileMulti) te).hasMaster())
+                    + " inLoadedTileEntityList=true inTickableTileEntities=" + mc.world.tickableTileEntities.contains(te)
+                    + " sameAsChunkMap=" + (inChunk == te) + " blockState=" + mc.world.getBlockState(shipyardMaster);
+        }
+        final BlockPos mp = shipyardMaster;
+        String srv = callServer(() -> {
+            TileEntity st = server().getWorld(0).getTileEntity(mp);
+            if (!(st instanceof com.lulan.shincolle.tileentity.BasicTileMulti)) return "server tile=" + st;
+            com.lulan.shincolle.tileentity.BasicTileMulti m = (com.lulan.shincolle.tileentity.BasicTileMulti) st;
+            return "server " + st.getClass().getSimpleName() + " structType=" + m.getStructType() + " hasMaster=" + m.hasMaster() + " isInvalid=" + st.isInvalid();
+        });
+        info("tile-diag", label + " | CLIENT " + client + " | " + srv + " | clientLoadedTileEntities=" + mc.world.loadedTileEntityList.size());
+    }
+
     /* ---------------- helpers ---------------- */
 
     private IntegratedServer server() {
@@ -1235,7 +1610,7 @@ public class GameTestRunner {
         File dir = new File(mc.gameDir, "gametest");
         try {
             Files.createDirectories(dir.toPath());
-            Files.write(new File(dir, CONNECT.isEmpty() ? "results.txt" : "dedicated-results.txt").toPath(), results, StandardCharsets.UTF_8);
+            Files.write(new File(dir, !CONNECT.isEmpty() ? "dedicated-results.txt" : FramePerf.ENABLED ? "renderperf-results.txt" : "results.txt").toPath(), results, StandardCharsets.UTF_8);
         } catch (IOException e) {
             LOG.error("[GAMETEST] cannot write results", e);
         }
