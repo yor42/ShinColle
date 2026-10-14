@@ -855,8 +855,7 @@ public class PacketHelper {
             try {
                 CompressedStreamTools.write(nbt, new ByteBufOutputStream(buf));
             } catch (IOException e) {
-                LogHelper.info("EXCEPTION: NBT packet: send data fail: " + e);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: NBT packet: send data fail: " + e, e);
             }
         }
     }
@@ -877,8 +876,7 @@ public class PacketHelper {
             try {
                 return CompressedStreamTools.read(new ByteBufInputStream(buf), new NBTSizeTracker(2097152L));
             } catch (IOException e) {
-                LogHelper.info("EXCEPTION: NBT packet: get data fail: " + e);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: NBT packet: get data fail: " + e, e);
                 return null;
             }
         }

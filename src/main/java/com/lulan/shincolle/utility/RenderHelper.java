@@ -254,8 +254,7 @@ public class RenderHelper {
             GlStateManager.color(1F, 1F, 1F, 1F);
             GlStateManager.popMatrix();
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: render game overlay fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: render game overlay fail: " + e, e);
         }
     }
 

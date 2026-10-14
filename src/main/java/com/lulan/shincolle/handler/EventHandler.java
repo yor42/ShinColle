@@ -796,8 +796,7 @@ public class EventHandler {
                 MetamorphHelper.writeToNBT(event.getEntityPlayer());
             }
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: save morph ship data fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: save morph ship data fail: " + e, e);
         }
     }
 
@@ -813,8 +812,7 @@ public class EventHandler {
                 MetamorphHelper.writeToNBT(event.player);
             }
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: save morph ship data fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: save morph ship data fail: " + e, e);
         }
     }
 

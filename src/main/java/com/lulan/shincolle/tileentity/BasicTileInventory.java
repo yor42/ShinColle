@@ -3,6 +3,7 @@ package com.lulan.shincolle.tileentity;
 import com.lulan.shincolle.Tags;
 import com.lulan.shincolle.capability.CapaInventory;
 import com.lulan.shincolle.entity.IShipOwner;
+import com.lulan.shincolle.utility.LogHelper;
 import com.lulan.shincolle.utility.PacketHelper;
 import com.lulan.shincolle.utility.TeamHelper;
 import net.minecraft.block.BlockAnvil;
@@ -105,7 +106,7 @@ abstract public class BasicTileInventory extends BasicTileEntity implements ISid
         try {
             return this.itemHandler.getStackInSlot(i);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: getStackInSlot fail", e);
             return ItemStack.EMPTY;
         }
     }
@@ -128,7 +129,7 @@ abstract public class BasicTileInventory extends BasicTileEntity implements ISid
                 return ItemStack.EMPTY;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: decrStackSize fail", e);
             return ItemStack.EMPTY;
         }
     }
@@ -153,7 +154,7 @@ abstract public class BasicTileInventory extends BasicTileEntity implements ISid
 //		}
 //		catch (Exception e)
 //		{
-//			e.printStackTrace();
+//			LogHelper.error("EXCEPTION: decrStackSize fail", e);
 //			return ItemStack.EMPTY;
 //		}
     }

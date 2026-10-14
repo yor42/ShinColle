@@ -103,8 +103,7 @@ public class S2CReactPackets implements IMessage {
                     }
                 } catch (Exception e) {
                     this.decodeFailed = true;
-                    LogHelper.info("EXCEPTION: S2C input packet: get data fail: " + e);
-                    e.printStackTrace();
+                    LogHelper.error("EXCEPTION: S2C input packet: get data fail: " + e, e);
                 }
             }
             break;

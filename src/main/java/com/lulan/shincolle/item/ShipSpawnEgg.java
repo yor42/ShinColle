@@ -339,8 +339,7 @@ public class ShipSpawnEgg extends BasicItem {
                         entity.setShipLevel(attrs[0], true);
                     }
                 } catch (Exception e) {
-                    LogHelper.info("EXCEPTION: init ship attrs fail: " + e);
-                    e.printStackTrace();
+                    LogHelper.error("EXCEPTION: init ship attrs fail: " + e, e);
                 }
 
                 //set custom name

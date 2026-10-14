@@ -350,8 +350,7 @@ public class EntityHelper {
                     }
                 }
             } catch (Exception e) {
-                LogHelper.info("EXCEPTION: get EntityPlayer by name fail: " + e);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: get EntityPlayer by name fail: " + e, e);
             }
         }
 
@@ -374,8 +373,7 @@ public class EntityHelper {
                     if (capa.getPlayerUID() == uid) return p;
                 }
             } catch (Exception e) {
-                LogHelper.info("EXCEPTION: get EntityPlayer by UID at client fail: " + e);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: get EntityPlayer by UID at client fail: " + e, e);
                 return null;
             }
         }
@@ -406,8 +404,7 @@ public class EntityHelper {
                     }
                 }
             } catch (Exception e) {
-                LogHelper.info("EXCEPTION: get EntityPlayer by name fail: " + e);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: get EntityPlayer by name fail: " + e, e);
                 return null;
             }
         }
@@ -1018,7 +1015,7 @@ public class EntityHelper {
 
                         return updatePos;
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        LogHelper.error("EXCEPTION: updateWaypointMove fail", e);
                     }
                 } else {
                     //move back to waypoint position every 128 ticks

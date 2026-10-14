@@ -59,30 +59,6 @@ public class ShipTank extends BasicItem {
         };
     }
 
-    //get 1 block in front of player
-    private static BlockPos getBlockInFrontOfPlayer(EntityPlayer player) {
-        float yaw = player.rotationYaw % 360F;
-        if (yaw > 180F) yaw -= 360F;
-        else if (yaw < -180F) yaw += 360F;
-
-        if (yaw <= -112.5F && yaw > -157.5F)
-            return new BlockPos(player.posX + 1, player.posY + 1, player.posZ - 1);
-        else if (yaw <= -67.5F && yaw > -112.5F)
-            return new BlockPos(player.posX + 1, player.posY + 1, player.posZ);
-        else if (yaw <= -22.5F && yaw > -67.5F)
-            return new BlockPos(player.posX + 1, player.posY + 1, player.posZ + 1);
-        else if (yaw <= 22.5F && yaw > -22.5F)
-            return new BlockPos(player.posX, player.posY + 1, player.posZ + 1);
-        else if (yaw <= 67.5F && yaw > 22.5F)
-            return new BlockPos(player.posX - 1, player.posY + 1, player.posZ + 1);
-        else if (yaw <= 112.5F && yaw > 67.5F)
-            return new BlockPos(player.posX - 1, player.posY + 1, player.posZ);
-        else if (yaw <= 157.5F && yaw > 112.5F)
-            return new BlockPos(player.posX - 1, player.posY + 1, player.posZ - 1);
-        else
-            return new BlockPos(player.posX, player.posY + 1, player.posZ - 1);
-    }
-
     //place liquid block to world
     public static boolean tryPlaceContainedLiquid(@Nullable EntityPlayer player, World world, BlockPos fromPos, BlockPos pos, IFluidHandler fh) {
         //null check

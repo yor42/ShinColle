@@ -641,8 +641,7 @@ public class TileEntityCrane extends BasicTileInventory implements ITileWaypoint
                                 this.ship = null;
                             }
                         } catch (Exception e) {
-                            LogHelper.info("EXCEPTION: ship loading/unloading fail: " + e);
-                            e.printStackTrace();
+                            LogHelper.error("EXCEPTION: ship loading/unloading fail: " + e, e);
                             return;
                         }
                     }

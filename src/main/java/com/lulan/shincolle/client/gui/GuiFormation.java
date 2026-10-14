@@ -1046,8 +1046,7 @@ public class GuiFormation extends GuiContainer {
                 this.shipList = this.capa.getShipEntityAll(this.teamClicked);
             }
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: formation GUI get ship fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: formation GUI get ship fail: " + e, e);
         }
     }
 

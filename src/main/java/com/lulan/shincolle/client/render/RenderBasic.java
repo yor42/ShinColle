@@ -178,8 +178,7 @@ abstract public class RenderBasic extends RenderLiving<EntityLiving> {
 
             GlStateManager.disableRescaleNormal();
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION : Render misc model fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION : Render misc model fail: " + e, e);
         }
 
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);

@@ -257,8 +257,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             nbtExt.setString("PlayerName", playerName);
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: player name is empty string.");
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: player name is empty string.", e);
         }
 
         /**
@@ -388,8 +387,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
             this.shipMinor[1] = nbtExt.getInteger("NumAmmoL");
             this.shipMinor[2] = nbtExt.getInteger("NumAmmoH");
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: player loadNBTData: load fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: player loadNBTData: load fail: " + e, e);
         }
 
         LogHelper.debug("DEBUG: load player ExtNBT data on: " + this.player);
@@ -467,8 +465,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             return teamList[tid][id];
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: get ship entity from extProps fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: get ship entity from extProps fail: " + e, e);
             return null;
         }
     }
@@ -477,8 +474,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             return teamList[tid];
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: get all ship entity from extProps fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: get all ship entity from extProps fail: " + e, e);
             return null;
         }
     }
@@ -497,8 +493,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             return teamList;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: get all ship entity from extProps fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: get all ship entity from extProps fail: " + e, e);
             return null;
         }
     }
@@ -567,8 +562,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             return selectState[tid];
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: get ship select state fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: get ship select state fail: " + e, e);
             return new boolean[6];
         }
     }
@@ -578,8 +572,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             return selectState[tid][pos];
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: get ship select state fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: get ship select state fail: " + e, e);
             return false;
         }
     }
@@ -595,8 +588,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             return this.sidList[tid][pos];
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: get ship ID fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: get ship ID fail: " + e, e);
             return -1;
         }
     }
@@ -762,8 +754,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             return this.formatID[teamID];
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: get formation id fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: get formation id fail: " + e, e);
             return 0;
         }
     }
@@ -776,8 +767,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             this.formatID[teamId] = fid;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: set current team formation id fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: set current team formation id fail: " + e, e);
         }
     }
 
@@ -839,8 +829,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
                 return 0F;
             }
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: get entity MOV from extProps fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: get entity MOV from extProps fail: " + e, e);
             return 0F;
         }
 
@@ -871,8 +860,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             sidList[tid][pos] = sid;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: set ship ID fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: set ship ID fail: " + e, e);
         }
     }
 
@@ -881,8 +869,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             sidList[teamId][pos] = sid;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: set current team ship ID fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: set current team ship ID fail: " + e, e);
         }
     }
 
@@ -891,8 +878,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             selectState[tid][pos] = par1;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: set ship select state fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: set ship select state fail: " + e, e);
         }
     }
 
@@ -900,8 +886,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             selectState[teamId][id] = par1;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION : set current team select state fail.");
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION : set current team select state fail.", e);
         }
     }
 
@@ -953,8 +938,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             this.formatID[tid] = fid;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: set ship team formation id fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: set ship team formation id fail: " + e, e);
         }
     }
 
@@ -974,8 +958,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             this.teamList[tid] = par1;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: set ship team entity fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: set ship team entity fail: " + e, e);
         }
     }
 
@@ -983,8 +966,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
         try {
             this.selectState[tid] = par1;
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: set ship team select state fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: set ship team select state fail: " + e, e);
         }
     }
 
@@ -1184,8 +1166,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
                 }
             }
         } catch (Exception e) {
-            LogHelper.info("EXCEPTION: check ship in team fail: " + e);
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: check ship in team fail: " + e, e);
         }
 
         return val;
@@ -1476,7 +1457,7 @@ public class CapaTeitoku implements ICapaTeitoku, IInventory {
                 return ItemStack.EMPTY;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogHelper.error("EXCEPTION: decrStackSize fail", e);
             return ItemStack.EMPTY;
         }
     }

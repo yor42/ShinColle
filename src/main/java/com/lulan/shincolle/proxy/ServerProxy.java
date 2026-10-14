@@ -474,8 +474,7 @@ public class ServerProxy extends CommonProxy {
                     }
                 }
             } catch (Exception e) {
-                LogHelper.info("EXCEPTION: clean team data fail: " + e);
-                e.printStackTrace();
+                LogHelper.error("EXCEPTION: clean team data fail: " + e, e);
             }
         }
     }
