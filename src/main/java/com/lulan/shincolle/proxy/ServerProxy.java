@@ -427,11 +427,18 @@ public class ServerProxy extends CommonProxy {
     }
 
     // set player world data
-    public static void setShipWorldData(int pid, CacheDataShip pdata) {
+    // returns true if the cache entry changed (and the world data was marked dirty)
+    public static boolean setShipWorldData(int pid, CacheDataShip pdata) {
         if (pid > 0 && pdata != null) {
+            // unchanged snapshot: keep the old entry and do not mark the whole world data dirty
+            CacheDataShip old = mapShipID.get(pid);
+            if (old != null && old.hasSameContent(pdata)) return false;
+
             mapShipID.put(pid, pdata);
-            serverData.markDirty();
+            if (serverData != null) serverData.markDirty();
+            return true;
         }
+        return false;
     }
 
     /**

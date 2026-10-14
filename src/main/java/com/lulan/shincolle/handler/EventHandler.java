@@ -15,6 +15,7 @@ import com.lulan.shincolle.proxy.ClientProxy;
 import com.lulan.shincolle.proxy.CommonProxy;
 import com.lulan.shincolle.proxy.ServerProxy;
 import com.lulan.shincolle.reference.ID;
+import com.lulan.shincolle.server.ShinWorldData;
 import com.lulan.shincolle.utility.*;
 import com.lulan.shincolle.worldgen.ChestLootTable;
 import mchorse.metamorph.api.events.MorphActionEvent;
@@ -326,6 +327,7 @@ public class EventHandler {
     public void onWorldUnload(Unload event) {
         if (ServerProxy.saveServerFile) {
             ServerProxy.saveServerProxy();
+            ShinWorldData.clearCachedNbt();
         }
     }
 

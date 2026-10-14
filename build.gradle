@@ -6,6 +6,7 @@ plugins {
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4.1'
     id 'xyz.wagyourtail.unimined' version '1.4.43-kappa'
     id 'net.kyori.blossom' version '2.2.0'
+    id 'com.diffplug.spotless' version '8.10.4'
 }
 
 import org.jetbrains.gradle.ext.Gradle
@@ -319,3 +320,16 @@ tasks.matching { it.name == 'runServer' }.configureEach {
 
 apply from: 'gradle/scripts/publishing.gradle'
 apply from: 'gradle/scripts/extra.gradle'
+
+// Advisory formatting ratchet (issue #73): only files changed since the ratchet ref are checked,
+// and spotlessCheck is NOT wired into check/build. Run ./gradlew spotlessCheck manually; nothing is auto-applied.
+spotless {
+    enforceCheck = false
+    ratchetFrom 'HEAD'
+    java {
+        target 'src/*/java/**/*.java'
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}

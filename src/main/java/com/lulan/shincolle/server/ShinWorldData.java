@@ -50,6 +50,14 @@ public class ShinWorldData extends WorldSavedData {
     //data
     public static NBTTagCompound nbtData;
 
+    /**
+     * drop the static copy of the loaded save data (only needed while ServerProxy.initServerProxy runs),
+     * so it cannot leak into the next world loaded in the same JVM
+     */
+    public static void clearCachedNbt() {
+        nbtData = null;
+    }
+
 
     public ShinWorldData() {
         super(SAVEID);
